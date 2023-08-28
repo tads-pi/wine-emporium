@@ -4,15 +4,23 @@ on:
   push:
     branches:
       - main
-
-env:
-  AWS_REGION: sa-east-1
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    paths:
+      - 'api/**'
 
 jobs:
-  deploy:
+  deploy-api:
+    name: deploy-api
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: sa-east-1
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
-      - uses: actions/checkout@v2
-      - run: echo "todo :)"
+      - uses: actions/checkout@v3
+      - run: npm i serverless -g
+      - run: npm ci
+
+      - name: deploy
+        run: |
+          make deploy -C api

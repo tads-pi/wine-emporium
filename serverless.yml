@@ -1,0 +1,24 @@
+service: wine-emporium
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  region: sa-east-1
+  stage: prd
+  deploymentBucket:
+    name: kcalixto-serverless-framework
+
+functions:
+  api:
+    handler: //TODO 
+    runtime: nodejs18.x
+    environment:
+      DB_HOST: ${ssm:/wine-emporium-api/db-host}
+      DB_USER: ${ssm:/wine-emporium-api/db-host}
+      DB_PASS: ${ssm:/wine-emporium-api/db-host}
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
