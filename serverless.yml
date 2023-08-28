@@ -11,10 +11,12 @@ provider:
 
 functions:
   api:
-    handler: //TODO 
+    handler: api/index.handler
     runtime: nodejs18.x
     environment:
+      NODE_ENV: 'production'
       DB_HOST: ${ssm:/wine-emporium-api/db-host}
+      DB_NAME: ${ssm:/wine-emporium-api/db-name}
       DB_USER: ${ssm:/wine-emporium-api/db-host}
       DB_PASS: ${ssm:/wine-emporium-api/db-host}
     events:
