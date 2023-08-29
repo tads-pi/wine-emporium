@@ -5,10 +5,11 @@ on:
     branches: [main, dev]
     paths:
       - 'api/**'
+      - '.github/workflows/**'
 
 jobs:
   deploy:
-    name: 🍷 Deploy
+    name: 🍷 API Deploy
     runs-on: ubuntu-latest
     defaults:
       run:
