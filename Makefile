@@ -1,2 +1,0 @@
-deploy:
-	serverless deploy --verbose

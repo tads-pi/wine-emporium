@@ -2,8 +2,7 @@ name: 🍷 API Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main, dev]
     paths:
       - 'api/**'
 
@@ -29,4 +28,11 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm i serverless -g
-      - run: make deploy
+      - name: 'Set vars'
+        run: |
+          if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
+            echo "STAGE=prod" >> $GITHUB_ENV
+          else if [[ "${{github.base_ref}}" == "dev" || "${{github.ref}}" == "refs/heads/dev" ]]; then
+            echo "STAGE=dev" >> $GITHUB_ENV
+          fi
+      - run: serverless deploy --verbose --stage {{ env.STAGE }}
