@@ -8,16 +8,36 @@ on:
       - 'api/**'
 
 jobs:
+  install-dependencies:
+    name: install dependencies
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: install node dependencies
+        run: npm ci
+
+      - name: install serverless
+        working-directory: api
+        run: npm i serverless -g
+
   test:
     name: test
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
     steps:
       - name: check lint
-        working-directory: api
-        run: npm run lint
+        run: eslint .
     
       - name: run tests
-        working-directory: api
         run: npm run test
 
   deploy-api:
