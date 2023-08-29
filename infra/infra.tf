@@ -9,7 +9,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "wine_emporium_www" {
-  bucket = "wine_emporium_www"
+  bucket = "tadspi-wine-emporium-www"
 
   website {
     index_document = "index.html"
