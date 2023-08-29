@@ -3,9 +3,9 @@ name: api
 on:
   push:
     branches:
-      - main-disabled
+      - main
     paths:
-      - 'api/**--disabled'
+      - 'api/**'
 
 jobs:
   test:
