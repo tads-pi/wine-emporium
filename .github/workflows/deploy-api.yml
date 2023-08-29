@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: check lint
+        working-directory: api
         run: npm run lint
     
       - name: run tests
+        working-directory: api
         run: npm run test
 
   deploy-api:
@@ -34,4 +36,4 @@ jobs:
 
       - name: deploy
         run: |
-          make deploy -C api
+          make deploy
