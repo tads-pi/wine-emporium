@@ -1,13 +1,14 @@
-// connects to mysql database
-import mysql from "mysql2"
+import { Sequelize } from "sequelize";
+import config from "../config/config.js";
 
-console.log("DB_HOST: ", process.env.DB_HOST)
+const dbName = config.DB_NAME
+const dbUser = config.DB_USER;
+const dbHost = config.DB_HOST;
+const dbPassword = config.DB_PASS;
 
-const conn = mysql.createPool({
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS
-})
+const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+    dialect: "mysql",
+    host: dbHost,
+});
 
-export default conn
+export default sequelize;

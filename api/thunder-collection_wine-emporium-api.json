@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "wine-emporium-api",
-    "dateExported": "2023-08-30T02:44:34.986Z",
+    "dateExported": "2023-08-30T04:27:59.603Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -10,11 +10,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Health",
-            "url": "https://api.wineemporium.store/health",
+            "url": "http://localhost:3000/health",
             "method": "GET",
             "sortNum": 10000,
             "created": "2023-08-28T00:52:54.267Z",
-            "modified": "2023-08-30T02:42:30.865Z",
+            "modified": "2023-08-30T03:52:26.516Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -26,6 +26,86 @@
                     "isDisabled": true
                 }
             ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "7a061b63-dfd3-441d-9553-50a174bec74b",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Save Backoffice User",
+            "url": "http://localhost:3000/backoffice/user/save",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-08-30T03:48:54.241Z",
+            "modified": "2023-08-30T04:03:58.941Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"teste kaua\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste@213kaua.com\",\n  \"password\": \"123\",\n  \"group\": \"admin\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "46c5477b-9b3c-4baa-ae77-0854bcf0dd71",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Get Backoffice User",
+            "url": "http://localhost:3000/backoffice/user/1",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-08-30T04:09:24.102Z",
+            "modified": "2023-08-30T04:09:49.012Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "52345a86-e5ab-41d4-b3c6-1736c85bd98d",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Update Backoffice User",
+            "url": "http://localhost:3000/backoffice/user/1",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-08-30T04:10:59.333Z",
+            "modified": "2023-08-30T04:17:36.198Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"teste kaua2\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste@11kaua.com\",\n  \"password\": \"123\",\n  \"group\": \"admin\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "efe5671b-9f13-4de2-b22d-6b4e6092fee3",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Delete Backoffice User",
+            "url": "http://localhost:3000/backoffice/user/1",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2023-08-30T04:21:16.352Z",
+            "modified": "2023-08-30T04:21:26.288Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a112090b-e9ba-46f0-9736-741bbed05b1d",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Get All Backoffice Users",
+            "url": "http://localhost:3000/backoffice/user",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-08-30T04:22:11.777Z",
+            "modified": "2023-08-30T04:22:24.982Z",
+            "headers": [],
             "params": [],
             "tests": []
         }

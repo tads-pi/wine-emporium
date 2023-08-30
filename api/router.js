@@ -1,14 +1,18 @@
 import express from "express"
+// mysql
+import db from "./connections/mysql.js"
 // Controllers
-import * as authController from "./controller/authController"
-import * as backofficeController from "./controller/backofficeController"
+import * as authController from "./controller/authController.js"
+import * as backofficeController from "./controller/backofficeController.js"
 
 export const router = express.Router()
+
 router.get("/health", (req, res) => {
     res.status(200).json({
         message: "OK"
     })
 })
+db.sync(() => console.log(`successfully connected to ${process.env.DB_NAME} db`));
 
 // backoffice login
 // req: { username, password }

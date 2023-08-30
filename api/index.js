@@ -1,8 +1,5 @@
 import app from "./server.js"
 import serverless from "serverless-http"
-import dotenv from "dotenv"
-
-dotenv.config()
 
 export const handler = serverless(app)
 
