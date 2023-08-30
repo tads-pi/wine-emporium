@@ -1,42 +1,42 @@
-import { Sequelize } from "sequelize";
-import db from "../connections/mysql.js";
+import { DataTypes, Sequelize } from "sequelize"
+import db from "../connections/mysql.js"
 
 export default db.define("backoffice_users", {
     id: {
         type: Sequelize.INTEGER.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
+        allowNull: false
     },
     name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
     },
     document: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
     },
     email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
     },
     password: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
     },
     group: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: DataTypes.ENUM("ADMIN", "MANAGER", "OPERATOR"),
+        allowNull: false
     },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: true
     },
     deleted: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: false,
-    },
-});
+        defaultValue: false
+    }
+})

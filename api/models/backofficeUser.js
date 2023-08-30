@@ -1,23 +1,22 @@
 export class BackofficeUser {
-    constructor(request_body = {}) {
-        this.name = request_body?.name || ""
-        this.document = request_body?.document || ""
-        this.email = request_body?.email || ""
-        this.password = request_body?.password || ""
-        this.group = request_body?.group || ""
+    constructor(requestBody = {}) {
+        this.name = requestBody?.name || ""
+        this.document = requestBody?.document || ""
+        this.email = requestBody?.email || ""
+        this.password = requestBody?.password || ""
+        this.group = requestBody?.group || ""
     }
 
     validate() {
         // todo make regex
-        const invalid_fields = []
+        const invalidFields = []
 
-        if (this.name.length < 3) invalid_fields.push("name")
-        if (this.document.length < 3) invalid_fields.push("document")
-        if (this.email.length < 3) invalid_fields.push("email")
-        if (this.password.length < 3) invalid_fields.push("password")
-        if (this.group.length < 3) invalid_fields.push("group")
+        if (this.name.length < 3) invalidFields.push("name")
+        if (this.document.length < 3) invalidFields.push("document")
+        if (this.email.length < 3) invalidFields.push("email")
+        if (this.password.length < 3) invalidFields.push("password")
+        if (this.group.length < 3) invalidFields.push("group")
 
-        return invalid_fields
+        return invalidFields
     }
-
 }

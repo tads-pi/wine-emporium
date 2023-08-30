@@ -6,14 +6,14 @@ import db from "./connections/mysql.js"
 // Controllers
 import * as authController from "./controller/authController.js"
 import * as backofficeController from "./controller/backofficeController.js"
-db.sync(() => console.log(`successfully connected to ${process.env.DB_NAME} db`));
+db.sync(() => console.log(`successfully connected to ${process.env.DB_NAME} db`))
 
-const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)));
+const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)))
 
 export const router = express.Router()
 // public routes
 // TODO esconder essa rota de documentacao
-router.use('/docs', swaggerUi.serve, swaggerUi.setup(loadJSON("swagger.json")));
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(loadJSON("swagger.json")))
 router.get("/health", (req, res) => {
     res.status(200).json({
         message: "OK"

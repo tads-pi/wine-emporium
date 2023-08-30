@@ -1,14 +1,14 @@
-import { BackofficeUser } from "../models/backofficeUser.js";
-import BackofficeUserRepository from "../repository/backofficeUserRepository.js";
+import { BackofficeUser } from "../models/backofficeUser.js"
+import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 
-// TODO LIDAR OCM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT 
+// TODO LIDAR OCM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
 
 // backoffice new user
 // req: { name, document, email, password, group }
 // res: { ok }
 export const saveBackofficeUser = async (req, res) => {
-    const user = new BackofficeUser(req.body);
-    const validate = user.validate();
+    const user = new BackofficeUser(req.body)
+    const validate = user.validate()
     if (validate.length > 0) {
         res.status(400).json({
             message: `Invalid fields: ${validate.join(", ")}`
@@ -19,14 +19,14 @@ export const saveBackofficeUser = async (req, res) => {
     // TODO RETORNAR UUID AO INVES DO ID DIRETO DO USER (exposição de dados não necessários)
     BackofficeUserRepository.create(user).then((result) => {
         res.status(201).json({
-            message: "User created successfully",
+            message: "User created successfully"
         })
     }).catch((err) => {
         console.log(err)
         res.status(500).json({
             message: err.message
         })
-    });
+    })
 }
 
 // backoffice get all users
@@ -45,7 +45,7 @@ export const getAllBackofficeUsers = async (req, res) => {
         res.status(500).json({
             message: err.message
         })
-    });
+    })
 }
 
 // backoffice get user
@@ -66,15 +66,15 @@ export const getBackofficeUser = async (req, res) => {
         res.status(500).json({
             message: err.message
         })
-    });
+    })
 }
 
 // backoffice update user
 // req: { id, name, document, email, group } -> user cannot update own group
 // res: { ok }
 export const updateBackofficeUser = async (req, res) => {
-    const user = new BackofficeUser(req.body);
-    const validate = user.validate();
+    const user = new BackofficeUser(req.body)
+    const validate = user.validate()
     if (validate.length > 0) {
         res.status(400).json({
             message: `Invalid fields: ${validate.join(", ")}`
@@ -92,20 +92,20 @@ export const updateBackofficeUser = async (req, res) => {
 
     const updateClause = {
         where: {
-            id: userID,
-        },
+            id: userID
+        }
     }
 
     BackofficeUserRepository.update(user, updateClause).then((result) => {
         res.status(200).json({
-            message: "User updated successfully",
+            message: "User updated successfully"
         })
     }).catch((err) => {
         console.log(err)
         res.status(500).json({
             message: err.message
         })
-    });
+    })
 }
 
 // backoffice deactivate user (set active false)
@@ -127,24 +127,24 @@ export const deactivateBackofficeUser = async (req, res) => {
 
         const updateClause = {
             where: {
-                id: user.id,
-            },
+                id: user.id
+            }
         }
 
         BackofficeUserRepository.update(user, updateClause).then((result) => {
             res.status(200).json({
-                message: "User deleted successfully",
+                message: "User deleted successfully"
             })
         }).catch((err) => {
             res.status(500).json({
                 message: err.message
             })
-        });
+        })
     }).catch((err) => {
         res.status(500).json({
             message: err.message
         })
-    });
+    })
 }
 
 // backoffice delete user (set deleted true)
@@ -165,22 +165,22 @@ export const deleteBackofficeUser = async (req, res) => {
 
         const updateClause = {
             where: {
-                id: user.id,
-            },
+                id: user.id
+            }
         }
 
         BackofficeUserRepository.update(user, updateClause).then((result) => {
             res.status(200).json({
-                message: "User deleted successfully",
+                message: "User deleted successfully"
             })
         }).catch((err) => {
             res.status(500).json({
                 message: err.message
             })
-        });
+        })
     }).catch((err) => {
         res.status(500).json({
             message: err.message
         })
-    });
+    })
 }

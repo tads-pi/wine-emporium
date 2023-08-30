@@ -8,9 +8,21 @@ on:
       - 'infra/**'
 
 jobs:
+  test:
+    name: 🍷 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run lint
+
   deploy:
     name: 🍷 WWW Deploy
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
