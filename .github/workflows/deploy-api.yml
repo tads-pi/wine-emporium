@@ -25,6 +25,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 18
+      - run: cd api
       - run: ls -la
       - run: npm ci
       - run: npm run lint
