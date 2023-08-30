@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'infra/**'
-      - '.github/workflows/**'
+      - '.github/workflows/terraform-apply.yml'
 
 env:
   TF_CLOUD_ORGANIZATION: "aws-utils"
