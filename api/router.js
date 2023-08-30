@@ -14,3 +14,9 @@ router.post("/", (req, res) => {
         message: `Hello, ${user.name}!`
     })
 })
+
+router.get("/health", (req, res) => {
+    res.status(200).json({
+        message: "OK"
+    })
+})
