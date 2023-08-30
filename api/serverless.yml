@@ -34,6 +34,7 @@ functions:
       DB_NAME: ${ssm:/wine-emporium-api/db-name}
       DB_USER: ${ssm:/utils-rds/mysql-db-user}
       DB_PASS: ${ssm:/utils-rds/mysql-db-pass}
+      JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
     events:
       - http:
           path: /{proxy+}

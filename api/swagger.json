@@ -1,0 +1,137 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Wine Emporium",
+      "description": "Wine Emporium Shop project",
+      "version": "0.0.1"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Local URL"
+      },
+      {
+        "url": "https://api.dev.wineemporium.shop",
+        "description": "Development URL"
+      },
+      {
+        "url": "https://api.wineemporium.shop",
+        "description": "Production URL"
+      }
+    ],
+    "paths": {
+      "/backoffice/user": {
+        "get": {
+          "tags": [
+            "/backoffice/user"
+          ],
+          "summary": "Get all Backoffice Users",
+          "responses": {
+            "200": {
+              "description": "ok",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/GetAllBackofficeUsersResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "BadRequest",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InvaidFieldsResponse"
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "InternalError",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InternalErrorResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "InternalErrorResponse": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "default": "error at x"
+            }
+          }
+        },
+        "InvaidFieldsResponse": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "default": "Invalid Fields: name, email, password, document, group"
+            }
+          }
+        },
+        "GetAllBackofficeUsersResponse": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/backofficeUser"
+          }
+        },
+        "backofficeUser": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "default": 1
+            },
+            "name": {
+              "type": "string",
+              "default": "Fausto Silva"
+            },
+            "document": {
+              "type": "string",
+              "default": "000.000.000-00"
+            },
+            "email": {
+              "type": "string",
+              "default": "email@example.com"
+            },
+            "password": {
+              "type": "string",
+              "default": "***"
+            },
+            "group": {
+              "type": "string",
+              "default": "Admin"
+            },
+            "active": {
+              "type": "boolean",
+              "default": true
+            },
+            "deleted": {
+              "type": "boolean",
+              "default": false
+            },
+            "createAt": {
+              "type": "string",
+              "default": "2023-08-30T04:56:15.000Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "default": "2023-08-30T04:56:15.000Z"
+            }
+          }
+        }
+      }
+    }
+  }
