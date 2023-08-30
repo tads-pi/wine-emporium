@@ -1,20 +1,20 @@
 {
     "client": "Thunder Client",
     "collectionName": "wine-emporium-api",
-    "dateExported": "2023-08-28T00:52:17.566Z",
+    "dateExported": "2023-08-30T02:44:34.986Z",
     "version": "1.1",
     "folders": [],
     "requests": [
         {
-            "_id": "fe7546e7-0e19-4d5b-b723-8e83219950e1",
-            "colId": "afd4e717-1ad1-449a-91b4-1cd82babef54",
+            "_id": "42d2bdda-523b-4471-89fb-8a5c7b548d0d",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
-            "name": "test",
-            "url": "http://localhost:3000/",
-            "method": "POST",
+            "name": "Health",
+            "url": "https://api.wineemporium.store/health",
+            "method": "GET",
             "sortNum": 10000,
-            "created": "2023-08-28T00:43:56.397Z",
-            "modified": "2023-08-28T00:50:47.061Z",
+            "created": "2023-08-28T00:52:54.267Z",
+            "modified": "2023-08-30T02:42:30.865Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -27,11 +27,6 @@
                 }
             ],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"name\": \"aloha\"\n}",
-                "form": []
-            },
             "tests": []
         }
     ]
