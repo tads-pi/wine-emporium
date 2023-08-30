@@ -37,6 +37,6 @@ export default db.define("backoffice_users", {
     deleted: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: true,
+        defaultValue: false,
     },
 });

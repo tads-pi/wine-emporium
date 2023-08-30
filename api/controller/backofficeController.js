@@ -20,9 +20,9 @@ export const saveBackofficeUser = async (req, res) => {
     BackofficeUserRepository.create(user).then((result) => {
         res.status(201).json({
             message: "User created successfully",
-            id: result.id
         })
     }).catch((err) => {
+        console.log(err)
         res.status(500).json({
             message: err.message
         })
@@ -73,7 +73,7 @@ export const getBackofficeUser = async (req, res) => {
 // req: { id, name, document, email, group } -> user cannot update own group
 // res: { ok }
 export const updateBackofficeUser = async (req, res) => {
-    const user = new BackofficeUser(req.body, req.params);
+    const user = new BackofficeUser(req.body);
     const validate = user.validate();
     if (validate.length > 0) {
         res.status(400).json({
@@ -82,9 +82,17 @@ export const updateBackofficeUser = async (req, res) => {
         return
     }
 
+    const userID = req.params.id ?? ""
+    if (userID === "") {
+        res.status(400).json({
+            message: "Invalid user id"
+        })
+        return
+    }
+
     const updateClause = {
         where: {
-            id: user.id,
+            id: userID,
         },
     }
 
@@ -115,7 +123,7 @@ export const deactivateBackofficeUser = async (req, res) => {
 
     BackofficeUserRepository.findByPk(userID).then((result) => {
         const user = result.dataValues
-        user.deleted = true
+        user.active = true
 
         const updateClause = {
             where: {

@@ -1,12 +1,10 @@
 export class BackofficeUser {
-    constructor(request_body = {}, request_params = {}) {
+    constructor(request_body = {}) {
         this.name = request_body?.name || ""
         this.document = request_body?.document || ""
         this.email = request_body?.email || ""
         this.password = request_body?.password || ""
         this.group = request_body?.group || ""
-
-        this.id = request_params?.id || ""
     }
 
     validate() {
