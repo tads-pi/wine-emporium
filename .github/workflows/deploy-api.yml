@@ -45,4 +45,6 @@ jobs:
           if [[ "${{github.base_ref}}" == "main" || "${{github.ref}}" == "refs/heads/main" ]]; then
             echo "STAGE=prd" >> $GITHUB_ENV
           fi
-      - run: serverless deploy --verbose --stage ${{ env.STAGE }}
+      - run: serverless create-cert --stage ${{ env.STAGE }} --verbose
+      - run: serverless create_domain --stage ${{ env.STAGE }} --verbose
+      - run: serverless deploy --stage ${{ env.STAGE }} --verbose

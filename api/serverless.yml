@@ -2,6 +2,21 @@ service: wine-emporium
 
 frameworkVersion: "3"
 
+custom:
+  domain:
+    dev: api.dev.wineemporium.shop
+    prd: api.wineemporium.shop
+
+  customCertificate:
+    certificateName: ${self:custom.domain.${self:provider.stage}}
+    hostedZoneNames: ${self:custom.domain.${self:provider.stage}}.
+
+  customDomain:
+    certificateName: ${self:custom.domain.${self:provider.stage}}
+    domainName: ${self:custom.domain.${self:provider.stage}}
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+
 provider:
   name: aws
   region: sa-east-1
@@ -24,3 +39,7 @@ functions:
           path: /{proxy+}
           method: ANY
           cors: true
+
+plugins:
+  - serverless-domain-manager
+  - serverless-certificate-creator
