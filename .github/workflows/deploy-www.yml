@@ -3,8 +3,6 @@ name: 🍷 WWW Deploy
 on:
   push:
     branches: [main, dev]
-    paths:
-      - '.github/workflows/deploy-www.yml'
     paths-ignore:
       - 'api/**'
       - 'infra/**'
@@ -29,4 +27,4 @@ jobs:
 
       - name: Sync folder to S3 bucket
         run: |
-          aws s3 sync dist s3://tadspi-wine-emporium-www --delete
+          aws s3 sync dist s3://www.wineemporium.shop --delete
