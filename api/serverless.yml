@@ -17,8 +17,8 @@ functions:
       NODE_ENV: ${self:provider.stage}
       DB_HOST: ${ssm:/wine-emporium-api/db-host}
       DB_NAME: ${ssm:/wine-emporium-api/db-name}
-      DB_USER: ${ssm:/wine-emporium-api/db-host}
-      DB_PASS: ${ssm:/wine-emporium-api/db-host}
+      DB_USER: ${ssm:/wine-emporium-api/db-user}
+      DB_PASS: ${ssm:/wine-emporium-api/db-pass}
     events:
       - http:
           path: /{proxy+}
