@@ -5,6 +5,7 @@ export const CREATE_USER = "CREATE_USER"
 export const VIEW_EXTENDED_DATA = "VIEW_EXTENDED_DATA"
 export const UPDATE_USER = "UPDATE_USER"
 export const DELETE_USER = "DELETE_USER"
+export const TOGGLE_ACTIVE = "TOGGLE_ACTIVE"
 export const LIST_USERS = "LIST_USERS"
 export const GET_USER_DATA = "GET_USER_DATA"
 
@@ -15,7 +16,8 @@ const groupPermissionMap = new Map([
         UPDATE_USER,
         DELETE_USER,
         LIST_USERS,
-        GET_USER_DATA
+        GET_USER_DATA,
+        TOGGLE_ACTIVE
     ]],
     ["ESTOQUISTA", [
 

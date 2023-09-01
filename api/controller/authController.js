@@ -23,9 +23,10 @@ export async function getUserFromToken(token) {
 }
 
 export const authenticateToken = async (req, res, next) => {
-    const token = req.headers?.authorization ?? ""
+    let token = req.headers?.authorization ?? ""
     if (token == null || token === "") return res.sendStatus(401)
 
+    token = token.split("Bearer ")[1] || ""
     jwt.verify(token, config.JWT_SECRET, async (err, user) => {
         if (err) return res.sendStatus(403)
         const userContext = await getUserFromToken(token)

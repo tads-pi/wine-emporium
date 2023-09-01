@@ -22,7 +22,7 @@ router.get("/health", (req, res) => {
 router.post("/backoffice/auth", authController.handleBackofficeLogin)
 
 // autheticated routes
-router.post("/backoffice/user/save", backofficeController.saveBackofficeUser)
+router.post("/backoffice/user", authController.authenticateToken, backofficeController.saveBackofficeUser)
 router.get("/backoffice/user", authController.authenticateToken, backofficeController.getAllBackofficeUsers)
 router.get("/backoffice/user/:id", authController.authenticateToken, backofficeController.getBackofficeUser)
 router.put("/backoffice/user/:id", authController.authenticateToken, backofficeController.updateBackofficeUser)

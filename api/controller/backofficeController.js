@@ -1,4 +1,4 @@
-import { BackofficeUser, DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USER_DATA, VIEW_EXTENDED_DATA } from "../models/backofficeUser.js"
+import { BackofficeUser, DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USER_DATA, VIEW_EXTENDED_DATA, TOGGLE_ACTIVE } from "../models/backofficeUser.js"
 import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 
 // TODO LIDAR OCM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
@@ -6,6 +6,7 @@ import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 export const saveBackofficeUser = async (req, res) => {
     // validates permission
     const userContext = new BackofficeUser(req.body.user_context)
+    console.log("userContext: ", userContext)
     if (!userContext.can(CREATE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para criar usuários"
@@ -39,6 +40,7 @@ export const saveBackofficeUser = async (req, res) => {
 export const getAllBackofficeUsers = async (req, res) => {
     // validates permission
     const userContext = new BackofficeUser(req.body.user_context)
+    console.log("userConext: ", userContext)
     if (!userContext.can(LIST_USERS)) {
         res.status(403).json({
             message: "Usuário não tem permissão para listar usuários"
@@ -48,27 +50,26 @@ export const getAllBackofficeUsers = async (req, res) => {
     const getExtendedData = userContext.can(VIEW_EXTENDED_DATA)
 
     // validates user data
-    const page = Number(req.query?.page) ?? 1
-    const limit = Number(req.query?.limit) ?? 10
-    const offset = limit * (page - 1)
+    const page = req.query?.page ?? 1
+    const limit = req.query?.limit ?? 10
+    const offset = Number(limit) * (Number(page) - 1)
 
     const filterRequest = req.query?.filters || ""
 
-    const filters = {}
-    for (const filter of filterRequest.split(",")) {
-        const [key, value] = filter.split(":")
-        filters[key] = value
-    }
-    console.log("filters: ", filters)
-
     const findAllClause = {
         where: {
-            deleted: false,
-            ...filters
+            deleted: false
         },
-        limit,
-        offset
+        limit: Number(limit),
+        offset: Number(offset)
     }
+    if (!Object.keys(filterRequest.split(","))[0] === "") {
+        for (const filter of filterRequest.split(",")) {
+            const [key, value] = filter.split(":")
+            findAllClause.where[key] = value
+        }
+    }
+    console.log("findAllClause: ", findAllClause)
 
     BackofficeUserRepository.findAll(findAllClause).then((result) => {
         result = result.map((unparsedUser) => {
@@ -150,7 +151,7 @@ export const updateBackofficeUser = async (req, res) => {
 export const deactivateBackofficeUser = async (req, res) => {
     // check if user that is authenticated can deactivate other users
     const userContext = new BackofficeUser(req.body.user_context)
-    if (userContext.can(UPDATE_USER)) {
+    if (!userContext.can(TOGGLE_ACTIVE)) {
         res.status(403).json({
             message: "Usuário não tem permissão para desativar usuários"
         })
@@ -178,7 +179,7 @@ export const deactivateBackofficeUser = async (req, res) => {
 
         BackofficeUserRepository.update(user, updateClause).then((result) => {
             res.status(200).json({
-                message: "Usuário desativado com sucesso"
+                message: `Usuário ${user.active ? "ativado" : "desativado"} com sucesso`
             })
         }).catch((err) => {
             res.status(500).json({
