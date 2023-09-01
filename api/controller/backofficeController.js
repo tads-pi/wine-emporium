@@ -1,25 +1,32 @@
-import { BackofficeUser } from "../models/backofficeUser.js"
+import { BackofficeUser, DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USER_DATA, VIEW_EXTENDED_DATA } from "../models/backofficeUser.js"
 import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 
 // TODO LIDAR OCM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
 
-// backoffice new user
-// req: { name, document, email, password, group }
-// res: { ok }
 export const saveBackofficeUser = async (req, res) => {
-    const user = new BackofficeUser(req.body)
-    const validate = user.validate()
-    if (validate.length > 0) {
-        res.status(400).json({
-            message: `Invalid fields: ${validate.join(", ")}`
+    // validates permission
+    const userContext = new BackofficeUser(req.body.user_context)
+    if (!userContext.can(CREATE_USER)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para criar usuários"
         })
         return
     }
 
-    // TODO RETORNAR UUID AO INVES DO ID DIRETO DO USER (exposição de dados não necessários)
-    BackofficeUserRepository.create(user).then((result) => {
+    // validates user data
+    const user = new BackofficeUser(req.body)
+    const validate = user.validate()
+    if (validate.length > 0) {
+        res.status(400).json({
+            message: `Campos Inválidos: ${validate.join(", ")}`
+        })
+        return
+    }
+
+    // execute
+    BackofficeUserRepository.create(user.parseToSave()).then((result) => {
         res.status(201).json({
-            message: "User created successfully"
+            message: "Usuário criado com sucesso."
         })
     }).catch((err) => {
         console.log(err)
@@ -29,17 +36,45 @@ export const saveBackofficeUser = async (req, res) => {
     })
 }
 
-// backoffice get all users
-// req: { }
-// res: { []User }
 export const getAllBackofficeUsers = async (req, res) => {
+    // validates permission
+    const userContext = new BackofficeUser(req.body.user_context)
+    if (!userContext.can(LIST_USERS)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para listar usuários"
+        })
+        return
+    }
+    const getExtendedData = userContext.can(VIEW_EXTENDED_DATA)
+
+    // validates user data
+    const page = Number(req.query?.page) ?? 1
+    const limit = Number(req.query?.limit) ?? 10
+    const offset = limit * (page - 1)
+
+    const filterRequest = req.query?.filters || ""
+
+    const filters = {}
+    for (const filter of filterRequest.split(",")) {
+        const [key, value] = filter.split(":")
+        filters[key] = value
+    }
+    console.log("filters: ", filters)
+
     const findAllClause = {
         where: {
-            deleted: false
-        }
+            deleted: false,
+            ...filters
+        },
+        limit,
+        offset
     }
 
     BackofficeUserRepository.findAll(findAllClause).then((result) => {
+        result = result.map((unparsedUser) => {
+            return new BackofficeUser(unparsedUser).viewmodel(getExtendedData)
+        })
+
         res.status(200).json(result)
     }).catch((err) => {
         res.status(500).json({
@@ -48,20 +83,30 @@ export const getAllBackofficeUsers = async (req, res) => {
     })
 }
 
-// backoffice get user
-// req: { id }
-// res: { user }
 export const getBackofficeUser = async (req, res) => {
+    // validates permission
+    const userContext = new BackofficeUser(req.body.user_context)
+    if (!userContext.can(GET_USER_DATA)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para ler dados de outro usuário"
+        })
+        return
+    }
+    const getExtendedData = userContext.can(VIEW_EXTENDED_DATA)
+
+    // validates input data
     const userID = req.params.id ?? ""
     if (userID === "") {
         res.status(400).json({
-            message: "Invalid user id"
+            message: "Campo user_id inválido"
         })
         return
     }
 
+    // execute
     BackofficeUserRepository.findByPk(userID).then((result) => {
-        res.status(200).json(result)
+        const user = new BackofficeUser(result)
+        res.status(200).json(user.viewmodel(getExtendedData))
     }).catch((err) => {
         res.status(500).json({
             message: err.message
@@ -69,26 +114,20 @@ export const getBackofficeUser = async (req, res) => {
     })
 }
 
-// backoffice update user
-// req: { id, name, document, email, group } -> user cannot update own group
-// res: { ok }
 export const updateBackofficeUser = async (req, res) => {
-    const user = new BackofficeUser(req.body)
-    const validate = user.validate()
-    if (validate.length > 0) {
-        res.status(400).json({
-            message: `Invalid fields: ${validate.join(", ")}`
+    // validates permission
+    const userContext = new BackofficeUser(req.body.user_context)
+    if (!userContext.can(UPDATE_USER)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para atualizar outro usuário"
         })
         return
     }
+    // TODO verificar old_password antes de permitir atualizar a senha!!!
 
+    // validates input data
+    const fieldsToUpdate = req.body ?? {}
     const userID = req.params.id ?? ""
-    if (userID === "") {
-        res.status(400).json({
-            message: "Invalid user id"
-        })
-        return
-    }
 
     const updateClause = {
         where: {
@@ -96,9 +135,9 @@ export const updateBackofficeUser = async (req, res) => {
         }
     }
 
-    BackofficeUserRepository.update(user, updateClause).then((result) => {
+    BackofficeUserRepository.update(fieldsToUpdate, updateClause).then((result) => {
         res.status(200).json({
-            message: "User updated successfully"
+            message: "Usuário atualizado com sucesso"
         })
     }).catch((err) => {
         console.log(err)
@@ -108,11 +147,17 @@ export const updateBackofficeUser = async (req, res) => {
     })
 }
 
-// backoffice deactivate user (set active false)
-// req: { id }
-// res: { ok }
-// TODO filtrar users q tem acesso pra fazer isso
 export const deactivateBackofficeUser = async (req, res) => {
+    // check if user that is authenticated can deactivate other users
+    const userContext = new BackofficeUser(req.body.user_context)
+    if (userContext.can(UPDATE_USER)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para desativar usuários"
+        })
+        return
+    }
+
+    // handle deactivation
     const userID = req.params.id ?? ""
     if (userID === "") {
         res.status(400).json({
@@ -123,7 +168,7 @@ export const deactivateBackofficeUser = async (req, res) => {
 
     BackofficeUserRepository.findByPk(userID).then((result) => {
         const user = result.dataValues
-        user.active = true
+        user.active = !user.active
 
         const updateClause = {
             where: {
@@ -133,7 +178,7 @@ export const deactivateBackofficeUser = async (req, res) => {
 
         BackofficeUserRepository.update(user, updateClause).then((result) => {
             res.status(200).json({
-                message: "User deleted successfully"
+                message: "Usuário desativado com sucesso"
             })
         }).catch((err) => {
             res.status(500).json({
@@ -147,14 +192,20 @@ export const deactivateBackofficeUser = async (req, res) => {
     })
 }
 
-// backoffice delete user (set deleted true)
-// req: { id }
-// res: { ok }
 export const deleteBackofficeUser = async (req, res) => {
+    // check if user that is authenticated can delete another users
+    const userContext = new BackofficeUser(req.body.user_context)
+    if (userContext.can(DELETE_USER)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para deletar usuários"
+        })
+        return
+    }
+
     const userID = req.params.id ?? ""
     if (userID === "") {
         res.status(400).json({
-            message: "Invalid user id"
+            message: "user_id Inválido"
         })
         return
     }
@@ -171,7 +222,7 @@ export const deleteBackofficeUser = async (req, res) => {
 
         BackofficeUserRepository.update(user, updateClause).then((result) => {
             res.status(200).json({
-                message: "User deleted successfully"
+                message: "Usuário deletado com sucesso"
             })
         }).catch((err) => {
             res.status(500).json({

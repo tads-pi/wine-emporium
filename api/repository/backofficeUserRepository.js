@@ -26,7 +26,7 @@ export default db.define("backoffice_users", {
         allowNull: false
     },
     group: {
-        type: DataTypes.ENUM("ADMIN", "MANAGER", "OPERATOR"),
+        type: DataTypes.ENUM("ADMINISTRADOR", "ESTOQUISTA"),
         allowNull: false
     },
     active: {

@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "wine-emporium-api",
-    "dateExported": "2023-08-30T04:27:59.603Z",
+    "dateExported": "2023-08-31T15:23:42.615Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -30,6 +30,30 @@
             "tests": []
         },
         {
+            "_id": "fe80f212-6e7c-43b3-8ea8-b45ed7a1dc96",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Backoffice User Login",
+            "url": "http://localhost:3000/backoffice/auth",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2023-08-30T17:00:27.687Z",
+            "modified": "2023-08-31T12:42:43.971Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": ""
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"email@example.com\",\n  \"password\": \"senha\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
             "_id": "7a061b63-dfd3-441d-9553-50a174bec74b",
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
@@ -38,12 +62,17 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-08-30T03:48:54.241Z",
-            "modified": "2023-08-30T04:03:58.941Z",
-            "headers": [],
+            "modified": "2023-08-31T12:46:22.253Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+                }
+            ],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"teste kaua\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste@213kaua.com\",\n  \"password\": \"123\",\n  \"group\": \"admin\"\n}",
+                "raw": "{\n  \"name\": \"test kaua\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste@kaua.com\",\n  \"password\": \"senha123\",\n  \"group\": \"Administrador\"\n}",
                 "form": []
             },
             "tests": []
@@ -53,12 +82,17 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Get Backoffice User",
-            "url": "http://localhost:3000/backoffice/user/1",
+            "url": "http://localhost:3000/backoffice/user/2",
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-08-30T04:09:24.102Z",
-            "modified": "2023-08-30T04:09:49.012Z",
-            "headers": [],
+            "modified": "2023-08-31T13:08:02.866Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+                }
+            ],
             "params": [],
             "tests": []
         },
@@ -67,16 +101,21 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Update Backoffice User",
-            "url": "http://localhost:3000/backoffice/user/1",
+            "url": "http://localhost:3000/backoffice/user/2",
             "method": "PUT",
             "sortNum": 40000,
             "created": "2023-08-30T04:10:59.333Z",
-            "modified": "2023-08-30T04:17:36.198Z",
-            "headers": [],
+            "modified": "2023-08-31T13:15:42.921Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+                }
+            ],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"teste kaua2\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste@11kaua.com\",\n  \"password\": \"123\",\n  \"group\": \"admin\"\n}",
+                "raw": "{\n  \"name\": \"oi\"\n}",
                 "form": []
             },
             "tests": []
@@ -90,8 +129,13 @@
             "method": "DELETE",
             "sortNum": 50000,
             "created": "2023-08-30T04:21:16.352Z",
-            "modified": "2023-08-30T04:21:26.288Z",
-            "headers": [],
+            "modified": "2023-08-31T12:42:12.336Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": ""
+                }
+            ],
             "params": [],
             "tests": []
         },
@@ -100,13 +144,34 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Get All Backoffice Users",
-            "url": "http://localhost:3000/backoffice/user",
+            "url": "http://localhost:3000/backoffice/user?page=1&limit=10&filters=group:ADMINISTRADOR",
             "method": "GET",
             "sortNum": 60000,
             "created": "2023-08-30T04:22:11.777Z",
-            "modified": "2023-08-30T04:22:24.982Z",
-            "headers": [],
-            "params": [],
+            "modified": "2023-08-31T15:23:36.208Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDk0MjY2LCJleHAiOjE2OTM0OTc4NjZ9.o1TCwOGrXKKYuEqWxz4ayTk4JOwHGOLZg2sr9m8kcTQ"
+                }
+            ],
+            "params": [
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "limit",
+                    "value": "10",
+                    "isPath": false
+                },
+                {
+                    "name": "filters",
+                    "value": "group:ADMINISTRADOR",
+                    "isPath": false
+                }
+            ],
             "tests": []
         }
     ]

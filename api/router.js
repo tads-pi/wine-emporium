@@ -11,7 +11,7 @@ db.sync(() => console.log(`successfully connected to ${process.env.DB_NAME} db`)
 const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)))
 
 export const router = express.Router()
-// public routes
+
 // TODO esconder essa rota de documentacao
 router.use("/docs", swaggerUi.serve, swaggerUi.setup(loadJSON("swagger.json")))
 router.get("/health", (req, res) => {
@@ -22,7 +22,7 @@ router.get("/health", (req, res) => {
 router.post("/backoffice/auth", authController.handleBackofficeLogin)
 
 // autheticated routes
-router.post("/backoffice/user/save", authController.authenticateToken, backofficeController.saveBackofficeUser)
+router.post("/backoffice/user/save", backofficeController.saveBackofficeUser)
 router.get("/backoffice/user", authController.authenticateToken, backofficeController.getAllBackofficeUsers)
 router.get("/backoffice/user/:id", authController.authenticateToken, backofficeController.getBackofficeUser)
 router.put("/backoffice/user/:id", authController.authenticateToken, backofficeController.updateBackofficeUser)
