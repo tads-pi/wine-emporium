@@ -1,16 +1,19 @@
-name: 🍷 WWW Deploy
+name: 🍷 Backoffice Deploy
 
 on:
   push:
     branches: [main, dev]
-    paths-ignore:
-      - 'api/**'
-      - 'infra/**'
+    paths:
+      - 'backoffice/**'
+      - '.github/workflows/deploy-backoffice.yml'
 
 jobs:
   test:
-    name: 🍷 Lint
+    name: 🍷 Lint & Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backoffice
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
@@ -20,8 +23,11 @@ jobs:
       - run: npm run lint
 
   deploy:
-    name: 🍷 WWW Deploy
+    name: 🍷 Backoffice Deploy
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backoffice
     needs: test
     steps:
       - uses: actions/checkout@v3
@@ -35,8 +41,8 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: sa-east-1  # Replace with your desired region
+          aws-region: sa-east-1 
 
       - name: Sync folder to S3 bucket
         run: |
-          aws s3 sync dist s3://www.wineemporium.shop --delete
+          aws s3 sync dist s3://admin.wineemporium.shop --delete
