@@ -27,7 +27,7 @@ export const authenticateToken = async (req, res, next) => {
     if (token == null || token === "") return res.sendStatus(401)
 
     token = token.split("Bearer ")[1] || ""
-    jwt.verify(token, config.JWT_SECRET, async (err, user) => {
+    jwt.verify(token, config.JWT_SECRET, async (err) => {
         if (err) return res.sendStatus(403)
         const userContext = await getUserFromToken(token)
 

@@ -11,9 +11,6 @@ jobs:
   test:
     name: 🍷 Lint & Tests
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: store
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
