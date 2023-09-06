@@ -1,4 +1,4 @@
-name: 🍷 Backoffice Deploy
+name: PRE 🍷 Backoffice Deploy
 
 on:
   pull_request:

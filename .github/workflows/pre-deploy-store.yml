@@ -1,4 +1,4 @@
-name: 🍷 Store Deploy
+name: PRE 🍷 Store Deploy
 
 on:
   pull_request:
