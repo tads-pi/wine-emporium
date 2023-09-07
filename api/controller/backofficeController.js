@@ -25,7 +25,7 @@ export const saveBackofficeUser = async (req, res) => {
     }
 
     // execute
-    BackofficeUserRepository.create(user.parseToSave()).then((result) => {
+    BackofficeUserRepository.create(user.parseToSave()).then(() => {
         res.status(201).json({
             message: "Usuário criado com sucesso."
         })
@@ -136,7 +136,7 @@ export const updateBackofficeUser = async (req, res) => {
         }
     }
 
-    BackofficeUserRepository.update(fieldsToUpdate, updateClause).then((result) => {
+    BackofficeUserRepository.update(fieldsToUpdate, updateClause).then(() => {
         res.status(200).json({
             message: "Usuário atualizado com sucesso"
         })
@@ -177,7 +177,7 @@ export const deactivateBackofficeUser = async (req, res) => {
             }
         }
 
-        BackofficeUserRepository.update(user, updateClause).then((result) => {
+        BackofficeUserRepository.update(user, updateClause).then(() => {
             res.status(200).json({
                 message: `Usuário ${user.active ? "ativado" : "desativado"} com sucesso`
             })
@@ -221,7 +221,7 @@ export const deleteBackofficeUser = async (req, res) => {
             }
         }
 
-        BackofficeUserRepository.update(user, updateClause).then((result) => {
+        BackofficeUserRepository.update(user, updateClause).then(() => {
             res.status(200).json({
                 message: "Usuário deletado com sucesso"
             })

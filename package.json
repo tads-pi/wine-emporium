@@ -1,0 +1,25 @@
+{
+  "name": "wine-emporium",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tads-pi/wine-emporium.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tads-pi/wine-emporium/issues"
+  },
+  "homepage": "https://github.com/tads-pi/wine-emporium#readme",
+  "devDependencies": {
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3"
+  }
+}

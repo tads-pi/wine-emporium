@@ -16,5 +16,9 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'no-unused-vars': 'error',
+    'quotes': ['error', 'double'],
+    'indent': ['error', 4],
+    "space-before-function-paren": [0],
   },
 }

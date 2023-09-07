@@ -1,7 +1,6 @@
 import conn from "../connections/mysql.js"
-import User from "../models/user.js"
 
-const getAll = async (user = new User()) => {
+const getAll = async () => {
     await conn.execute("SELECT * FROM wine", (err, rows, fields) => {
         if (err) throw err
 

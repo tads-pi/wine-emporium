@@ -8,7 +8,7 @@ import * as authController from "./controller/authController.js"
 import * as backofficeController from "./controller/backofficeController.js"
 import * as productsController from "./controller/productsController.js"
 
-db.sync(() => console.log(`successfully connected to ${process.env.DB_NAME} db`))
+db.sync(() => console.log("successfully connected to db"))
 
 const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)))
 
