@@ -36,7 +36,7 @@ export default function Login() {
                         <form className="" onSubmit={onSubmit}>
                             <div className="form-group">
                                 <label>Usuário</label>
-                                <input 
+                                <input
                                     type="text"
                                     className="form-control"
                                     placeholder="usuario"
@@ -49,11 +49,11 @@ export default function Login() {
                                     }}
                                 />
                                 <label>Senha</label>
-                                <input 
-                                    type="password" 
-                                    className="form-control" 
+                                <input
+                                    type="password"
+                                    className="form-control"
                                     placeholder="senha"
-                                
+
                                     onChange={(e) => {
                                         setLoginForm({
                                             ...loginForm,
@@ -63,8 +63,8 @@ export default function Login() {
                                 />
                             </div>
                             <div className="pt-4">
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="btn btn-primary mx-2"
 
                                     disabled={loading}
