@@ -2,7 +2,7 @@ name: 🍷 Backoffice Deploy
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
     paths:
       - 'backoffice/**'
       - '.github/workflows/deploy-backoffice.yml'

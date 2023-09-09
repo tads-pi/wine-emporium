@@ -2,7 +2,7 @@ name: 🍷 API Deploy
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
     paths:
       - 'api/**'
       - '.github/workflows/deploy-api.yml'
