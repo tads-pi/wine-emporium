@@ -8,6 +8,8 @@ import { data } from "./data.js"
 export default function GerenciarUsuario(){
     const [users, setUsers] = useState(data)
 
+    const [userToUpdate, setUserToUpdate] = useState()
+
     function onChangeSearch(e) {
         const search = e.target.value.toLowerCase()
 
@@ -17,6 +19,10 @@ export default function GerenciarUsuario(){
             // nesse caso, a condicao é que o nome do usuario contenha o texto digitado no campo de pesquisa 
             return item.name.toLowerCase().includes(search)
         }))
+    }
+
+    function changeUserToUpdate(id){
+        setUserToUpdate(id)
     }
 
     return (
@@ -31,8 +37,22 @@ export default function GerenciarUsuario(){
             <div className="subcabecalho">
                 <div className="botoes">
                     {/* <!-- Botões de "Incluir Usuário" e "Alterar Usuário" --> */}
-                    <button className="btn" onClick="incluirUsuario()">Incluir Usuário</button>
-                    <button className="btn"  onClick="alterarUsuario()">Alterar Usuário</button>
+                    <button className="btn">Incluir Usuário</button>
+                    
+                    {
+                        userToUpdate &&
+                        <button 
+                            className="btn"
+                            onClick={() => {
+                                if (userToUpdate) {
+                                    alert(`Alterando o usuário com ID: ${userToUpdate}`)
+                                } else {
+                                    alert("Selecione um usuário para alterar")
+                                }
+                            }}
+                        >Alterar Usuário</button>
+                    }
+
                 </div>
 
                 <div>
@@ -54,6 +74,7 @@ export default function GerenciarUsuario(){
                     <th>ID do Usuário</th>
                     <th>Login do Usuário</th>
                     <th>Nome Completo do Usuário</th>
+                    <th>E-mail do Usuário</th>
                     <th>Bloqueio de Usuário</th>
                 </tr>
 
@@ -62,15 +83,22 @@ export default function GerenciarUsuario(){
                     // ela percorre o array 'users' e retorna um elemento <tr> para cada item do array
                     // e retorna o array de elementos <tr> para ser renderizado na tela
                     users.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={index}
+                            onClick={() => changeUserToUpdate(item.id)}
+
+                            style={{
+                                backgroundColor: userToUpdate === item.id ? "#ccc" : "transparent"
+                            }}
+                        >
                             <td>
                                 <span className={`status-dot ${
                                     item.active ? "active" : "inactive"
                                 }-dot`}></span>
                             </td>
                             <td>{item.id}</td>
-                            <td>{item.email}</td>
+                            <td>{item.login}</td>
                             <td>{item.name}</td>
+                            <td>{item.email}</td>
                             <td>{
                                 item.deleted
                                     ? "Ativo"

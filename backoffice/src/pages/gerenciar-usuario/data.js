@@ -11,6 +11,7 @@ export const data = [
     {
         "id": 1,
         "name": "Fausto Silva",
+        "login": "fsilva",
         "document": "000.000.000-00",
         "email": "email@example.com",
         "password": "***",
@@ -23,6 +24,7 @@ export const data = [
     {
         "id": 2,
         "name": "Neymar Jr",
+        "login": "njr",
         "document": "000.000.000-00",
         "email": "email@example.com",
         "password": "***",
@@ -35,6 +37,7 @@ export const data = [
     {
         "id": 3,
         "name": "Silvio Santos",
+        "login": "ssantos",
         "document": "000.000.000-00",
         "email": "email@example.com",
         "password": "***",
