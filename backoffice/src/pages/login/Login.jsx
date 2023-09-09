@@ -34,7 +34,7 @@ export default function Login() {
                 <div className="col-md-6 col-sm-12">
                     <div className="login-form">
                         <form className="" onSubmit={onSubmit}>
-                            <div className="form-group ">
+                            <div className="form-group">
                                 <label>Usuário</label>
                                 <input 
                                     type="text"
