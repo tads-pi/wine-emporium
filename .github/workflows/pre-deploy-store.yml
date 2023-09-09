@@ -1,8 +1,8 @@
 name: PRE 🍷 Store Deploy
 
 on:
-  pull_request:
-    branches: [main, dev]
+  push:
+    branches: [develop]
     paths:
       - 'store/**'
       - '.github/workflows/deploy-store.yml'
