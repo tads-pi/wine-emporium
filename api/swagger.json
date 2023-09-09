@@ -493,7 +493,7 @@
         "properties": {
           "access_token": {
             "type": "string",
-            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6Ik..."
           },
           "expires_in": {
             "type": "number",

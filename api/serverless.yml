@@ -30,10 +30,10 @@ functions:
     runtime: nodejs18.x
     environment:
       NODE_ENV: ${self:provider.stage}
-      DB_HOST: ${ssm:/wine-emporium-api/mysql-db-host}
-      DB_NAME: ${ssm:/wine-emporium-api/mysql-db-name}
-      DB_USER: ${ssm:/wine-emporium-api/mysql-db-user}
-      DB_PASS: ${ssm:/wine-emporium-api/mysql-db-pass}
+      DB_HOST: ${ssm:/wine_emporium_db/db-host}
+      DB_NAME: ${ssm:/wine_emporium_db/db-name}
+      DB_USER: ${ssm:/wine_emporium_db/db-user}
+      DB_PASS: ${ssm:/wine_emporium_db/db-pass}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
     events:
       - http:
