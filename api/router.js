@@ -15,21 +15,21 @@ const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.
 export const router = express.Router()
 
 // TODO esconder essa rota de documentacao
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(loadJSON("swagger.json")))
-router.get("/health", (req, res) => {
+router.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(loadJSON("swagger.json")))
+router.get("/v1/health", (req, res) => {
     res.status(200).json({
         message: "OK"
     })
 })
-router.post("/backoffice/auth", authController.handleBackofficeLogin)
+router.post("/v1/backoffice/auth", authController.handleBackofficeLogin)
 
 // autheticated routes
-router.post("/backoffice/user", authController.authenticateToken, backofficeController.saveBackofficeUser)
-router.get("/backoffice/user", authController.authenticateToken, backofficeController.getAllBackofficeUsers)
-router.get("/backoffice/user/:id", authController.authenticateToken, backofficeController.getBackofficeUser)
-router.put("/backoffice/user/:id", authController.authenticateToken, backofficeController.updateBackofficeUser)
-router.delete("/backoffice/user/:id/toggle-active", authController.authenticateToken, backofficeController.deactivateBackofficeUser)
-router.delete("/backoffice/user/:id", authController.authenticateToken, backofficeController.deleteBackofficeUser)
+router.post("/v1/backoffice/user", authController.authenticateToken, backofficeController.saveBackofficeUser)
+router.get("/v1/backoffice/user", authController.authenticateToken, backofficeController.getAllBackofficeUsers)
+router.get("/v1/backoffice/user/:id", authController.authenticateToken, backofficeController.getBackofficeUser)
+router.put("/v1/backoffice/user/:id", authController.authenticateToken, backofficeController.updateBackofficeUser)
+router.delete("/v1/backoffice/user/:id/toggle-active", authController.authenticateToken, backofficeController.deactivateBackofficeUser)
+router.delete("/v1/backoffice/user/:id", authController.authenticateToken, backofficeController.deleteBackofficeUser)
 
 // produtos
 // router.get("/products", productsController.getAllProducts)
