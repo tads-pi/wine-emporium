@@ -6,7 +6,6 @@ import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 export const saveBackofficeUser = async (req, res) => {
     // validates permission
     const userContext = new BackofficeUser(req.body.user_context)
-    console.log("userContext: ", userContext)
     if (!userContext.can(CREATE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para criar usuários"
@@ -30,7 +29,6 @@ export const saveBackofficeUser = async (req, res) => {
             message: "Usuário criado com sucesso."
         })
     }).catch((err) => {
-        console.log(err)
         res.status(500).json({
             message: err.message
         })
@@ -40,7 +38,6 @@ export const saveBackofficeUser = async (req, res) => {
 export const getAllBackofficeUsers = async (req, res) => {
     // validates permission
     const userContext = new BackofficeUser(req.body.user_context)
-    console.log("userConext: ", userContext)
     if (!userContext.can(LIST_USERS)) {
         res.status(403).json({
             message: "Usuário não tem permissão para listar usuários"
@@ -63,13 +60,13 @@ export const getAllBackofficeUsers = async (req, res) => {
         limit: Number(limit),
         offset: Number(offset)
     }
-    if (!Object.keys(filterRequest.split(","))[0] === "") {
-        for (const filter of filterRequest.split(",")) {
+    const filters = filterRequest.split(",") || []
+    if (filters.length > 0) {
+        for (const filter of filters) {
             const [key, value] = filter.split(":")
-            findAllClause.where[key] = value
+            findAllClause.where[key] = value === "true" ? true : value === "false" ? false : value
         }
     }
-    console.log("findAllClause: ", findAllClause)
 
     BackofficeUserRepository.findAll(findAllClause).then((result) => {
         result = result.map((unparsedUser) => {
@@ -141,7 +138,6 @@ export const updateBackofficeUser = async (req, res) => {
             message: "Usuário atualizado com sucesso"
         })
     }).catch((err) => {
-        console.log(err)
         res.status(500).json({
             message: err.message
         })

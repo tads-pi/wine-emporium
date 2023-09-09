@@ -28,6 +28,7 @@ const groupPermissionMap = new Map([
 export class BackofficeUser {
     constructor(input = {}) {
         this.name = input?.name || ""
+        this.username = input?.username || ""
         this.document = input?.document || ""
         this.email = input?.email || ""
         this.group = input?.group || ""
@@ -63,6 +64,7 @@ export class BackofficeUser {
     parseToSave() {
         return {
             name: this.name,
+            username: this.buildUsername(this.name),
             document: this.document,
             email: this.email,
             group: this.group,
@@ -75,6 +77,7 @@ export class BackofficeUser {
         if (extended) {
             return {
                 name: this.name,
+                username: this.username,
                 document: this.document,
                 email: this.email,
                 group: this.group,
@@ -87,6 +90,7 @@ export class BackofficeUser {
 
         return {
             name: this.name,
+            username: this.username,
             email: this.email,
             active: this.active
         }
@@ -98,5 +102,12 @@ export class BackofficeUser {
             return false
         }
         return groupPermissionMap.get(this.group).includes(permission)
+    }
+
+    buildUsername(name) {
+        const nameParts = name.split(" ")
+        const firstName = nameParts[0]
+        const lastName = nameParts[nameParts.length - 1]
+        return `${firstName.charAt(0)}.${lastName.toLowerCase()}`
     }
 }

@@ -5,11 +5,11 @@ import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 import { BackofficeUser } from "../models/backofficeUser.js"
 
 async function findUser(user = {
-    email: ""
+    username: ""
 }) {
     const findClause = {
         where: {
-            email: user.email
+            username: user.username
         }
     }
 
@@ -39,17 +39,19 @@ export const authenticateToken = async (req, res, next) => {
 
 export const handleBackofficeLogin = async (req, res) => {
     const user = {
-        email: req.body.email,
-        password: req.body.password
+        username: req.body?.username ?? "",
+        password: req.body?.password ?? "",
     }
 
     const foundUser = await findUser(user)
-    if (!foundUser) {
+    if (!foundUser || foundUser === null || foundUser === undefined) {
         res.status(404).json()
+        return
     }
 
     if (bcrypt.compareSync(user.password, foundUser.password)) {
         const token = jwt.sign({
+            username: user.username,
             email: user.email,
             group: user.group
         }, config.JWT_SECRET, {

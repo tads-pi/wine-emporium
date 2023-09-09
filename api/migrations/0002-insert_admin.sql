@@ -1,8 +1,9 @@
 INSERT INTO
-    backoffice_users(name, document, email, password, createdAt, updatedAt)
+    backoffice_users(name, username, document, email, password, createdAt, updatedAt)
 VALUES
     (
         "Admin",
+        "admin",
         "012.345.678-90",
         "email@example.com",
         "$2a$10$wzRsIlTgaUrRFGkRLLeA.O0oUhTD5774geI/adPfC8y0SL0wjUimW",

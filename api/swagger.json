@@ -315,6 +315,35 @@
             "Authorization": []
           }
         ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Página de Pesquisa",
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número de itens para se retornar por página",
+            "example": 10
+          },
+          {
+            "in": "query",
+            "name": "filters",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filtros de pesquisa baseado nos parâmetros retornados.",
+            "example": "group:ADMINISTRADOR,name:Fulano"
+          }
+        ],
         "responses": {
           "200": {
             "description": "ok",
@@ -433,7 +462,7 @@
         "properties": {
           "nessage": {
             "type": "string",
-            "default": "Usuário não tem permissão para *"
+            "default": "Usuário não tem permissão para x"
           }
         }
       },
@@ -449,13 +478,13 @@
       "BackofficeUserLoginRequest": {
         "type": "object",
         "properties": {
-          "email": {
+          "username": {
             "type": "string",
-            "default": "email@example.com"
+            "default": "admin"
           },
           "password": {
             "type": "string",
-            "default": "password123"
+            "default": "senha"
           }
         }
       },

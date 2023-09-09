@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "wine-emporium-api",
-    "dateExported": "2023-08-31T15:23:42.615Z",
+    "dateExported": "2023-09-09T05:26:08.824Z",
     "version": "1.1",
     "folders": [],
     "requests": [
@@ -10,11 +10,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Health",
-            "url": "http://localhost:3000/health",
+            "url": "http://localhost:8080/v1/health",
             "method": "GET",
             "sortNum": 10000,
             "created": "2023-08-28T00:52:54.267Z",
-            "modified": "2023-08-30T03:52:26.516Z",
+            "modified": "2023-09-09T05:16:00.137Z",
             "headers": [
                 {
                     "name": "Accept",
@@ -34,11 +34,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Backoffice User Login",
-            "url": "http://localhost:3000/backoffice/auth",
+            "url": "http://localhost:8080/v1/backoffice/auth",
             "method": "POST",
             "sortNum": 15000,
             "created": "2023-08-30T17:00:27.687Z",
-            "modified": "2023-08-31T12:42:43.971Z",
+            "modified": "2023-09-09T05:26:01.201Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -48,7 +48,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\": \"email@example.com\",\n  \"password\": \"senha\"\n}",
+                "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"senha\"\n}",
                 "form": []
             },
             "tests": []
@@ -58,21 +58,21 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Save Backoffice User",
-            "url": "http://localhost:3000/backoffice/user/save",
+            "url": "http://localhost:8080/v1/backoffice/user",
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-08-30T03:48:54.241Z",
-            "modified": "2023-08-31T12:46:22.253Z",
+            "modified": "2023-09-09T05:22:17.920Z",
             "headers": [
                 {
                     "name": "Authorization",
-                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNTM4NTc3LCJleHAiOjE2OTM1NDIxNzd9.4Yh81wnvlieeeHaJz8gzU6SXWwVLqYP6r9wonyITVy8"
                 }
             ],
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"test kaua\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste@kaua.com\",\n  \"password\": \"senha123\",\n  \"group\": \"Administrador\"\n}",
+                "raw": "{\n  \"name\": \"Kaua Chaves Calixto\",\n  \"document\": \"012.345.678-90\",\n  \"email\": \"teste123@kaua.com\",\n  \"password\": \"senha123\",\n  \"group\": \"Administrador\"\n}",
                 "form": []
             },
             "tests": []
@@ -82,11 +82,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Get Backoffice User",
-            "url": "http://localhost:3000/backoffice/user/2",
+            "url": "http://localhost:8080/v1/backoffice/user/2",
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-08-30T04:09:24.102Z",
-            "modified": "2023-08-31T13:08:02.866Z",
+            "modified": "2023-09-09T05:16:36.359Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -101,11 +101,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Update Backoffice User",
-            "url": "http://localhost:3000/backoffice/user/2",
+            "url": "http://localhost:8080/v1/backoffice/user/2",
             "method": "PUT",
             "sortNum": 40000,
             "created": "2023-08-30T04:10:59.333Z",
-            "modified": "2023-08-31T13:15:42.921Z",
+            "modified": "2023-09-09T05:16:40.503Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -125,11 +125,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Delete Backoffice User",
-            "url": "http://localhost:3000/backoffice/user/1",
+            "url": "http://localhost:8080/v1/backoffice/user/1",
             "method": "DELETE",
             "sortNum": 50000,
             "created": "2023-08-30T04:21:16.352Z",
-            "modified": "2023-08-31T12:42:12.336Z",
+            "modified": "2023-09-09T05:16:45.117Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -144,15 +144,15 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "",
             "name": "Get All Backoffice Users",
-            "url": "http://localhost:3000/backoffice/user?page=1&limit=10&filters=group:ADMINISTRADOR",
+            "url": "http://localhost:8080/v1/backoffice/user?page=1&filters=group:ADMINISTRADOR",
             "method": "GET",
             "sortNum": 60000,
             "created": "2023-08-30T04:22:11.777Z",
-            "modified": "2023-08-31T15:23:36.208Z",
+            "modified": "2023-09-09T05:16:49.520Z",
             "headers": [
                 {
                     "name": "Authorization",
-                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDk0MjY2LCJleHAiOjE2OTM0OTc4NjZ9.o1TCwOGrXKKYuEqWxz4ayTk4JOwHGOLZg2sr9m8kcTQ"
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNTQwNDQ4LCJleHAiOjE2OTM1NDQwNDh9._jr5jcosP1hRDxEdDjRwISxawfd-JxJbOkRgIDXj9Tw"
                 }
             ],
             "params": [
@@ -164,6 +164,7 @@
                 {
                     "name": "limit",
                     "value": "10",
+                    "isDisabled": true,
                     "isPath": false
                 },
                 {
@@ -172,6 +173,25 @@
                     "isPath": false
                 }
             ],
+            "tests": []
+        },
+        {
+            "_id": "7f9b5d12-7c29-4987-a491-5201df6a544a",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "",
+            "name": "Toggle User Active",
+            "url": "http://localhost:8080/v1/backoffice/user/1/toggle-active",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2023-09-01T03:39:09.113Z",
+            "modified": "2023-09-09T05:16:54.057Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNTM4NTc3LCJleHAiOjE2OTM1NDIxNzd9.4Yh81wnvlieeeHaJz8gzU6SXWwVLqYP6r9wonyITVy8"
+                }
+            ],
+            "params": [],
             "tests": []
         }
     ]
