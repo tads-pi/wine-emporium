@@ -3,9 +3,9 @@ import { BrowserRouter } from "react-router-dom"
 import { Provider } from "react-redux"
 import { store } from "./store"
 
-import NotFound from "./pages/not-found/NotFound";
 import Login from "./pages/login/Login";
 import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
+import NotFound from "./pages/not-found/NotFound";
 
 export default function App() {
     return (
