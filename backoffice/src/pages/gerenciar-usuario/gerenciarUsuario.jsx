@@ -1,35 +1,57 @@
-import {useState} from "react"
+import { useEffect, useState } from "react"
 import logo from "./images/logo.png"
 
 import "./style.css"
 
-import { data } from "./data.js"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchBackofficeUsers } from "../../store/apps/api/users"
 
-export default function GerenciarUsuario(){
-    const [users, setUsers] = useState(data)
+export default function GerenciarUsuario() {
+    const dispatch = useDispatch()
+    const selector = useSelector((state) => state.appReportBackofficeUsers)
+
+    const [users, setUsers] = useState([])
 
     const [userToUpdate, setUserToUpdate] = useState()
 
-    function onChangeSearch(e) {
-        const search = e.target.value.toLowerCase()
+    // function onChangeSearch(e) {
+    //     const search = e.target.value.toLowerCase()
 
-        setUsers(data.filter((item) => {
-            // essa funcao .filter é tipo um for mais simplificado
-            // ela percorre o array data e retorna um novo array com os itens que satisfazem a condicao
-            // nesse caso, a condicao é que o nome do usuario contenha o texto digitado no campo de pesquisa 
-            return item.name.toLowerCase().includes(search)
-        }))
-    }
+    //     setUsers(data.filter((item) => {
+    //         // essa funcao .filter é tipo um for mais simplificado
+    //         // ela percorre o array data e retorna um novo array com os itens que satisfazem a condicao
+    //         // nesse caso, a condicao é que o nome do usuario contenha o texto digitado no campo de pesquisa 
+    //         return item.name.toLowerCase().includes(search)
+    //     }))
+    // }
 
-    function changeUserToUpdate(id){
+    function changeUserToUpdate(id) {
         setUserToUpdate(id)
     }
 
+    const [forceReload, setForceReload] = useState(false)
+    useEffect(() => {
+        console.log("fetching users...");
+        dispatch(fetchBackofficeUsers())
+    }, [forceReload])
+
+    useEffect(() => {
+        if (selector.status === 200) {
+            setUsers(selector.data)
+        }
+    }, [selector.status, selector.data])
+
+    useEffect(() => {
+        console.log("found users: ", users)
+    }, [users])
+
     return (
         <div className="container">
+            <button onClick={() => setForceReload(!forceReload)}>Reload</button>
+
             <header className="cab">
                 <div className="container__logo">
-                    <img src={logo} alt="logo"/>
+                    <img src={logo} alt="logo" />
                 </div>
                 <h1>Gerenciar Usuários</h1>
             </header>
@@ -38,10 +60,10 @@ export default function GerenciarUsuario(){
                 <div className="botoes">
                     {/* <!-- Botões de "Incluir Usuário" e "Alterar Usuário" --> */}
                     <button className="btn">Incluir Usuário</button>
-                    
+
                     {
                         userToUpdate &&
-                        <button 
+                        <button
                             className="btn"
                             onClick={() => {
                                 if (userToUpdate) {
@@ -57,16 +79,16 @@ export default function GerenciarUsuario(){
 
                 <div>
                     {/* <!-- Campo de pesquisa e tabela --> */}
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         placeholder="Pesquisar por nome de usuário"
                         className="subcabecalho__search"
 
-                        onChange={onChangeSearch}
+                    // onChange={onChangeSearch}
                     />
                 </div>
             </div>
-    
+
 
             <table id="myTable">
                 <tr>
@@ -91,9 +113,7 @@ export default function GerenciarUsuario(){
                             }}
                         >
                             <td>
-                                <span className={`status-dot ${
-                                    item.active ? "active" : "inactive"
-                                }-dot`}></span>
+                                <span className={`status-dot ${item.active ? "active" : "inactive"}-dot`}></span>
                             </td>
                             <td>{item.id}</td>
                             <td>{item.login}</td>
@@ -108,7 +128,7 @@ export default function GerenciarUsuario(){
                     ))
                 }
             </table>
-    
+
         </div>
     )
 }

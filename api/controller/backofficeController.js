@@ -61,7 +61,7 @@ export const getAllBackofficeUsers = async (req, res) => {
         offset: Number(offset)
     }
     const filters = filterRequest.split(",") || []
-    if (filters.length > 0) {
+    if (filters.length > 0 && filters[0] !== "") {
         for (const filter of filters) {
             const [key, value] = filter.split(":")
             findAllClause.where[key] = value === "true" ? true : value === "false" ? false : value
