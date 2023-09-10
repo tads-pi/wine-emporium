@@ -23,6 +23,23 @@ export async function getUserFromToken(token) {
 }
 
 export const authenticateToken = async (req, res, next) => {
+    if (config.NODE_ENV === "local") {
+        req.body.user_context = new BackofficeUser({
+            id: 1,
+            name: "Admin",
+            username: "admin",
+            document: "012.345.678-90",
+            email: "email@example.com",
+            group: "ADMINISTRADOR",
+            active: true,
+            deleted: false,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+        next()
+        return
+    }
+
     let token = req.headers?.authorization ?? ""
     if (token == null || token === "") return res.sendStatus(401)
 

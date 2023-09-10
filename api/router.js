@@ -6,7 +6,7 @@ import db from "./connections/mysql.js"
 // Controllers
 import * as authController from "./controller/authController.js"
 import * as backofficeController from "./controller/backofficeController.js"
-// import * as productsController from "./controller/productsController.js"
+import * as productController from "./controller/productController.js"
 
 db.sync(() => console.log("successfully connected to db"))
 
@@ -32,4 +32,9 @@ router.delete("/v1/backoffice/user/:id/toggle-active", authController.authentica
 router.delete("/v1/backoffice/user/:id", authController.authenticateToken, backofficeController.deleteBackofficeUser)
 
 // produtos
-// router.get("/products", productsController.getAllProducts)
+router.post("/v1/product", authController.authenticateToken, productController.saveProduct)
+router.get("/v1/product", authController.authenticateToken, productController.getAllProducts)
+router.get("/v1/product/:id", authController.authenticateToken, productController.getProduct)
+router.put("/v1/product/:id", authController.authenticateToken, productController.updateProduct)
+router.delete("/v1/product/:id/toggle-active", authController.authenticateToken, productController.deactivateProduct)
+router.delete("/v1/product/:id", authController.authenticateToken, productController.deleteProduct)

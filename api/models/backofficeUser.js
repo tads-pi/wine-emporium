@@ -1,30 +1,5 @@
 import bcrypt from "bcrypt"
 
-// Permissions
-export const CREATE_USER = "CREATE_USER"
-export const VIEW_EXTENDED_DATA = "VIEW_EXTENDED_DATA"
-export const UPDATE_USER = "UPDATE_USER"
-export const DELETE_USER = "DELETE_USER"
-export const TOGGLE_ACTIVE = "TOGGLE_ACTIVE"
-export const LIST_USERS = "LIST_USERS"
-export const GET_USER_DATA = "GET_USER_DATA"
-
-const groupPermissionMap = new Map([
-    ["ADMINISTRADOR", [
-        CREATE_USER,
-        VIEW_EXTENDED_DATA,
-        UPDATE_USER,
-        DELETE_USER,
-        LIST_USERS,
-        GET_USER_DATA,
-        TOGGLE_ACTIVE
-    ]],
-    ["ESTOQUISTA", [
-
-    ]]
-])
-
-// Todo save permissions map on database with relation to group
 export class BackofficeUser {
     constructor(input = {}) {
         this.name = input?.name || ""
@@ -94,14 +69,6 @@ export class BackofficeUser {
             email: this.email,
             active: this.active
         }
-    }
-
-    can(permission) {
-        if (!groupPermissionMap.has(this.group)) {
-            console.log(`Group ${this.group} not found`)
-            return false
-        }
-        return groupPermissionMap.get(this.group).includes(permission)
     }
 
     buildUsername(name) {
