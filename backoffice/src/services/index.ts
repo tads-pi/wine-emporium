@@ -8,7 +8,7 @@ function getUri() {
     }
 }
 
-export const api = axios.create({
+const api = axios.create({
     baseURL: getUri(),
     headers: {
         'Content-Type': 'application/json',
@@ -17,10 +17,17 @@ export const api = axios.create({
     },
     timeout: 30000, // 30 seconds
 })
-// handle not authorized
-api.interceptors.response.use((response) => {
-    if (response.status === 401 || response.status === 403) {
-        localStorage.removeItem('token')
-    }
-    return response
-})
+
+api.interceptors.response.use(
+    // success case
+    (response) => response,
+    // error case
+    ({ response }) => {
+        if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem('token')
+            window.location.reload()
+        }
+        return response
+    })
+
+export default api

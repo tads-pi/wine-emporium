@@ -1,4 +1,4 @@
-import { api } from "..";
+import api from "..";
 
 type IGetUsersFilter = {
     page: number,
@@ -11,8 +11,12 @@ export async function getAllUsers(filter?: IGetUsersFilter) {
     try {
         const params = new URLSearchParams()
         if (filter) {
-            params.append('page', filter.page.toString())
-            params.append('limit', filter.limit.toString())
+            params.append(
+                'page', filter.page ? filter.page.toString() : "1"
+            )
+            params.append(
+                'limit', filter.limit ? filter.limit.toString() : "10"
+            )
             if (filter.filters !== "") {
                 params.append('filters', filter.filters)
             }
@@ -21,6 +25,7 @@ export async function getAllUsers(filter?: IGetUsersFilter) {
         const response = await api.get('/backoffice/user', { params })
         return response
     } catch (error: any) {
+        console.log("error at getAllUsers: ", error);
         return error?.response ?? {}
     }
 }

@@ -5,6 +5,7 @@ import { fetchAuthentication } from "../../store/apps/api/auth"
 import "./login.css"
 
 export default function Login() {
+    // TODO refatorar e add um hook
     const dispatch = useDispatch()
 
     const [loginForm, setLoginForm] = useState({
@@ -12,7 +13,8 @@ export default function Login() {
         password: ""
     })
 
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault()
         dispatch(fetchAuthentication({
             username: loginForm.username,
             password: loginForm.password
@@ -55,53 +57,55 @@ export default function Login() {
             <aside className="main flex-col center p-5">
                 <div className="col-md-6 col-sm-12">
                     <div className="login-form">
-                        <div className="form-group">
-                            <label>Usuário</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="usuario"
-                                min={3}
-                                max={255}
-                                required
+                        <form
+                            onSubmit={onSubmit}
+                        >
+                            <div className="form-group">
+                                <label>Usuário</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="usuario"
+                                    min={3}
+                                    max={255}
+                                    required
 
-                                onChange={(e) => {
-                                    setLoginForm({
-                                        ...loginForm,
-                                        username: e.target.value
-                                    })
-                                }}
-                            />
-                            <label>Senha</label>
-                            <input
-                                type="password"
-                                className="form-control"
-                                placeholder="senha"
-                                min={3}
-                                max={255}
-                                required
+                                    onChange={(e) => {
+                                        setLoginForm({
+                                            ...loginForm,
+                                            username: e.target.value
+                                        })
+                                    }}
+                                />
+                                <label>Senha</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    placeholder="senha"
+                                    min={3}
+                                    max={255}
+                                    required
 
-                                onChange={(e) => {
-                                    setLoginForm({
-                                        ...loginForm,
-                                        password: e.target.value
-                                    })
-                                }}
-                            />
-                        </div>
-                        <div className="pt-4">
-                            <button
-                                className="btn btn-primary mx-2"
-                                onClick={onSubmit}
+                                    onChange={(e) => {
+                                        setLoginForm({
+                                            ...loginForm,
+                                            password: e.target.value
+                                        })
+                                    }}
+                                />
+                            </div>
+                            <div className="pt-4">
+                                <button
+                                    className="btn btn-primary mx-2"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Carregando..." : "Login"}
+                                </button>
 
-                                disabled={loading}
-                            >
-                                {loading ? "Carregando..." : "Login"}
-                            </button>
-
-                            {/* //TODO use other notification */}
-                            <p>{errorMessage}</p>
-                        </div>
+                                {/* //TODO use other notification */}
+                                <p>{errorMessage}</p>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </aside>
