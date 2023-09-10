@@ -1,5 +1,6 @@
 import productRepository from "../repository/productRepository.js"
 import { Product } from "../models/product.js"
+import { getImagesFromFolder } from "../libs/aws/s3/index.js"
 
 const getAllProducts = async (req) => {
     const filters = req.query.filters
@@ -18,7 +19,7 @@ const getAllProducts = async (req) => {
     return products
 }
 
-const getProduct = async (req, viewExtendedData) => {
+const getProduct = async (req) => {
     const productID = req?.params?.id || null
     if (!productID) {
         return
@@ -30,7 +31,9 @@ const getProduct = async (req, viewExtendedData) => {
     }
 
     const product = new Product(data.dataValues)
-    return product.viewmodel(viewExtendedData)
+    product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+
+    return product
 }
 
 const saveProduct = async (req) => {
@@ -53,11 +56,26 @@ const deleteProduct = async (req) => {
     return "todo"
 }
 
+const getProductImages = async (req) => {
+    const productID = req?.params?.id || null
+    if (!productID) {
+        return
+    }
+
+    const product = await getProduct(req)
+    if (!product) {
+        return
+    }
+
+    return await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+}
+
 export default {
     getAllProducts,
     getProduct,
     saveProduct,
     updateProduct,
     deactivateProduct,
-    deleteProduct
+    deleteProduct,
+    getProductImages
 }

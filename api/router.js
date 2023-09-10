@@ -38,3 +38,4 @@ router.get("/v1/product/:id", authController.authenticateToken, productControlle
 router.put("/v1/product/:id", authController.authenticateToken, productController.updateProduct)
 router.delete("/v1/product/:id/toggle-active", authController.authenticateToken, productController.deactivateProduct)
 router.delete("/v1/product/:id", authController.authenticateToken, productController.deleteProduct)
+router.post("/v1/product/:id/upload", authController.authenticateToken, productController.uploadProductImage)

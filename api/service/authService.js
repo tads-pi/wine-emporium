@@ -8,6 +8,7 @@ export const DELETE_USER = "DELETE_USER"
 export const TOGGLE_USER_ACTIVE = "TOGGLE_USER_ACTIVE"
 export const LIST_USERS = "LIST_USERS"
 export const GET_USER_DATA = "GET_USER_DATA"
+export const SAVE_PRODUCT_IMAGE = "SAVE_PRODUCT_IMAGE"
 
 // Permissions
 export const CREATE_PRODUCT = "CREATE_PRODUCT"
@@ -34,12 +35,14 @@ const groupPermissionMap = new Map([
         TOGGLE_PRODUCT_ACTIVE,
         LIST_PRODUCT,
         GET_PRODUCT_DATA,
+        SAVE_PRODUCT_IMAGE,
     ]],
     ["ESTOQUISTA", [
         CREATE_PRODUCT,
         VIEW_PRODUCT_EXTENDED_DATA,
         LIST_PRODUCT,
         TOGGLE_PRODUCT_ACTIVE,
+        SAVE_PRODUCT_IMAGE,
     ]]
 ])
 

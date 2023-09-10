@@ -5,7 +5,7 @@ export class Product {
         this.slug = input?.slug || ""
         this.description = input?.description || ""
         this.price = input?.price || ""
-        this.images = this.getImages(this.slug) || []
+        this.images = input?.images || []
 
         this.id = input?.id || ""
         this.uuid = input?.uuid || ""
@@ -51,28 +51,30 @@ export class Product {
     viewmodel(extended = false) {
         if (extended) {
             return {
+                id: this.id,
                 name: this.name,
+                slug: this.slug,
+                uuid: this.uuid,
                 description: this.description,
                 price: this.price,
                 active: this.active,
                 deletedAt: this.deletedAt,
                 createdAt: this.createdAt,
-                updatedAt: this.updatedAt
+                updatedAt: this.updatedAt,
+                images: this.images,
                 // todo add ratings
             }
         }
 
         return {
             name: this.name,
+            slug: this.slug,
+            uuid: this.uuid,
             description: this.description,
             price: this.price,
             active: this.active,
+            images: this.images,
         }
-    }
-
-    getImages(slug){
-        // todo get from s3 by slug
-        return [slug, "https://source.unsplash.com/random"]
     }
 
 }
