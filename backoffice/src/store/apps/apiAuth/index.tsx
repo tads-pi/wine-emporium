@@ -22,8 +22,8 @@ export const fetchAuthentication = createAsyncThunk('appReportLogin/fetchAuthent
     try {
         const response = await apiAuth.post('/backoffice/auth', user)
         return response
-    } catch (error) {
-        return error.response
+    } catch (error: any) {
+        return error?.response ?? {}
     }
 })
 
