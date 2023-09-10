@@ -11,4 +11,6 @@ const config = {
     NODE_ENV: process.env.NODE_ENV,
 }
 
+console.log("config: ", config);
+
 export default config
