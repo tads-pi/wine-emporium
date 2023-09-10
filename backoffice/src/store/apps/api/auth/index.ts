@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { IUserLoginProps } from "../interface"
-import apiAuth from "../../../services/apiAuth"
+import { login } from "../../../../services/auth"
 
 interface ConfigurationState {
     response: {
@@ -18,15 +17,7 @@ const inititalState: ConfigurationState = {
     loading: false
 }
 
-export const fetchAuthentication = createAsyncThunk('appReportLogin/fetchAuthentication', async (user: IUserLoginProps) => {
-    try {
-        const response = await apiAuth.post('/backoffice/auth', user)
-        return response
-    } catch (error: any) {
-        return error?.response ?? {}
-    }
-})
-
+export const fetchAuthentication = createAsyncThunk('appReportLogin/fetchAuthentication', login)
 export const appReportLoginSlice = createSlice({
     name: 'appReportLogin',
     initialState: inititalState,
