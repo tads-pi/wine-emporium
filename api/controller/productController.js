@@ -9,13 +9,13 @@ import { v4 as uuid } from "uuid";
 
 export const getAllProducts = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, LIST_PRODUCT)) {
+    if (!authService.userCan(req.context.user, LIST_PRODUCT)) {
         res.status(403).json({
             message: "Usuário não tem permissão para listar produtos"
         })
         return
     }
-    const extendedData = authService.userCan(req.body.user_context, VIEW_PRODUCT_EXTENDED_DATA)
+    const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
 
     const products = await productService.getAllProducts(req)
     res.status(200).json({
@@ -25,13 +25,13 @@ export const getAllProducts = async (req, res) => {
 
 export const getProduct = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, GET_PRODUCT_DATA)) {
+    if (!authService.userCan(req.context.user, GET_PRODUCT_DATA)) {
         res.status(403).json({
             message: "Usuário não tem permissão para ver um produto"
         })
         return
     }
-    const extendedData = authService.userCan(req.body.user_context, VIEW_PRODUCT_EXTENDED_DATA)
+    const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
 
     const product = await productService.getProduct(req, extendedData)
     res.status(200).json({
@@ -41,7 +41,7 @@ export const getProduct = async (req, res) => {
 
 export const saveProduct = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, CREATE_PRODUCT)) {
+    if (!authService.userCan(req.context.user, CREATE_PRODUCT)) {
         res.status(403).json({
             message: "Usuário não tem permissão para criar produtos"
         })
@@ -55,21 +55,37 @@ export const saveProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, UPDATE_PRODUCT)) {
+    if (!authService.userCan(req.context.user, UPDATE_PRODUCT)) {
         res.status(403).json({
             message: "Usuário não tem permissão para atualizar um produto"
         })
         return
     }
 
-    res.status(200).json({
-        message: "todo"
-    })
+    const fieldsToUpdate = req?.body || {}
+    let allowedToUpdate = authService.getUserPermissionValue(req.context.user, UPDATE_PRODUCT)
+    if (!allowedToUpdate) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para atualizar um produto"
+        })
+        return
+    }
+
+    const invalidFields = Object.keys(fieldsToUpdate).filter(field => !allowedToUpdate.includes(field))
+
+    if (invalidFields.length > 0) {
+        res.status(403).json({
+            message: `Usuário não tem permissão para atualizar os campos: ${invalidFields.join(", ")}`
+        })
+        return
+    }
+
+    await productService.updateProduct(req, res)
 }
 
 export const deactivateProduct = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, TOGGLE_PRODUCT_ACTIVE)) {
+    if (!authService.userCan(req.context.user, TOGGLE_PRODUCT_ACTIVE)) {
         res.status(403).json({
             message: "Usuário não tem permissão para desativar um produto"
         })
@@ -83,7 +99,7 @@ export const deactivateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, DELETE_PRODUCT)) {
+    if (!authService.userCan(req.context.user, DELETE_PRODUCT)) {
         res.status(403).json({
             message: "Usuário não tem permissão para deletar um produto"
         })
@@ -98,8 +114,8 @@ export const deleteProduct = async (req, res) => {
 export const uploadProductImage = async (req, res) => {
     // validates permission
     if (
-        !authService.userCan(req.body.user_context, SAVE_PRODUCT_IMAGE) ||
-        !authService.userCan(req.body.user_context, GET_PRODUCT_DATA)
+        !authService.userCan(req.context.user, SAVE_PRODUCT_IMAGE) ||
+        !authService.userCan(req.context.user, GET_PRODUCT_DATA)
     ) {
         res.status(403).json({
             message: "Usuário não tem permissão para salvar imagem de um produto"

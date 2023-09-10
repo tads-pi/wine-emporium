@@ -19,8 +19,11 @@ export const TOGGLE_PRODUCT_ACTIVE = "TOGGLE_PRODUCT_ACTIVE"
 export const LIST_PRODUCT = "LIST_PRODUCTS"
 export const GET_PRODUCT_DATA = "GET_PRODUCT_DATA"
 
+export const ADMINISTRADOR = "ADMINISTRADOR"
+export const ESTOQUISTA = "ESTOQUISTA"
+
 const groupPermissionMap = new Map([
-    ["ADMINISTRADOR", [
+    [ADMINISTRADOR, [
         CREATE_USER,
         VIEW_USER_EXTENDED_DATA,
         UPDATE_USER,
@@ -30,31 +33,78 @@ const groupPermissionMap = new Map([
         TOGGLE_USER_ACTIVE,
         CREATE_PRODUCT,
         VIEW_PRODUCT_EXTENDED_DATA,
-        UPDATE_PRODUCT,
         DELETE_PRODUCT,
         TOGGLE_PRODUCT_ACTIVE,
         LIST_PRODUCT,
         GET_PRODUCT_DATA,
         SAVE_PRODUCT_IMAGE,
+        {
+            name: UPDATE_PRODUCT,
+            value: [
+                "name",
+                "description",
+                "price",
+                "active",
+            ]
+        },
     ]],
-    ["ESTOQUISTA", [
+    [ESTOQUISTA, [
         CREATE_PRODUCT,
         VIEW_PRODUCT_EXTENDED_DATA,
         LIST_PRODUCT,
         TOGGLE_PRODUCT_ACTIVE,
         SAVE_PRODUCT_IMAGE,
+        {
+            name: UPDATE_PRODUCT,
+            value: [
+                "name",
+                "description",
+                "price",
+                "active",
+            ]
+        },
     ]]
 ])
 
 function userCan(userContext, permission) {
+    let can = false
+
     const group = userContext?.group ?? "unknown"
     if (!groupPermissionMap.has(group)) {
         console.log(`Group ${group} not found`)
         return false
     }
-    return groupPermissionMap.get(group).includes(permission)
+    can = groupPermissionMap.get(group).includes(permission)
+    if (!can) {
+        groupPermissionMap.get(group).forEach((p) => {
+            if (typeof p === "object") {
+                if (p.name === permission) {
+                    can = true
+                }
+            }
+        })
+    }
+
+    return can
+}
+
+function getUserPermissionValue(userContext, permission) {
+    let values = null
+    const isAllowed = userCan(userContext, permission)
+    if (isAllowed) {
+        groupPermissionMap.get(userContext.group).map((p) => {
+            if (typeof p === "object") {
+                if (p.name === permission) {
+                    values = p.value
+                }
+            }
+        })
+    }
+
+    return values
 }
 
 export default {
-    userCan
+    userCan,
+    getUserPermissionValue
 }

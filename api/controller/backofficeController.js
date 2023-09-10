@@ -6,7 +6,7 @@ import authService, { DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USE
 
 export const saveBackofficeUser = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, CREATE_USER)) {
+    if (!authService.userCan(req.context.user, CREATE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para criar usuários"
         })
@@ -37,13 +37,13 @@ export const saveBackofficeUser = async (req, res) => {
 
 export const getAllBackofficeUsers = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, LIST_USERS)) {
+    if (!authService.userCan(req.context.user, LIST_USERS)) {
         res.status(403).json({
             message: "Usuário não tem permissão para listar usuários"
         })
         return
     }
-    const getExtendedData = authService.userCan(req.body.user_context, VIEW_USER_EXTENDED_DATA)
+    const getExtendedData = authService.userCan(req.context.user, VIEW_USER_EXTENDED_DATA)
 
     // validates user data
     const page = req.query?.page ?? 1
@@ -82,13 +82,13 @@ export const getAllBackofficeUsers = async (req, res) => {
 
 export const getBackofficeUser = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, GET_USER_DATA)) {
+    if (!authService.userCan(req.context.user, GET_USER_DATA)) {
         res.status(403).json({
             message: "Usuário não tem permissão para ler dados de outro usuário"
         })
         return
     }
-    const getExtendedData = authService.userCan(req.body.user_context, VIEW_USER_EXTENDED_DATA)
+    const getExtendedData = authService.userCan(req.context.user, VIEW_USER_EXTENDED_DATA)
 
     // validates input data
     const userID = req.params.id ?? ""
@@ -112,7 +112,7 @@ export const getBackofficeUser = async (req, res) => {
 
 export const updateBackofficeUser = async (req, res) => {
     // validates permission
-    if (!authService.userCan(req.body.user_context, UPDATE_USER)) {
+    if (!authService.userCan(req.context.user, UPDATE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para atualizar outro usuário"
         })
@@ -143,7 +143,7 @@ export const updateBackofficeUser = async (req, res) => {
 
 export const deactivateBackofficeUser = async (req, res) => {
     // check if user that is authenticated can deactivate other users
-    if (!authService.userCan(req.body.user_context, TOGGLE_USER_ACTIVE)) {
+    if (!authService.userCan(req.context.user, TOGGLE_USER_ACTIVE)) {
         res.status(403).json({
             message: "Usuário não tem permissão para desativar usuários"
         })
@@ -187,7 +187,7 @@ export const deactivateBackofficeUser = async (req, res) => {
 
 export const deleteBackofficeUser = async (req, res) => {
     // check if user that is authenticated can delete another users
-    if (!authService.userCan(req.body.user_context, DELETE_USER)) {
+    if (!authService.userCan(req.context.user, DELETE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para deletar usuários"
         })

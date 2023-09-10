@@ -24,7 +24,11 @@ export async function getUserFromToken(token) {
 
 export const authenticateToken = async (req, res, next) => {
     if (config.NODE_ENV === "local") {
-        req.body.user_context = new BackofficeUser({
+        req.context = {
+            user: null
+        }
+
+        req.context.user = new BackofficeUser({
             id: 1,
             name: "Admin",
             username: "admin",
@@ -48,7 +52,7 @@ export const authenticateToken = async (req, res, next) => {
         if (err) return res.sendStatus(403)
         const userContext = await getUserFromToken(token)
 
-        req.body.user_context = userContext
+        req.context.user = userContext
         // todo handle if user has permissions here
         next()
     })

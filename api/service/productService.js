@@ -41,9 +41,38 @@ const saveProduct = async (req) => {
     return "todo - saveProduct"
 }
 
-const updateProduct = async (req) => {
-    console.log(req.body);
-    return "todo"
+const updateProduct = async (req, res) => {
+    try {
+        const productID = req?.params?.id || null
+        if (!productID) {
+            res.status(400).json({
+                message: "ID de produto inválido"
+            })
+            return
+        }
+
+        const data = await productRepository.productTable.findByPk(productID)
+        if (!data) {
+            res.status(404).json({
+                message: "Produto não encontrado"
+            })
+            return
+        }
+
+        const fieldsToUpdate = req?.body || {}
+        const updateClause = {
+            where: {
+                id: productID
+            }
+        }
+
+        await productRepository.productTable.update(fieldsToUpdate, updateClause)
+
+        res.status(200).json()
+    } catch (error) {
+        console.error("updateProduct: ", error?.message || error);
+        res.status(500).json()
+    }
 }
 
 const deactivateProduct = async (req) => {
