@@ -12,6 +12,10 @@ export default db.define("backoffice_users", {
         type: Sequelize.STRING,
         allowNull: false
     },
+    username: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     document: {
         type: Sequelize.STRING,
         allowNull: false

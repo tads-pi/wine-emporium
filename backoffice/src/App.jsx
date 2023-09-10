@@ -7,6 +7,16 @@ import Login from "./pages/login/Login";
 import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
 import PageNotFound from "./components/web/PageNotFound";
 
+// todo enhance this validation and move this component somewhere else
+function PrivateRoute({ children }) {
+    const token = localStorage.getItem("token")
+    if (!token) {
+        window.location.href = "/login"
+    }
+
+    return children
+}
+
 export default function App() {
     return (
         <Provider store={store}>
@@ -19,7 +29,11 @@ export default function App() {
                     />
                     <Route
                         path="/users"
-                        element={<GerenciarUsuario />}
+                        element={
+                            <PrivateRoute>
+                                <GerenciarUsuario />
+                            </PrivateRoute>
+                        }
                     />
                 </Routes>
             </BrowserRouter>

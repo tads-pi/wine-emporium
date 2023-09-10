@@ -3,22 +3,27 @@ import { IUserLoginProps } from "../interface"
 import apiAuth from "../../../services/apiAuth"
 
 interface ConfigurationState {
-    data: [],
+    response: {
+        data: any,
+        status: number,
+    },
     loading: boolean
 }
 
 const inititalState: ConfigurationState = {
-    data: [],
+    response: {
+        data: {},
+        status: 0
+    },
     loading: false
 }
 
 export const fetchAuthentication = createAsyncThunk('appReportLogin/fetchAuthentication', async (user: IUserLoginProps) => {
     try {
-        const response = await apiAuth.post('login', user)
-
-        return response.data
+        const response = await apiAuth.post('/backoffice/auth', user)
+        return response
     } catch (error) {
-        return error
+        return error.response
     }
 })
 
@@ -31,7 +36,7 @@ export const appReportLoginSlice = createSlice({
             state.loading = true
         })
         builder.addCase(fetchAuthentication.fulfilled, (state, action) => {
-            state.data = action.payload
+            state.response = action.payload
             state.loading = false
         })
         builder.addCase(fetchAuthentication.rejected, (state, action) => {

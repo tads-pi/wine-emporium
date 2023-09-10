@@ -6,7 +6,8 @@ export const handler = serverless(app)
 
 const NON_PROD = config.NODE_ENV === "local"
 if (NON_PROD) {
-    app.listen(3000, () => {
-        console.log("Listening on port 3000")
+    const port = 8080
+    app.listen(port, () => {
+        console.log("Listening on port ", port)
     })
 }
