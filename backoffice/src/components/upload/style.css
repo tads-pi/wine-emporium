@@ -1,0 +1,40 @@
+.upload-image__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* overflow: scroll; */
+
+    max-height: 100%;
+
+    border: 1px solid blue;
+}
+
+.upload-image__drag-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* todo refatorar esquema de cores */
+    border: 1px dashed #ccc;
+    border-radius: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+
+    transition: all 0.2s ease-in-out;
+}
+
+.upload-image__drag-box:hover {
+    border-color: gray;
+}
+
+.square {
+    width: 50%;
+}
+  
+.square:after {
+    content: "Clique aqui, ou arraste as imagens.";
+    display: block;
+    padding-bottom: 50%;
+}

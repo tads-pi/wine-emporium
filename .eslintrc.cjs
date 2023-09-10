@@ -20,5 +20,6 @@ module.exports = {
     'quotes': ['error', 'double'],
     'indent': ['error', 4],
     "space-before-function-paren": [0],
+    "react/prop-types": [0],
   },
 }
