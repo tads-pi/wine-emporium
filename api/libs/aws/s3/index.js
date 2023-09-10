@@ -1,6 +1,9 @@
 import AWS from "aws-sdk";
 import fs from "fs";
 
+/**
+ * Define a região onde salvar as imagens na nuvem
+ */
 AWS.config.update({
     region: "sa-east-1",
 });
@@ -62,6 +65,15 @@ export async function getImagesFromFolder(bucketName, folderName) {
     }
 }
 
+/**
+ * Essa funcao salva uma imagem em buffer no s3
+ * @param {*} bucketName 
+ * @param {*} imageBuffer 
+ * @param {*} targetPath 
+ * @param {*} fileName 
+ * @param {*} mimeType 
+ * @returns Promise<{url: string, error: string}> response
+ */
 export async function saveBufferedImage(bucketName, imageBuffer, targetPath, fileName, mimeType) {
     const response = {
         url: "",

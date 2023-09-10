@@ -4,6 +4,11 @@ import config from "../config/config.js"
 import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 import { BackofficeUser } from "../models/backofficeUser.js"
 
+/**
+ * procura um usuario no banco de dados
+ * @param {*} user 
+ * @returns {Promise<BackofficeUser>}
+ */
 async function findUser(user = {
     username: ""
 }) {
@@ -16,12 +21,24 @@ async function findUser(user = {
     return await BackofficeUserRepository.findOne(findClause)
 }
 
+/**
+ * retorna um usuario do banco de dados a partir de um token
+ * @param {string} token
+ * @returns {Promise<BackofficeUser>}
+ */
 export async function getUserFromToken(token) {
     const decoded = jwt.decode(token)
     const { dataValues: user } = await findUser(decoded)
     return new BackofficeUser(user)
 }
 
+/**
+ * middleware para autenticar um usuário com token
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns
+ */
 export const authenticateToken = async (req, res, next) => {
     if (config.NODE_ENV === "local") {
         req.context = {
@@ -58,6 +75,12 @@ export const authenticateToken = async (req, res, next) => {
     })
 }
 
+/**
+ * rota para gerar um token de autenticação
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const handleBackofficeLogin = async (req, res) => {
     const user = {
         username: req.body?.username ?? "",

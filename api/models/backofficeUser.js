@@ -16,6 +16,10 @@ export class BackofficeUser {
         this.updatedAt = input?.updatedAt || ""
     }
 
+    /**
+     * valida os dados do usuario
+     * @returns {Array<string>} lista de campos invalidos
+     */
     validate() {
         const invalidFields = []
 
@@ -72,10 +76,18 @@ export class BackofficeUser {
         }
     }
 
+    /**
+     * constroi um username a partir do nome completo
+     * @param {*} name 
+     * @returns
+     * @example
+     * buildUsername("John Doe")
+     * // returns "jdoe"
+     */
     buildUsername(name) {
         const nameParts = name.split(" ")
         const firstName = nameParts[0]
         const lastName = nameParts[nameParts.length - 1]
-        return `${firstName.charAt(0)}.${lastName.toLowerCase()}`
+        return `${firstName.charAt(0)}${lastName.toLowerCase()}`
     }
 }

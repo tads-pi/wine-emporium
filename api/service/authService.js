@@ -66,6 +66,12 @@ const groupPermissionMap = new Map([
     ]]
 ])
 
+/**
+ * @description Verifica se o usuario tem permissao para executar a acão desejada
+ * @param {*} userContext 
+ * @param {*} permission 
+ * @returns boolean
+ */
 function userCan(userContext, permission) {
     let can = false
 
@@ -88,6 +94,13 @@ function userCan(userContext, permission) {
     return can
 }
 
+/**
+ * Gambiarrinha para migração do antigo modelo de constants para um novo com a possiblidade
+ * de ter permissões com valores para campos específicos!
+ * @param {*} userContext 
+ * @param {*} permission 
+ * @returns any
+ */
 function getUserPermissionValue(userContext, permission) {
     let values = null
     const isAllowed = userCan(userContext, permission)

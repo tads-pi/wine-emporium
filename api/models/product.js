@@ -15,6 +15,10 @@ export class Product {
         this.updatedAt = input?.updatedAt || ""
     }
 
+    /**
+     * valida os campos do produto
+     * @returns {string[]} invalid fields
+     */
     validate() {
         const invalidFields = []
 
@@ -42,6 +46,13 @@ export class Product {
         }
     }
 
+    /**
+     * builds a slug from a name
+     * @param {*} name 
+     * @returns {string} slug
+     * @example
+     * buildSlug("Camisa Polo") // returns "camisa-polo"
+     */
     buildSlug(name) {
         const nameParts = name.split(" ")
         return nameParts.join("-").toLowerCase()

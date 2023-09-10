@@ -2,6 +2,11 @@ import productRepository from "../repository/productRepository.js"
 import { Product } from "../models/product.js"
 import { getImagesFromFolder } from "../libs/aws/s3/index.js"
 
+/**
+ * @description Retorna uma lista de produtos
+ * @param {*} req 
+ * @returns Promise<Product[]>
+ */
 const getAllProducts = async (req) => {
     const filters = req.query.filters
     const sort = req.query.sort
@@ -19,6 +24,11 @@ const getAllProducts = async (req) => {
     return products
 }
 
+/**
+ * @description Retorna um produto
+ * @param {*} req 
+ * @returns Promise<Product>
+ */
 const getProduct = async (req) => {
     const productID = req?.params?.id || null
     if (!productID) {
@@ -36,11 +46,21 @@ const getProduct = async (req) => {
     return product
 }
 
+/**
+ * TODO
+ * @returns
+ */
 const saveProduct = async (req) => {
     console.log(req.body);
     return "todo - saveProduct"
 }
 
+/**
+ * @description Atualiza um produto
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 const updateProduct = async (req, res) => {
     try {
         const productID = req?.params?.id || null
@@ -75,16 +95,29 @@ const updateProduct = async (req, res) => {
     }
 }
 
+/**
+ * TODO
+ * @returns
+ */
 const deactivateProduct = async (req) => {
     console.log(req.body);
     return "todo"
 }
 
+/**
+ * TODO
+ * @returns
+ */
 const deleteProduct = async (req) => {
     console.log(req.body);
     return "todo"
 }
 
+/**
+ * @description Retorna uma lista de imagens de um produto
+ * @param {*} req 
+ * @returns promise<string[]>
+ */
 const getProductImages = async (req) => {
     const productID = req?.params?.id || null
     if (!productID) {

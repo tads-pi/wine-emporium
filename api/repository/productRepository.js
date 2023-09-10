@@ -2,6 +2,9 @@ import { DataTypes, Sequelize } from "sequelize"
 import db from "../connections/mysql.js"
 
 // todo migrate uuid from strings to uuid v4
+/**
+ * @description Define a estrutura da tabela products
+ */
 const productTable = db.define("products", {
     id: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -42,6 +45,9 @@ const productTable = db.define("products", {
     },
 })
 
+/**
+ * @description Define a estrutura da tabela product_ratings
+ */
 const productRatingsTable = db.define("product_ratings", {
     id: {
         type: Sequelize.INTEGER.UNSIGNED,
@@ -75,11 +81,17 @@ const productRatingsTable = db.define("product_ratings", {
 })
 
 // TODO when tables do not exists this queries crashes the app
+/**
+ * @description Define a relação entre as tabelas products e product_ratings
+ */
 productTable.hasMany(productRatingsTable, {
     foreignKey: "product_id",
     as: "ratings"
 })
 
+/**
+ * @description Define a relação entre as tabelas products e product_ratings
+ */
 productRatingsTable.belongsTo(productTable, {
     foreignKey: "product_id",
     as: "product"

@@ -48,6 +48,11 @@ export function removeDir(path) {
     }
 }
 
+/**
+ * Essa funcao retorna os parametros de uma imagem em base64
+ * @param {*} base64 
+ * @returns {mimeType: string, base64String: string}
+ */
 export function getBase64ImageParams(base64) {
     const base64Parts = base64.split(";base64,")
     const mimeType = base64Parts[0].replace("data:", "")

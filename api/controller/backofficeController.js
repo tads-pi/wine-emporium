@@ -3,7 +3,13 @@ import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 import authService, { DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USER_DATA, VIEW_USER_EXTENDED_DATA, TOGGLE_USER_ACTIVE } from "../service/authService.js"
 
 // TODO LIDAR OCM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
-
+// TODO adicionar camada de servico para esse controller
+/**
+ * salva um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const saveBackofficeUser = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, CREATE_USER)) {
@@ -35,6 +41,12 @@ export const saveBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * retorna todos os usuarios do banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getAllBackofficeUsers = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, LIST_USERS)) {
@@ -80,6 +92,12 @@ export const getAllBackofficeUsers = async (req, res) => {
     })
 }
 
+/**
+ * retorna um usuario do banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getBackofficeUser = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, GET_USER_DATA)) {
@@ -110,6 +128,12 @@ export const getBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * atualiza um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const updateBackofficeUser = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, UPDATE_USER)) {
@@ -141,6 +165,12 @@ export const updateBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * ativa ou desativa um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const deactivateBackofficeUser = async (req, res) => {
     // check if user that is authenticated can deactivate other users
     if (!authService.userCan(req.context.user, TOGGLE_USER_ACTIVE)) {
@@ -185,6 +215,12 @@ export const deactivateBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * deleta um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const deleteBackofficeUser = async (req, res) => {
     // check if user that is authenticated can delete another users
     if (!authService.userCan(req.context.user, DELETE_USER)) {

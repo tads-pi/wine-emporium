@@ -7,6 +7,12 @@ import { v4 as uuid } from "uuid";
 // TODO LIDAR COM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
 // TODO adicionar filter & sort ex: price:greaterThan:9.99 sort:price:desc
 
+/**
+ * retorna todos os produtos do banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getAllProducts = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, LIST_PRODUCT)) {
@@ -23,6 +29,12 @@ export const getAllProducts = async (req, res) => {
     })
 }
 
+/**
+ * retorna um produto do banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getProduct = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, GET_PRODUCT_DATA)) {
@@ -39,6 +51,12 @@ export const getProduct = async (req, res) => {
     })
 }
 
+/**
+ * salva um produto no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const saveProduct = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, CREATE_PRODUCT)) {
@@ -53,6 +71,12 @@ export const saveProduct = async (req, res) => {
     })
 }
 
+/**
+ * atualiza um produto no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const updateProduct = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, UPDATE_PRODUCT)) {
@@ -83,6 +107,12 @@ export const updateProduct = async (req, res) => {
     await productService.updateProduct(req, res)
 }
 
+/**
+ * ativa um produto no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const deactivateProduct = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, TOGGLE_PRODUCT_ACTIVE)) {
@@ -97,6 +127,12 @@ export const deactivateProduct = async (req, res) => {
     })
 }
 
+/**
+ * desativa um produto no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const deleteProduct = async (req, res) => {
     // validates permission
     if (!authService.userCan(req.context.user, DELETE_PRODUCT)) {
@@ -111,6 +147,12 @@ export const deleteProduct = async (req, res) => {
     })
 }
 
+/**
+ * salva uma imagem de um produto no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const uploadProductImage = async (req, res) => {
     // validates permission
     if (

@@ -44,7 +44,7 @@
         }
       }
     },
-    "/backoffice/auth": {
+    "/v1/backoffice/auth": {
       "post": {
         "tags": [
           "/backoffice/auth"
@@ -94,7 +94,7 @@
         }
       }
     },
-    "/backoffice/user/{user_id}": {
+    "/v1/backoffice/user/{user_id}": {
       "get": {
         "tags": [
           "/backoffice/user/{user_id}"
@@ -253,7 +253,7 @@
         }
       }
     },
-    "/backoffice/user/{user_id}/toggle-active": {
+    "/v1/backoffice/user/{user_id}/toggle-active": {
       "delete": {
         "tags": [
           "/backoffice/user/{user_id}/toggle-active"
@@ -304,7 +304,7 @@
         }
       }
     },
-    "/backoffice/user": {
+    "/v1/backoffice/user": {
       "get": {
         "tags": [
           "/backoffice/user"
@@ -435,6 +435,400 @@
           }
         }
       }
+    },
+    "/v1/product/{id}": {
+      "get": {
+        "tags": [
+          "/product/{id}"
+        ],
+        "summary": "Get Some Product",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "/product/{id}"
+        ],
+        "summary": "Update Product in Backoffice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "/product/{id}"
+        ],
+        "summary": "Delete Product in Backoffice",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/product/{id}/toggle-active": {
+      "delete": {
+        "tags": [
+          "/product/{id}/toggle-active"
+        ],
+        "summary": "Toggle Product active status",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to toggle active"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToggleProductActiveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/product/{id}/upload": {
+      "post": {
+        "tags": [
+          "/product/{id}/upload"
+        ],
+        "summary": "Upload image for Product",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to upload image"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UploadProductImageRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadProductImageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/product": {
+      "get": {
+        "tags": [
+          "/product"
+        ],
+        "summary": "Get all Products",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Página de Pesquisa",
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número de itens para se retornar por página",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "/backoffice/product"
+        ],
+        "summary": "Create new Product in Backoffice",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveProductResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -453,7 +847,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "default": "Invalid Fields: name, email, password, document, group"
+            "default": "Invalid Fields: example1, example2"
           }
         }
       },
@@ -619,6 +1013,158 @@
           "deleted": {
             "type": "boolean",
             "default": false
+          },
+          "createAt": {
+            "type": "string",
+            "default": "2023-08-30T04:56:15.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "default": "2023-08-30T04:56:15.000Z"
+          }
+        }
+      },
+      "GetAllProductsResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/product"
+        }
+      },
+      "GetProductResponse": {
+        "$ref": "#/components/schemas/product"
+      },
+      "SaveProductRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "Vinho Chave"
+          },
+          "description": {
+            "type": "string",
+            "default": "Vinho Fabricado em 1888 na vinícula de São Paulo"
+          },
+          "price": {
+            "type": "string",
+            "default": "R$ 199.99"
+          }
+        }
+      },
+      "SaveProductResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Produto criado com sucesso."
+          }
+        }
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DeleteProductResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Produto deletado com sucesso."
+          }
+        }
+      },
+      "ToggleProductActiveResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "enum": [
+              "Produto desativado com sucesso.",
+              "Produto ativado com sucesso."
+            ]
+          }
+        }
+      },
+      "UpdateProductResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "default": "Produto atualizado com sucesso"
+          }
+        }
+      },
+      "UploadProductImageRequest": {
+        "type": "object",
+        "properties": {
+          "imageBinary": {
+            "type": "string",
+            "default": "data:jpeg;base64,/base64 of image/"
+          }
+        }
+      },
+      "UploadProductImageResponse": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "default": "https://wineemporium-uploads.s3.amazonaws.com/products/1c8525a5-3f45-4632-88e1-11b33ac0e1bf/1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+          }
+        }
+      },
+      "product": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "default": 1
+          },
+          "uuid": {
+            "type": "string",
+            "default": "1c8525a5-3f45-4632-88e1-11b33ac0e1bf"
+          },
+          "name": {
+            "type": "string",
+            "default": "Vinho Chave"
+          },
+          "slug": {
+            "type": "string",
+            "default": "vinho-chave"
+          },
+          "description": {
+            "type": "string",
+            "default": "Vinho Fabricado em 1888 na vinícula de São Paulo"
+          },
+          "price": {
+            "type": "string",
+            "default": "19.99"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "default": "https://wineemporium-uploads.s3.amazonaws.com/products/1c8525a5-3f45-4632-88e1-11b33ac0e1bf/1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+            }
+          },
+          "active": {
+            "type": "boolean",
+            "default": true
+          },
+          "deletedAt": {
+            "type": "string",
+            "default": ""
           },
           "createAt": {
             "type": "string",
