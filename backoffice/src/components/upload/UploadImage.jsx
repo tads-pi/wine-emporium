@@ -3,13 +3,16 @@ import ImageUploading from "react-images-uploading";
 import { useState } from "react";
 import "./style.css"
 
-export default function UploadImage({ onSubmit }) {
+export default function UploadImage({ onSubmit, imageHook }) {
     const [images, setImages] = useState([]);
     const maxNumber = 10;
 
     const onChange = (imageList, addUpdateIndex) => {
-        console.log(imageList, addUpdateIndex);
+        // console.log(imageList, addUpdateIndex);
         setImages(imageList);
+        if (imageHook) {
+            imageHook(imageList)
+        }
     };
 
     const _onSubmit = async (e) => {
@@ -62,7 +65,10 @@ export default function UploadImage({ onSubmit }) {
                 }}
             </ImageUploading >
 
-            <button type="submit">Enviar</button>
+            {
+                imageHook === null &&
+                <button type="submit">Enviar</button>
+            }
         </form >
     );
 }

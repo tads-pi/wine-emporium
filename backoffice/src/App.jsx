@@ -6,6 +6,10 @@ import { store } from "./store"
 import Login from "./pages/login/Login";
 import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
 import PageNotFound from "./components/web/PageNotFound";
+import ListProducts from "./pages/Products/List/ListProducts";
+import SaveProduct from "./pages/Products/Save/SaveProduct";
+import UpdateProducts from "./pages/Products/Update/UpdateProduct";
+import NavBarWE from "./components/navbar/NavBarWE";
 
 // todo enhance this validation and move this component somewhere else
 function PrivateRoute({ children }) {
@@ -20,6 +24,7 @@ function PrivateRoute({ children }) {
 export default function App() {
     return (
         <Provider store={store}>
+            <NavBarWE />
             <BrowserRouter>
                 <Routes>
                     <Route path="*" element={<PageNotFound />} />
@@ -32,6 +37,30 @@ export default function App() {
                         element={
                             <PrivateRoute>
                                 <GerenciarUsuario />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/products"
+                        element={
+                            <PrivateRoute>
+                                <ListProducts />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/products/update"
+                        element={
+                            <PrivateRoute>
+                                <UpdateProducts />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/products/save"
+                        element={
+                            <PrivateRoute>
+                                <SaveProduct />
                             </PrivateRoute>
                         }
                     />

@@ -52,6 +52,14 @@ const getProduct = async (req) => {
     const product = new Product(data.dataValues)
     product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
 
+    const findStockClause = {
+        where: {
+            product_id: productID
+        }
+    }
+    const stock = await productRepository.productStockTable.findOne(findStockClause)
+    product.stock = stock?.dataValues?.stock || 0
+
     return product
 }
 
@@ -59,9 +67,29 @@ const getProduct = async (req) => {
  * TODO
  * @returns
  */
-const saveProduct = async (req) => {
-    console.log(req.body);
-    return "todo - saveProduct"
+const saveProduct = async (req, res) => {
+    const product = new Product(req.body)
+    if (!product) {
+        return
+    }
+    const validationErrors = product.validate()
+    if (validationErrors) {
+        res.status(400).json({
+            message: `Campos inválidos: ${validationErrors.join(",")}`
+        })
+        return
+    }
+
+    const result = await productRepository.productTable.create(req.body)
+    const productID = result?.dataValues?.id || null
+    if (!productID) {
+        res.status(500).json({
+            message: "Erro interno ao salvar produto"
+        })
+        return
+    }
+
+    return productID
 }
 
 /**
@@ -97,7 +125,27 @@ const updateProduct = async (req, res) => {
 
         await productRepository.productTable.update(fieldsToUpdate, updateClause)
 
-        res.status(200).json()
+        const shouldUpdateStock = fieldsToUpdate?.stock !== undefined
+        if (shouldUpdateStock) {
+            const data = await productRepository.productStockTable.findByPk(productID)
+            if (!data) {
+                console.log("ERROR PRODUCT STOCK NOT FOUND");
+                res.status(404).json({
+                    message: "Produto não encontrado"
+                })
+                return
+            }
+
+            const stock = data?.dataValues || {}
+            const stockUpdateClause = {
+                where: {
+                    product_id: productID
+                }
+            }
+            await productRepository.productStockTable.update(stock, stockUpdateClause)
+        }
+
+        return
     } catch (error) {
         console.error("updateProduct: ", error?.message || error);
         res.status(500).json()
@@ -108,18 +156,72 @@ const updateProduct = async (req, res) => {
  * TODO
  * @returns
  */
-const deactivateProduct = async (req) => {
-    console.log(req.body);
-    return "todo"
+const deactivateProduct = async (req, res) => {
+    const productID = req?.params?.id || null
+    if (!productID) {
+        res.status(400).json({
+            message: "ID de produto inválido"
+        })
+        return
+    }
+
+    const data = await productRepository.productTable.findByPk(productID)
+    if (!data) {
+        res.status(404).json({
+            message: "Produto não encontrado"
+        })
+        return
+    }
+
+    const product = new Product(data.dataValues)
+    product.active = !product.active
+
+    const updateClause = {
+        where: {
+            id: productID
+        }
+    }
+
+    // todo validate response here
+    await productRepository.productTable.update(product, updateClause)
+
+    return `Produto ${product.active ? "ativado" : "desativado"} com sucesso`
 }
 
 /**
  * TODO
  * @returns
  */
-const deleteProduct = async (req) => {
-    console.log(req.body);
-    return "todo"
+const deleteProduct = async (req, res) => {
+    const productID = req?.params?.id || null
+    if (!productID) {
+        res.status(400).json({
+            message: "ID de produto inválido"
+        })
+        return
+    }
+
+    const data = await productRepository.productTable.findByPk(productID)
+    if (!data) {
+        res.status(404).json({
+            message: "Produto não encontrado"
+        })
+        return
+    }
+
+    const product = new Product(data.dataValues)
+    product.deletedAt = new Date()
+
+    const updateClause = {
+        where: {
+            id: productID
+        }
+    }
+
+    // todo validate response here
+    await productRepository.productTable.update(product, updateClause)
+
+    return
 }
 
 /**
