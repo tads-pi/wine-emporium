@@ -33,13 +33,9 @@ export async function getAllProducts() {
     }
 }
 
-export async function getProductById(productID: string) {
+export async function getProductById(productID: string | number) {
     try {
-        const response = await api.get("/product/:id", {
-            params: {
-                id: productID
-            }
-        })
+        const response = await api.get(`/product/${productID}`)
         return response
     } catch (error: any) {
         console.log("error at getProductById: ", error);
@@ -49,14 +45,13 @@ export async function getProductById(productID: string) {
 
 export async function updateProduct(payload: IUpdateProduct) {
     try {
-        const response = await api.put("/product/:id", {
-            params: {
-                id: payload.id
-            },
-            data: {
-                ...payload
-            }
-        })
+        const newProduct = {
+            name: payload.name,
+            description: payload.description,
+            price: payload.price,
+            stock: payload.stock
+        }
+        const response = await api.put(`/product/${payload.id}`, { ...newProduct })
         return response
     } catch (error: any) {
         console.log("error at updateProduct: ", error);
@@ -66,11 +61,7 @@ export async function updateProduct(payload: IUpdateProduct) {
 
 export async function deactivateProduct(productID: string) {
     try {
-        const response = await api.get("/product/:id/toggle-active", {
-            params: {
-                id: productID
-            }
-        })
+        const response = await api.get(`/product/${productID}/toggle-active`)
         return response
     } catch (error: any) {
         console.log("error at deactivateProduct: ", error);
@@ -80,11 +71,7 @@ export async function deactivateProduct(productID: string) {
 
 export async function deleteProduct(productID: string) {
     try {
-        const response = await api.get("/product/:id", {
-            params: {
-                id: productID
-            }
-        })
+        const response = await api.get(`/product/${productID}`)
         return response
     } catch (error: any) {
         console.log("error at deleteProduct: ", error);
@@ -94,13 +81,8 @@ export async function deleteProduct(productID: string) {
 
 export async function uploadProductImage(payload: IUploadProductImage) {
     try {
-        const response = await api.get("/product/:id/upload", {
-            params: {
-                id: payload.productID
-            },
-            data: {
-                imageBinary: payload.base64Image
-            }
+        const response = await api.post(`/product/${payload.productID}/upload`, {
+            imageBinary: payload.base64Image
         })
         return response
     } catch (error: any) {

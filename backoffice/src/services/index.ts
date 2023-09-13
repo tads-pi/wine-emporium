@@ -23,7 +23,7 @@ api.interceptors.response.use(
     (response) => response,
     // error case
     ({ response }) => {
-        if (response.status === 401 || response.status === 403) {
+        if (response.status === 401) {
             localStorage.removeItem('token')
             window.location.reload()
         }

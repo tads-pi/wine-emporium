@@ -7,6 +7,8 @@ import Login from "./pages/login/Login";
 import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
 import PageNotFound from "./components/web/PageNotFound";
 import ListProducts from "./pages/Products/List/ListProducts";
+import SaveProduct from "./pages/Products/Save/SaveProduct";
+import UpdateProducts from "./pages/Products/Update/UpdateProduct";
 import NavBarWE from "./components/navbar/NavBarWE";
 
 // todo enhance this validation and move this component somewhere else
@@ -43,6 +45,22 @@ export default function App() {
                         element={
                             <PrivateRoute>
                                 <ListProducts />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/products/update"
+                        element={
+                            <PrivateRoute>
+                                <UpdateProducts />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/products/save"
+                        element={
+                            <PrivateRoute>
+                                <SaveProduct />
                             </PrivateRoute>
                         }
                     />

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as api from "../../../store/apps/api/products";
+import { useNavigate } from "react-router-dom";
 
 export default function useListProduct() {
     const dispatch = useDispatch()
@@ -11,6 +12,8 @@ export default function useListProduct() {
 
     const [productToUpdate, setProductToUpdate] = useState()
     const [searchText, setSearchText] = useState("")
+
+    const navigate = useNavigate()
 
     function onChangeSearchText(e) {
         setSearchText(e.target.value.toLowerCase())
@@ -26,6 +29,22 @@ export default function useListProduct() {
             //     `name:${searchText}`,
             // ].join(","),
         }))
+    }
+
+    function onSetProductToUpdate(product) {
+        if (!product) {
+            setProductToUpdate(undefined)
+            navigate("/products")
+            return
+        }
+
+        setProductToUpdate(product)
+        navigate("/products/update", {
+            state: {
+                // id: product?.id || ""
+                product: product
+            }
+        })
     }
 
     useEffect(() => {
@@ -48,6 +67,6 @@ export default function useListProduct() {
         loading,
         onChangeSearchText,
         productToUpdate,
-        setProductToUpdate,
+        onSetProductToUpdate,
     ]
 }

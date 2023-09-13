@@ -50,9 +50,29 @@ const getProduct = async (req) => {
  * TODO
  * @returns
  */
-const saveProduct = async (req) => {
-    console.log(req.body);
-    return "todo - saveProduct"
+const saveProduct = async (req, res) => {
+    const product = new Product(req.body)
+    if (!product) {
+        return
+    }
+    const validationErrors = product.validate()
+    if (validationErrors) {
+        res.status(400).json({
+            message: `Campos inválidos: ${validationErrors.join(",")}`
+        })
+        return
+    }
+
+    const result = await productRepository.productTable.create(req.body)
+    const productID = result?.dataValues?.id || null
+    if (!productID) {
+        res.status(500).json({
+            message: "Erro interno ao salvar produto"
+        })
+        return
+    }
+
+    return productID
 }
 
 /**
