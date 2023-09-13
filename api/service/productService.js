@@ -73,7 +73,7 @@ const saveProduct = async (req, res) => {
         return
     }
     const validationErrors = product.validate()
-    if (validationErrors) {
+    if (validationErrors.length > 0) {
         res.status(400).json({
             message: `Campos inválidos: ${validationErrors.join(",")}`
         })

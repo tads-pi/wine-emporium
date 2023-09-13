@@ -49,7 +49,7 @@ export default function UpdateProduct() {
                             }
                         </div>
                         <div className="update-product__container">
-                            {JSON.stringify(productToUpdate)}
+                            {/*JSON.stringify(productToUpdate)*/}
 
                             <UploadImage
                                 imageHook={setImageData}
