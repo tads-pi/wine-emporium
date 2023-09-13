@@ -24,6 +24,13 @@ export const getAllProducts = async (req, res) => {
     const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
 
     const products = await productService.getAllProducts(req)
+    if (!products) {
+        res.status(404).json({
+            message: "Nenhum produto encontrado"
+        })
+        return
+    }
+
     res.status(200).json({
         products: products.map(product => product.viewmodel(extendedData))
     })
@@ -46,6 +53,13 @@ export const getProduct = async (req, res) => {
     const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
 
     const product = await productService.getProduct(req, extendedData)
+    if (!product) {
+        res.status(404).json({
+            message: "Produto não encontrado"
+        })
+        return
+    }
+
     res.status(200).json({
         product: product.viewmodel(extendedData)
     })

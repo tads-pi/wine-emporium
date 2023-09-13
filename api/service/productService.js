@@ -20,8 +20,17 @@ const getAllProducts = async (req) => {
         }
     }
 
-    const products = await productRepository.productTable.findAll(findAllClause)
-    return products
+    const data = await productRepository.productTable.findAll(findAllClause)
+    if (data) {
+        const products = data.map(({ dataValues }) => new Product(dataValues))
+        // todo rodar asyncronamente depis resolver tudo
+        for (const product of products) {
+            product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+        }
+        return products
+    }
+
+    return null
 }
 
 /**
