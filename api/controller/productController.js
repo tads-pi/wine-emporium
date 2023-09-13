@@ -81,13 +81,6 @@ export const saveProduct = async (req, res) => {
     }
 
     const result = await productService.saveProduct(req, res)
-    if (!result) {
-        res.status(400).json({
-            message: "Erro ao salvar produto"
-        })
-        return
-    }
-
     res.status(200).json({
         id: result
     })

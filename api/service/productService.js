@@ -149,6 +149,7 @@ const updateProduct = async (req, res) => {
     } catch (error) {
         console.error("updateProduct: ", error?.message || error);
         res.status(500).json()
+        return
     }
 }
 
