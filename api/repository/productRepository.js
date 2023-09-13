@@ -80,23 +80,6 @@ const productRatingsTable = db.define("product_ratings", {
     },
 })
 
-// TODO when tables do not exists this queries crashes the app
-/**
- * @description Define a relação entre as tabelas products e product_ratings
- */
-productTable.hasMany(productRatingsTable, {
-    foreignKey: "product_id",
-    as: "ratings"
-})
-
-/**
- * @description Define a relação entre as tabelas products e product_ratings
- */
-productRatingsTable.belongsTo(productTable, {
-    foreignKey: "product_id",
-    as: "product"
-})
-
 export default {
     productTable,
     productRatingsTable,
