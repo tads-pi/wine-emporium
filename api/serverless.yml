@@ -31,9 +31,7 @@ provider:
         - Effect: Allow
           Action:
             - ssm:GetParameter
-            - s3:GetObject
-            - s3:PutObject
-            - s3:ListBucket
+            - s3:*
           Resource: "*"
   deploymentBucket:
     name: kcalixto-serverless-framework
