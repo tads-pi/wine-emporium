@@ -136,8 +136,10 @@ export const deactivateProduct = async (req, res) => {
         return
     }
 
+    const result=  await productService.deactivateProduct(req, res)
+
     res.status(200).json({
-        message: "todo"
+        message: result,
     })
 }
 
