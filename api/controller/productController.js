@@ -80,10 +80,7 @@ export const saveProduct = async (req, res) => {
         return
     }
 
-    const result = await productService.saveProduct(req, res)
-    res.status(200).json({
-        id: result
-    })
+    await productService.saveProduct(req, res)
 }
 
 /**

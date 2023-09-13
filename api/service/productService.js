@@ -89,7 +89,10 @@ const saveProduct = async (req, res) => {
         return
     }
 
-    return productID
+    res.status(200).json({
+        id: productID
+    })
+    return
 }
 
 /**
