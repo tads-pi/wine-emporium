@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 // Todo save permissions map on database with relation to group
 export class Product {
     constructor(input = {}) {
@@ -8,7 +10,7 @@ export class Product {
         this.images = input?.images || []
 
         this.id = input?.id || ""
-        this.uuid = input?.uuid || ""
+        this.uuid = input?.uuid || uuid()
         this.active = input?.active || ""
         this.deletedAt = input?.deletedAt || ""
         this.createdAt = input?.createdAt || ""
@@ -40,6 +42,7 @@ export class Product {
     parseToSave() {
         return {
             name: this.name,
+            uuid: this.uuid(),
             slug: this.buildSlug(this.name),
             description: this.description,
             price: this.price,

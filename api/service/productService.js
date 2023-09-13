@@ -80,7 +80,7 @@ const saveProduct = async (req, res) => {
         return
     }
 
-    const result = await productRepository.productTable.create(req.body)
+    const result = await productRepository.productTable.create(product)
     const productID = result?.dataValues?.id || null
     if (!productID) {
         res.status(500).json({
