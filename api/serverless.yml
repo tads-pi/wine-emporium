@@ -32,6 +32,7 @@ provider:
           Action:
             - ssm:GetParameter
             - s3:GetObject
+            - s3:PutObject
           Resource: "*"
   deploymentBucket:
     name: kcalixto-serverless-framework
