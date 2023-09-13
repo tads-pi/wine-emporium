@@ -45,6 +45,7 @@ const groupPermissionMap = new Map([
                 "description",
                 "price",
                 "active",
+                "stock"
             ]
         },
     ]],
@@ -59,7 +60,6 @@ const groupPermissionMap = new Map([
             value: [
                 "name",
                 "description",
-                "price",
                 "active",
             ]
         },
