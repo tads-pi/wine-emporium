@@ -40,11 +40,11 @@ export async function getUserFromToken(token) {
  * @returns
  */
 export const authenticateToken = async (req, res, next) => {
-    if (config.NODE_ENV === "local") {
-        req.context = {
-            user: null
-        }
+    req.context = {
+        user: null
+    }
 
+    if (config.NODE_ENV === "local") {
         req.context.user = new BackofficeUser({
             id: 1,
             name: "Admin",
