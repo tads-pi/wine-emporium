@@ -13,9 +13,16 @@ export type IUploadProductImage = {
     base64Image: string
 }
 
-export async function saveNewProduct() {
+export type ISaveNewProduct = {
+    name: string,
+    description: string,
+    price: number,
+    stock: number,
+}
+
+export async function saveNewProduct(product: ISaveNewProduct) {
     try {
-        const response = await api.post("/product")
+        const response = await api.post("/product", product)
         return response
     } catch (error: any) {
         console.log("error at saveNewProduct: ", error);
