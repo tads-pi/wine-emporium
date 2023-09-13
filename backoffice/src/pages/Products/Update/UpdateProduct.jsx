@@ -14,6 +14,8 @@ export default function UpdateProduct() {
         setImageData,
         productToUpdate,
         setProductToUpdate,
+        deleteProduct,
+        toggleActive
     ] = useUpdateProduct(state)
 
     return (
@@ -72,6 +74,19 @@ export default function UpdateProduct() {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" >
+                                <Form.Label>Estoque</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={productToUpdate?.stock || 0}
+                                    onChange={(e) => {
+                                        setProductToUpdate({
+                                            ...productToUpdate,
+                                            stock: e.target.value
+                                        })
+                                    }}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" >
                                 <Form.Label>Ativo</Form.Label>
                                 <Form.Check
                                     type="switch"
@@ -82,6 +97,7 @@ export default function UpdateProduct() {
                                             ...productToUpdate,
                                             active: !productToUpdate?.active
                                         })
+                                        toggleActive(productToUpdate)
                                     }}
                                 />
                             </Form.Group>
@@ -89,7 +105,10 @@ export default function UpdateProduct() {
                                 <Button
                                     variant="danger"
                                     onClick={() => {
-                                        // show toast
+                                        const accept = confirm(`Deseja mesmo deletar o produto '${productToUpdate?.name}'?`)
+                                        if (accept) {
+                                            deleteProduct(productToUpdate)
+                                        }
                                     }}
                                 >Deletar</Button>
                             </Form.Group>

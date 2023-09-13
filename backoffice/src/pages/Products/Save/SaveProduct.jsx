@@ -18,7 +18,8 @@ export default function SaveProduct() {
             {
                 loading ? <div>Carregando...</div> :
                     <div className="update-product__container">
-                        {JSON.stringify(productToSave)}
+                        {/* real time debug */}
+                        {/* {JSON.stringify(productToSave)} */}
 
                         <UploadImage
                             imageHook={setImageData}

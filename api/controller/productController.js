@@ -113,6 +113,8 @@ export const updateProduct = async (req, res) => {
     }
 
     await productService.updateProduct(req, res)
+
+    res.status(200).json()
 }
 
 /**
@@ -150,8 +152,10 @@ export const deleteProduct = async (req, res) => {
         return
     }
 
+    await productService.deleteProduct(req, res)
+
     res.status(200).json({
-        message: "todo"
+        message: "Produto deletado com sucesso"
     })
 }
 
@@ -182,7 +186,7 @@ export const uploadProductImage = async (req, res) => {
         return
     }
 
-    // salva imagem localmente
+    // salva imagem localmente/
     const imageBase64 = req?.body?.imageBinary ?? ""
     if (imageBase64 === "") {
         res.status(400).json({

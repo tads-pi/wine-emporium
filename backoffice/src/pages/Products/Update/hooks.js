@@ -23,7 +23,7 @@ export default function useUpdateProduct({ product }) {
             name: productToUpdate?.name || "",
             description: productToUpdate?.description || "",
             price: productToUpdate?.price || 0,
-            // stock: productToUpdate?.stock || 0,
+            stock: productToUpdate?.stock || 0,
         }))
 
         console.log("imageData: ", imageData);
@@ -42,10 +42,18 @@ export default function useUpdateProduct({ product }) {
         setImage([...imageData, e[0]])
     }
 
+    function deleteProduct(product) {
+        dispatch(api.deleteProduct(product?.id || 0))
+    }
+
+    function toggleActive(product) {
+        dispatch(api.toggleProductActive(product?.id || 0))
+    }
+
     useEffect(() => {
         setData(selector.response.data)
         if (selector.response.status < 400 && selector.response.status >= 200) {
-            if (selector.fn.includes("updateProduct")) {
+            if (selector.fn.includes("updateProduct") || selector.fn.includes("deleteProduct")) {
                 navigate("/products")
             }
         }
@@ -62,5 +70,7 @@ export default function useUpdateProduct({ product }) {
         setImageData,
         productToUpdate,
         setProductToUpdate,
+        deleteProduct,
+        toggleActive
     ]
 }

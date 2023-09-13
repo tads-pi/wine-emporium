@@ -59,9 +59,9 @@ export async function updateProduct(payload: IUpdateProduct) {
     }
 }
 
-export async function deactivateProduct(productID: string) {
+export async function toggleProductActive(productID: string) {
     try {
-        const response = await api.get(`/product/${productID}/toggle-active`)
+        const response = await api.delete(`/product/${productID}/toggle-active`)
         return response
     } catch (error: any) {
         console.log("error at deactivateProduct: ", error);
@@ -71,7 +71,7 @@ export async function deactivateProduct(productID: string) {
 
 export async function deleteProduct(productID: string) {
     try {
-        const response = await api.get(`/product/${productID}`)
+        const response = await api.delete(`/product/${productID}`)
         return response
     } catch (error: any) {
         console.log("error at deleteProduct: ", error);

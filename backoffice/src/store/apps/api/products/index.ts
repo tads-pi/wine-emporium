@@ -10,7 +10,7 @@ interface ConfigurationState {
     fn: string,
 }
 
-const inititalState: ConfigurationState = {
+const initialState: ConfigurationState = {
     response: {
         data: {},
         status: 0
@@ -23,11 +23,12 @@ export const getAllProducts = createAsyncThunk("appReportProducts/getAllProducts
 export const getProductById = createAsyncThunk("appReportProducts/getProductById", productService.getProductById)
 export const saveNewProduct = createAsyncThunk("appReportProducts/saveNewProduct", productService.saveNewProduct)
 export const updateProduct = createAsyncThunk("appReportProducts/updateProduct", productService.updateProduct)
-export const toggleProductActive = createAsyncThunk("appReportProducts/deactivateProduct", productService.deactivateProduct)
+export const toggleProductActive = createAsyncThunk("appReportProducts/deactivateProduct", productService.toggleProductActive)
 export const uploadProductImage = createAsyncThunk("appReportProducts/uploadProductImage", productService.uploadProductImage)
+export const deleteProduct = createAsyncThunk("appReportProducts/deleteProduct", productService.deleteProduct)
 export const appReportProductsSlice = createSlice({
     name: "appReportProducts",
-    initialState: inititalState,
+    initialState: initialState,
     reducers: {},
     extraReducers: builder => {
         builder.addMatcher(isAnyOf(getAllProducts.pending, getProductById.pending, saveNewProduct.pending, updateProduct.pending, toggleProductActive.pending, uploadProductImage.pending), (state, action) => {
