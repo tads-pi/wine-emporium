@@ -33,7 +33,7 @@ export default function useSaveProduct() {
     useEffect(() => {
         setData(selector.response.data)
         if (selector.response.status < 400 && selector.response.status >= 200) {
-            if (selector.fn.includes("saveProduct")) {
+            if (selector.fn.includes("saveNewProduct")) {
                 imageData &&
                     imageData.map(({ data_url }) => {
                         dispatch(api.uploadProductImage({
