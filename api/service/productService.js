@@ -130,13 +130,13 @@ const updateProduct = async (req, res) => {
 
         const shouldUpdateStock = fieldsToUpdate?.stock !== undefined
         if (shouldUpdateStock) {
-            const data = await productRepository.productStockTable.findByPk(productID)
+            let data = await productRepository.productStockTable.findByPk(productID)
             if (!data) {
-                console.log("ERROR PRODUCT STOCK NOT FOUND");
-                res.status(404).json({
-                    message: "Produto não encontrado"
+                data = await productRepository.productStockTable.create({
+                    product_id: productID,
+                    stock: 1,
+                    unit: "unidade",
                 })
-                return
             }
 
             const stock = data?.dataValues || {}
@@ -207,6 +207,7 @@ const deleteProduct = async (req, res) => {
 
     const data = await productRepository.productTable.findByPk(productID)
     if (!data) {
+        // TODO arrumar cloudfront response aqui 
         res.status(404).json({
             message: "Produto não encontrado"
         })
