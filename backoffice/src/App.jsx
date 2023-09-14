@@ -5,6 +5,8 @@ import { store } from "./store"
 
 import Login from "./pages/login/Login";
 import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
+import SaveUser from "./pages/Products/Save/SaveUser";
+import UpdateUser from "./pages/Products/Update/UpdateUser";
 import PageNotFound from "./components/web/PageNotFound";
 import ListProducts from "./pages/Products/List/ListProducts";
 import SaveProduct from "./pages/Products/Save/SaveProduct";
@@ -37,6 +39,22 @@ export default function App() {
                         element={
                             <PrivateRoute>
                                 <GerenciarUsuario />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/users/update"
+                        element={
+                            <PrivateRoute>
+                                <UpdateUser />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/users/save"
+                        element={
+                            <PrivateRoute>
+                                <SaveUser />
                             </PrivateRoute>
                         }
                     />

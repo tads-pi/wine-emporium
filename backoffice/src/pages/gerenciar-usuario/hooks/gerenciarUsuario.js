@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBackofficeUsers } from "../../../store/apps/api/users";
+import { useNavigate } from "react-router-dom";
 
 export default function useGerenciarUsuario() {
     const dispatch = useDispatch()
@@ -11,6 +12,8 @@ export default function useGerenciarUsuario() {
 
     const [userToUpdate, setUserToUpdate] = useState()
     const [searchText, setSearchText] = useState("")
+
+    const navigate = useNavigate()
 
     function onChangeSearchText(e) {
         setSearchText(e.target.value.toLowerCase())
@@ -42,6 +45,15 @@ export default function useGerenciarUsuario() {
         console.log("fetching users...");
         dispatch(fetchBackofficeUsers())
     }, [])
+
+    function updateUser(user) {
+        setUserToUpdate(user)
+        navigate("/products/update", {
+            state: {
+                user: user
+            }
+        })
+    }
 
     return [
         users,
