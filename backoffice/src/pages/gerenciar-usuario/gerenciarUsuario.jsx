@@ -28,7 +28,9 @@ export default function GerenciarUsuario() {
                         <div className="subcabecalho">
                             <div className="botoes">
                                 {/* <!-- Botões de "Incluir Usuário" e "Alterar Usuário" --> */}
-                                <button className="btn">Incluir Usuário</button>
+                                <button className="btn"
+                                    onClick={updateUser}
+                                >Incluir Usuário</button>
 
                                 {
                                     userToUpdate &&
