@@ -46,11 +46,11 @@ export default function useGerenciarUsuario() {
         dispatch(fetchBackofficeUsers())
     }, [])
 
-    function updateUser(user) {
-        setUserToUpdate(user)
+    function updateUser() {
+        setUserToUpdate(userToUpdate)
         navigate("/products/update", {
             state: {
-                user: user
+                user: userToUpdate
             }
         })
     }
@@ -61,5 +61,6 @@ export default function useGerenciarUsuario() {
         onChangeSearchText,
         userToUpdate,
         setUserToUpdate,
+        updateUser
     ]
 }

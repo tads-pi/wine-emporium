@@ -10,6 +10,7 @@ export default function GerenciarUsuario() {
         onChangeSearchText,
         userToUpdate,
         setUserToUpdate,
+        updateUser
     ] = useGerenciarUsuario()
 
     return (
@@ -33,13 +34,7 @@ export default function GerenciarUsuario() {
                                     userToUpdate &&
                                     <button
                                         className="btn"
-                                        onClick={() => {
-                                            if (userToUpdate) {
-                                                alert(`Alterando o usuário com ID: ${userToUpdate}`)
-                                            } else {
-                                                alert("Selecione um usuário para alterar")
-                                            }
-                                        }}
+                                        onClick={updateUser}
                                     >Alterar Usuário</button>
                                 }
 
