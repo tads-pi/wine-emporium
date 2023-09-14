@@ -48,7 +48,7 @@ export default function useGerenciarUsuario() {
 
     function updateUser() {
         setUserToUpdate(userToUpdate)
-        navigate("/products/update", {
+        navigate("/users/update", {
             state: {
                 user: userToUpdate
             }

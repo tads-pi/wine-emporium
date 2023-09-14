@@ -13,7 +13,7 @@ export default function UpdateUser() {
         userToUpdate,
         setUserToUpdate,
         deleteUser,
-        toggleActive
+        toggleActive,
     ] = useUpdateUser(state)
 
     return (
@@ -39,7 +39,7 @@ export default function UpdateUser() {
                                     placeholder="Fulano de Tal"
                                     value={userToSave?.name || ""}
                                     onChange={(e) => {
-                                        setUserToSave({
+                                        setUserToUpdate({
                                             ...userToSave,
                                             name: e.target.value
                                         })
@@ -53,7 +53,7 @@ export default function UpdateUser() {
                                     placeholder="012.345.678-90"
                                     value={userToSave?.document || ""}
                                     onChange={(e) => {
-                                        setUserToSave({
+                                        setUserToUpdate({
                                             ...userToSave,
                                             document: e.target.value
                                         })
@@ -67,7 +67,7 @@ export default function UpdateUser() {
                                     placeholder="***"
                                     value={userToSave?.password || ""}
                                     onChange={(e) => {
-                                        setUserToSave({
+                                        setUserToUpdate({
                                             ...userToSave,
                                             password: e.target.value
                                         })
@@ -82,7 +82,7 @@ export default function UpdateUser() {
                                     placeholder="***"
                                     value={userToSave?.group || ""}
                                     onChange={(e) => {
-                                        setUserToSave({
+                                        setUserToUpdate({
                                             ...userToSave,
                                             group: e.target.value
                                         })
