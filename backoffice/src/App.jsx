@@ -5,8 +5,8 @@ import { store } from "./store"
 
 import Login from "./pages/login/Login";
 import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
-import SaveUser from "./pages/Products/Save/SaveUser";
-import UpdateUser from "./pages/Products/Update/UpdateUser";
+import UpdateUser from "./pages/User/Update/UpdateUser";
+import SaveUser from "./pages/User/Save/SaveUser";
 import PageNotFound from "./components/web/PageNotFound";
 import ListProducts from "./pages/Products/List/ListProducts";
 import SaveProduct from "./pages/Products/Save/SaveProduct";
