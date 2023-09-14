@@ -10,7 +10,7 @@ export default function useUpdateUser({ user }) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
 
-    const [userToUpdate, setUserToUpdate] = useState(user)
+    const [userToSave, setUserToUpdate] = useState(user)
 
     const navigate = useNavigate()
 
@@ -51,7 +51,7 @@ export default function useUpdateUser({ user }) {
         data,
         loading,
         onSubmit,
-        userToUpdate,
+        userToSave,
         setUserToUpdate,
         deleteUser,
         toggleActive
