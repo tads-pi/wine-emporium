@@ -1,12 +1,18 @@
-import { BackofficeUser, DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USER_DATA, VIEW_EXTENDED_DATA, TOGGLE_ACTIVE } from "../models/backofficeUser.js"
+import { BackofficeUser } from "../models/backofficeUser.js"
 import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
+import authService, { DELETE_USER, UPDATE_USER, CREATE_USER, LIST_USERS, GET_USER_DATA, VIEW_USER_EXTENDED_DATA, TOGGLE_USER_ACTIVE } from "../service/authService.js"
 
 // TODO LIDAR OCM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
-
+// TODO adicionar camada de servico para esse controller
+/**
+ * salva um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const saveBackofficeUser = async (req, res) => {
     // validates permission
-    const userContext = new BackofficeUser(req.body.user_context)
-    if (!userContext.can(CREATE_USER)) {
+    if (!authService.userCan(req.context.user, CREATE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para criar usuários"
         })
@@ -35,16 +41,21 @@ export const saveBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * retorna todos os usuarios do banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getAllBackofficeUsers = async (req, res) => {
     // validates permission
-    const userContext = new BackofficeUser(req.body.user_context)
-    if (!userContext.can(LIST_USERS)) {
+    if (!authService.userCan(req.context.user, LIST_USERS)) {
         res.status(403).json({
             message: "Usuário não tem permissão para listar usuários"
         })
         return
     }
-    const getExtendedData = userContext.can(VIEW_EXTENDED_DATA)
+    const getExtendedData = authService.userCan(req.context.user, VIEW_USER_EXTENDED_DATA)
 
     // validates user data
     const page = req.query?.page ?? 1
@@ -81,16 +92,21 @@ export const getAllBackofficeUsers = async (req, res) => {
     })
 }
 
+/**
+ * retorna um usuario do banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const getBackofficeUser = async (req, res) => {
     // validates permission
-    const userContext = new BackofficeUser(req.body.user_context)
-    if (!userContext.can(GET_USER_DATA)) {
+    if (!authService.userCan(req.context.user, GET_USER_DATA)) {
         res.status(403).json({
             message: "Usuário não tem permissão para ler dados de outro usuário"
         })
         return
     }
-    const getExtendedData = userContext.can(VIEW_EXTENDED_DATA)
+    const getExtendedData = authService.userCan(req.context.user, VIEW_USER_EXTENDED_DATA)
 
     // validates input data
     const userID = req.params.id ?? ""
@@ -112,10 +128,15 @@ export const getBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * atualiza um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const updateBackofficeUser = async (req, res) => {
     // validates permission
-    const userContext = new BackofficeUser(req.body.user_context)
-    if (!userContext.can(UPDATE_USER)) {
+    if (!authService.userCan(req.context.user, UPDATE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para atualizar outro usuário"
         })
@@ -144,10 +165,15 @@ export const updateBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * ativa ou desativa um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const deactivateBackofficeUser = async (req, res) => {
     // check if user that is authenticated can deactivate other users
-    const userContext = new BackofficeUser(req.body.user_context)
-    if (!userContext.can(TOGGLE_ACTIVE)) {
+    if (!authService.userCan(req.context.user, TOGGLE_USER_ACTIVE)) {
         res.status(403).json({
             message: "Usuário não tem permissão para desativar usuários"
         })
@@ -189,10 +215,15 @@ export const deactivateBackofficeUser = async (req, res) => {
     })
 }
 
+/**
+ * deleta um usuario no banco de dados
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const deleteBackofficeUser = async (req, res) => {
     // check if user that is authenticated can delete another users
-    const userContext = new BackofficeUser(req.body.user_context)
-    if (userContext.can(DELETE_USER)) {
+    if (!authService.userCan(req.context.user, DELETE_USER)) {
         res.status(403).json({
             message: "Usuário não tem permissão para deletar usuários"
         })

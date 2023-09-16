@@ -25,6 +25,14 @@ provider:
   name: aws
   region: sa-east-1
   stage: ${opt:stage, 'prd'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - s3:*
+          Resource: "*"
   deploymentBucket:
     name: kcalixto-serverless-framework
 

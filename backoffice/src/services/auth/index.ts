@@ -1,4 +1,4 @@
-import { api } from "..";
+import api from "..";
 
 export interface IUserLoginProps {
     username: string,

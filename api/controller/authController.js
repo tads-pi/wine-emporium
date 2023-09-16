@@ -4,6 +4,11 @@ import config from "../config/config.js"
 import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
 import { BackofficeUser } from "../models/backofficeUser.js"
 
+/**
+ * procura um usuario no banco de dados
+ * @param {*} user 
+ * @returns {Promise<BackofficeUser>}
+ */
 async function findUser(user = {
     username: ""
 }) {
@@ -16,13 +21,46 @@ async function findUser(user = {
     return await BackofficeUserRepository.findOne(findClause)
 }
 
+/**
+ * retorna um usuario do banco de dados a partir de um token
+ * @param {string} token
+ * @returns {Promise<BackofficeUser>}
+ */
 export async function getUserFromToken(token) {
     const decoded = jwt.decode(token)
     const { dataValues: user } = await findUser(decoded)
     return new BackofficeUser(user)
 }
 
+/**
+ * middleware para autenticar um usuário com token
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns
+ */
 export const authenticateToken = async (req, res, next) => {
+    req.context = {
+        user: null
+    }
+
+    if (config.NODE_ENV === "local") {
+        req.context.user = new BackofficeUser({
+            id: 1,
+            name: "Admin",
+            username: "admin",
+            document: "012.345.678-90",
+            email: "email@example.com",
+            group: "ADMINISTRADOR",
+            active: true,
+            deleted: false,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        })
+        next()
+        return
+    }
+
     let token = req.headers?.authorization ?? ""
     if (token == null || token === "") return res.sendStatus(401)
 
@@ -31,12 +69,18 @@ export const authenticateToken = async (req, res, next) => {
         if (err) return res.sendStatus(403)
         const userContext = await getUserFromToken(token)
 
-        req.body.user_context = userContext
+        req.context.user = userContext
         // todo handle if user has permissions here
         next()
     })
 }
 
+/**
+ * rota para gerar um token de autenticação
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 export const handleBackofficeLogin = async (req, res) => {
     const user = {
         username: req.body?.username ?? "",

@@ -1,6 +1,9 @@
 import { DataTypes, Sequelize } from "sequelize"
 import db from "../connections/mysql.js"
 
+/**
+ * @description Define a estrutura da tabela backoffice_users
+ */
 export default db.define("backoffice_users", {
     id: {
         type: Sequelize.INTEGER.UNSIGNED,
