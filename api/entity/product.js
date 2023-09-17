@@ -12,7 +12,7 @@ export class Product {
 
         this.id = input?.id || ""
         this.uuid = input?.uuid || uuid()
-        this.active = input?.active || true
+        this.active = input?.active
         this.deletedAt = input?.deletedAt || null
         this.createdAt = input?.createdAt || ""
         this.updatedAt = input?.updatedAt || ""

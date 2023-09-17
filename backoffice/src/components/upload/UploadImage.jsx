@@ -1,6 +1,9 @@
 import ImageUploading from "react-images-uploading";
 // import useUploadImage from "./hooks"
 import { useState } from "react";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import "./style.css"
 
 export default function UploadImage({ onSubmit, imageHook }) {
@@ -8,7 +11,7 @@ export default function UploadImage({ onSubmit, imageHook }) {
     const maxNumber = 10;
 
     const onChange = (imageList, addUpdateIndex) => {
-        // console.log(imageList, addUpdateIndex);
+        console.log(addUpdateIndex);
         setImages(imageList);
         if (imageHook) {
             imageHook(imageList)
@@ -32,7 +35,7 @@ export default function UploadImage({ onSubmit, imageHook }) {
                 {(action) => {
                     const imageList = action.imageList;
                     const onImageUpload = action.onImageUpload;
-                    const onImageRemoveAll = action.onImageRemoveAll;
+                    // const onImageRemoveAll = action.onImageRemoveAll;
                     const onImageUpdate = action.onImageUpdate;
                     const onImageRemove = action.onImageRemove;
                     const isDragging = action.isDragging;
@@ -50,16 +53,32 @@ export default function UploadImage({ onSubmit, imageHook }) {
                                 {...dragProps}
                             />
 
-                            <button onClick={onImageRemoveAll}>Deletar todas as imagens</button>
-                            {imageList.map((image, index) => (
-                                <div key={index} className="image-item">
-                                    <img src={image["data_url"]} alt="" width="100" />
-                                    <div className="image-item__btn-wrapper">
-                                        <button onClick={() => onImageUpdate(index)}>Atualizar</button>
-                                        <button onClick={() => onImageRemove(index)}>Deletar</button>
+                            {/* <button onClick={onImageRemoveAll}>Deletar todas as imagens</button> */}
+                            <div
+                                className="upload-image__scroll"
+                            >
+                                {imageList.map((image, index) => (
+                                    <div key={index} className="image-item">
+                                        <img className="image" src={image["data_url"]} alt="" width="100" />
+                                        <div className="image-item__btn-wrapper">
+                                            <IconButton
+                                                aria-label="delete"
+                                                size="large"
+                                                onClick={() => onImageUpdate(index)}
+                                            >
+                                                <EditIcon fontSize="inherit" />
+                                            </IconButton>
+                                            <IconButton
+                                                aria-label="delete"
+                                                size="large"
+                                                onClick={() => onImageRemove(index)}
+                                            >
+                                                <DeleteIcon fontSize="inherit" />
+                                            </IconButton>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     )
                 }}

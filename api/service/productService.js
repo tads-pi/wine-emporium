@@ -1,37 +1,45 @@
+import productData from "../data/productData.js"
 import { Product } from "../entity/product.js"
 import { getImagesFromFolder } from "../libs/aws/s3/index.js"
 import productStockTable from "../sequelize/tables/productStockTable.js"
 import productTable from "../sequelize/tables/productTable.js"
+import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
+
+const getTotalProducts = async () => {
+    const countClause = {
+        where: {
+            deletedAt: null
+        }
+    }
+    const count = await productData.count(countClause)
+    return count
+}
 
 /**
  * @description Retorna uma lista de produtos
  * @param {*} req 
  * @returns Promise<Product[]>
  */
-const getAllProducts = async (req) => {
-    const filters = req.query.filters
-    const sort = req.query.sort
+const getAllProducts = async (req, res) => {
+    // validates user data
+    const page = req.query?.page ?? 1
+    const limit = req.query?.limit ?? 10
+    const offset = Number(limit) * (Number(page) - 1)
+    // TODO
+    // const filterRequest = req.query?.filters || ""
 
-    console.log("TODO - filters", filters);
-    console.log("TODO - sort", sort);
-
-    const findAllClause = {
-        where: {
-            deletedAt: null
-        }
+    const products = await productData.getAll(limit, offset)
+    if (!products) {
+        res.status(404).json({
+            message: "Nenhum produto encontrado"
+        })
+        return
     }
 
-    const data = await productTable.findAll(findAllClause)
-    if (data) {
-        const products = data.map(({ dataValues }) => new Product(dataValues))
-        // todo rodar asyncronamente depis resolver tudo
-        for (const product of products) {
-            product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
-        }
-        return products
-    }
-
-    return null
+    const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
+    res.status(200).json({
+        products: products.map(product => product.viewmodel(extendedData))
+    })
 }
 
 /**
@@ -131,7 +139,13 @@ const updateProduct = async (req, res) => {
 
         const shouldUpdateStock = fieldsToUpdate?.stock !== undefined
         if (shouldUpdateStock) {
-            let data = await productStockTable.findByPk(productID)
+            const findStockClause = {
+                where: {
+                    product_id: productID
+                }
+            }
+
+            let data = await productStockTable.findOne(findStockClause)
             if (!data) {
                 data = await productStockTable.create({
                     product_id: productID,
@@ -140,7 +154,9 @@ const updateProduct = async (req, res) => {
                 })
             }
 
-            const stock = data?.dataValues || {}
+            const stock = {
+                stock: Number(fieldsToUpdate?.stock || 0)
+            }
             const stockUpdateClause = {
                 where: {
                     product_id: productID
@@ -151,7 +167,7 @@ const updateProduct = async (req, res) => {
 
         return
     } catch (error) {
-        console.error("updateProduct: ", error?.message || error);
+        console.error("error at updateProduct: ", error?.message || error);
         res.status(500).json()
         return
     }
@@ -178,8 +194,10 @@ const toggleProductActive = async (req, res) => {
         return
     }
 
-    const product = new Product(data.dataValues)
-    product.active = !product.active
+    const activeStatus = req?.body?.active || false
+    const product = {
+        active: activeStatus
+    }
 
     const updateClause = {
         where: {
@@ -228,7 +246,9 @@ const deleteProduct = async (req, res) => {
     // todo validate response here
     await productTable.update(product, updateClause)
 
-    return
+    res.status(200).json({
+        message: "Produto deletado com sucesso"
+    })
 }
 
 /**
@@ -251,6 +271,7 @@ const getProductImages = async (req) => {
 }
 
 export default {
+    getTotalProducts,
     getAllProducts,
     getProduct,
     saveProduct,

@@ -1,30 +1,41 @@
 import Table from "@mui/material/Table";
+import TablePagination from "@mui/material/TablePagination";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Skeleton from "@mui/material/Skeleton";
 import LoadingWE from "../loading/LoadingWE";
 import { useEffect, useState } from "react";
 import SearchBoxWE from "./SearchBoxWE";
 import "./style.css"
 
 export default function TableWE({
+    // data printed
     data,
     custom,
     columns,
+    // loading
     loading,
     loadingData,
+    // row click actions
     onHover,
     onClickRow,
     onDoubleClick,
+    // search feature
     liveSearch,
     onSearch,
     searchChoices,
     searchTextField,
     onSearchFieldSelected,
+    // pagination feature
+    totalItems,
+    currentPage,
+    onChangePage,
 }) {
+
     const [search, setSearch] = useState("")
     const [searchField, setSearchField] = useState(searchTextField || "")
 
@@ -55,50 +66,48 @@ export default function TableWE({
             return false
         }
 
-        return custom[field]
+        return custom[field](row)
     }
-
 
     return (
         <>
             {
                 loading ? <LoadingWE /> :
-
-                    <TableContainer
-                        component={Paper}
-                    >
-                        <SearchBoxWE
-                            onChangeSearchText={setSearch}
-                            choices={searchChoices}
-                            onSubmit={onSearch}
-                            searchText={search}
-                            searchField={searchField}
-                            onChangeSearchField={setSearchField}
-                        />
-                        {
-                            loadingData ? <LoadingWE /> :
-                                <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-                                    <TableHead>
-                                        <TableRow>
-                                            {
-                                                columns &&
-                                                columns.map((column, i) => {
-                                                    const isCustom = column.includes("custom:")
-                                                    if (isCustom) {
-                                                        column = column.replace("custom:", "")
-                                                    }
-
-                                                    return (
-                                                        <TableCell key={i}>
-                                                            <strong>{column}</strong>
-                                                        </TableCell>
-                                                    )
-                                                })
-                                            }
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
+                    <Paper>
+                        <TableContainer
+                            component={Paper}
+                        >
+                            <SearchBoxWE
+                                onChangeSearchText={setSearch}
+                                choices={searchChoices}
+                                onSubmit={onSearch}
+                                searchText={search}
+                                searchField={searchField}
+                                onChangeSearchField={setSearchField}
+                            />
+                            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                                <TableHead>
+                                    <TableRow>
                                         {
+                                            columns &&
+                                            columns.map((column, i) => {
+                                                const isCustom = column.includes("custom:")
+                                                if (isCustom) {
+                                                    column = column.replace("custom:", "")
+                                                }
+
+                                                return (
+                                                    <TableCell key={i}>
+                                                        <strong>{column}</strong>
+                                                    </TableCell>
+                                                )
+                                            })
+                                        }
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {
+                                        loadingData ? <SkeletonRows rowsPerPage={10} columns={columns} /> :
                                             data &&
                                             data.map((row, i) => (
                                                 <TableRow
@@ -125,12 +134,52 @@ export default function TableWE({
                                                         ))
                                                     }
                                                 </TableRow>
-                                            ))}
-                                    </TableBody>
-                                </Table>
-                        }
-                    </TableContainer>
+                                            ))
+                                    }
+
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                        <TablePagination
+                            // todo add this option
+                            rowsPerPageOptions={[10]}
+                            component="div"
+                            count={totalItems}
+                            page={currentPage}
+                            onPageChange={(_, page) => {
+                                console.log("page: ", page);
+                                onChangePage(page)
+                            }}
+                            rowsPerPage={10}
+                        />
+                    </Paper>
             }
         </>
     );
+}
+
+function SkeletonRows({ rowsPerPage, columns }) {
+    let el = []
+
+    for (let i = 0; i < rowsPerPage; i++) {
+        el.push(
+            <TableRow
+                key={i}
+                className="table-we__row"
+                sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                }}
+            >
+                {
+                    columns.map((_, j) => (
+                        <TableCell key={j}>
+                            <Skeleton variant="text" sx={{ fontSize: "1.5rem" }} />
+                        </TableCell>
+                    ))
+                }
+            </TableRow>
+        )
+    }
+
+    return el
 }

@@ -4,29 +4,66 @@ import * as api from "../../../store/apps/api/products";
 import { useNavigate } from "react-router-dom";
 import { snackSlice } from "../../../store/apps/snack";
 
-export default function useSaveProduct() {
+export default function useSaveProduct({ initialFormData = {} }) {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const selector = useSelector(state => state.appReportProducts)
 
-    const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-
-    const [productToSave, setProductToSave] = useState({})
+    const [formData, setForm] = useState(initialFormData)
     const [imageData, setImage] = useState([])
 
-    const navigate = useNavigate()
+    function onSubmit(action) {
+        if (action.preventDefault) action.preventDefault()
 
-    function onSubmit(e) {
-        e.preventDefault()
+        if (action === "update") {
+            dispatch(api.updateProduct({
+                id: formData?.id || 0,
+                name: formData?.name || "",
+                description: formData?.description || "",
+                price: formData?.price || 0,
+                stock: Number(formData?.stock) || 0,
+            }))
 
-        dispatch(api.saveNewProduct({
-            name: productToSave?.name || "",
-            description: productToSave?.description || "",
-            price: productToSave?.price || 0,
-            // stock: productToSave?.stock || 0,
-        }))
+            imageData &&
+                imageData.map(({ data_url }) => {
+                    dispatch(api.uploadProductImage({
+                        productID: formData?.id || 0,
+                        base64Image: data_url,
+                    }))
+                })
 
-        dispatch(snackSlice.actions.setSnackMessageInfo("Salvando produto..."))
+            dispatch(snackSlice.actions.setSnackMessageInfo("Salvando produto..."))
+        }
+
+        if (action === "delete") {
+            dispatch(api.deleteProduct(formData?.id || 0))
+            dispatch(snackSlice.actions.setSnackMessageInfo("Deletando produto..."))
+        }
+
+        if (action === "save") {
+            dispatch(api.saveNewProduct({
+                name: formData?.name || "",
+                description: formData?.description || "",
+                price: formData?.price || 0,
+                stock: formData?.stock || 0,
+            }))
+
+            dispatch(snackSlice.actions.setSnackMessageInfo("Salvando produto..."))
+        }
+
+    }
+
+    function onFormUpdate(field, value) {
+        if (field === "image") {
+            setImageData(value)
+            return
+        }
+
+        setForm({
+            ...formData,
+            [field]: value,
+        })
     }
 
     function setImageData(e) {
@@ -34,21 +71,35 @@ export default function useSaveProduct() {
     }
 
     useEffect(() => {
-        setData(selector.response.data)
         if (selector.response.status < 400 && selector.response.status >= 200) {
             if (selector.fn.includes("saveNewProduct")) {
-                imageData &&
-                    imageData.map(({ data_url }) => {
-                        dispatch(api.uploadProductImage({
-                            productID: selector.response?.data?.id || 0,
-                            base64Image: data_url,
-                        }))
-                    })
+                if (imageData.length === 0) {
+                    dispatch(snackSlice.actions.setSnackMessageSuccess("Produto salvo com sucesso!"))
+                    navigate("/products")
+                    return
+                }
+
+                imageData.map(({ data_url }) => {
+                    dispatch(api.uploadProductImage({
+                        productID: selector.response?.data?.id || 0,
+                        base64Image: data_url,
+                    }))
+                })
                 console.log("enviando imagens...");
             }
 
             if (selector.fn.includes("uploadProductImage")) {
                 dispatch(snackSlice.actions.setSnackMessageSuccess("Produto salvo com sucesso!"))
+                navigate("/products")
+            }
+
+            if (selector.fn.includes("updateProduct")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Produto atualizado com sucesso!"))
+                navigate("/products")
+            }
+
+            if (selector.fn.includes("deleteProduct")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Produto deletado com sucesso!"))
                 navigate("/products")
             }
 
@@ -59,12 +110,14 @@ export default function useSaveProduct() {
         setLoading(selector.loading)
     }, [selector.loading])
 
+    useEffect(() => {
+        console.log("formData:", formData);
+    }, [formData])
+
     return [
-        data,
+        formData,
+        onFormUpdate,
         loading,
         onSubmit,
-        setImageData,
-        productToSave,
-        setProductToSave,
     ]
 }

@@ -7,6 +7,22 @@ import { v4 as uuid } from "uuid";
 // TODO LIDAR COM ERROS DENTRO DA APLICACAO E NAO RETORNAR PRO FRONT
 // TODO adicionar filter & sort ex: price:greaterThan:9.99 sort:price:desc
 
+
+const getTotalProducts = async (req, res) => {
+    // validates permission
+    if (!authService.userCan(req.context.user, LIST_PRODUCT)) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para listar produtos"
+        })
+        return
+    }
+
+    const count = await productService.getTotalProducts()
+    res.status(200).json({
+        total: count
+    })
+}
+
 /**
  * retorna todos os produtos do banco de dados
  * @param {*} req 
@@ -21,19 +37,8 @@ const getAllProducts = async (req, res) => {
         })
         return
     }
-    const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
 
-    const products = await productService.getAllProducts(req)
-    if (!products) {
-        res.status(404).json({
-            message: "Nenhum produto encontrado"
-        })
-        return
-    }
-
-    res.status(200).json({
-        products: products.map(product => product.viewmodel(extendedData))
-    })
+    await productService.getAllProducts(req, res)
 }
 
 /**
@@ -155,10 +160,6 @@ const deleteProduct = async (req, res) => {
     }
 
     await productService.deleteProduct(req, res)
-
-    res.status(200).json({
-        message: "Produto deletado com sucesso"
-    })
 }
 
 /**
@@ -221,6 +222,7 @@ const uploadProductImage = async (req, res) => {
 }
 
 export default {
+    getTotalProducts,
     getAllProducts,
     getProduct,
     saveProduct,

@@ -1,0 +1,19 @@
+.form__container{
+    flex-direction: row;
+}
+
+.form__upload-image{
+    padding: 1rem;
+    width: 300px;
+    min-height: 100%;
+}
+
+@media screen and (max-width: 1024px){
+    .form__container{
+        flex-direction: column;
+    }
+
+    .form__upload-image{
+        width: 100%;
+    }
+}

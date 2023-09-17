@@ -10,7 +10,11 @@ export default function ListProducts() {
         onChangeSearchText,
         searchTextField,
         onChangeSearchTextField,
-        onSetProductToUpdate,
+        onDoubleClick,
+        onToggleActive,
+        totalItems,
+        currentPage,
+        onChangePage,
     ] = useListProduct()
 
     const { products } = data
@@ -25,14 +29,18 @@ export default function ListProducts() {
     ]
 
     // TODO make it work
-    function SliderWE() {
+    function SliderWE(row) {
         return (
             <div className="toggle__container">
                 <Slider
                     onChange={(e) => {
-                        console.log("e", e.target.value);
+                        const value = e?.target?.value === 1
+                        const check = window.confirm(`Deseja mesmo ${value ? "ativar" : "desativar"} esse produto?`)
+                        if (check) {
+                            onToggleActive(row?.id || 0, value)
+                        }
                     }}
-                    defaultValue={1}
+                    defaultValue={row?.active ? 1 : 0}
                     valueLabelDisplay="auto"
                     step={1}
                     marks
@@ -48,15 +56,19 @@ export default function ListProducts() {
             <TableWE
                 data={products}
                 custom={{
-                    active: <SliderWE />
+                    active: SliderWE,
                 }}
                 columns={columns}
-                onDoubleClick={onSetProductToUpdate}
+                onDoubleClick={onDoubleClick}
                 loadingData={loading}
                 onSearch={onChangeSearchText}
                 searchTextField={searchTextField}
                 onSearchFieldSelected={onChangeSearchTextField}
                 searchChoices={columns}
+
+                totalItems={totalItems}
+                currentPage={currentPage}
+                onChangePage={onChangePage}
             />
         </div >
     )

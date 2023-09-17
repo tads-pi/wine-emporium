@@ -23,24 +23,25 @@ export const getAllProducts = createAsyncThunk("appReportProducts/getAllProducts
 export const getProductById = createAsyncThunk("appReportProducts/getProductById", productService.getProductById)
 export const saveNewProduct = createAsyncThunk("appReportProducts/saveNewProduct", productService.saveNewProduct)
 export const updateProduct = createAsyncThunk("appReportProducts/updateProduct", productService.updateProduct)
-export const toggleProductActive = createAsyncThunk("appReportProducts/deactivateProduct", productService.toggleProductActive)
+export const toggleProductActive = createAsyncThunk("appReportProducts/toggleProductActive", productService.toggleProductActive)
 export const uploadProductImage = createAsyncThunk("appReportProducts/uploadProductImage", productService.uploadProductImage)
 export const deleteProduct = createAsyncThunk("appReportProducts/deleteProduct", productService.deleteProduct)
+export const getTotalProducts = createAsyncThunk("appReportProducts/getTotalProducts", productService.getTotalProducts)
 export const appReportProductsSlice = createSlice({
     name: "appReportProducts",
     initialState: initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addMatcher(isAnyOf(getAllProducts.pending, getProductById.pending, saveNewProduct.pending, updateProduct.pending, toggleProductActive.pending, uploadProductImage.pending, deleteProduct.pending), (state, action) => {
+        builder.addMatcher(isAnyOf(getAllProducts.pending, getProductById.pending, saveNewProduct.pending, updateProduct.pending, toggleProductActive.pending, uploadProductImage.pending, deleteProduct.pending, getTotalProducts.pending), (state, action) => {
             state.fn = action.type
             state.loading = true
         })
-        builder.addMatcher(isAnyOf(getAllProducts.fulfilled, getProductById.fulfilled, saveNewProduct.fulfilled, updateProduct.fulfilled, toggleProductActive.fulfilled, uploadProductImage.fulfilled, deleteProduct.fulfilled), (state, action) => {
+        builder.addMatcher(isAnyOf(getAllProducts.fulfilled, getProductById.fulfilled, saveNewProduct.fulfilled, updateProduct.fulfilled, toggleProductActive.fulfilled, uploadProductImage.fulfilled, deleteProduct.fulfilled, getTotalProducts.fulfilled), (state, action) => {
             state.fn = action.type
             state.response = action.payload
             state.loading = false
         })
-        builder.addMatcher(isAnyOf(getAllProducts.rejected, getProductById.rejected, saveNewProduct.rejected, updateProduct.rejected, toggleProductActive.rejected, uploadProductImage.rejected, deleteProduct.rejected), (state, action) => {
+        builder.addMatcher(isAnyOf(getAllProducts.rejected, getProductById.rejected, saveNewProduct.rejected, updateProduct.rejected, toggleProductActive.rejected, uploadProductImage.rejected, deleteProduct.rejected, getTotalProducts.rejected), (state, action) => {
             state.fn = action.type
             state.loading = false
         })
