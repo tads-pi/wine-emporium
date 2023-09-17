@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 
-export class BackofficeUser {
+export default class BackofficeUser {
     constructor(input = {}) {
         this.name = input?.name || ""
         this.username = input?.username || ""

@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize"
-import config from "../config/config.js"
+import config from "../../config/config.js"
 
 const dbName = config.DB_NAME
 const dbUser = config.DB_USER

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as api from "../../../store/apps/api/products";
 import { useNavigate } from "react-router-dom";
+import { snackSlice } from "../../../store/apps/snack";
 
 export default function useSaveProduct() {
     const dispatch = useDispatch()
@@ -24,6 +25,8 @@ export default function useSaveProduct() {
             price: productToSave?.price || 0,
             // stock: productToSave?.stock || 0,
         }))
+
+        dispatch(snackSlice.actions.setSnackMessageInfo("Salvando produto..."))
     }
 
     function setImageData(e) {
@@ -45,6 +48,7 @@ export default function useSaveProduct() {
             }
 
             if (selector.fn.includes("uploadProductImage")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Produto salvo com sucesso!"))
                 navigate("/products")
             }
 

@@ -1,5 +1,7 @@
 // Todo save permissions map on database with relation to group
 
+import backofficeUserTable from "../sequelize/tables/backofficeUserTable.js"
+
 // Backoffice user Permissions
 export const CREATE_USER = "CREATE_USER"
 export const VIEW_USER_EXTENDED_DATA = "VIEW_USER_EXTENDED_DATA"
@@ -117,7 +119,25 @@ function getUserPermissionValue(userContext, permission) {
     return values
 }
 
+/**
+ * procura um usuario no banco de dados
+ * @param {*} user 
+ * @returns {Promise<BackofficeUser>}
+ */
+async function findUser(user = {
+    username: ""
+}) {
+    const findClause = {
+        where: {
+            username: user.username
+        }
+    }
+
+    return await backofficeUserTable.findOne(findClause)
+}
+
 export default {
     userCan,
-    getUserPermissionValue
+    getUserPermissionValue,
+    findUser
 }

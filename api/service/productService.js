@@ -1,6 +1,7 @@
-import productRepository from "../repository/productRepository.js"
-import { Product } from "../models/product.js"
+import { Product } from "../entity/product.js"
 import { getImagesFromFolder } from "../libs/aws/s3/index.js"
+import productStockTable from "../sequelize/tables/productStockTable.js"
+import productTable from "../sequelize/tables/productTable.js"
 
 /**
  * @description Retorna uma lista de produtos
@@ -20,7 +21,7 @@ const getAllProducts = async (req) => {
         }
     }
 
-    const data = await productRepository.productTable.findAll(findAllClause)
+    const data = await productTable.findAll(findAllClause)
     if (data) {
         const products = data.map(({ dataValues }) => new Product(dataValues))
         // todo rodar asyncronamente depis resolver tudo
@@ -44,7 +45,7 @@ const getProduct = async (req) => {
         return
     }
 
-    const data = await productRepository.productTable.findByPk(productID)
+    const data = await productTable.findByPk(productID)
     if (!data) {
         return
     }
@@ -57,7 +58,7 @@ const getProduct = async (req) => {
             product_id: productID
         }
     }
-    const stock = await productRepository.productStockTable.findOne(findStockClause)
+    const stock = await productStockTable.findOne(findStockClause)
     product.stock = stock?.dataValues?.stock || 0
 
     return product
@@ -80,7 +81,7 @@ const saveProduct = async (req, res) => {
         return
     }
 
-    const result = await productRepository.productTable.create(product)
+    const result = await productTable.create(product)
     const productID = result?.dataValues?.id || null
     if (!productID) {
         res.status(500).json({
@@ -111,7 +112,7 @@ const updateProduct = async (req, res) => {
             return
         }
 
-        const data = await productRepository.productTable.findByPk(productID)
+        const data = await productTable.findByPk(productID)
         if (!data) {
             res.status(404).json({
                 message: "Produto não encontrado"
@@ -126,13 +127,13 @@ const updateProduct = async (req, res) => {
             }
         }
 
-        await productRepository.productTable.update(fieldsToUpdate, updateClause)
+        await productTable.update(fieldsToUpdate, updateClause)
 
         const shouldUpdateStock = fieldsToUpdate?.stock !== undefined
         if (shouldUpdateStock) {
-            let data = await productRepository.productStockTable.findByPk(productID)
+            let data = await productStockTable.findByPk(productID)
             if (!data) {
-                data = await productRepository.productStockTable.create({
+                data = await productStockTable.create({
                     product_id: productID,
                     stock: 1,
                     unit: "unidade",
@@ -145,7 +146,7 @@ const updateProduct = async (req, res) => {
                     product_id: productID
                 }
             }
-            await productRepository.productStockTable.update(stock, stockUpdateClause)
+            await productStockTable.update(stock, stockUpdateClause)
         }
 
         return
@@ -160,7 +161,7 @@ const updateProduct = async (req, res) => {
  * TODO
  * @returns
  */
-const deactivateProduct = async (req, res) => {
+const toggleProductActive = async (req, res) => {
     const productID = req?.params?.id || null
     if (!productID) {
         res.status(400).json({
@@ -169,7 +170,7 @@ const deactivateProduct = async (req, res) => {
         return
     }
 
-    const data = await productRepository.productTable.findByPk(productID)
+    const data = await productTable.findByPk(productID)
     if (!data) {
         res.status(404).json({
             message: "Produto não encontrado"
@@ -186,10 +187,11 @@ const deactivateProduct = async (req, res) => {
         }
     }
 
-    // todo validate response here
-    await productRepository.productTable.update(product, updateClause)
+    await productTable.update(product, updateClause)
 
-    return `Produto ${product.active ? "ativado" : "desativado"} com sucesso`
+    res.status(200).json({
+        message: `Produto ${product.active ? "ativado" : "desativado"} com sucesso`
+    })
 }
 
 /**
@@ -205,7 +207,7 @@ const deleteProduct = async (req, res) => {
         return
     }
 
-    const data = await productRepository.productTable.findByPk(productID)
+    const data = await productTable.findByPk(productID)
     if (!data) {
         // TODO arrumar cloudfront response aqui 
         res.status(404).json({
@@ -224,7 +226,7 @@ const deleteProduct = async (req, res) => {
     }
 
     // todo validate response here
-    await productRepository.productTable.update(product, updateClause)
+    await productTable.update(product, updateClause)
 
     return
 }
@@ -253,7 +255,7 @@ export default {
     getProduct,
     saveProduct,
     updateProduct,
-    deactivateProduct,
+    toggleProductActive,
     deleteProduct,
     getProductImages
 }

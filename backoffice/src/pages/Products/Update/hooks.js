@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as api from "../../../store/apps/api/products";
 import { useNavigate } from "react-router-dom";
+import { snackSlice } from "../../../store/apps/snack";
 
 export default function useUpdateProduct({ product }) {
     const dispatch = useDispatch()
@@ -24,9 +25,8 @@ export default function useUpdateProduct({ product }) {
             description: productToUpdate?.description || "",
             price: productToUpdate?.price || 0,
             stock: productToUpdate?.stock || 0,
+            active: productToUpdate?.active || false,
         }))
-
-        console.log("imageData: ", imageData);
 
         imageData &&
             imageData.map(({ data_url }) => {
@@ -36,6 +36,7 @@ export default function useUpdateProduct({ product }) {
                 }))
             })
 
+        dispatch(snackSlice.actions.setSnackMessageInfo("Salvando produto..."))
     }
 
     function setImageData(e) {
@@ -43,6 +44,7 @@ export default function useUpdateProduct({ product }) {
     }
 
     function deleteProduct(product) {
+        dispatch(snackSlice.actions.setSnackMessageInfo("Deletando produto..."))
         dispatch(api.deleteProduct(product?.id || 0))
     }
 
@@ -52,8 +54,15 @@ export default function useUpdateProduct({ product }) {
 
     useEffect(() => {
         setData(selector.response.data)
+        console.log("selector: ", selector);
         if (selector.response.status < 400 && selector.response.status >= 200) {
-            if (selector.fn.includes("updateProduct") || selector.fn.includes("deleteProduct")) {
+            if (selector.fn.includes("updateProduct")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Produto atualizado com sucesso!"))
+                navigate("/products")
+            }
+
+            if (selector.fn.includes("deleteProduct")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Produto deletado com sucesso!"))
                 navigate("/products")
             }
         }

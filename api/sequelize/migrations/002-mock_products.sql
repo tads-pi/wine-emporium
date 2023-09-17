@@ -1,4 +1,3 @@
--- Inserting products
 INSERT INTO
     products (
         uuid,
@@ -67,52 +66,3 @@ VALUES
         now(),
         now()
     );
-
--- Inserting product ratings
-INSERT INTO
-    product_ratings (
-        uuid,
-        active,
-        product_id,
-        value,
-        createdAt,
-        updatedAt
-    )
-VALUES
-    (UUID(), true, 1, 4.5, now(), now());
-
-INSERT INTO
-    product_ratings (
-        uuid,
-        active,
-        product_id,
-        value,
-        createdAt,
-        updatedAt
-    )
-VALUES
-    (UUID(), true, 1, 4.2, now(), now());
-
-INSERT INTO
-    product_ratings (
-        uuid,
-        active,
-        product_id,
-        value,
-        createdAt,
-        updatedAt
-    )
-VALUES
-    (UUID(), true, 2, 4.8, now(), now());
-
-INSERT INTO
-    product_ratings (
-        uuid,
-        active,
-        product_id,
-        value,
-        createdAt,
-        updatedAt
-    )
-VALUES
-    (UUID(), true, 3, 4.0, now(), now());

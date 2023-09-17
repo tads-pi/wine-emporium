@@ -12,12 +12,14 @@ export default function useListProduct() {
 
     const [productToUpdate, setProductToUpdate] = useState()
     const [searchText, setSearchText] = useState("")
+    const [searchTextField, setSearchTextField] = useState("")
 
     const navigate = useNavigate()
 
-    function onChangeSearchText(e) {
-        setSearchText(e.target.value.toLowerCase())
+    function onChangeSearchText(text) {
+        console.log(`searching: '${searchText}' in '${searchTextField}' field`);
 
+        setSearchText(text.toLowerCase())
         if (searchText === "") {
             dispatch(api.getAllProducts())
             return
@@ -29,6 +31,10 @@ export default function useListProduct() {
             //     `name:${searchText}`,
             // ].join(","),
         }))
+    }
+
+    function onChangeSearchTextField(field) {
+        setSearchTextField(field)
     }
 
     function onSetProductToUpdate(product) {
@@ -66,7 +72,8 @@ export default function useListProduct() {
         data,
         loading,
         onChangeSearchText,
-        productToUpdate,
+        searchTextField,
+        onChangeSearchTextField,
         onSetProductToUpdate,
     ]
 }

@@ -31,16 +31,16 @@ export const appReportProductsSlice = createSlice({
     initialState: initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addMatcher(isAnyOf(getAllProducts.pending, getProductById.pending, saveNewProduct.pending, updateProduct.pending, toggleProductActive.pending, uploadProductImage.pending), (state, action) => {
+        builder.addMatcher(isAnyOf(getAllProducts.pending, getProductById.pending, saveNewProduct.pending, updateProduct.pending, toggleProductActive.pending, uploadProductImage.pending, deleteProduct.pending), (state, action) => {
             state.fn = action.type
             state.loading = true
         })
-        builder.addMatcher(isAnyOf(getAllProducts.fulfilled, getProductById.fulfilled, saveNewProduct.fulfilled, updateProduct.fulfilled, toggleProductActive.fulfilled, uploadProductImage.fulfilled), (state, action) => {
+        builder.addMatcher(isAnyOf(getAllProducts.fulfilled, getProductById.fulfilled, saveNewProduct.fulfilled, updateProduct.fulfilled, toggleProductActive.fulfilled, uploadProductImage.fulfilled, deleteProduct.fulfilled), (state, action) => {
             state.fn = action.type
             state.response = action.payload
             state.loading = false
         })
-        builder.addMatcher(isAnyOf(getAllProducts.rejected, getProductById.rejected, saveNewProduct.rejected, updateProduct.rejected, toggleProductActive.rejected, uploadProductImage.rejected), (state, action) => {
+        builder.addMatcher(isAnyOf(getAllProducts.rejected, getProductById.rejected, saveNewProduct.rejected, updateProduct.rejected, toggleProductActive.rejected, uploadProductImage.rejected, deleteProduct.rejected), (state, action) => {
             state.fn = action.type
             state.loading = false
         })

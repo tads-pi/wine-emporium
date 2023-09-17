@@ -22,7 +22,7 @@ export async function getAllUsers(filter?: IGetUsersFilter) {
             }
         }
 
-        const response = await api.get('/backoffice/user', { params })
+        const response = await api.get('/user', { params })
         return response
     } catch (error: any) {
         console.log("error at getAllUsers: ", error);
