@@ -7,7 +7,7 @@
 
     max-height: 100%;
 
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
 }
 
 .upload-image__drag-box {
@@ -27,6 +27,7 @@
 
 .upload-image__drag-box:hover {
     border-color: gray;
+    background-color:bisque;
 }
 
 .square {
@@ -37,4 +38,31 @@
     content: "Clique aqui, ou arraste as imagens.";
     display: block;
     padding-bottom: 50%;
+}
+
+.image-item{
+    display: flex;
+    flex-direction: row;
+}
+
+.image{
+    width: 100px;
+    height: 100px;
+    margin: 1rem;
+    border-radius: 1rem;
+    object-fit: cover;
+}
+
+.image-item__btn-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-image__scroll{
+    display: flex;
+    margin: 1rem;
+    flex-direction: column;
+
+    overflow: scroll;
+    max-height: 200px;
 }

@@ -1,4 +1,4 @@
-import app from "./server.js"
+import app from "./routes/router.js"
 import serverless from "serverless-http"
 import config from "./config/config.js"
 

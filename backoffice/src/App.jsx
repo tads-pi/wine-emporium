@@ -3,8 +3,7 @@ import { BrowserRouter } from "react-router-dom"
 import { Provider } from "react-redux"
 import { store } from "./store"
 
-import Login from "./pages/login/Login";
-import GerenciarUsuario from "./pages/gerenciar-usuario/gerenciarUsuario";
+import Login from "./pages/Login/Login";
 import UpdateUser from "./pages/User/Update/UpdateUser";
 import SaveUser from "./pages/User/Save/SaveUser";
 import PageNotFound from "./components/web/PageNotFound";
@@ -12,6 +11,8 @@ import ListProducts from "./pages/Products/List/ListProducts";
 import SaveProduct from "./pages/Products/Save/SaveProduct";
 import UpdateProducts from "./pages/Products/Update/UpdateProduct";
 import NavBarWE from "./components/navbar/NavBarWE";
+import SnackWE from "./components/snack/SnackWE";
+import ListUsers from "./pages/User/List/ListUsers";
 
 // todo enhance this validation and move this component somewhere else
 function PrivateRoute({ children }) {
@@ -27,6 +28,7 @@ export default function App() {
     return (
         <Provider store={store}>
             <NavBarWE />
+            <SnackWE />
             <BrowserRouter>
                 <Routes>
                     <Route path="*" element={<PageNotFound />} />
@@ -38,7 +40,7 @@ export default function App() {
                         path="/users"
                         element={
                             <PrivateRoute>
-                                <GerenciarUsuario />
+                                <ListUsers />
                             </PrivateRoute>
                         }
                     />

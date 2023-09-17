@@ -32,7 +32,10 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run dev 
+      - name: Build
+        run: |
+          export WE_BASE_URL=https://api.dev.wineemporium.shop/v1/backoffice
+          npm run build
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

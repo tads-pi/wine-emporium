@@ -1,11 +1,7 @@
 import axios from 'axios'
 
 function getUri() {
-    switch (import.meta.env.MODE) {
-        case "production": return "https://api.wineemporium.shop/v1"
-        case "development": return "https://api.dev.wineemporium.shop/v1"
-        case "local": return "http://localhost:8080/v1"
-    }
+    return import.meta.env.VITE_WE_BASE_URL
 }
 
 const api = axios.create({
@@ -29,5 +25,6 @@ api.interceptors.response.use(
         }
         return response
     })
+// TODO add interceptor to handle 403 errors with hooks
 
 export default api

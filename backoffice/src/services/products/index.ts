@@ -1,5 +1,10 @@
 import api from "..";
 
+export type IGetAllProductsFilters = {
+    page?: number,
+    limit?: number,
+}
+
 export type IUpdateProduct = {
     id: string,
     name: string,
@@ -20,6 +25,11 @@ export type ISaveNewProduct = {
     stock: number,
 }
 
+export type IToggleProductActive = {
+    productID: string,
+    active: boolean
+}
+
 export async function saveNewProduct(product: ISaveNewProduct) {
     try {
         const response = await api.post("/product", product)
@@ -30,9 +40,24 @@ export async function saveNewProduct(product: ISaveNewProduct) {
     }
 }
 
-export async function getAllProducts() {
+export async function getTotalProducts() {
     try {
-        const response = await api.get("/product")
+        const response = await api.get("/product/total")
+        return response
+    } catch (error: any) {
+        console.log("error at getTotalProducts: ", error);
+        return error?.response ?? {}
+    }
+}
+
+export async function getAllProducts(filters: IGetAllProductsFilters) {
+    try {
+        const response = await api.get("/product", {
+            params: {
+                page: filters?.page || 1,
+                limit: filters?.limit || 10,
+            }
+        })
         return response
     } catch (error: any) {
         console.log("error at getAllProducts: ", error);
@@ -66,9 +91,11 @@ export async function updateProduct(payload: IUpdateProduct) {
     }
 }
 
-export async function toggleProductActive(productID: string) {
+export async function toggleProductActive(payload: IToggleProductActive) {
     try {
-        const response = await api.delete(`/product/${productID}/toggle-active`)
+        const response = await api.post(`/product/${payload.productID}/toggle-active`, {
+            active: payload.active
+        })
         return response
     } catch (error: any) {
         console.log("error at deactivateProduct: ", error);
