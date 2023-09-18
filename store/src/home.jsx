@@ -1,11 +1,10 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import { Paper, TextField, Button, Typography } from '@mui/material';
+import { Paper, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { fetchAuthentication } from './store/apps/apiAuth';
-import { useDispatch, useSelector } from 'react-redux'
-
-
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useStore } from './zustand-store/index.example';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -19,18 +18,33 @@ const Home = () => {
     const [loginForm, setLoginForm] = React.useState({
         username: '',
         password: ''
-    })
-    const dispatch = useDispatch()
+    });
 
-    const onSubmit = () => {
-        dispatch(fetchAuthentication({
+    const { user, isLoading, login } = useStore(store => {
+        return {
+          user: store.user,
+          isLoading: store.isLoading,
+          login: store.login
+        }
+    })
+
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        login({
             username: loginForm.username,
             password: loginForm.password
-        }))
-    }
+        })
+    };
 
-    const loading = useSelector((state) => state.appReportLogin.loading)
-
+    console.log(isLoading)
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
@@ -48,41 +62,30 @@ const Home = () => {
                                 margin="normal"
                                 required
                                 size='small'
-                                onChange={(
-                                    e,
-                                ) =>
-                                    setLoginForm(
-                                        {
-                                            ...loginForm,
-                                            username:
-                                                e
-                                                    .target
-                                                    .value,
-                                        },
-                                    )
-                                }
+                                onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
                             />
                             <TextField
                                 label="Senha"
                                 fullWidth
                                 variant="outlined"
                                 margin="normal"
-                                type="password"
+                                type={showPassword ? 'text' : 'password'} // Mostra ou esconde a senha com base no estado showPassword
                                 required
                                 size='small'
-                                onChange={(
-                                    e,
-                                ) =>
-                                    setLoginForm(
-                                        {
-                                            ...loginForm,
-                                            password:
-                                                e
-                                                    .target
-                                                    .value,
-                                        },
-                                    )
-                                }
+                                onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                             <Button
                                 variant="contained"
@@ -90,9 +93,9 @@ const Home = () => {
                                 fullWidth
                                 type="submit"
                                 style={{ marginTop: '2rem' }}
-                                proge
+                                disabled={isLoading}
                             >
-                                {loading ? 'Entrando...' : 'Entrar'}
+                                {isLoading ? 'Entrando...' : 'Entrar'}
                             </Button>
                         </form>
                     </Item>
@@ -100,6 +103,6 @@ const Home = () => {
             </Grid>
         </div>
     );
-}
+};
 
 export default Home;
