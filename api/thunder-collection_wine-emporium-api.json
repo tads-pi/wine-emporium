@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "wine-emporium-api",
-    "dateExported": "2023-09-10T17:49:06.196Z",
+    "dateExported": "2023-09-24T23:39:49.767Z",
     "version": "1.1",
     "folders": [
         {
@@ -13,10 +13,17 @@
         },
         {
             "_id": "b513e4c7-9412-4174-b7a1-d32e61da7700",
-            "name": "products",
+            "name": "backoffice products",
             "containerId": "",
             "created": "2023-09-10T16:02:12.336Z",
             "sortNum": 50000
+        },
+        {
+            "_id": "8c8ecae4-182f-4167-a972-368fda97c576",
+            "name": "products",
+            "containerId": "",
+            "created": "2023-09-24T23:36:01.306Z",
+            "sortNum": 65000
         }
     ],
     "requests": [
@@ -29,7 +36,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2023-08-30T17:00:27.687Z",
-            "modified": "2023-09-09T05:26:01.201Z",
+            "modified": "2023-09-13T14:14:54.269Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -53,7 +60,7 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-08-30T03:48:54.241Z",
-            "modified": "2023-09-09T05:22:17.920Z",
+            "modified": "2023-09-13T14:22:24.096Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -73,11 +80,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Save Product",
-            "url": "http://localhost:8080/v1/product",
+            "url": "http://localhost:8080/v1/backoffice/product",
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-09-10T16:02:12.337Z",
-            "modified": "2023-09-10T16:04:05.813Z",
+            "modified": "2023-09-24T21:40:44.510Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -87,7 +94,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n\n}",
+                "raw": "{\n  \"name\": \"Vinho x\",\n  \"description\": \"Vinho x\",\n  \"price\": \"R$ 999.99\"\n}",
                 "form": []
             },
             "tests": []
@@ -101,7 +108,7 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-08-30T04:22:11.777Z",
-            "modified": "2023-09-10T02:57:05.768Z",
+            "modified": "2023-09-16T15:04:47.081Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -133,15 +140,15 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Get All Products",
-            "url": "http://localhost:8080/v1/product?page=1&limit=10&filters=price:greaterThan:9.99&sort=price:greaterThan",
+            "url": "http://localhost:8080/v1/backoffice/product?page=1&limit=10",
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-09-10T16:02:12.338Z",
-            "modified": "2023-09-10T16:53:40.755Z",
+            "modified": "2023-09-24T22:06:56.147Z",
             "headers": [
                 {
                     "name": "Authorization",
-                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjk0MzEzNjkzLCJleHAiOjE2OTQzMTcyOTN9.SwLRD1PuNNQ1CnQa6kcaQdr6uEliRK0XAwgMDrmsXqI"
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjk0ODc2NDA1LCJleHAiOjE2OTQ4ODAwMDV9.bBHjLDu8ij8SvXCjUja8j_eaw9S4WxoY8pCH4ns3GyI"
                 }
             ],
             "params": [
@@ -158,11 +165,55 @@
                 {
                     "name": "filters",
                     "value": "price:greaterThan:9.99",
+                    "isDisabled": true,
                     "isPath": false
                 },
                 {
                     "name": "sort",
                     "value": "price:greaterThan",
+                    "isDisabled": true,
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "1363fe2a-11cd-4194-8c05-fff4ce11813d",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "8c8ecae4-182f-4167-a972-368fda97c576",
+            "name": "Get All Products",
+            "url": "http://localhost:8080/v1/store/product?page=1&limit=10",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-09-24T23:36:01.307Z",
+            "modified": "2023-09-24T23:38:17.859Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjk0ODc2NDA1LCJleHAiOjE2OTQ4ODAwMDV9.bBHjLDu8ij8SvXCjUja8j_eaw9S4WxoY8pCH4ns3GyI"
+                }
+            ],
+            "params": [
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isPath": false
+                },
+                {
+                    "name": "limit",
+                    "value": "10",
+                    "isPath": false
+                },
+                {
+                    "name": "filters",
+                    "value": "price:greaterThan:9.99",
+                    "isDisabled": true,
+                    "isPath": false
+                },
+                {
+                    "name": "sort",
+                    "value": "price:greaterThan",
+                    "isDisabled": true,
                     "isPath": false
                 }
             ],
@@ -192,11 +243,30 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Get Product",
-            "url": "http://localhost:8080/v1/product/1",
+            "url": "http://localhost:8080/v1/backoffice/product/1",
             "method": "GET",
             "sortNum": 40000,
             "created": "2023-09-10T16:02:12.339Z",
-            "modified": "2023-09-10T17:30:04.332Z",
+            "modified": "2023-09-24T21:19:20.333Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8f025328-fde1-43a5-99c8-f4143bdbf2b6",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "8c8ecae4-182f-4167-a972-368fda97c576",
+            "name": "Get Product",
+            "url": "http://localhost:8080/v1/store/product/1",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-09-24T23:36:01.308Z",
+            "modified": "2023-09-24T23:39:14.925Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -235,11 +305,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Update Product",
-            "url": "http://localhost:8080/v1/product/1",
+            "url": "http://localhost:8080/v1/backoffice/product/1",
             "method": "PUT",
             "sortNum": 50000,
             "created": "2023-09-10T16:02:12.340Z",
-            "modified": "2023-09-10T16:59:51.256Z",
+            "modified": "2023-09-24T21:40:25.592Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -249,7 +319,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \n}",
+                "raw": "{\n    \"name\": \"Um vinho muito chave\"\n}",
                 "form": []
             },
             "tests": []
@@ -259,11 +329,11 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Delete Product",
-            "url": "http://localhost:8080/v1/product/1",
+            "url": "http://localhost:8080/v1/backoffice/product/1",
             "method": "DELETE",
             "sortNum": 70000,
             "created": "2023-09-10T16:02:12.341Z",
-            "modified": "2023-09-10T16:03:27.816Z",
+            "modified": "2023-09-24T21:40:30.314Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -303,10 +373,10 @@
             "containerId": "326c9032-3b16-4c10-934c-d775be13f149",
             "name": "Toggle Backoffice User Active",
             "url": "http://localhost:8080/v1/backoffice/user/2/toggle-active",
-            "method": "DELETE",
+            "method": "POST",
             "sortNum": 80000,
             "created": "2023-09-01T03:39:09.113Z",
-            "modified": "2023-09-10T17:31:34.862Z",
+            "modified": "2023-09-24T22:16:48.193Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -321,17 +391,31 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Toggle Product Active",
-            "url": "http://localhost:8080/v1/product/1/toggle-active",
+            "url": "http://localhost:8080/v1/backoffice/product/1/toggle-active",
             "method": "DELETE",
             "sortNum": 80000,
             "created": "2023-09-10T16:02:12.342Z",
-            "modified": "2023-09-10T16:03:42.020Z",
+            "modified": "2023-09-24T21:40:37.483Z",
             "headers": [
                 {
                     "name": "Authorization",
                     "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNTM4NTc3LCJleHAiOjE2OTM1NDIxNzd9.4Yh81wnvlieeeHaJz8gzU6SXWwVLqYP6r9wonyITVy8"
                 }
             ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6109266a-ac2d-4df3-9572-8aa82315e9b4",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "326c9032-3b16-4c10-934c-d775be13f149",
+            "name": "Delete Backoffice User",
+            "url": "http://localhost:8080/v1/backoffice/user/2",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2023-09-24T22:17:16.419Z",
+            "modified": "2023-09-24T22:17:26.201Z",
+            "headers": [],
             "params": [],
             "tests": []
         }

@@ -3,12 +3,14 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import { appReportLoginSlice } from './apps/api/auth'
 import { appReportBackofficeUsersSlice } from './apps/api/users'
 import { appReportProductsSlice } from './apps/api/products'
+import { snackSlice } from './apps/snack'
 
 export const store = configureStore({
     reducer: {
         [appReportLoginSlice.name]: appReportLoginSlice.reducer,
         [appReportProductsSlice.name]: appReportProductsSlice.reducer,
         [appReportBackofficeUsersSlice.name]: appReportBackofficeUsersSlice.reducer,
+        [snackSlice.name]: snackSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

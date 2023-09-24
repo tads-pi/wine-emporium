@@ -1,36 +1,46 @@
-import productRepository from "../repository/productRepository.js"
-import { Product } from "../models/product.js"
+import { Product } from "../entity/product.js"
 import { getImagesFromFolder } from "../libs/aws/s3/index.js"
+import productStockTable from "../sequelize/tables/productStockTable.js"
+import productRatingsTable from "../sequelize/tables/productRatingTable.js"
+import productTable from "../sequelize/tables/productTable.js"
+import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
+import productData from "../data/productData.js"
+
+const getTotalProducts = async () => {
+    const countClause = {
+        where: {
+            deletedAt: null
+        }
+    }
+    const count = await productData.count(countClause)
+    return count
+}
 
 /**
  * @description Retorna uma lista de produtos
  * @param {*} req 
  * @returns Promise<Product[]>
  */
-const getAllProducts = async (req) => {
-    const filters = req.query.filters
-    const sort = req.query.sort
+const getAllProducts = async (req, res) => {
+    // validates user data
+    const page = req.query?.page ?? 1
+    const limit = req.query?.limit ?? 10
+    const offset = Number(limit) * (Number(page) - 1)
+    // TODO
+    // const filterRequest = req.query?.filters || ""
 
-    console.log("TODO - filters", filters);
-    console.log("TODO - sort", sort);
-
-    const findAllClause = {
-        where: {
-            deletedAt: null
-        }
+    const products = await productData.getAll(limit, offset)
+    if (!products) {
+        res.status(404).json({
+            message: "Nenhum produto encontrado"
+        })
+        return
     }
 
-    const data = await productRepository.productTable.findAll(findAllClause)
-    if (data) {
-        const products = data.map(({ dataValues }) => new Product(dataValues))
-        // todo rodar asyncronamente depis resolver tudo
-        for (const product of products) {
-            product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
-        }
-        return products
-    }
-
-    return null
+    const extendedData = authService.userCan(req?.context?.user || {}, VIEW_PRODUCT_EXTENDED_DATA)
+    res.status(200).json({
+        products: products.map(product => product.viewmodel(extendedData))
+    })
 }
 
 /**
@@ -44,21 +54,44 @@ const getProduct = async (req) => {
         return
     }
 
-    const data = await productRepository.productTable.findByPk(productID)
+    const data = await productTable.findByPk(productID)
     if (!data) {
         return
     }
 
     const product = new Product(data.dataValues)
+
+    // Add Images
     product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
 
+    // Add Stock
     const findStockClause = {
         where: {
             product_id: productID
         }
     }
-    const stock = await productRepository.productStockTable.findOne(findStockClause)
+    const stock = await productStockTable.findOne(findStockClause)
     product.stock = stock?.dataValues?.stock || 0
+
+    // Add Ratings
+    const ratings = await productRatingsTable.findAll({
+        where: {
+            product_id: productID
+        },
+        group: ["product_id"],
+        attributes: [
+            "product_id",
+            [productRatingsTable.sequelize.fn("AVG", productRatingsTable.sequelize.col("value")), "average_rating"],
+            [productRatingsTable.sequelize.fn("COUNT", productRatingsTable.sequelize.col("value")), "total_ratings"]
+        ]
+    })
+    if (ratings) {
+        if (ratings.length > 0) {
+            // we need to inform [0] because we're grouping by product_id, so it will always return an array with 1 element
+            product.ratings = Number(ratings[0]?.dataValues?.average_rating) || 0
+            product.totalRatings = Number(ratings[0]?.dataValues?.total_ratings) || 0
+        }
+    }
 
     return product
 }
@@ -80,7 +113,7 @@ const saveProduct = async (req, res) => {
         return
     }
 
-    const result = await productRepository.productTable.create(product)
+    const result = await productTable.create(product)
     const productID = result?.dataValues?.id || null
     if (!productID) {
         res.status(500).json({
@@ -111,7 +144,7 @@ const updateProduct = async (req, res) => {
             return
         }
 
-        const data = await productRepository.productTable.findByPk(productID)
+        const data = await productTable.findByPk(productID)
         if (!data) {
             res.status(404).json({
                 message: "Produto não encontrado"
@@ -126,31 +159,39 @@ const updateProduct = async (req, res) => {
             }
         }
 
-        await productRepository.productTable.update(fieldsToUpdate, updateClause)
+        await productTable.update(fieldsToUpdate, updateClause)
 
         const shouldUpdateStock = fieldsToUpdate?.stock !== undefined
         if (shouldUpdateStock) {
-            let data = await productRepository.productStockTable.findByPk(productID)
+            const findStockClause = {
+                where: {
+                    product_id: productID
+                }
+            }
+
+            let data = await productStockTable.findOne(findStockClause)
             if (!data) {
-                data = await productRepository.productStockTable.create({
+                data = await productStockTable.create({
                     product_id: productID,
                     stock: 1,
                     unit: "unidade",
                 })
             }
 
-            const stock = data?.dataValues || {}
+            const stock = {
+                stock: Number(fieldsToUpdate?.stock || 0)
+            }
             const stockUpdateClause = {
                 where: {
                     product_id: productID
                 }
             }
-            await productRepository.productStockTable.update(stock, stockUpdateClause)
+            await productStockTable.update(stock, stockUpdateClause)
         }
 
         return
     } catch (error) {
-        console.error("updateProduct: ", error?.message || error);
+        console.error("error at updateProduct: ", error?.message || error);
         res.status(500).json()
         return
     }
@@ -160,7 +201,7 @@ const updateProduct = async (req, res) => {
  * TODO
  * @returns
  */
-const deactivateProduct = async (req, res) => {
+const toggleProductActive = async (req, res) => {
     const productID = req?.params?.id || null
     if (!productID) {
         res.status(400).json({
@@ -169,7 +210,7 @@ const deactivateProduct = async (req, res) => {
         return
     }
 
-    const data = await productRepository.productTable.findByPk(productID)
+    const data = await productTable.findByPk(productID)
     if (!data) {
         res.status(404).json({
             message: "Produto não encontrado"
@@ -177,8 +218,10 @@ const deactivateProduct = async (req, res) => {
         return
     }
 
-    const product = new Product(data.dataValues)
-    product.active = !product.active
+    const activeStatus = req?.body?.active || false
+    const product = {
+        active: activeStatus
+    }
 
     const updateClause = {
         where: {
@@ -186,10 +229,11 @@ const deactivateProduct = async (req, res) => {
         }
     }
 
-    // todo validate response here
-    await productRepository.productTable.update(product, updateClause)
+    await productTable.update(product, updateClause)
 
-    return `Produto ${product.active ? "ativado" : "desativado"} com sucesso`
+    res.status(200).json({
+        message: `Produto ${product.active ? "ativado" : "desativado"} com sucesso`
+    })
 }
 
 /**
@@ -205,7 +249,7 @@ const deleteProduct = async (req, res) => {
         return
     }
 
-    const data = await productRepository.productTable.findByPk(productID)
+    const data = await productTable.findByPk(productID)
     if (!data) {
         // TODO arrumar cloudfront response aqui 
         res.status(404).json({
@@ -224,9 +268,11 @@ const deleteProduct = async (req, res) => {
     }
 
     // todo validate response here
-    await productRepository.productTable.update(product, updateClause)
+    await productTable.update(product, updateClause)
 
-    return
+    res.status(200).json({
+        message: "Produto deletado com sucesso"
+    })
 }
 
 /**
@@ -249,11 +295,12 @@ const getProductImages = async (req) => {
 }
 
 export default {
+    getTotalProducts,
     getAllProducts,
     getProduct,
     saveProduct,
     updateProduct,
-    deactivateProduct,
+    toggleProductActive,
     deleteProduct,
     getProductImages
 }

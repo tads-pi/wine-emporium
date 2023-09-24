@@ -436,10 +436,10 @@
         }
       }
     },
-    "/v1/product/{id}": {
+    "/v1/backoffice/product/{id}": {
       "get": {
         "tags": [
-          "/product/{id}"
+          "/backoffice/product/{id}"
         ],
         "summary": "Get Some Product",
         "parameters": [
@@ -488,7 +488,7 @@
       },
       "put": {
         "tags": [
-          "/product/{id}"
+          "/backoffice/product/{id}"
         ],
         "summary": "Update Product in Backoffice",
         "parameters": [
@@ -547,7 +547,7 @@
       },
       "delete": {
         "tags": [
-          "/product/{id}"
+          "/backoffice/product/{id}"
         ],
         "summary": "Delete Product in Backoffice",
         "parameters": [
@@ -595,10 +595,10 @@
         }
       }
     },
-    "/v1/product/{id}/toggle-active": {
+    "/v1/backoffice/product/{id}/toggle-active": {
       "delete": {
         "tags": [
-          "/product/{id}/toggle-active"
+          "/backoffice/product/{id}/toggle-active"
         ],
         "summary": "Toggle Product active status",
         "parameters": [
@@ -646,10 +646,10 @@
         }
       }
     },
-    "/v1/product/{id}/upload": {
+    "/v1/backoffice/product/{id}/upload": {
       "post": {
         "tags": [
-          "/product/{id}/upload"
+          "/backoffice/product/{id}/upload"
         ],
         "summary": "Upload image for Product",
         "parameters": [
@@ -707,10 +707,10 @@
         }
       }
     },
-    "/v1/product": {
+    "/v1/backoffice/product": {
       "get": {
         "tags": [
-          "/product"
+          "/backoffice/product"
         ],
         "summary": "Get all Products",
         "security": [
@@ -813,6 +813,102 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InvaidFieldsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/store/product": {
+      "get": {
+        "tags": [
+          "/store/product"
+        ],
+        "summary": "Get all Products for Store view",
+        "security": [
+          {
+            "Authorization": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Página de Pesquisa",
+            "example": 1
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Número de itens para se retornar por página",
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllProductsResponseSimplified"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "InternalError",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/store/product/{id}": {
+      "get": {
+        "tags": [
+          "/store/product/{id}"
+        ],
+        "summary": "Get Some Product for Store view",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the product to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetProductResponseSimplified"
                 }
               }
             }
@@ -1030,8 +1126,17 @@
           "$ref": "#/components/schemas/product"
         }
       },
+      "GetAllProductsResponseSimplified": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/product_simplified"
+        }
+      },
       "GetProductResponse": {
         "$ref": "#/components/schemas/product"
+      },
+      "GetProductResponseSimplified": {
+        "$ref": "#/components/schemas/product_simplified"
       },
       "SaveProductRequest": {
         "type": "object",
@@ -1151,6 +1256,18 @@
             "type": "string",
             "default": "19.99"
           },
+          "stock": {
+            "type": "string",
+            "default": "200.00"
+          },
+          "ratings": {
+            "type": "number",
+            "default": 1.75
+          },
+          "totalRatings": {
+            "type": "number",
+            "default": 10
+          },
           "images": {
             "type": "array",
             "items": {
@@ -1173,6 +1290,31 @@
           "updatedAt": {
             "type": "string",
             "default": "2023-08-30T04:56:15.000Z"
+          }
+        }
+      },
+      "product_simplified": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "default": "Vinho Chave"
+          },
+          "description": {
+            "type": "string",
+            "default": "Vinho Fabricado em 1888 na vinícula de São Paulo"
+          },
+          "price": {
+            "type": "string",
+            "default": "19.99"
+          },
+          "ratings": {
+            "type": "number",
+            "default": 1.75
+          },
+          "totalRatings": {
+            "type": "number",
+            "default": 10
           }
         }
       }

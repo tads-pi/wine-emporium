@@ -1,34 +1,17 @@
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import config from "../config/config.js"
-import BackofficeUserRepository from "../repository/backofficeUserRepository.js"
-import { BackofficeUser } from "../models/backofficeUser.js"
-
-/**
- * procura um usuario no banco de dados
- * @param {*} user 
- * @returns {Promise<BackofficeUser>}
- */
-async function findUser(user = {
-    username: ""
-}) {
-    const findClause = {
-        where: {
-            username: user.username
-        }
-    }
-
-    return await BackofficeUserRepository.findOne(findClause)
-}
+import BackofficeUser from "../entity/backofficeUser.js"
+import authService from "../service/authService.js"
 
 /**
  * retorna um usuario do banco de dados a partir de um token
  * @param {string} token
  * @returns {Promise<BackofficeUser>}
  */
-export async function getUserFromToken(token) {
+async function getUserFromToken(token) {
     const decoded = jwt.decode(token)
-    const { dataValues: user } = await findUser(decoded)
+    const { dataValues: user } = await authService.findUser(decoded)
     return new BackofficeUser(user)
 }
 
@@ -39,7 +22,7 @@ export async function getUserFromToken(token) {
  * @param {*} next 
  * @returns
  */
-export const authenticateToken = async (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
     req.context = {
         user: null
     }
@@ -64,9 +47,8 @@ export const authenticateToken = async (req, res, next) => {
     let token = req.headers?.authorization ?? ""
     if (token == null || token === "") return res.sendStatus(401)
 
-    token = token.split("Bearer ")[1] || ""
     jwt.verify(token, config.JWT_SECRET, async (err) => {
-        if (err) return res.sendStatus(403)
+        if (err) return res.sendStatus(401)
         const userContext = await getUserFromToken(token)
 
         req.context.user = userContext
@@ -81,13 +63,13 @@ export const authenticateToken = async (req, res, next) => {
  * @param {*} res 
  * @returns 
  */
-export const handleBackofficeLogin = async (req, res) => {
+const handleBackofficeLogin = async (req, res) => {
     const user = {
         username: req.body?.username ?? "",
         password: req.body?.password ?? "",
     }
 
-    const foundUser = await findUser(user)
+    const foundUser = await authService.findUser(user)
     if (!foundUser || foundUser === null || foundUser === undefined) {
         res.status(404).json()
         return
@@ -112,4 +94,9 @@ export const handleBackofficeLogin = async (req, res) => {
             message: "Usuário ou senha inválidos"
         })
     }
+}
+
+export default {
+    authenticateToken,
+    handleBackofficeLogin
 }

@@ -2,46 +2,118 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as api from "../../../store/apps/api/users";
 import { useNavigate } from "react-router-dom";
+import { snackSlice } from "../../../store/apps/snack";
 
-export default function useSaveUser() {
+export default function useSaveUser({ initialFormData = {} }) {
     const dispatch = useDispatch()
-    const selector = useSelector(state => state.appReportUsers)
-
-    const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    const [userToSave, setUserToSave] = useState({})
-
     const navigate = useNavigate()
+    const selector = useSelector(state => state.appReportBackofficeUsers)
 
-    function onSubmit(e) {
-        e.preventDefault()
+    const [loading, setLoading] = useState(false)
+    const [formData, setForm] = useState(initialFormData)
 
-        dispatch(api.saveNewUser({
-            name: userToSave?.name || "",
-            document: userToSave?.document || "",
-            email: userToSave?.email || 0,
-            password: userToSave?.password || 0,
-            group: userToSave?.group || 0,
-        }))
+    function onSubmit(action) {
+        if (action.preventDefault) action.preventDefault()
+
+        const passwordConfirmationOK = formData?.password === formData?.passwordConfirmation
+        if (!passwordConfirmationOK) {
+            dispatch(snackSlice.actions.setSnackMessageError("As senhas não conferem!"))
+            return
+        }
+
+        if (action === "update") {
+            dispatch(api.updateUser({
+                id: formData?.id || 0,
+                name: formData?.name || "",
+                document: formData?.document || "",
+                email: formData?.email || "",
+                group: formData?.group || "",
+                password: formData?.password || "",
+            }))
+
+            imageData &&
+                imageData.map(({ data_url }) => {
+                    dispatch(api.uploadUserImage({
+                        userID: formData?.id || 0,
+                        base64Image: data_url,
+                    }))
+                })
+
+            dispatch(snackSlice.actions.setSnackMessageInfo("Salvando usuário..."))
+        }
+
+        if (action === "delete") {
+            dispatch(api.deleteUser(formData?.id || 0))
+            dispatch(snackSlice.actions.setSnackMessageInfo("Deletando usuário..."))
+        }
+
+        if (action === "save") {
+            dispatch(api.saveNewUser({
+                name: formData?.name || "",
+                document: formData?.document || "",
+                email: formData?.email || "",
+                group: formData?.group || "",
+                password: formData?.password || "",
+            }))
+
+            dispatch(snackSlice.actions.setSnackMessageInfo("Salvando usuário..."))
+        }
+
+    }
+
+    function onFormUpdate(field, value) {
+        if (field === "image") {
+            setImageData(value)
+            return
+        }
+
+        setForm({
+            ...formData,
+            [field]: value,
+        })
     }
 
     useEffect(() => {
-        setData(selector.response.data)
         if (selector.response.status < 400 && selector.response.status >= 200) {
-            navigate("/users")
+            if (selector.fn.includes("saveNewUser")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Usuário salvo com sucesso!"))
+                navigate("/users")
+                return
+            }
+
+            if (selector.fn.includes("updateUser")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Usuário atualizado com sucesso!"))
+                navigate("/users")
+            }
+
+            if (selector.fn.includes("deleteUser")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Usuário deletado com sucesso!"))
+                navigate("/users")
+            }
         }
+
+        if (selector.response.status == 400) {
+            dispatch(snackSlice.actions.setSnackMessageError(selector.response.data.message))
+        }
+
+        if (selector.response.status >= 500) {
+            dispatch(snackSlice.actions.setSnackMessageError("Erro do servidor, tente novamente mais tarde"))
+        }
+
     }, [selector.response])
 
     useEffect(() => {
         setLoading(selector.loading)
     }, [selector.loading])
 
+    useEffect(() => {
+        console.log("formData:", formData);
+    }, [formData])
+
     return [
-        data,
+        formData,
+        onFormUpdate,
         loading,
         onSubmit,
-        userToSave,
-        setUserToSave,
     ]
 }
