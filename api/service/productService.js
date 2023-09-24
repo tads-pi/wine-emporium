@@ -4,6 +4,7 @@ import productStockTable from "../sequelize/tables/productStockTable.js"
 import productRatingsTable from "../sequelize/tables/productRatingTable.js"
 import productTable from "../sequelize/tables/productTable.js"
 import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
+import productData from "../data/productData.js"
 
 const getTotalProducts = async () => {
     const countClause = {

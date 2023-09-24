@@ -1,6 +1,7 @@
 import BackofficeUser from "../entity/backofficeUser.js"
 import backofficeUserTable from "../sequelize/tables/backofficeUserTable.js"
 import authService, { VIEW_USER_EXTENDED_DATA } from "./authService.js"
+import bcrypt from "bcrypt"
 
 const saveBackofficeUser = async (req, res) => {
     // validates user data
@@ -61,10 +62,13 @@ const getAllBackofficeUsers = async (req, res) => {
         return
     }
 
-    const users = data.dataValues
-    users.map((unparsedUser) => {
-        return new BackofficeUser(unparsedUser).viewmodel(getExtendedData)
-    })
+    const users = []
+    if (data?.length > 0) {
+        data.map(({ dataValues: unparsedUser }) => {
+            users.push(new BackofficeUser(unparsedUser).viewmodel(getExtendedData))
+        })
+    }
+
 
     res.status(200).json(users)
 }
@@ -108,6 +112,10 @@ const updateBackofficeUser = async (req, res) => {
         }
     }
 
+    if (fieldsToUpdate?.password) {
+        fieldsToUpdate.password = bcrypt.hashSync(fieldsToUpdate?.password || "", 10)
+    }
+
     const data = await backofficeUserTable.update(fieldsToUpdate, updateClause)
     if (!data) {
         res.status(500).json({
@@ -122,7 +130,6 @@ const updateBackofficeUser = async (req, res) => {
 }
 
 const toggleBackofficeUserActive = async (req, res) => {
-    // handle deactivation
     const userID = req.params.id ?? ""
     if (userID === "") {
         res.status(400).json({
@@ -134,33 +141,23 @@ const toggleBackofficeUserActive = async (req, res) => {
     const data = await backofficeUserTable.findByPk(userID)
     if (!data) {
         res.status(404).json({
-            message: "User not found"
+            message: "Usuário não encontrado"
         })
         return
     }
 
-    const user = new BackofficeUser(data.dataValues)
-    if (!user) {
-        res.status(404).json({
-            message: "User not found"
-        })
-        return
+    const activeStatus = req?.body?.active || false
+    const user = {
+        active: activeStatus
     }
-    user.active = !user.active
 
     const updateClause = {
         where: {
-            id: user.id
+            id: userID
         }
     }
 
-    const updateData = await backofficeUserTable.update(user, updateClause)
-    if (!updateData) {
-        res.status(500).json({
-            message: "Erro ao atualizar usuário"
-        })
-        return
-    }
+    await backofficeUserTable.update(user, updateClause)
 
     res.status(200).json({
         message: `Usuário ${user.active ? "ativado" : "desativado"} com sucesso`

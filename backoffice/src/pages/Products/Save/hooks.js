@@ -104,6 +104,15 @@ export default function useSaveProduct({ initialFormData = {} }) {
             }
 
         }
+
+        if (selector.response.status == 400) {
+            dispatch(snackSlice.actions.setSnackMessageError(selector.response.data.message))
+        }
+
+        if (selector.response.status >= 500) {
+            dispatch(snackSlice.actions.setSnackMessageError("Erro do servidor, tente novamente mais tarde"))
+        }
+
     }, [selector.response])
 
     useEffect(() => {

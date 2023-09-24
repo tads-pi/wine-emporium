@@ -6,8 +6,12 @@ export default function NavBarWE() {
     return (
         <Navbar className="bg-body-tertiary">
             <Nav className="me-auto">
-                <Nav.Link href="/users">Usuários</Nav.Link>
-                <NavDropdown title="Produtos" id="basic-nav-dropdown">
+                <NavDropdown title="Usuários" id="users-nav-dropdown">
+                    <NavDropdown.Item href="/users">Ver todos</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/users/save">Criar novo</NavDropdown.Item>
+                </NavDropdown>
+                <NavDropdown title="Produtos" id="products-nav-dropdown">
                     <NavDropdown.Item href="/products">Ver todos</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/products/save">Criar novo</NavDropdown.Item>

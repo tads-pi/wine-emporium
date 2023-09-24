@@ -12,7 +12,7 @@ backofficeRouter.post("/user", backofficeController.saveBackofficeUser)
 backofficeRouter.get("/user", backofficeController.getAllBackofficeUsers)
 backofficeRouter.get("/user/:id", backofficeController.getBackofficeUser)
 backofficeRouter.put("/user/:id", backofficeController.updateBackofficeUser)
-backofficeRouter.delete("/user/:id/toggle-active", backofficeController.deactivateBackofficeUser)
+backofficeRouter.post("/user/:id/toggle-active", backofficeController.deactivateBackofficeUser)
 backofficeRouter.delete("/user/:id", backofficeController.deleteBackofficeUser)
 // product
 backofficeRouter.get("/product/total", backofficeProductController.getTotalProducts)

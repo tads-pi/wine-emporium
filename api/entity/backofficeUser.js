@@ -27,7 +27,7 @@ export default class BackofficeUser {
         const documentRegex = /([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}[-]?[0-9]{2})/ // CPF or CNPJ
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // email
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/ // 8 or more letters and at least 1 number
-        const validGroups = ["Administrador", "Estoquista"]
+        const validGroups = ["ADMINISTRADOR", "ESTOQUISTA"]
 
         if (!nameRegex.test(this.name)) invalidFields.push("nome")
         // TODO validar se cpf bate com padrao nacional e nao sao apenas numeros aleatorios
@@ -88,6 +88,6 @@ export default class BackofficeUser {
         const nameParts = name.split(" ")
         const firstName = nameParts[0]
         const lastName = nameParts[nameParts.length - 1]
-        return `${firstName.charAt(0)}${lastName.toLowerCase()}`
+        return `${firstName.charAt(0).toLowerCase()}${lastName.toLowerCase()}`
     }
 }

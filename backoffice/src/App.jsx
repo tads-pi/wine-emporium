@@ -4,8 +4,6 @@ import { Provider } from "react-redux"
 import { store } from "./store"
 
 import Login from "./pages/Login/Login";
-import UpdateUser from "./pages/User/Update/UpdateUser";
-import SaveUser from "./pages/User/Save/SaveUser";
 import PageNotFound from "./components/web/PageNotFound";
 import ListProducts from "./pages/Products/List/ListProducts";
 import SaveProduct from "./pages/Products/Save/SaveProduct";
@@ -13,6 +11,8 @@ import UpdateProducts from "./pages/Products/Update/UpdateProduct";
 import NavBarWE from "./components/navbar/NavBarWE";
 import SnackWE from "./components/snack/SnackWE";
 import ListUsers from "./pages/User/List/ListUsers";
+import UpdateUser from "./pages/User/Update/UpdateUser";
+import SaveUser from "./pages/User/Save/SaveUser";
 
 // todo enhance this validation and move this component somewhere else
 function PrivateRoute({ children }) {
