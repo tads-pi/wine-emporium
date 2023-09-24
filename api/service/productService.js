@@ -1,7 +1,7 @@
-import productData from "../data/productData.js"
 import { Product } from "../entity/product.js"
 import { getImagesFromFolder } from "../libs/aws/s3/index.js"
 import productStockTable from "../sequelize/tables/productStockTable.js"
+import productRatingsTable from "../sequelize/tables/productRatingTable.js"
 import productTable from "../sequelize/tables/productTable.js"
 import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
 
@@ -59,8 +59,11 @@ const getProduct = async (req) => {
     }
 
     const product = new Product(data.dataValues)
+
+    // Add Images
     product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
 
+    // Add Stock
     const findStockClause = {
         where: {
             product_id: productID
@@ -68,6 +71,26 @@ const getProduct = async (req) => {
     }
     const stock = await productStockTable.findOne(findStockClause)
     product.stock = stock?.dataValues?.stock || 0
+
+    // Add Ratings
+    const ratings = await productRatingsTable.findAll({
+        where: {
+            product_id: productID
+        },
+        group: ["product_id"],
+        attributes: [
+            "product_id",
+            [productRatingsTable.sequelize.fn("AVG", productRatingsTable.sequelize.col("value")), "average_rating"],
+            [productRatingsTable.sequelize.fn("COUNT", productRatingsTable.sequelize.col("value")), "total_ratings"]
+        ]
+    })
+    if (ratings) {
+        if (ratings.length > 0) {
+            // we need to inform [0] because we're grouping by product_id, so it will always return an array with 1 element
+            product.ratings = Number(ratings[0]?.dataValues?.average_rating) || 0
+            product.totalRatings = Number(ratings[0]?.dataValues?.total_ratings) || 0
+        }
+    }
 
     return product
 }
