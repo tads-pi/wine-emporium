@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "install": "cd store && npm install -D && cd .. && cd backoffice && npm i -D && cd .. && cd api && npm i -D && cd.."
   },
   "repository": {
     "type": "git",
