@@ -31,14 +31,6 @@ export default function useSaveUser({ initialFormData = {} }) {
                 password: formData?.password || "",
             }))
 
-            imageData &&
-                imageData.map(({ data_url }) => {
-                    dispatch(api.uploadUserImage({
-                        userID: formData?.id || 0,
-                        base64Image: data_url,
-                    }))
-                })
-
             dispatch(snackSlice.actions.setSnackMessageInfo("Salvando usuário..."))
         }
 
@@ -62,11 +54,6 @@ export default function useSaveUser({ initialFormData = {} }) {
     }
 
     function onFormUpdate(field, value) {
-        if (field === "image") {
-            setImageData(value)
-            return
-        }
-
         setForm({
             ...formData,
             [field]: value,
