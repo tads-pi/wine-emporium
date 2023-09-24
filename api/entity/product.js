@@ -9,6 +9,8 @@ export class Product {
         this.price = input?.price || ""
         this.images = input?.images || []
         this.stock = input?.stock || 0
+        this.ratings = input?.ratings || 0
+        this.totalRatings = input?.totalRatings || 0
 
         this.id = input?.id || ""
         this.uuid = input?.uuid || uuid()
@@ -78,7 +80,8 @@ export class Product {
                 updatedAt: this.updatedAt,
                 images: this.images,
                 stock: this.stock,
-                // todo add ratings
+                ratings: this.ratings,
+                totalRatings: this.totalRatings,
             }
         }
 
@@ -91,6 +94,8 @@ export class Product {
             stock: this.stock,
             active: this.active,
             images: this.images,
+            ratings: this.ratings,
+            totalRatings: this.totalRatings,
         }
     }
 
