@@ -87,12 +87,8 @@ export class Product {
 
         return {
             name: this.name,
-            slug: this.slug,
-            uuid: this.uuid,
             description: this.description,
             price: this.price,
-            stock: this.stock,
-            active: this.active,
             images: this.images,
             ratings: this.ratings,
             totalRatings: this.totalRatings,

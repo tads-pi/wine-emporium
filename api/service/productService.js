@@ -37,7 +37,7 @@ const getAllProducts = async (req, res) => {
         return
     }
 
-    const extendedData = authService.userCan(req.context.user, VIEW_PRODUCT_EXTENDED_DATA)
+    const extendedData = authService.userCan(req?.context?.user || {}, VIEW_PRODUCT_EXTENDED_DATA)
     res.status(200).json({
         products: products.map(product => product.viewmodel(extendedData))
     })
