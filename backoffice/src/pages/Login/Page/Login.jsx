@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchAuthentication } from "../../store/apps/api/auth"
-
-import "./login.css"
+import "./styles.css"
 
 export default function Login() {
     // TODO refatorar e add um hook
