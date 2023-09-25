@@ -9,6 +9,8 @@ import { useStore } from '../../zustand-store/index.example';
 import { useForm } from 'react-hook-form'
 
 import { userLoginFormSchema } from '../../utils/schema';
+import { useCreateUser } from '../../hooks/useCreateUserMutate';
+import { useEffect } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,14 +28,7 @@ export function FormCreateUser() {
         password: '',
         group: ''
     });
-
-    const { user, isLoading, login } = useStore(store => {
-        return {
-          user: store.user,
-          isLoading: store.isLoading,
-          login: store.login
-        }
-    })
+    const { mutate, isLoading } = useCreateUser()
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -58,18 +53,24 @@ export function FormCreateUser() {
         return formattedValue;
     };
 
-    // Função para atualizar o campo CPF no estado com a máscara
     const handleCPFChange = (e) => {
         const formattedCPF = formatCPF(e.target.value);
         setLoginForm({ ...loginForm, document: formattedCPF });
     };
 
+
     const onSubmit = (e) => {
         e.preventDefault()
-        login({
+        const data = {
             name: loginForm.name,
-            password: loginForm.password
-        })
+            document: loginForm.document,
+            email: loginForm.email,
+            password: loginForm.password,
+            group: loginForm.group
+        }
+        console.log('bossstaaaaaa', loginForm)
+        console.log('bossstaaaaaa 2', data)
+        mutate(data)
     };
 
 
@@ -93,6 +94,17 @@ export function FormCreateUser() {
         }
     }
 
+    const validateForm = () => {
+        const validateUser = Object.values(loginForm).includes('')
+
+        return validateUser
+    }
+
+    useEffect(() => {
+     console.log('teu cu', loginForm)
+    }, [loginForm])
+    
+
     return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
             <Grid container spacing={2} sx={{ maxWidth: '750px' }}>
@@ -101,25 +113,47 @@ export function FormCreateUser() {
                         <Typography variant='h5' gutterBottom>
                             Cadastro
                         </Typography>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <div style={{ display: 'flex', gap: 15 }}>
+                        <form onSubmit={onSubmit}>
+                        <div style={{ display: 'flex', gap: 15 }}>
                                 <TextField
+                                    type='text'
                                     label="Nome Completo"
                                     fullWidth
                                     variant="outlined"
                                     margin="normal"
                                     required
                                     size='small'
-                                    onChange={(e) => setLoginForm({ ...loginForm, name: e.target.value })}
-                                    {...register('name')}
-                                    helperText={errors?.name?.message}
-                                    color={errors?.name?.message ? 'error' : undefined}
+                                    onChange={(e) => {
+                                        setLoginForm({ ...loginForm, name: e.target.value })
+                                    }}
+                                    // {...register('name')}
+                                    // helperText={errors?.name?.message}
+                                    // color={errors?.name?.message ? 'error' : undefined}
                                 />
                                 
                                 
                             </div>
                             <div style={{ display: 'flex', gap: 15 }}>
                                 <TextField
+                                     label="CPF"
+                                     fullWidth
+                                     variant="outlined"
+                                     margin="normal"
+                                     required
+                                     size='small'
+                                     inputProps={{maxLength: 14}}
+                                     value={loginForm.document} // Usar o valor formatado do estado
+                                     onChange={handleCPFChange} // Aplicar a máscara no evento onChange
+                                    // {...register('document')}
+                                    // helperText={errors?.document?.message}
+                                    // color={errors?.document?.message ? 'error' : undefined}
+                                />
+                                
+                                
+                            </div>
+                            <div style={{ display: 'flex', gap: 15 }}>
+                                <TextField
+                                    type='email'
                                     label="E-mail"
                                     fullWidth
                                     variant="outlined"
@@ -127,9 +161,9 @@ export function FormCreateUser() {
                                     required
                                     size='small'
                                     onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-                                    {...register('email')}
-                                    helperText={errors?.email?.message}
-                                    color={errors?.email?.message ? 'error' : undefined}
+                                    // {...register('email')}
+                                    // helperText={errors?.email?.message}
+                                    // color={errors?.email?.message ? 'error' : undefined}
                                 />
                                  <TextField
                                     label="Senha"
@@ -153,14 +187,15 @@ export function FormCreateUser() {
                                             </InputAdornment>
                                         ),
                                     }}
-                                    {...register('password')}
-                                    helperText={errors?.password?.message}
-                                    color={handleValuesPassword(errors?.password?.message)}
+                                    // {...register('password')}
+                                    // helperText={errors?.password?.message}
+                                    // color={handleValuesPassword(errors?.password?.message)}
                                 />
                                 
                             </div>
                             <div style={{ display: 'flex', gap: 15 }}>
                             <TextField
+                                    type='text'
                                     label="Grupo"
                                     fullWidth
                                     variant="outlined"
@@ -168,9 +203,9 @@ export function FormCreateUser() {
                                     required
                                     size='small'
                                     onChange={(e) => setLoginForm({ ...loginForm, group: e.target.value })}
-                                    {...register('group')}
-                                    helperText={errors?.group?.message}
-                                    color={errors?.group?.message ? 'error' : undefined}
+                                    // {...register('group')}
+                                    // helperText={errors?.group?.message}
+                                    // color={errors?.group?.message ? 'error' : undefined}
                                 />
                             </div>
                             <Button
