@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { fetchAuthentication } from "../../store/apps/api/auth"
 import "./styles.css"
+import * as api from "../../../store/apps/api/auth"
 
 export default function Login() {
     // TODO refatorar e add um hook
@@ -14,7 +14,7 @@ export default function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        dispatch(fetchAuthentication({
+        dispatch(api.fetchAuthentication({
             username: loginForm.username,
             password: loginForm.password
         }))
