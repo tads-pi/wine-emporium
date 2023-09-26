@@ -34,7 +34,7 @@ jobs:
       - run: npm ci
       - name: Build
         run: |
-          export WE_BASE_URL=https://api.wineemporium.shop/v1/backoffice
+          export VITE_WE_BASE_URL=https://api.wineemporium.shop/v1/backoffice
           npm run build
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
