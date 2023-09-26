@@ -14,6 +14,16 @@ const api = axios.create({
     timeout: 30000, // 30 seconds
 })
 
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+    }
+)
+
 api.interceptors.response.use(
     // success case
     (response) => response,
