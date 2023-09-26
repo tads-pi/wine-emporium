@@ -69,8 +69,8 @@ const handleBackofficeLogin = async (req, res) => {
         password: req.body?.password ?? "",
     }
 
-    const foundUser = await authService.findUser(user)
-    if (!foundUser || foundUser === null || foundUser === undefined) {
+    const { dataValues: foundUser } = await authService.findUser(user)
+    if (!foundUser) {
         res.status(404).json()
         return
     }
