@@ -5,9 +5,11 @@ import backofficeProductController from "../controller/backofficeProductControll
 
 export const backofficeRouter = express.Router()
 
+// auth
+backofficeRouter.post("/auth", authController.handleBackofficeLogin)
+
 backofficeRouter.use(authController.authenticateToken)
 // user
-backofficeRouter.post("/auth", authController.handleBackofficeLogin)
 backofficeRouter.post("/user", backofficeController.saveBackofficeUser)
 backofficeRouter.get("/user", backofficeController.getAllBackofficeUsers)
 backofficeRouter.get("/user/:id", backofficeController.getBackofficeUser)
