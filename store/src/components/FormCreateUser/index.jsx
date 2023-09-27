@@ -5,12 +5,10 @@ import { Paper, TextField, Button, Typography, IconButton, InputAdornment } from
 import { styled } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useStore } from '../../zustand-store/index.example';
 import { useForm } from 'react-hook-form'
 
 import { userLoginFormSchema } from '../../utils/schema';
 import { useCreateUser } from '../../hooks/useCreateUserMutate';
-import { useEffect } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

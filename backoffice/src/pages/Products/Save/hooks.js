@@ -103,6 +103,10 @@ export default function useSaveProduct({ initialFormData = {} }) {
                 navigate("/products")
             }
 
+            if (selector.fn.includes("getProductById")) {
+                setForm(selector.response.data.product)
+            }
+
         }
 
         if (selector.response.status >= 400 && selector.response.status < 500) {
@@ -120,8 +124,8 @@ export default function useSaveProduct({ initialFormData = {} }) {
     }, [selector.loading])
 
     useEffect(() => {
-        console.log("formData:", formData);
-    }, [formData])
+        dispatch(api.getProductById(initialFormData?.id || 0))
+    }, [])
 
     return [
         formData,

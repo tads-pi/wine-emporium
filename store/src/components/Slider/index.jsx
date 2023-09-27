@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -11,13 +11,10 @@ import './styles.css';
 
 // import required modules
 import { Parallax, Pagination, Navigation } from 'swiper/modules';
-import { withTheme } from '@emotion/react';
 
-interface SliderProps {
-  data: any
-}
 
-export function Slider({ data }: SliderProps) {
+
+export function Slider({ data }) {
 
   if(!data) return null
   return (

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiAuth = axios.create({
-    baseURL: 'https://api.dev.wineemporium.shop',
+    baseURL: 'https://api.wineemporium.shop',
 })
 
 export default apiAuth
