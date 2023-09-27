@@ -9,7 +9,6 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
     timeout: 30000, // 30 seconds
 })
@@ -18,7 +17,7 @@ api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token')
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`
+            config.headers.Authorization = `${token}`
         }
         return config
     }
