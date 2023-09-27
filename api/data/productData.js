@@ -1,4 +1,5 @@
 import { Product } from "../entity/product.js";
+import { getImagesFromFolder } from "../libs/aws/s3/index.js";
 import productStockTable from "../sequelize/tables/productStockTable.js";
 import productTable from "../sequelize/tables/productTable.js";
 
@@ -17,6 +18,7 @@ const getAll = async (limit, offset) => {
     if (products.length === 0) return null
 
     for (const product of products) {
+        product.images = getImagesFromFolder("wineemporium-uploads", `products/${product?.uuid || "fallback.png"}`)
         // todo fazer outras camadas de data pra evitar ess gambiarra :(
         let stock = 0
         const rawStock = (
