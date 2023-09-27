@@ -31,37 +31,44 @@ export function CardWine({ data, addCart }) {
 
   return (
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      <Box sx={{ my: 3, mx: 2 }} key={data.uuid}>
+      <Box
+        sx={{ my: 3, mx: 2 }}
+        key={data.uuid}
+      >
         <Grid container alignItems="center">
-          <Grid item xs>
-            <CardMedia
-              component="img"
-              height="140"
-              image={data.images[0]}
-              alt="Vinho Wine Emporium"
-              style={{ objectFit: "contain" }}
-            />
-            <Grid
-              item
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography gutterBottom variant="h6" component="div">
-                {data.name}
-              </Typography>
-              <Typography gutterBottom variant="subtitle1" component="span">
-                ${data.price}
-              </Typography>
+          <div
+            onClick={() => window.location.href = `/mercado/${data.id}`}
+          >
+            <Grid item xs>
+              <CardMedia
+                component="img"
+                height="140"
+                image={data.images[0]}
+                alt="Vinho Wine Emporium"
+                style={{ objectFit: "contain" }}
+              />
+              <Grid
+                item
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography gutterBottom variant="h6" component="div">
+                  {data.name}
+                </Typography>
+                <Typography gutterBottom variant="subtitle1" component="span">
+                  ${data.price}
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
+          </div>
         </Grid>
         <Typography color="text.secondary" variant="subtitle2">
           {data.description}
         </Typography>
-        <Link to={`/mercado/${data.id}`}>Ver Mais</Link>
+        {/* <Link to={`/mercado/${data.id}`}>Ver Mais</Link> */}
       </Box>
 
       <Divider variant="middle" />

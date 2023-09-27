@@ -1,0 +1,13 @@
+.loading__svg{
+    width: 5%;
+    filter: invert(50%);
+}
+
+.loading__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 100vh;
+}

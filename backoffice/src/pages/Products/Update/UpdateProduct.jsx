@@ -2,9 +2,9 @@ import { useLocation } from "react-router-dom"
 import Form from "../components/Form";
 import LoadingWE from "../../../components/loading/LoadingWE";
 import useSaveProduct from "../Save/hooks";
-import "./style.css"
 import LivePreviewWE from "../../../components/LivePreview/LivePreviewWE";
 import { VerMais } from "../../../../../store/src/components/VerMais";
+import "./style.css"
 
 export default function UpdateProduct() {
     const { state } = useLocation()
