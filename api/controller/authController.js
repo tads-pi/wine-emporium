@@ -23,12 +23,17 @@ async function getUserFromToken(token) {
  * @returns
  */
 const authenticateToken = async (req, res, next) => {
+    if (req.method === "OPTIONS") {
+        res.status(200).json({})
+        return
+    }
+
     req.context = {
         user: null
     }
 
     let token = req.headers?.authorization ?? ""
-    if (token == null || token === "") return res.sendStatus(401)
+    if (!token) return res.sendStatus(401)
 
     jwt.verify(token, config.JWT_SECRET, async (err) => {
         if (err) return res.sendStatus(401)
@@ -52,13 +57,13 @@ const handleBackofficeLogin = async (req, res) => {
         password: req.body?.password ?? "",
     }
 
-    const { dataValues: foundUser } = await authService.findUser(user)
+    const foundUser = await authService.findUser(user)
     if (!foundUser) {
         res.status(404).json()
         return
     }
 
-    if (bcrypt.compareSync(user.password, foundUser.password)) {
+    if (bcrypt.compareSync(user?.password || "", foundUser?.dataValues?.password || "")) {
         const token = jwt.sign({
             username: user.username,
             email: user.email,
