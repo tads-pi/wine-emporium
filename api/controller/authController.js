@@ -11,8 +11,8 @@ import authService from "../service/authService.js"
  */
 async function getUserFromToken(token) {
     const decoded = jwt.decode(token)
-    const { dataValues: user } = await authService.findUser(decoded)
-    return new BackofficeUser(user)
+    const user = await authService.findUser(decoded)
+    return new BackofficeUser(user?.dataValues || {})
 }
 
 /**
