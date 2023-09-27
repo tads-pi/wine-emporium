@@ -7,8 +7,8 @@ function getUri() {
 const api = axios.create({
     baseURL: getUri(),
     headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json",
     },
     timeout: 30000, // 30 seconds
 })
@@ -30,7 +30,7 @@ api.interceptors.response.use(
     ({ response }) => {
         if (response.status === 401) {
             localStorage.removeItem('token')
-            window.location.reload()
+            window.location.href = '/login'
         }
         return response
     })
