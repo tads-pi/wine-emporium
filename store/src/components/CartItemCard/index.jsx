@@ -2,12 +2,9 @@ import { CardMedia, IconButton, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 
 import React from 'react'
-import { enqueueSnackbar, VariantType } from 'notistack'
+import { enqueueSnackbar } from 'notistack'
 
-interface CartItemCardProps {
-    data: any
-    removeCart: () => void
-}
+
 
 // {
 //     "name": "Wine Bottle Teste",
@@ -18,13 +15,13 @@ interface CartItemCardProps {
 //     "totalRatings": 0
 // }
 
-export function CartItemCard({ data }: CartItemCardProps) {
+export function CartItemCard({ data, removeCart }) {
 
-    const handleClickVariant = (variant: VariantType) => () => {
+    const handleClickVariant = (variant) => () => {
         // variant could be success, error, warning, info, or default
-        addCart()
-        enqueueSnackbar(<Typography>Vinho removido do carrinho.</Typography>, { variant });
-      };  
+        removeCart()
+        enqueueSnackbar(<Typography>Vinho removido do carrinho.</Typography>, { variant })
+    };
 
 
     return (
@@ -42,23 +39,23 @@ export function CartItemCard({ data }: CartItemCardProps) {
                         width="100"
                         image={data.images[0]}
                         alt="Vinho Wine Emporium"
-                        style={{ objectFit: 'contain', borderRadius:"10px"}}
-                    
+                        style={{ objectFit: 'contain', borderRadius: "10px" }}
+
                     />
                     <div style={{
                         display: "flex",
-                        flexDirection: "column", 
+                        flexDirection: "column",
                         justifyContent: "center",
-                        marginLeft:"10px"
+                        marginLeft: "10px"
                     }} >
-                    <Typography style={{ whiteSpace: 'nowrap' }}>Vinho: {data.name}</Typography>
-                    <Typography style={{ whiteSpace: 'nowrap' }}>Valor {data.price}</Typography>
+                        <Typography style={{ whiteSpace: 'nowrap' }}>Vinho: {data.name}</Typography>
+                        <Typography style={{ whiteSpace: 'nowrap' }}>Valor {data.price}</Typography>
                     </div>
 
                 </div>
                 <div>
                     <IconButton aria-label="delete" size="small" color='error'>
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="small" onClick={handleClickVariant('info')} />
                     </IconButton>
                 </div>
             </div>

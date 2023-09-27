@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'https://api.dev.wineemporium.shop',
+  baseURL: 'https://api.wineemporium.shop',
 });
 
 api.interceptors.request.use(
