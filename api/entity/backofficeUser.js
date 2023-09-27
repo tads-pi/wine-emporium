@@ -26,14 +26,14 @@ export default class BackofficeUser {
         const nameRegex = /^[a-zA-Z\s]{3,}$/ // 3 or more letters from a to z
         const documentRegex = /([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}[-]?[0-9]{2})/ // CPF or CNPJ
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // email
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/ // 8 or more letters and at least 1 number
+        // const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/ // 8 or more letters and at least 1 number
         const validGroups = ["ADMINISTRADOR", "ESTOQUISTA"]
 
         if (!nameRegex.test(this.name)) invalidFields.push("nome")
         // TODO validar se cpf bate com padrao nacional e nao sao apenas numeros aleatorios
         if (!documentRegex.test(this.document)) invalidFields.push("documento")
         if (!emailRegex.test(this.email)) invalidFields.push("e-mail")
-        if (!passwordRegex.test(this.password)) invalidFields.push("senha")
+        // if (!passwordRegex.test(this.password)) invalidFields.push("senha")
         if (!validGroups.includes(this.group)) invalidFields.push("grupo")
 
         return invalidFields
