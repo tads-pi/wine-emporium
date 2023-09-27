@@ -1,24 +1,15 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { CardMedia, IconButton, Snackbar } from '@mui/material';
+import { CardMedia, IconButton } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { useStore } from 'zustand';
 import { useCartStore } from '../../zustand-store/cartState';
-import { VariantType, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 
 
-interface CardWineProps {
-    data: any
-    addCart: () => void
-}
-
-export function CardWine({ data, addCart } : CardWineProps) {
+export function CardWine({ data, addCart }) {
     const [open, setOpen] = React.useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -31,7 +22,7 @@ export function CardWine({ data, addCart } : CardWineProps) {
         }
     })
 
-      const handleClickVariant = (variant: VariantType) => () => {
+      const handleClickVariant = (variant) => () => {
         // variant could be success, error, warning, info, or default
         addCart()
         enqueueSnackbar(<Typography>Vinho adicionado adicionado ao carrinho.</Typography>, { variant });
