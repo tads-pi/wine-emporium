@@ -27,23 +27,6 @@ const authenticateToken = async (req, res, next) => {
         user: null
     }
 
-    if (config.NODE_ENV === "local") {
-        req.context.user = new BackofficeUser({
-            id: 1,
-            name: "Admin",
-            username: "admin",
-            document: "012.345.678-90",
-            email: "email@example.com",
-            group: "ADMINISTRADOR",
-            active: true,
-            deleted: false,
-            createdAt: new Date(),
-            updatedAt: new Date()
-        })
-        next()
-        return
-    }
-
     let token = req.headers?.authorization ?? ""
     if (token == null || token === "") return res.sendStatus(401)
 
