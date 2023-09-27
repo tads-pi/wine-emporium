@@ -105,7 +105,7 @@ export default function useSaveProduct({ initialFormData = {} }) {
 
         }
 
-        if (selector.response.status == 400) {
+        if (selector.response.status >= 400 && selector.response.status < 500) {
             dispatch(snackSlice.actions.setSnackMessageError(selector.response.data.message))
         }
 
