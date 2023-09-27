@@ -41,16 +41,16 @@ const Home = () => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        login({
-            username: loginForm.username,
-            password: loginForm.password
-        })
-        .then((res) => {
-            if(res.access_token) {
+        // login({
+        //     username: loginForm.username,
+        //     password: loginForm.password
+        // })
+        // .then((res) => {
+        //     if(res.access_token) {
                 navigate('/mercado')    
-                localStorage.setItem('token', res.access_token)
-            }
-        })
+                 localStorage.setItem('token', "mock_token")
+        //     }
+        // })
     };
 
 
