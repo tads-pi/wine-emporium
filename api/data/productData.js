@@ -21,7 +21,7 @@ const getAll = async (limit, offset) => {
         // images
         let images = await getImagesFromFolder("wineemporium-uploads", `products/${product?.uuid}`)
         if (images.length == 0) {
-            images = await getImagesFromFolder("wineemporium-uploads", `products/fallback.png`)
+            images = await getImagesFromFolder("wineemporium-uploads", "products/fallback.png")
         }
         product.images = images
 
