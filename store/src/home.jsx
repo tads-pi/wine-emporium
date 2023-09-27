@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useStore } from './zustand-store/index.example';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,6 +20,8 @@ const Home = () => {
         username: '',
         password: ''
     });
+
+    const navigate = useNavigate()
 
     const { user, isLoading, login } = useStore(store => {
         return {
@@ -43,9 +45,14 @@ const Home = () => {
             username: loginForm.username,
             password: loginForm.password
         })
+        .then((res) => {
+            if(res.access_token) {
+                navigate('/mercado')    
+                localStorage.setItem('token', res.access_token)
+            }
+        })
     };
 
-    console.log(isLoading)
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
