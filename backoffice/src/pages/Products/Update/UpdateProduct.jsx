@@ -4,6 +4,7 @@ import LoadingWE from "../../../components/loading/LoadingWE";
 import useSaveProduct from "../Save/hooks";
 import "./style.css"
 import LivePreviewWE from "../../../components/LivePreview/LivePreviewWE";
+import { VerMais } from "../../../../../store/src/components/VerMais";
 
 export default function UpdateProduct() {
     const { state } = useLocation()
@@ -38,7 +39,7 @@ export default function UpdateProduct() {
                         <LivePreviewWE
                             component={
                                 <PREVIEW
-                                    teste={"aloha"}
+                                    formData={formData}
                                 />
                             }
                             containerClassName={"update-product__live-preview"}
@@ -49,10 +50,12 @@ export default function UpdateProduct() {
     )
 }
 
-const PREVIEW = ({ teste }) => {
+const PREVIEW = ({ formData }) => {
     return (
         <div>
-            <h1>{teste}</h1>
+            <VerMais
+                autofill={formData}
+            />
         </div>
     )
 }
