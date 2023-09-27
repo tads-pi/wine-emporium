@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useStore } from './zustand-store/index.example';
+import { Link } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -87,6 +88,9 @@ const Home = () => {
                                     ),
                                 }}
                             />
+                            <div>
+                                Não tem uma conta? <span><Link to="criar-cadastro">Criar cadastro</Link></span>
+                            </div>
                             <Button
                                 variant="contained"
                                 color="primary"
