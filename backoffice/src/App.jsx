@@ -21,13 +21,17 @@ function PrivateRoute({ children }) {
         window.location.href = "/login"
     }
 
-    return children
+    return (
+        <>
+            <NavBarWE />
+            {children}
+        </>
+    )
 }
 
 export default function App() {
     return (
         <Provider store={store}>
-            <NavBarWE />
             <SnackWE />
             <BrowserRouter>
                 <Routes>
