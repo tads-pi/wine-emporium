@@ -68,8 +68,6 @@ export function FormCreateUser() {
             password: loginForm.password,
             group: loginForm.group
         }
-        console.log('bossstaaaaaa', loginForm)
-        console.log('bossstaaaaaa 2', data)
         mutate(data)
     };
 
@@ -99,12 +97,7 @@ export function FormCreateUser() {
 
         return validateUser
     }
-
-    useEffect(() => {
-     console.log('teu cu', loginForm)
-    }, [loginForm])
     
-
     return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
             <Grid container spacing={2} sx={{ maxWidth: '750px' }}>
