@@ -18,7 +18,7 @@ const getAll = async (limit, offset) => {
     if (products.length === 0) return null
 
     for (const product of products) {
-        product.images = getImagesFromFolder("wineemporium-uploads", `products/${product?.uuid || "fallback.png"}`)
+        product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product?.uuid || "fallback.png"}`)
         // todo fazer outras camadas de data pra evitar ess gambiarra :(
         let stock = 0
         const rawStock = (

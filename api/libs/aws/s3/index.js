@@ -60,7 +60,7 @@ export async function getImagesFromFolder(bucketName, folderName) {
             return `https://${bucketName}.s3.amazonaws.com/${item.Key}`;
         });
     } catch (error) {
-        console.log("error getting images from s3: ", error);
+        console.error("error getting images from s3: ", error);
         return []
     }
 }
