@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Carousel from 'react-bootstrap/Carousel';
 import { api } from "../../lib/axios";
@@ -14,7 +13,6 @@ export function VerMais({ autofill }) {
     }, [autofill])
   }
 
-  const { id } = useParams();
   if (!autofill) {
     useEffect(() => {
       api
