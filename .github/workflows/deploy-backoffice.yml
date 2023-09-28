@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 18
-      - run: npm ci
+      - run: npm i
       - name: Build
         run: |
           export VITE_WE_BASE_URL=https://api.wineemporium.shop/v1/backoffice
