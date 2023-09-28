@@ -3,7 +3,7 @@ import Form from "../components/Form";
 import LoadingWE from "../../../components/loading/LoadingWE";
 import useSaveProduct from "../Save/hooks";
 import LivePreviewWE from "../../../components/LivePreview/LivePreviewWE";
-import { VerMais } from "../../../../../store/src/components/VerMais";
+import { VerMais } from "../../../components/VerMais/index";
 import "./style.css"
 
 export default function UpdateProduct() {
