@@ -13,6 +13,10 @@ export function VerMais({ autofill }) {
     }, [autofill])
   }
 
+  const current_url = window.location.href;
+  const splitted = current_url.split("/");
+  const id = splitted[splitted.length-1];
+  console.log("id: ", id)
   if (!autofill) {
     useEffect(() => {
       api
