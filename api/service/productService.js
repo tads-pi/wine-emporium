@@ -4,7 +4,6 @@ import productStockTable from "../sequelize/tables/productStockTable.js"
 import productRatingsTable from "../sequelize/tables/productRatingTable.js"
 import productTable from "../sequelize/tables/productTable.js"
 import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
-import productData from "../data/productData.js"
 
 const getTotalProducts = async () => {
     const countClause = {
@@ -12,15 +11,10 @@ const getTotalProducts = async () => {
             deletedAt: null
         }
     }
-    const count = await productData.count(countClause)
+    const count = await productTable.count(countClause)
     return count
 }
 
-/**
- * @description Retorna uma lista de produtos
- * @param {*} req 
- * @returns Promise<Product[]>
- */
 const getAllProducts = async (req, res) => {
     // validates user data
     const page = req.query?.page ?? 1
@@ -29,25 +23,55 @@ const getAllProducts = async (req, res) => {
     // TODO
     // const filterRequest = req.query?.filters || ""
 
-    const products = await productData.getAll(limit, offset)
-    if (!products) {
+    const findAllClause = {
+        where: {
+            deletedAt: null,
+        },
+        limit: Number(limit),
+        offset: Number(offset)
+    }
+
+    const products = await productTable.findAll(findAllClause)
+    if (!products || products.length === 0) {
         res.status(404).json({
             message: "Nenhum produto encontrado"
         })
         return
     }
 
+    const parsedProducts = products.map(({ dataValues }) => new Product(dataValues))
+    for (const product of parsedProducts) {
+        // images
+        let images = await getImagesFromFolder("wineemporium-uploads", `products/${product?.uuid}`)
+        if (images.length == 0) {
+            images = await getImagesFromFolder("wineemporium-uploads", "products/fallback.png")
+        }
+        product.images = images
+
+        let stock = 0
+        const rawStock = (
+            await productStockTable.findOne({ where: { product_id: product.id } })
+        )
+        const noStockFound = rawStock === null || rawStock === undefined
+        if (noStockFound) {
+            await productStockTable.create({
+                product_id: product.id,
+                stock: 0,
+                unit: "UN"
+            })
+        } else {
+            stock = rawStock?.dataValues?.stock || 0
+        }
+
+        product.stock = stock
+    }
+
     const extendedData = authService.userCan(req?.context?.user || {}, VIEW_PRODUCT_EXTENDED_DATA)
     res.status(200).json({
-        products: products.map(product => product.viewmodel(extendedData))
+        products: parsedProducts.map(product => product.viewmodel(extendedData))
     })
 }
 
-/**
- * @description Retorna um produto
- * @param {*} req 
- * @returns Promise<Product>
- */
 const getProduct = async (req) => {
     const productID = req?.params?.id || null
     if (!productID) {
@@ -96,10 +120,6 @@ const getProduct = async (req) => {
     return product
 }
 
-/**
- * TODO
- * @returns
- */
 const saveProduct = async (req, res) => {
     const product = new Product(req.body)
     if (!product) {
@@ -128,12 +148,6 @@ const saveProduct = async (req, res) => {
     return
 }
 
-/**
- * @description Atualiza um produto
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
 const updateProduct = async (req, res) => {
     try {
         const productID = req?.params?.id || null
@@ -197,10 +211,6 @@ const updateProduct = async (req, res) => {
     }
 }
 
-/**
- * TODO
- * @returns
- */
 const toggleProductActive = async (req, res) => {
     const productID = req?.params?.id || null
     if (!productID) {
@@ -236,10 +246,6 @@ const toggleProductActive = async (req, res) => {
     })
 }
 
-/**
- * TODO
- * @returns
- */
 const deleteProduct = async (req, res) => {
     const productID = req?.params?.id || null
     if (!productID) {
@@ -275,11 +281,6 @@ const deleteProduct = async (req, res) => {
     })
 }
 
-/**
- * @description Retorna uma lista de imagens de um produto
- * @param {*} req 
- * @returns promise<string[]>
- */
 const getProductImages = async (req) => {
     const productID = req?.params?.id || null
     if (!productID) {
