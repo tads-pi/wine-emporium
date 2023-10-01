@@ -1,6 +1,6 @@
 export default function PageNotFound() {
     return (
-        <div className="container flex-row">
+        <div className="fitScreen flex-row">
             <aside className="sidebar flex-col center p-5">
                 <div className="login-main-text start">
                     <h1 className="display-4">🍷 Wine Emporium</h1>
