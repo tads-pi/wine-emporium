@@ -80,6 +80,7 @@ export async function getProductById(productID: string | number) {
 export async function updateProduct(payload: IUpdateProduct) {
     try {
         const newProduct = {
+            ratings: payload.ratings,
             name: payload.name,
             description: payload.description,
             price: payload.price,

@@ -43,6 +43,7 @@ const groupPermissionMap = new Map([
         {
             name: UPDATE_PRODUCT,
             value: [
+                "ratings",
                 "name",
                 "description",
                 "price",
@@ -60,9 +61,11 @@ const groupPermissionMap = new Map([
         {
             name: UPDATE_PRODUCT,
             value: [
+                "ratings",
                 "name",
                 "description",
                 "active",
+                "stock"
             ]
         },
     ]]
