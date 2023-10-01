@@ -26,3 +26,5 @@ backofficeRouter.post("/product/:id/toggle-active", backofficeProductController.
 backofficeRouter.delete("/product/:id", backofficeProductController.deleteProduct)
 backofficeRouter.post("/product/:id/upload", backofficeProductController.uploadProductImage)
 backofficeRouter.delete("/product/:id/delete-image", backofficeProductController.deleteProductImage)
+backofficeRouter.put("/product/:id/mark-image", backofficeProductController.unmarkProductImage)
+backofficeRouter.put("/product/:id/unmark-image", backofficeProductController.markProductImage)

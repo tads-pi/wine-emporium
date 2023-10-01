@@ -231,6 +231,50 @@ const deleteProductImage = async (req, res) => {
     res.status(200).json()
 }
 
+const markProductImage = async (req, res) => {
+    const product = await getProduct(req)
+    if (!product) {
+        res.status(404).json({
+            message: "Produto não encontrado"
+        })
+        return
+    }
+
+    const imageUUIDWithExtension = req?.body?.image_id || null
+    if (!imageUUIDWithExtension) {
+        res.status(400).json({
+            message: "ID de imagem inválido"
+        })
+        return
+    }
+
+    console.log("TODO - mark image: ", imageUUIDWithExtension);
+
+    res.status(200).json()
+}
+
+const unmarkProductImage = async (req, res) => {
+    const product = await getProduct(req)
+    if (!product) {
+        res.status(404).json({
+            message: "Produto não encontrado"
+        })
+        return
+    }
+
+    const imageUUIDWithExtension = req?.body?.image_id || null
+    if (!imageUUIDWithExtension) {
+        res.status(400).json({
+            message: "ID de imagem inválido"
+        })
+        return
+    }
+
+    console.log("TODO - unmark image: ", imageUUIDWithExtension);
+
+    res.status(200).json()
+}
+
 export default {
     getTotalProducts,
     getAllProducts,
@@ -239,5 +283,7 @@ export default {
     updateProduct,
     toggleProductActive,
     deleteProduct,
-    deleteProductImage
+    deleteProductImage,
+    markProductImage,
+    unmarkProductImage,
 }
