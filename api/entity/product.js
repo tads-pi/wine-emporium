@@ -49,6 +49,7 @@ export class Product {
             slug: this.buildSlug(this.name),
             description: this.description,
             price: this.price,
+            stock: this.stock,
         }
     }
 
