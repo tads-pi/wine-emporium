@@ -1,48 +1,13 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import useLogin from "./hooks"
 import "./styles.css"
-import * as api from "../../../store/apps/api/auth"
 
 export default function Login() {
-    // TODO refatorar e add um hook
-    const dispatch = useDispatch()
-
-    const [loginForm, setLoginForm] = useState({
-        username: "",
-        password: ""
-    })
-
-    const onSubmit = (e) => {
-        e.preventDefault()
-        dispatch(api.fetchAuthentication({
-            username: loginForm.username,
-            password: loginForm.password
-        }))
-    }
-
-    const loading = useSelector((state) => state.appReportLogin.loading)
-    const response = useSelector((state) => state.appReportLogin.response)
-
-    const [data, setData] = useState()
-    const [status, setStatus] = useState()
-    const [errorMessage, setErrorMessage] = useState("")
-
-    useEffect(() => {
-        setData(response?.data || {})
-        setStatus(response?.status || 0)
-    }, [response])
-
-    useEffect(() => {
-        if (status === 404 || status === 401) {
-            setErrorMessage("Usuário ou senha incorretos.")
-        }
-
-        if (status === 200) {
-            localStorage.setItem("token", data?.access_token ?? "")
-            window.location.href = "/users"
-        }
-
-    }, [status, data])
+    const {
+        loading,
+        formData,
+        onFormUpdate,
+        onSubmit,
+    } = useLogin()
 
     return (
         <div className="fitScreen flex-row">
@@ -69,12 +34,7 @@ export default function Login() {
                                     max={255}
                                     required
 
-                                    onChange={(e) => {
-                                        setLoginForm({
-                                            ...loginForm,
-                                            username: e.target.value
-                                        })
-                                    }}
+                                    onChange={(e) => onFormUpdate("email", e.target.value)}
                                 />
                                 <label>Senha</label>
                                 <input
@@ -85,12 +45,7 @@ export default function Login() {
                                     max={255}
                                     required
 
-                                    onChange={(e) => {
-                                        setLoginForm({
-                                            ...loginForm,
-                                            password: e.target.value
-                                        })
-                                    }}
+                                    onChange={(e) => onFormUpdate("password", e.target.value)}
                                 />
                             </div>
                             <div className="pt-4">
@@ -100,9 +55,6 @@ export default function Login() {
                                 >
                                     {loading ? "Carregando..." : "Login"}
                                 </button>
-
-                                {/* //TODO use other notification */}
-                                <p>{errorMessage}</p>
                             </div>
                         </form>
                     </div>
