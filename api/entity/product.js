@@ -27,14 +27,14 @@ export class Product {
     validate() {
         const invalidFields = []
 
-        // 3 or more letters from a to z
-        // const nameRegex = /^[a-zA-Z\s]{3,}$/
+        // 3 or more letters from a to z and 0 to 9
+        const nameRegex = /^[a-zA-Z0-9]{3,}$/
         // at least 3 letters, max 10000
         const descriptionRegex = /^.{3,10000}$/
         // at lease 1 number, up to 2 digits
         const priceRegex = /^[0-9]+([.][0-9]{1,2})?$/
 
-        // if (!nameRegex.test(this.name)) invalidFields.push("nome")
+        if (!nameRegex.test(this.name)) invalidFields.push("nome")
         if (!descriptionRegex.test(this.description)) invalidFields.push("descrição")
         if (!priceRegex.test(this.price)) invalidFields.push("preço")
 
