@@ -98,11 +98,6 @@ export default function useSaveProduct({ initialFormData = {} }) {
                 navigate("/products")
             }
 
-            if (selector.fn.includes("deleteProduct")) {
-                dispatch(snackSlice.actions.setSnackMessageSuccess("Produto deletado com sucesso!"))
-                navigate("/products")
-            }
-
             if (selector.fn.includes("getProductById")) {
                 setForm(selector.response.data.product)
             }
@@ -122,10 +117,6 @@ export default function useSaveProduct({ initialFormData = {} }) {
     useEffect(() => {
         setLoading(selector.loading)
     }, [selector.loading])
-
-    useEffect(() => {
-        dispatch(api.getProductById(initialFormData?.id || 0))
-    }, [])
 
     return [
         formData,

@@ -9,10 +9,8 @@ import {
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useEffect, useState } from "react";
-import UploadImage from "../../../components/upload/UploadImage.jsx";
-import DeleteIcon from "@mui/icons-material/Delete";
-import "./styles.css"
 import useWindowDimensions from "./hooks.js";
+import "./styles.css"
 
 export default function Form(props) {
     const {
@@ -218,24 +216,26 @@ export default function Form(props) {
                     }}
                 />
 
-                <InputLabel id="user-group">Grupo</InputLabel>
-                {
-                    groups &&
-                    <Select
-                        value={formData?.group}
-                        onChange={(e) => {
-                            onFormUpdate("group", e.target.value)
-                        }}
-                    >
-                        {
-                            groups.map((value, i) => (
-                                <MenuItem key={i} value={value}>
-                                    {value}
-                                </MenuItem>
-                            ))
-                        }
-                    </Select>
-                }
+                <div className="form__group-wrapper">
+                    <InputLabel id="user-group">Grupo</InputLabel>
+                    {
+                        groups &&
+                        <Select
+                            value={formData?.group}
+                            onChange={(e) => {
+                                onFormUpdate("group", e.target.value)
+                            }}
+                        >
+                            {
+                                groups.map((value, i) => (
+                                    <MenuItem key={i} value={value}>
+                                        {value}
+                                    </MenuItem>
+                                ))
+                            }
+                        </Select>
+                    }
+                </div>
 
                 {
                     !isMobile() &&
@@ -266,7 +266,7 @@ export default function Form(props) {
 
 function Save({ editMode, loading, submitButtonText, onSubmit, setLoading }) {
     return (
-        <div className="container">
+        <div className="form__button-wrapper">
             {
                 loading
                     ?
@@ -280,6 +280,7 @@ function Save({ editMode, loading, submitButtonText, onSubmit, setLoading }) {
                     <Button
                         variant="contained"
                         color="success"
+                        size="large"
                         onClick={() => {
                             setLoading(false) // todo
                             onSubmit(editMode ? "update" : "save")

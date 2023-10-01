@@ -93,10 +93,6 @@ export default function useSaveUser({ initialFormData = {} }) {
         setLoading(selector.loading)
     }, [selector.loading])
 
-    useEffect(() => {
-        console.log("formData:", formData);
-    }, [formData])
-
     return [
         formData,
         onFormUpdate,
