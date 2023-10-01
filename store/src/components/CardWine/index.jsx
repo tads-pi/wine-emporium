@@ -43,7 +43,7 @@ export function CardWine({ data, addCart }) {
               <CardMedia
                 component="img"
                 height="140"
-                image={data.images[0]}
+                image={data.images[0].url}
                 alt="Vinho Wine Emporium"
                 style={{ objectFit: "contain" }}
               />

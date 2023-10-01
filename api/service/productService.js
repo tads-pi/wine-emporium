@@ -1,5 +1,5 @@
 import { Product } from "../entity/product.js"
-import { getImagesFromFolder } from "../libs/aws/s3/index.js"
+import { getImagesFromFolder, removeImageFromFolder } from "../libs/aws/s3/index.js"
 import productTable from "../sequelize/tables/productTable.js"
 import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
 
@@ -204,18 +204,25 @@ const deleteProduct = async (req, res) => {
     })
 }
 
-const getProductImages = async (req) => {
-    const productID = req?.params?.id || null
-    if (!productID) {
-        return
-    }
-
+const deleteProductImage = async (req, res) => {
     const product = await getProduct(req)
     if (!product) {
+        res.status(404).json({
+            message: "Produto não encontrado"
+        })
         return
     }
 
-    return await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+    const imageUUIDWithExtension = req?.body?.image_id || null
+    if (!imageUUIDWithExtension) {
+        res.status(400).json({
+            message: "ID de imagem inválido"
+        })
+        return
+    }
+
+    await removeImageFromFolder("wineemporium-uploads", `products/${product.uuid}`, imageUUIDWithExtension)
+    res.status(200).json()
 }
 
 export default {

@@ -41,11 +41,11 @@ export function VerMais({ autofill }) {
                 data?.images &&
                 <Carousel data-bs-theme="dark">
                   {
-                    data?.images.map((image, i) => {
+                    data?.images.map(({ url, key }) => {
                       return (
-                        <Carousel.Item key={i}>
+                        <Carousel.Item key={key}>
                           <div className="ver-mais__image-container">
-                            <img className="ver-mais__image" src={image} alt="" />
+                            <img className="ver-mais__image" src={url} alt="" />
                           </div>
                         </Carousel.Item>
                       )

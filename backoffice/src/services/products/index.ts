@@ -32,6 +32,11 @@ export type IToggleProductActive = {
     active: boolean
 }
 
+export type IDeleteProductImage = {
+    productID: string,
+    imageID: string
+}
+
 export async function saveNewProduct(product: ISaveNewProduct) {
     try {
         const response = await api.post("/product", product)
@@ -124,6 +129,21 @@ export async function uploadProductImage(payload: IUploadProductImage) {
         return response
     } catch (error: any) {
         console.log("error at uploadProductImage: ", error);
+        return error?.response ?? {}
+    }
+}
+
+export async function deleteProductImage(payload: IDeleteProductImage) {
+    try {
+        const response = await api.delete(`/product/${payload.productID}/delete-image`, {
+            data: {
+                image_id: payload.imageID
+            }
+        })
+        console.log("response at deleteProductImage: ", response);
+        return response
+    } catch (error: any) {
+        console.log("error at deleteProductImage: ", error);
         return error?.response ?? {}
     }
 }

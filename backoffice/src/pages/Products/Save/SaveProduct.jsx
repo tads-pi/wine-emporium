@@ -9,7 +9,9 @@ export default function SaveProduct() {
         onFormUpdate,
         loading,
         onSubmit,
-    ] = useSaveProduct({})
+        deleteImage,
+        markImage,
+    ] = useSaveProduct()
 
     return (
         <>
@@ -23,6 +25,8 @@ export default function SaveProduct() {
                             title={"Salvar Produto"}
                             submitButtonText={"Salvar"}
                             editMode={false}
+                            deleteImage={deleteImage}
+                            markImage={markImage}
                         />
                     </div>
             }

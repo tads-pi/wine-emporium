@@ -13,6 +13,8 @@ export default function UpdateProduct() {
         onFormUpdate,
         loading,
         onSubmit,
+        deleteImage,
+        markImage,
     ] = useSaveProduct({
         initialFormData: state.product,
     })
@@ -34,6 +36,8 @@ export default function UpdateProduct() {
                             title={"Editar Produto"}
                             submitButtonText={"Salvar"}
                             editMode={true}
+                            deleteImage={deleteImage}
+                            markImage={markImage}
                         />
 
                         <LivePreviewWE

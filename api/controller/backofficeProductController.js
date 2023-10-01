@@ -221,6 +221,21 @@ const uploadProductImage = async (req, res) => {
     })
 }
 
+const deleteProductImage = async (req, res) => {
+    // validates permission
+    if (
+        !authService.userCan(req.context.user, SAVE_PRODUCT_IMAGE) ||
+        !authService.userCan(req.context.user, GET_PRODUCT_DATA)
+    ) {
+        res.status(403).json({
+            message: "Usuário não tem permissão para deletar imagem de um produto"
+        })
+        return
+    }
+
+    await productService.deleteProductImage(req, res)
+}
+
 export default {
     getTotalProducts,
     getAllProducts,
@@ -229,5 +244,6 @@ export default {
     updateProduct,
     toggleProductActive,
     deleteProduct,
-    uploadProductImage
+    uploadProductImage,
+    deleteProductImage,
 }

@@ -57,11 +57,29 @@ export async function getImagesFromFolder(bucketName, folderName) {
         const data = await s3Bucket.listObjectsV2(listObjectsParams).promise();
 
         return data.Contents.map((item) => {
-            return `https://${bucketName}.s3.amazonaws.com/${item.Key}`;
+            const uuidWithExtension = item.Key.split("/").pop()
+            return {
+                key: uuidWithExtension,
+                url: `https://${bucketName}.s3.amazonaws.com/${item.Key}`
+            }
         });
     } catch (error) {
         console.error("error getting images from s3: ", error);
         return []
+    }
+}
+
+export async function removeImageFromFolder(bucketName, folderName, uuidWithExtension) {
+    try {
+        let deleteObjectParams = {
+            Bucket: bucketName,
+            Key: `${folderName}/${uuidWithExtension}`,
+        };
+
+        const s3Bucket = new AWS.S3();
+        await s3Bucket.deleteObject(deleteObjectParams).promise();
+    } catch (error) {
+        console.error("error removing image from s3: ", error);
     }
 }
 

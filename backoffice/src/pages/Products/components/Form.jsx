@@ -20,7 +20,9 @@ export default function Form(props) {
         title,
         submitButtonText,
         onSubmit,
-        editMode
+        editMode,
+        deleteImage,
+        markImage,
     } = props
 
     const [validation, setValidation] = useState({
@@ -52,24 +54,28 @@ export default function Form(props) {
                     {
                         // TODO getimage base64 and send back to api using the component
                         formData?.images &&
-                        formData?.images.map((link, index) => {
+                        formData?.images.map(({ key, url }, index) => {
                             return (
                                 <div
                                     key={index}
                                 >
                                     <ImageHandlerWE
-                                        src={link}
-                                        identifier={index}
+                                        src={url}
+                                        identifier={key}
                                         alt="product"
 
                                         marked={true}
-                                        deleteImageHook={() => {
-                                            // TODO delete image from api
-                                            console.log("delete image")
+                                        deleteImageHook={(imageID) => {
+                                            const confirmation = window.confirm("Deseja mesmo deletar essa imagem?")
+                                            if (confirmation) {
+                                                deleteImage(imageID)
+                                            }
                                         }}
-                                        markImageHook={() => {
-                                            // TODO mark image as main image
-                                            console.log("mark image: ", link)
+                                        markImageHook={(imageID) => {
+                                            const confirmation = window.confirm("Deseja mesmo marcar essa imagem como principal?")
+                                            if (confirmation) {
+                                                markImage(imageID)
+                                            }
                                         }}
                                     />
                                 </div>
@@ -99,7 +105,7 @@ export default function Form(props) {
                     </InputLabel>
                     <Rating
                         name="product-ratings-input"
-                        value={formData?.ratings || 0}
+                        value={formData?.ratings ? Number(formData.ratings) : 0.0}
                         precision={0.5}
                         size="large"
                         onChange={(e, newValue) => {

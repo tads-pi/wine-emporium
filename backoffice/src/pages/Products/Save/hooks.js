@@ -72,6 +72,23 @@ export default function useSaveProduct({ initialFormData = {} }) {
         setImage([...imageData, e[0]])
     }
 
+    function deleteImage(imageID) {
+        // delete image from server
+        dispatch(api.deleteProductImage({
+            productID: formData?.id || 0,
+            imageID,
+        }))
+
+        dispatch(snackSlice.actions.setSnackMessageInfo("Deletando imagem..."))
+
+        // delete image locally from form
+        onFormUpdate("images", formData.images.filter(({ key }) => key !== imageID))
+    }
+
+    function markImage(imageID) {
+        console.log("marking image: ", imageID);
+    }
+
     useEffect(() => {
         if (selector.response.status < 400 && selector.response.status >= 200) {
             if (selector.fn.includes("saveNewProduct")) {
@@ -102,6 +119,11 @@ export default function useSaveProduct({ initialFormData = {} }) {
 
             if (selector.fn.includes("getProductById")) {
                 setForm(selector.response.data.product)
+                setLoading(false)
+            }
+
+            if (selector.fn.includes("deleteProductImage")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Imagem deletada com sucesso!"))
             }
 
         }
@@ -125,5 +147,7 @@ export default function useSaveProduct({ initialFormData = {} }) {
         onFormUpdate,
         loading,
         onSubmit,
+        deleteImage,
+        markImage,
     ]
 }
