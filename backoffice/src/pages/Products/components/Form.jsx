@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import UploadImage from "../../../components/upload/UploadImage.jsx";
 import useWindowDimensions from "./hooks.js";
 import "./styles.css"
+import ImageHandlerWE from "../../../components/ImageHandlerWE/ImageHandlerWE.jsx";
 
 export default function Form(props) {
     const {
@@ -51,19 +52,27 @@ export default function Form(props) {
                     {
                         // TODO getimage base64 and send back to api using the component
                         formData?.images &&
-                        formData?.images.map((img, index) => {
+                        formData?.images.map((link, index) => {
                             return (
-                                <img
+                                <div
                                     key={index}
-                                    src={img}
-                                    alt="product"
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        objectFit: "cover",
-                                        margin: "10px"
-                                    }}
-                                />
+                                >
+                                    <ImageHandlerWE
+                                        src={link}
+                                        identifier={index}
+                                        alt="product"
+
+                                        marked={true}
+                                        deleteImageHook={() => {
+                                            // TODO delete image from api
+                                            console.log("delete image")
+                                        }}
+                                        markImageHook={() => {
+                                            // TODO mark image as main image
+                                            console.log("mark image: ", link)
+                                        }}
+                                    />
+                                </div>
                             )
                         })
                     }
@@ -248,7 +257,7 @@ export default function Form(props) {
                     setLoading={setLoading}
                 />
             }
-        </div>
+        </div >
     )
 }
 

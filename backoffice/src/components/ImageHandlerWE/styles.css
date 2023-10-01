@@ -1,0 +1,39 @@
+.image-handler__container{
+    display: grid;
+    grid-template-columns: 1fr;
+    
+    margin: 1rem;
+
+    border: 1px solid black;
+    border-radius: 1rem;
+}
+
+.image-handler__buttons-wrapper{
+    grid-area: 1 / 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    
+    width: fit-content;
+    height: fit-content;
+}
+
+.image-handler__image-wrapper{
+    grid-area: 1 / 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+
+    height: 300px;
+    width: 300px;
+}
+
+.image-handler__image{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
