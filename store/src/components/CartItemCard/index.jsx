@@ -4,17 +4,6 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import React from 'react'
 import { enqueueSnackbar } from 'notistack'
 
-
-
-// {
-//     "name": "Wine Bottle Teste",
-//     "description": "A bottle of red wine",
-//     "price": "19.99",
-//     "images": [],
-//     "ratings": 0,
-//     "totalRatings": 0
-// }
-
 export function CartItemCard({ data, removeCart }) {
 
     const handleClickVariant = (variant) => () => {
@@ -22,7 +11,6 @@ export function CartItemCard({ data, removeCart }) {
         removeCart()
         enqueueSnackbar(<Typography>Vinho removido do carrinho.</Typography>, { variant })
     };
-
 
     return (
         <div style={{ width: '500px', border: 'solid black 1px', padding: '10px 15px', margin: '10px 15px', borderRadius: '4px' }}>

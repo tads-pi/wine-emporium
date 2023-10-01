@@ -43,6 +43,14 @@ const productTable = db.define("products", {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
+    ratings: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+    },
+    stock: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+    }
 })
 
 export default productTable

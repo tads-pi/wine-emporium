@@ -10,7 +10,6 @@ export class Product {
         this.images = input?.images || []
         this.stock = input?.stock || 0
         this.ratings = input?.ratings || 0
-        this.totalRatings = input?.totalRatings || 0
 
         this.id = input?.id || ""
         this.uuid = input?.uuid || uuid()
@@ -27,13 +26,14 @@ export class Product {
     validate() {
         const invalidFields = []
 
-        // 3 or more letters from a to z and 0 to 9
-        const nameRegex = /^[a-zA-Z0-9]{3,}$/
+        // anything with at least 3 characters
+        const nameRegex = /^.{3,}$/
         // at least 3 letters, max 10000
         const descriptionRegex = /^.{3,10000}$/
         // at lease 1 number, up to 2 digits
         const priceRegex = /^[0-9]+([.][0-9]{1,2})?$/
 
+        if (!this.ratings) invalidFields.push("avaliação")
         if (!nameRegex.test(this.name)) invalidFields.push("nome")
         if (!descriptionRegex.test(this.description)) invalidFields.push("descrição")
         if (!priceRegex.test(this.price)) invalidFields.push("preço")
@@ -45,11 +45,14 @@ export class Product {
     parseToSave() {
         return {
             name: this.name,
-            uuid: this.uuid(),
+            uuid: this.uuid,
+            ratings: this.ratings,
             slug: this.buildSlug(this.name),
             description: this.description,
             price: this.price,
             stock: this.stock,
+            active: true,
+            deletedAt: null,
         }
     }
 
@@ -82,7 +85,6 @@ export class Product {
                 images: this.images,
                 stock: this.stock,
                 ratings: this.ratings,
-                totalRatings: this.totalRatings,
             }
         }
 
@@ -93,7 +95,6 @@ export class Product {
             price: this.price,
             images: this.images,
             ratings: this.ratings,
-            totalRatings: this.totalRatings,
         }
     }
 

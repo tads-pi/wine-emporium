@@ -817,11 +817,8 @@ components:
           type: string
           default: "200.00"
         ratings:
-          type: number
-          default: 1.75
-        totalRatings:
-          type: number
-          default: 10
+          type: string
+          default: "1.75"
         images:
           type: array
           items:
@@ -855,9 +852,6 @@ components:
         ratings:
           type: number
           default: 1.75
-        totalRatings:
-          type: number
-          default: 10
   securitySchemes:
     Authorization:
       type: http

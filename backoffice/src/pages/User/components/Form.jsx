@@ -30,15 +30,8 @@ export default function Form(props) {
         passwordConfirmation: "",
         group: "",
     })
-    const [imageData, setImageData] = useState()
     const [loading, setLoading] = useState(false)
     const { width } = useWindowDimensions();
-
-    useEffect(() => {
-        if (imageData) {
-            onFormUpdate("image", imageData)
-        }
-    }, [imageData])
 
     function isMobile() {
         return width < 1024

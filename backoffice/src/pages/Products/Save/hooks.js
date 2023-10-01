@@ -19,6 +19,7 @@ export default function useSaveProduct({ initialFormData = {} }) {
         if (action === "update") {
             dispatch(api.updateProduct({
                 id: formData?.id || 0,
+                ratings: formData?.ratings || 0,
                 name: formData?.name || "",
                 description: formData?.description || "",
                 price: formData?.price || 0,
@@ -43,6 +44,7 @@ export default function useSaveProduct({ initialFormData = {} }) {
 
         if (action === "save") {
             dispatch(api.saveNewProduct({
+                ratings: formData?.ratings || 0,
                 name: formData?.name || "",
                 description: formData?.description || "",
                 price: formData?.price || 0,

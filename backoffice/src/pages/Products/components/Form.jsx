@@ -3,6 +3,8 @@ import {
     TextField,
     Box,
     DialogTitle,
+    Rating,
+    InputLabel,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useEffect, useState } from "react";
@@ -20,6 +22,13 @@ export default function Form(props) {
         editMode
     } = props
 
+    const [validation, setValidation] = useState({
+        ratings: 0,
+        name: "",
+        description: "",
+        price: "",
+        stock: "",
+    })
     const [imageData, setImageData] = useState()
     const [loading, setLoading] = useState(false)
     const { width } = useWindowDimensions();
@@ -70,6 +79,26 @@ export default function Form(props) {
                     <DialogTitle>{title || "Salvar Produto"}</DialogTitle>
                 </div>
 
+                <div className="form__ratings-wrapper">
+                    <InputLabel
+                        id="product-ratings"
+                        required
+
+                        error={!!validation.ratings}
+                    >
+                        Avaliação
+                    </InputLabel>
+                    <Rating
+                        name="product-ratings-input"
+                        value={formData?.ratings || 0}
+                        precision={0.5}
+                        size="large"
+                        onChange={(e, newValue) => {
+                            onFormUpdate("ratings", newValue);
+                        }}
+                    />
+                </div>
+
                 <TextField
                     id={"product-name-input"}
                     label="Nome do Produto"
@@ -77,6 +106,23 @@ export default function Form(props) {
                     value={formData?.name || ""}
                     onChange={(e) => {
                         onFormUpdate("name", e.target.value)
+                    }}
+                    required
+
+                    error={!!validation.name}
+                    helperText={validation.name}
+                    onBlur={(e) => {
+                        if (!e.target.value) {
+                            setValidation({
+                                ...validation,
+                                name: "Campo obrigatório"
+                            })
+                        } else {
+                            setValidation({
+                                ...validation,
+                                name: ""
+                            })
+                        }
                     }}
                 />
 
@@ -90,9 +136,23 @@ export default function Form(props) {
                     }}
                     multiline
                     rows={4}
+                    required
 
-                // TODO add validation
-                // color="success"
+                    error={!!validation.description}
+                    helperText={validation.description}
+                    onBlur={(e) => {
+                        if (!e.target.value) {
+                            setValidation({
+                                ...validation,
+                                description: "Campo obrigatório"
+                            })
+                        } else {
+                            setValidation({
+                                ...validation,
+                                description: ""
+                            })
+                        }
+                    }}
                 />
 
                 <TextField
@@ -103,6 +163,23 @@ export default function Form(props) {
                     onChange={(e) => {
                         onFormUpdate("price", e.target.value)
                     }}
+                    required
+
+                    error={!!validation.price}
+                    helperText={validation.price}
+                    onBlur={(e) => {
+                        if (!e.target.value) {
+                            setValidation({
+                                ...validation,
+                                price: "Campo obrigatório"
+                            })
+                        } else {
+                            setValidation({
+                                ...validation,
+                                price: ""
+                            })
+                        }
+                    }}
                 />
 
                 <TextField
@@ -112,6 +189,23 @@ export default function Form(props) {
                     value={formData?.stock || ""}
                     onChange={(e) => {
                         onFormUpdate("stock", e.target.value)
+                    }}
+                    required
+
+                    error={!!validation.stock}
+                    helperText={validation.stock}
+                    onBlur={(e) => {
+                        if (!e.target.value) {
+                            setValidation({
+                                ...validation,
+                                stock: "Campo obrigatório"
+                            })
+                        } else {
+                            setValidation({
+                                ...validation,
+                                stock: ""
+                            })
+                        }
                     }}
                 />
 

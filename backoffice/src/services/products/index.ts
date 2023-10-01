@@ -7,6 +7,7 @@ export type IGetAllProductsFilters = {
 
 export type IUpdateProduct = {
     id: string,
+    ratings: number,
     name: string,
     description: string,
     price: number,
@@ -19,6 +20,7 @@ export type IUploadProductImage = {
 }
 
 export type ISaveNewProduct = {
+    ratings: number,
     name: string,
     description: string,
     price: number,
