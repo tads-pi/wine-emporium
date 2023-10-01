@@ -121,14 +121,14 @@ const saveProduct = async (req, res) => {
             return
         }
 
-        const craetedProduct = await getProductByID(productID)
-        if (!craetedProduct) {
+        const createdProduct = await getProductByID(productID)
+        if (!createdProduct) {
             res.status(500).json()
             return
         }
 
         res.status(200).json({
-            id: craetedProduct.uuid,
+            id: createdProduct.uuid,
         })
     } catch (error) {
         console.error("error at saveProduct: ", error?.message || error);
