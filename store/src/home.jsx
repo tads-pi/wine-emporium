@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Home = () => {
     const [loginForm, setLoginForm] = React.useState({
-        username: '',
+        email: '',
         password: ''
     });
 
@@ -42,7 +42,7 @@ const Home = () => {
     const onSubmit = (e) => {
         e.preventDefault()
         // login({
-        //     username: loginForm.username,
+        //     email: loginForm.email,
         //     password: loginForm.password
         // })
         // .then((res) => {
@@ -70,7 +70,7 @@ const Home = () => {
                                 margin="normal"
                                 required
                                 size='small'
-                                onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
+                                onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
                             />
                             <TextField
                                 label="Senha"

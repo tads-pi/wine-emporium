@@ -60,11 +60,11 @@ export default function Login() {
                             onSubmit={onSubmit}
                         >
                             <div className="form-group">
-                                <label>Usuário</label>
+                                <label>e-mail</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    placeholder="usuario"
+                                    placeholder="e-mail"
                                     min={3}
                                     max={255}
                                     required

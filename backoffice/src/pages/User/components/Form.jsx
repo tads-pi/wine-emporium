@@ -245,7 +245,7 @@ export default function Form(props) {
                             color="error"
                             startIcon={<DeleteIcon />}
                             onClick={() => {
-                                const accept = confirm(`Deseja mesmo deletar o usuário '${formData?.username}'?`)
+                                const accept = confirm(`Deseja mesmo deletar o usuário '${formData?.email}'?`)
                                 if (accept) {
                                     onSubmit("delete")
                                 }

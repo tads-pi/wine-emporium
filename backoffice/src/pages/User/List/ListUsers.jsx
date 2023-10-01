@@ -22,7 +22,6 @@ export default function ListUsers() {
     const columns = [
         "id",
         "name",
-        "username",
         "email",
         "group",
         "custom:active"

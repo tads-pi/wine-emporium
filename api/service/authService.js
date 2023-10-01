@@ -125,11 +125,11 @@ function getUserPermissionValue(userContext, permission) {
  * @returns {Promise<BackofficeUser>}
  */
 async function findUser(user = {
-    username: ""
+    email: ""
 }) {
     const findClause = {
         where: {
-            username: user.username
+            email: user.email
         }
     }
 

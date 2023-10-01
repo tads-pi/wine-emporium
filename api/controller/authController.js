@@ -53,19 +53,20 @@ const authenticateToken = async (req, res, next) => {
  */
 const handleBackofficeLogin = async (req, res) => {
     const user = {
-        username: req.body?.username ?? "",
+        email: req.body?.email ?? "",
         password: req.body?.password ?? "",
     }
 
     const foundUser = await authService.findUser(user)
     if (!foundUser) {
-        res.status(404).json()
+        res.status(400).json({
+            message: "e-mail ou senha incorretos"
+        })
         return
     }
 
     if (bcrypt.compareSync(user?.password || "", foundUser?.dataValues?.password || "")) {
         const token = jwt.sign({
-            username: user.username,
             email: user.email,
             group: user.group
         }, config.JWT_SECRET, {
@@ -78,8 +79,8 @@ const handleBackofficeLogin = async (req, res) => {
             expires_in: 3600
         })
     } else {
-        res.status(401).json({
-            message: "Usuário ou senha inválidos"
+        res.status(400).json({
+            message: "e-mail ou senha incorretos"
         })
     }
 }

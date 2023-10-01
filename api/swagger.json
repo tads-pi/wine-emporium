@@ -968,9 +968,9 @@
       "BackofficeUserLoginRequest": {
         "type": "object",
         "properties": {
-          "username": {
+          "email": {
             "type": "string",
-            "default": "admin"
+            "default": "email@example.com"
           },
           "password": {
             "type": "string",

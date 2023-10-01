@@ -1,7 +1,7 @@
 import api from "..";
 
 export interface IUserLoginProps {
-    username: string,
+    email: string,
     password: string
 }
 

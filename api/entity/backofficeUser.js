@@ -4,7 +4,6 @@ import bcrypt from "bcrypt"
 export default class BackofficeUser {
     constructor(input = {}) {
         this.name = input?.name || ""
-        this.username = input?.username || ""
         this.document = input?.document || ""
         this.email = input?.email || ""
         this.group = input?.group || ""
@@ -44,7 +43,6 @@ export default class BackofficeUser {
     parseToSave() {
         return {
             name: this.name,
-            username: this.buildUsername(this.name),
             document: this.document,
             email: this.email,
             group: this.group,
@@ -58,7 +56,6 @@ export default class BackofficeUser {
             return {
                 id: this.id,
                 name: this.name,
-                username: this.username,
                 document: this.document,
                 email: this.email,
                 group: this.group,
@@ -71,24 +68,8 @@ export default class BackofficeUser {
 
         return {
             name: this.name,
-            username: this.username,
             email: this.email,
             active: this.active
         }
-    }
-
-    /**
-     * constroi um username a partir do nome completo
-     * @param {*} name 
-     * @returns
-     * @example
-     * buildUsername("John Doe")
-     * // returns "jdoe"
-     */
-    buildUsername(name) {
-        const nameParts = name.split(" ")
-        const firstName = nameParts[0]
-        const lastName = nameParts[nameParts.length - 1]
-        return `${firstName.charAt(0).toLowerCase()}${lastName.toLowerCase()}`
     }
 }

@@ -46,7 +46,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"senha\"\n}",
+                "raw": "{\n  \"email\": \"email@example.com\",\n  \"password\": \"senha\"\n}",
                 "form": []
             },
             "tests": []
