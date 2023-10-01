@@ -56,7 +56,7 @@ export default function useListProduct() {
             return
         }
 
-        navigate("/products/update", {
+        navigate(`/products/update/${product.id}`, {
             state: {
                 product: product
             }

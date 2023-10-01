@@ -72,10 +72,9 @@ export class Product {
     viewmodel(extended = false) {
         if (extended) {
             return {
-                id: this.id,
+                id: this.uuid,
                 name: this.name,
                 slug: this.slug,
-                uuid: this.uuid,
                 description: this.description,
                 price: this.price,
                 active: this.active,

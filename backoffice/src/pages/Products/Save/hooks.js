@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as api from "../../../store/apps/api/products";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { snackSlice } from "../../../store/apps/snack";
 
-export default function useSaveProduct({ initialFormData = {} }) {
+export default function useSaveProduct(props) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const selector = useSelector(state => state.appReportProducts)
 
     const [loading, setLoading] = useState(false)
-    const [formData, setForm] = useState(initialFormData)
+    const [formData, setForm] = useState()
     const [imageData, setImage] = useState([])
 
     function onSubmit(action) {
@@ -141,6 +141,13 @@ export default function useSaveProduct({ initialFormData = {} }) {
     useEffect(() => {
         setLoading(selector.loading)
     }, [selector.loading])
+
+    useEffect(() => {
+        if (props?.productID) {
+            dispatch(api.getProductById(props?.productID))
+            setLoading(true)
+        }
+    }, [])
 
     return [
         formData,

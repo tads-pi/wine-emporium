@@ -73,7 +73,7 @@ export default function App() {
                         }
                     />
                     <Route
-                        path="/products/update"
+                        path="/products/update/:id"
                         element={
                             <PrivateRoute>
                                 <UpdateProducts />

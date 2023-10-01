@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import Form from "../components/Form";
 import LoadingWE from "../../../components/loading/LoadingWE";
 import useSaveProduct from "../Save/hooks";
@@ -7,7 +7,7 @@ import { VerMais } from "../../../components/VerMais/index";
 import "./style.css"
 
 export default function UpdateProduct() {
-    const { state } = useLocation()
+    const { id } = useParams()
     const [
         formData,
         onFormUpdate,
@@ -16,7 +16,7 @@ export default function UpdateProduct() {
         deleteImage,
         markImage,
     ] = useSaveProduct({
-        initialFormData: state.product,
+        productID: id,
     })
 
     return (

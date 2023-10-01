@@ -53,18 +53,46 @@ const getAllProducts = async (req, res) => {
     })
 }
 
-const getProduct = async (req) => {
-    const productID = req?.params?.id || null
-    if (!productID) {
+const getProductByID = async (id) => {
+    if (!id) {
         return
     }
 
-    const data = await productTable.findByPk(productID)
+    const data = await productTable.findByPk(id)
     if (!data) {
         return
     }
 
     const product = new Product(data.dataValues)
+
+    // Add Images
+    product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+
+    return product
+}
+
+const getProduct = async (req) => {
+    const productUUID = req?.params?.id || null
+    if (!productUUID) {
+        return
+    }
+
+    const findProductClause = {
+        where: {
+            uuid: productUUID,
+            deletedAt: null
+        }
+    }
+
+    const data = await productTable.findOne(findProductClause)
+    if (!data) {
+        return
+    }
+
+    const product = new Product(data.dataValues)
+    if (!product) {
+        return
+    }
 
     // Add Images
     product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
@@ -93,8 +121,14 @@ const saveProduct = async (req, res) => {
             return
         }
 
+        const craetedProduct = await getProductByID(productID)
+        if (!craetedProduct) {
+            res.status(500).json()
+            return
+        }
+
         res.status(200).json({
-            id: productID
+            id: craetedProduct.uuid,
         })
     } catch (error) {
         console.error("error at saveProduct: ", error?.message || error);
@@ -104,16 +138,8 @@ const saveProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-        const productID = req?.params?.id || null
-        if (!productID) {
-            res.status(400).json({
-                message: "ID de produto inválido"
-            })
-            return
-        }
-
-        const data = await productTable.findByPk(productID)
-        if (!data) {
+        const product = await getProduct(req)
+        if (!product) {
             res.status(404).json({
                 message: "Produto não encontrado"
             })
@@ -123,7 +149,7 @@ const updateProduct = async (req, res) => {
         const fieldsToUpdate = req?.body || {}
         const updateClause = {
             where: {
-                id: productID
+                id: product.id
             }
         }
 
@@ -135,64 +161,44 @@ const updateProduct = async (req, res) => {
 }
 
 const toggleProductActive = async (req, res) => {
-    const productID = req?.params?.id || null
-    if (!productID) {
+    const product = await getProduct(req)
+    if (!product) {
         res.status(400).json({
-            message: "ID de produto inválido"
-        })
-        return
-    }
-
-    const data = await productTable.findByPk(productID)
-    if (!data) {
-        res.status(404).json({
             message: "Produto não encontrado"
         })
         return
     }
 
     const activeStatus = req?.body?.active || false
-    const product = {
+    const newProduct = {
         active: activeStatus
     }
 
     const updateClause = {
         where: {
-            id: productID
+            id: product.id
         }
     }
 
-    await productTable.update(product, updateClause)
-
+    await productTable.update(newProduct, updateClause)
     res.status(200).json({
         message: `Produto ${product.active ? "ativado" : "desativado"} com sucesso`
     })
 }
 
 const deleteProduct = async (req, res) => {
-    const productID = req?.params?.id || null
-    if (!productID) {
+    const product = await getProduct(req)
+    if (!product) {
         res.status(400).json({
-            message: "ID de produto inválido"
-        })
-        return
-    }
-
-    const data = await productTable.findByPk(productID)
-    if (!data) {
-        // TODO arrumar cloudfront response aqui 
-        res.status(404).json({
             message: "Produto não encontrado"
         })
         return
     }
 
-    const product = new Product(data.dataValues)
     product.deletedAt = new Date()
-
     const updateClause = {
         where: {
-            id: productID
+            id: product.id
         }
     }
 
@@ -233,5 +239,5 @@ export default {
     updateProduct,
     toggleProductActive,
     deleteProduct,
-    getProductImages
+    deleteProductImage
 }
