@@ -22,10 +22,16 @@ export default function ListProducts() {
     const columns = [
         "id",
         "name",
-        "description",
         "price",
         "stock",
         "custom:active"
+    ]
+    const columnsTitle = [
+        "ID",
+        "Nome",
+        "Preço",
+        "Estoque",
+        "Estado"
     ]
 
     // TODO make it work
@@ -59,6 +65,7 @@ export default function ListProducts() {
                     active: SliderWE,
                 }}
                 columns={columns}
+                columnsTitle={columnsTitle}
                 onDoubleClick={onDoubleClick}
                 loadingData={loading}
                 onSearch={onChangeSearchText}

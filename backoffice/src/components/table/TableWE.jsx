@@ -17,6 +17,7 @@ export default function TableWE({
     data,
     custom,
     columns,
+    columnsTitle,
     // loading
     loading,
     loadingData,
@@ -98,7 +99,7 @@ export default function TableWE({
 
                                                 return (
                                                     <TableCell key={i}>
-                                                        <strong>{column}</strong>
+                                                        <strong>{columnsTitle[i]}</strong>
                                                     </TableCell>
                                                 )
                                             })

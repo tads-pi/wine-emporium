@@ -26,6 +26,13 @@ export default function ListUsers() {
         "group",
         "custom:active"
     ]
+    const columnsTitle = [
+        "ID",
+        "Nome",
+        "E-mail",
+        "Grupo",
+        "Estado"
+    ]
 
     // TODO make it work
     function SliderWE(row) {
@@ -58,6 +65,7 @@ export default function ListUsers() {
                     active: SliderWE,
                 }}
                 columns={columns}
+                columnsTitle={columnsTitle}
                 onDoubleClick={onDoubleClick}
                 loadingData={loading}
                 onSearch={onChangeSearchText}
@@ -69,6 +77,6 @@ export default function ListUsers() {
                 currentPage={currentPage}
                 onChangePage={onChangePage}
             />
-        </div >
+        </div>
     )
 }
