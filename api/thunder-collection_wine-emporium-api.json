@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "wine-emporium-api",
-    "dateExported": "2023-09-24T23:39:49.767Z",
+    "dateExported": "2023-10-01T20:23:28.745Z",
     "version": "1.1",
     "folders": [
         {
@@ -36,7 +36,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2023-08-30T17:00:27.687Z",
-            "modified": "2023-09-13T14:14:54.269Z",
+            "modified": "2023-10-01T18:56:11.108Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -46,7 +46,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\": \"email@example.com\",\n  \"password\": \"senha\"\n}",
+                "raw": "{\n  \"email\": \"email@gmail.com\",\n  \"password\": \"senha\"\n}",
                 "form": []
             },
             "tests": []
@@ -144,11 +144,11 @@
             "method": "GET",
             "sortNum": 30000,
             "created": "2023-09-10T16:02:12.338Z",
-            "modified": "2023-09-24T22:06:56.147Z",
+            "modified": "2023-10-01T18:56:20.338Z",
             "headers": [
                 {
                     "name": "Authorization",
-                    "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjk0ODc2NDA1LCJleHAiOjE2OTQ4ODAwMDV9.bBHjLDu8ij8SvXCjUja8j_eaw9S4WxoY8pCH4ns3GyI"
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY5NjE4NjU3MSwiZXhwIjoxNjk2MTkwMTcxfQ.R2Y73bsG6Hh6cEsEdbpgTk9rEQL3Jkng3LpUuL3xGfk"
                 }
             ],
             "params": [
@@ -243,15 +243,15 @@
             "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
             "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
             "name": "Get Product",
-            "url": "http://localhost:8080/v1/backoffice/product/1",
+            "url": "http://localhost:8080/v1/backoffice/product/b0a093ae-5d92-11ee-89cc-0a555e04fea4",
             "method": "GET",
             "sortNum": 40000,
             "created": "2023-09-10T16:02:12.339Z",
-            "modified": "2023-09-24T21:19:20.333Z",
+            "modified": "2023-10-01T20:14:26.938Z",
             "headers": [
                 {
                     "name": "Authorization",
-                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGV4YW1wbGUuY29tIiwiaWF0IjoxNjkzNDg1NjU1LCJleHAiOjE2OTM0ODkyNTV9.KUItqDoLggkKhq4s6enhG0xLx65KsMRz1dZXQSMme00"
+                    "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImVtYWlsQGdtYWlsLmNvbSIsImlhdCI6MTY5NjE5MTI0NywiZXhwIjoxNjk2MTk0ODQ3fQ.LO96BGyLWSK_-SEcQM-I6B4PZpYwWdKjSHsD-JYbwug"
                 }
             ],
             "params": [],
@@ -417,6 +417,78 @@
             "modified": "2023-09-24T22:17:26.201Z",
             "headers": [],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "a64636ed-fa62-4a1a-aecb-cda720899095",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
+            "name": "Delete Product Image",
+            "url": "http://localhost:8080/v1/backoffice/product/b0a093ae-5d92-11ee-89cc-0a555e04fea4/delete-image",
+            "method": "DELETE",
+            "sortNum": 100000,
+            "created": "2023-10-01T20:20:59.835Z",
+            "modified": "2023-10-01T20:21:48.979Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": ""
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"image_id\": \"\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "3ac6bf94-09ce-4e95-902f-13a4028b4e01",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
+            "name": "Mark Product Image",
+            "url": "http://localhost:8080/v1/backoffice/product/b0a093ae-5d92-11ee-89cc-0a555e04fea4/mark-image",
+            "method": "PUT",
+            "sortNum": 110000,
+            "created": "2023-10-01T20:21:06.319Z",
+            "modified": "2023-10-01T20:22:20.405Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": ""
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"product_id\": \"\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e897553b-727d-40cc-a7c3-a7cc27557e01",
+            "colId": "4a04de43-0fad-4821-8fff-b827cddbe5ee",
+            "containerId": "b513e4c7-9412-4174-b7a1-d32e61da7700",
+            "name": "Unmark Product Image",
+            "url": "http://localhost:8080/v1/backoffice/product/b0a093ae-5d92-11ee-89cc-0a555e04fea4/unmark-image",
+            "method": "PUT",
+            "sortNum": 120000,
+            "created": "2023-10-01T20:21:12.438Z",
+            "modified": "2023-10-01T20:22:38.309Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": ""
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"product_id\": \"\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ]

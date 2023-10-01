@@ -443,6 +443,120 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalErrorResponse'
+  
+  /v1/backoffice/product/{id}/delete-image:
+    delete:
+      tags:
+        - /backoffice/product/{id}/delete-image
+      summary: Delete image of Product
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the product to delete image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteProductImageRequest'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProductImageResponse'
+        '404':
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductNotFoundResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /v1/backoffice/product/{id}/mark-image:
+    put:
+      tags:
+        - /backoffice/product/{id}/mark-image
+      summary: Mark image of Product
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the product to mark image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarkProductImageRequest'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkProductImageResponse'
+        '404':
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductNotFoundResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+                
+  /v1/backoffice/product/{id}/unmark-image:
+    put:
+      tags:
+        - /backoffice/product/{id}/unmark-image
+      summary: Unmark image of Product
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the product to unmark image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnmarkProductImageRequest'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnmarkProductImageResponse'
+        '404':
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductNotFoundResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
 
   /v1/backoffice/product:
     get:
@@ -603,6 +717,12 @@ components:
         nessage:
           type: string
           default: 'Usuário não tem permissão para x'
+    ProductNotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          default: "Produto não encontrado"
 
 # BACKOFFICE USER
 
@@ -683,7 +803,6 @@ components:
         message:
           type: string
           default: "Usuário atualizado com sucesso"
-        
     backofficeUser:
       type: object
       properties:
@@ -792,13 +911,37 @@ components:
         url:
           type: string
           default: "https://wineemporium-uploads.s3.amazonaws.com/products/1c8525a5-3f45-4632-88e1-11b33ac0e1bf/1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+    DeleteProductImageRequest:
+      type: object
+      properties:
+        image_id:
+          type: string
+          default: "1be1353e-f8e6-4c26-b280-e62aae4365c2.png"
+    DeleteProductImageResponse:
+      type: string
+      default: ""
+    MarkProductImageRequest:
+      type: object
+      properties:
+        image_id:
+          type: string
+          default: "1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+    MarkProductImageResponse:
+      type: string
+      default: ""
+    UnmarkProductImageRequest:
+      type: object
+      properties:
+        image_id:
+          type: string
+          default: "1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+    UnmarkProductImageResponse:
+      type: string
+      default: ""
     product:
       type: object
       properties:
         id:
-          type: number
-          default: 1
-        uuid:
           type: string
           default: "1c8525a5-3f45-4632-88e1-11b33ac0e1bf"
         name:
@@ -822,8 +965,14 @@ components:
         images:
           type: array
           items:
-            type: string
-            default: "https://wineemporium-uploads.s3.amazonaws.com/products/1c8525a5-3f45-4632-88e1-11b33ac0e1bf/1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+            type: object
+            properties:
+              key:
+                type: string
+                default: "1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+              url:
+                type: string
+                default: "https://wineemporium-uploads.s3.amazonaws.com/products/1c8525a5-3f45-4632-88e1-11b33ac0e1bf/1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
         active:
           type: boolean
           default: true
@@ -840,18 +989,32 @@ components:
     product_simplified:
       type: object
       properties:
+        id:
+          type: string
+          default: "1c8525a5-3f45-4632-88e1-11b33ac0e1bf"
         name:
           type: string
           default: "Vinho Chave"
         description:
           type: string
           default: "Vinho Fabricado em 1888 na vinícula de São Paulo"
+        images:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                default: "1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
+              url:
+                type: string
+                default: "https://wineemporium-uploads.s3.amazonaws.com/products/1c8525a5-3f45-4632-88e1-11b33ac0e1bf/1c8525a5-3f45-4632-88e1-11b33ac0e1bf.png"
         price:
           type: string
           default: "19.99"
         ratings:
-          type: number
-          default: 1.75
+          type: string
+          default: "1.75"
   securitySchemes:
     Authorization:
       type: http
