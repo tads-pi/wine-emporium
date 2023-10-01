@@ -119,26 +119,6 @@ export default function Form(props) {
                 />
 
                 {
-                    editMode &&
-                    <div>
-                        <Button
-                            variant="contained"
-                            color="error"
-                            startIcon={<DeleteIcon />}
-                            onClick={() => {
-                                const accept = confirm(`Deseja mesmo deletar o produto '${formData?.name}'?`)
-                                if (accept) {
-                                    onSubmit("delete")
-                                }
-                            }}
-                        >
-                            Deletar
-                        </Button>
-                    </div>
-
-                }
-
-                {
                     !isMobile() &&
                     <Save
                         editMode={editMode}
