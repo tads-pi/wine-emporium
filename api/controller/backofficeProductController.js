@@ -239,8 +239,7 @@ const deleteProductImage = async (req, res) => {
 const markProductImage = async (req, res) => {
     // validates permission
     if (
-        !authService.userCan(req.context.user, SAVE_PRODUCT_IMAGE) ||
-        !authService.userCan(req.context.user, GET_PRODUCT_DATA)
+        !authService.userCan(req.context.user, SAVE_PRODUCT_IMAGE)
     ) {
         res.status(403).json({
             message: "Usuário não tem permissão para marcar imagem de um produto"
@@ -254,8 +253,7 @@ const markProductImage = async (req, res) => {
 const unmarkProductImage = async (req, res) => {
     // validates permission
     if (
-        !authService.userCan(req.context.user, SAVE_PRODUCT_IMAGE) ||
-        !authService.userCan(req.context.user, GET_PRODUCT_DATA)
+        !authService.userCan(req.context.user, SAVE_PRODUCT_IMAGE)
     ) {
         res.status(403).json({
             message: "Usuário não tem permissão para desmarcar imagem de um produto"

@@ -130,3 +130,29 @@ export async function saveBufferedImage(bucketName, imageBuffer, targetPath, fil
         return response
     }
 }
+
+export async function markImage(bucketName, targetPath, fileNameWithExtension) {
+    const response = {
+        error: ""
+    }
+    try {
+        return response
+    } catch (error) {
+        console.log("error saving image to s3: ", error);
+        response.error = error?.message ?? ""
+        return response
+    }
+}
+
+export async function unMarkImage(bucketName, targetPath, fileNameWithExtension) {
+    const response = {
+        error: ""
+    }
+    try {
+        return response
+    } catch (error) {
+        console.log("error saving image to s3: ", error);
+        response.error = error?.message ?? ""
+        return response
+    }
+}

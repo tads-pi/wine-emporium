@@ -1,5 +1,5 @@
 import { Product } from "../entity/product.js"
-import { getImagesFromFolder, removeImageFromFolder } from "../libs/aws/s3/index.js"
+import { getImagesFromFolder, removeImageFromFolder, markImage, unMarkImage } from "../libs/aws/s3/index.js"
 import productTable from "../sequelize/tables/productTable.js"
 import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
 
@@ -248,7 +248,13 @@ const markProductImage = async (req, res) => {
         return
     }
 
-    console.log("TODO - mark image: ", imageUUIDWithExtension);
+    const response = await markImage("wineemporium-uploads", "products", imageUUIDWithExtension)
+    if (response.error) {
+        res.status(400).json({
+            message: "Erro ao marcar imagem: " + res.error
+        })
+        return
+    }
 
     res.status(200).json()
 }
@@ -270,7 +276,13 @@ const unmarkProductImage = async (req, res) => {
         return
     }
 
-    console.log("TODO - unmark image: ", imageUUIDWithExtension);
+    const response = await unMarkImage("wineemporium-uploads", "products", imageUUIDWithExtension)
+    if (response.error) {
+        res.status(400).json({
+            message: "Erro ao marcar imagem: " + res.error
+        })
+        return
+    }
 
     res.status(200).json()
 }
