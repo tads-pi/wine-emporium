@@ -35,6 +35,8 @@ const authenticateToken = async (req, res, next) => {
     let token = req.headers?.authorization ?? ""
     if (!token) return res.sendStatus(401)
 
+    token = token.replace("Bearer ", "")
+
     jwt.verify(token, config.JWT_SECRET, async (err) => {
         if (err) return res.sendStatus(401)
         const userContext = await getUserFromToken(token)
