@@ -10,6 +10,7 @@ export class Product {
         this.images = input?.images || []
         this.stock = input?.stock || 0
         this.ratings = input?.ratings || 0
+        this.marked_image_uuid = input?.marked_image_uuid || ""
 
         this.id = input?.id || ""
         this.uuid = input?.uuid || uuid()

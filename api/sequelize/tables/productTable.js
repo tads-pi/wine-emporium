@@ -50,6 +50,10 @@ const productTable = db.define("products", {
     stock: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
+    },
+    marked_image_uuid: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
     }
 })
 

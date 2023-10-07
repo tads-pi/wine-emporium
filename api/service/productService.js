@@ -1,5 +1,5 @@
 import { Product } from "../entity/product.js"
-import { getImagesFromFolder, removeImageFromFolder, markImage, unMarkImage } from "../libs/aws/s3/index.js"
+import { getProductImages, removeImageFromFolder } from "../libs/aws/s3/index.js"
 import productTable from "../sequelize/tables/productTable.js"
 import authService, { VIEW_PRODUCT_EXTENDED_DATA } from "./authService.js"
 
@@ -40,7 +40,7 @@ const getAllProducts = async (req, res) => {
     const parsedProducts = products.map(({ dataValues }) => new Product(dataValues))
     for (const product of parsedProducts) {
         // Images
-        let images = await getImagesFromFolder("wineemporium-uploads", `products/${product?.uuid}`)
+        let images = await getProductImages("wineemporium-uploads", product)
         if (images.length == 0) {
             images = await getImagesFromFolder("wineemporium-uploads", "products/fallback.png")
         }
@@ -66,7 +66,7 @@ const getProductByID = async (id) => {
     const product = new Product(data.dataValues)
 
     // Add Images
-    product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+    product.images = await getProductImages("wineemporium-uploads", product)
 
     return product
 }
@@ -95,7 +95,7 @@ const getProduct = async (req) => {
     }
 
     // Add Images
-    product.images = await getImagesFromFolder("wineemporium-uploads", `products/${product.uuid}`)
+    product.images = await getProductImages("wineemporium-uploads", product)
 
     return product
 }
@@ -232,59 +232,40 @@ const deleteProductImage = async (req, res) => {
 }
 
 const markProductImage = async (req, res) => {
-    const product = await getProduct(req)
-    if (!product) {
-        res.status(404).json({
-            message: "Produto não encontrado"
-        })
-        return
+    try {
+        const product = await getProduct(req)
+        if (!product) {
+            res.status(404).json({
+                message: "Produto não encontrado"
+            })
+            return
+        }
+
+        const imageUUIDWithExtension = req?.body?.image_id || null
+        if (!imageUUIDWithExtension) {
+            res.status(400).json({
+                message: "ID de imagem inválido"
+            })
+            return
+        }
+
+        const fieldsToUpdate = {
+            marked_image_uuid: imageUUIDWithExtension
+        }
+
+        const updateClause = {
+            where: {
+                id: product.id
+            }
+        }
+
+        await productTable.update(fieldsToUpdate, updateClause)
+
+        res.status(200).json()
+    } catch (error) {
+        console.error("error at markProductImage: ", error?.message || error);
+        res.status(500).json()
     }
-
-    const imageUUIDWithExtension = req?.body?.image_id || null
-    if (!imageUUIDWithExtension) {
-        res.status(400).json({
-            message: "ID de imagem inválido"
-        })
-        return
-    }
-
-    const response = await markImage("wineemporium-uploads", "products", imageUUIDWithExtension)
-    if (response.error) {
-        res.status(400).json({
-            message: "Erro ao marcar imagem: " + res.error
-        })
-        return
-    }
-
-    res.status(200).json()
-}
-
-const unmarkProductImage = async (req, res) => {
-    const product = await getProduct(req)
-    if (!product) {
-        res.status(404).json({
-            message: "Produto não encontrado"
-        })
-        return
-    }
-
-    const imageUUIDWithExtension = req?.body?.image_id || null
-    if (!imageUUIDWithExtension) {
-        res.status(400).json({
-            message: "ID de imagem inválido"
-        })
-        return
-    }
-
-    const response = await unMarkImage("wineemporium-uploads", "products", imageUUIDWithExtension)
-    if (response.error) {
-        res.status(400).json({
-            message: "Erro ao marcar imagem: " + res.error
-        })
-        return
-    }
-
-    res.status(200).json()
 }
 
 export default {
@@ -297,5 +278,4 @@ export default {
     deleteProduct,
     deleteProductImage,
     markProductImage,
-    unmarkProductImage,
 }

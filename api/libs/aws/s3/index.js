@@ -1,5 +1,6 @@
 import AWS from "aws-sdk";
 import fs from "fs";
+import { Product } from "../../../entity/product.js";
 
 /**
  * Define a região onde salvar as imagens na nuvem
@@ -57,9 +58,9 @@ export async function getImagesFromFolder(bucketName, folderName) {
         const data = await s3Bucket.listObjectsV2(listObjectsParams).promise();
 
         return data.Contents.map((item) => {
-            const uuidWithExtension = item.Key.split("/").pop()
+            const fileNameWithExtension = item.Key.split("/").pop()
             return {
-                key: uuidWithExtension,
+                key: fileNameWithExtension,
                 url: `https://${bucketName}.s3.amazonaws.com/${item.Key}`
             }
         });
@@ -131,28 +132,27 @@ export async function saveBufferedImage(bucketName, imageBuffer, targetPath, fil
     }
 }
 
-export async function markImage(bucketName, targetPath, fileNameWithExtension) {
-    const response = {
-        error: ""
-    }
+export async function getProductImages(bucketName, product = new Product()) {
     try {
-        return response
-    } catch (error) {
-        console.log("error saving image to s3: ", error);
-        response.error = error?.message ?? ""
-        return response
-    }
-}
+        let listObjectsParams = {
+            Bucket: bucketName,
+            Prefix: `products/${product?.uuid}`,
+        };
 
-export async function unMarkImage(bucketName, targetPath, fileNameWithExtension) {
-    const response = {
-        error: ""
-    }
-    try {
-        return response
+        const s3Bucket = new AWS.S3();
+        const data = await s3Bucket.listObjectsV2(listObjectsParams).promise();
+
+        return data.Contents.map((item) => {
+            const uuidWithExtension = item.Key.split("/").pop()
+            const uuid = uuidWithExtension.split(".").shift()
+            return {
+                key: uuidWithExtension,
+                url: `https://${bucketName}.s3.amazonaws.com/${item.Key}`,
+                marked: uuidWithExtension === product?.marked_image_uuid
+            }
+        });
     } catch (error) {
-        console.log("error saving image to s3: ", error);
-        response.error = error?.message ?? ""
-        return response
+        console.error("error getting images from s3: ", error);
+        return []
     }
 }
