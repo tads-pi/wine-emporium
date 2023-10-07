@@ -56,6 +56,7 @@ const groupPermissionMap = new Map([
         CREATE_PRODUCT,
         VIEW_PRODUCT_EXTENDED_DATA,
         LIST_PRODUCT,
+        GET_PRODUCT_DATA,
         TOGGLE_PRODUCT_ACTIVE,
         SAVE_PRODUCT_IMAGE,
         {
