@@ -27,4 +27,3 @@ backofficeRouter.delete("/product/:id", backofficeProductController.deleteProduc
 backofficeRouter.post("/product/:id/upload", backofficeProductController.uploadProductImage)
 backofficeRouter.delete("/product/:id/delete-image", backofficeProductController.deleteProductImage)
 backofficeRouter.put("/product/:id/mark-image", backofficeProductController.markProductImage)
-backofficeRouter.put("/product/:id/unmark-image", backofficeProductController.unmarkProductImage)
