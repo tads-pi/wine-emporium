@@ -50,7 +50,15 @@ export default function Form(props) {
         <div className="container form__container">
             {
                 editMode &&
-                <Box>
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: "fit-content",
+                        maxHeight: "50vh",
+                        overflow: "scroll"
+                    }}
+                >
                     {
                         // TODO getimage base64 and send back to api using the component
                         formData?.images &&
