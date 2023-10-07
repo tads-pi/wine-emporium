@@ -24,8 +24,8 @@ export default function ImageHandlerWE({ marked, src, identifier, alt, deleteIma
                 >
                     {
                         marked
-                            ? <StarBorderIcon />
-                            : <StarIcon color="warning" />
+                            ? <StarIcon color="warning" />
+                            : <StarBorderIcon />
                     }
                 </IconButton>
 

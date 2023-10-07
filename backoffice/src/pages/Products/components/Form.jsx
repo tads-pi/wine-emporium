@@ -54,7 +54,7 @@ export default function Form(props) {
                     {
                         // TODO getimage base64 and send back to api using the component
                         formData?.images &&
-                        formData?.images.map(({ key, url }, index) => {
+                        formData?.images.map(({ key, url, marked }, index) => {
                             return (
                                 <div
                                     key={index}
@@ -64,7 +64,7 @@ export default function Form(props) {
                                         identifier={key}
                                         alt="product"
 
-                                        marked={true}
+                                        marked={marked}
                                         deleteImageHook={(imageID) => {
                                             const confirmation = window.confirm("Deseja mesmo deletar essa imagem?")
                                             if (confirmation) {
@@ -75,6 +75,12 @@ export default function Form(props) {
                                             const confirmation = window.confirm("Deseja mesmo marcar essa imagem como principal?")
                                             if (confirmation) {
                                                 markImage(imageID)
+                                                onFormUpdate("images", formData.images.map((image) => {
+                                                    return {
+                                                        ...image,
+                                                        marked: image?.key === imageID,
+                                                    }
+                                                }))
                                             }
                                         }}
                                     />

@@ -86,7 +86,12 @@ export default function useSaveProduct(props) {
     }
 
     function markImage(imageID) {
-        console.log("marking image: ", imageID);
+        dispatch(api.markProductImage({
+            productID: formData?.id || 0,
+            imageID,
+        }))
+
+        dispatch(snackSlice.actions.setSnackMessageInfo("Marcando imagem..."))
     }
 
     useEffect(() => {
@@ -124,6 +129,10 @@ export default function useSaveProduct(props) {
 
             if (selector.fn.includes("deleteProductImage")) {
                 dispatch(snackSlice.actions.setSnackMessageSuccess("Imagem deletada com sucesso!"))
+            }
+
+            if (selector.fn.includes("markProductImage")) {
+                dispatch(snackSlice.actions.setSnackMessageSuccess("Imagem marcada com sucesso!"))
             }
 
         }
