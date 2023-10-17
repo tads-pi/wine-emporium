@@ -16,7 +16,7 @@ export default function NavBarWE() {
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/products/save">Criar novo</NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link href="/login">Sair</Nav.Link>
+                <Nav.Link href="/">Sair</Nav.Link>
             </Nav>
         </Navbar>
     )
