@@ -134,15 +134,20 @@ export async function saveBufferedImage(bucketName, imageBuffer, targetPath, fil
 
 export async function getProductImages(bucketName, product = new Product()) {
     try {
+        const prefix = `products/${product?.uuid}`
         let listObjectsParams = {
             Bucket: bucketName,
-            Prefix: `products/${product?.uuid}`,
+            Prefix: prefix,
         };
 
         const s3Bucket = new AWS.S3();
-        const data = await s3Bucket.listObjectsV2(listObjectsParams).promise();
+        let data = await s3Bucket.listObjectsV2(listObjectsParams).promise();
 
-        return data.Contents.map((item) => {
+        data = data.Contents.filter((item) => {
+            return item.Key !== `${prefix}/`
+        })
+
+        return data.map((item) => {
             const uuidWithExtension = item.Key.split("/").pop()
             const uuid = uuidWithExtension.split(".").shift()
             return {
