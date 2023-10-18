@@ -63,21 +63,16 @@ const saveUser = async (req, res) => {
     })
 }
 
-const getUser = async (req, res) => {
-    const user = req.context.user
-
+async function findUserByUUID(uuid) {
     const findClause = {
         where: {
-            uuid: user?.uuid
+            uuid: uuid
         }
     }
 
     const userData = await storeUserTable.findOne(findClause)
     if (!userData) {
-        res.status(404).json({
-            message: "Usuário não encontrado"
-        })
-        return
+        return null
     }
 
     const addressData = await storeUserAddressTable.findAll({
@@ -88,13 +83,103 @@ const getUser = async (req, res) => {
 
     const foundUser = new User({
         ...userData.dataValues,
-        address: addressData.map((a) => new Address(a.dataValues))
+        address: addressData.map((a) => new Address(a.dataValues).viewmodel())
     })
 
-    res.status(200).json(foundUser)
+    return foundUser
+}
+
+const getUser = async (req, res) => {
+    const user = req.context.user
+    const foundUser = await findUserByUUID(user?.uuid)
+    if (!foundUser) {
+        res.status(404).json({
+            message: "Usuário não encontrado"
+        })
+        return
+    }
+
+    res.status(200).json(foundUser.viewmodel())
+}
+
+async function updateAdress(id, fieldsToUpdate) {
+    const data = await storeUserAddressTable.findByPk(id)
+    if (!data) {
+        return "Endereço não encontrado"
+    }
+
+    const updateClause = {
+        where: {
+            id: id
+        }
+    }
+
+    const updateData = await storeUserAddressTable.update(fieldsToUpdate, updateClause)
+    if (!updateData) {
+        return "Erro ao atualizar endereço"
+    }
+
+    return ""
+}
+
+async function updateUserData(id, fieldsToUpdate) {
+    const data = await storeUserTable.findByPk(id)
+    if (!data) {
+        return "Usuário não encontrado"
+    }
+
+    const updateClause = {
+        where: {
+            id: id
+        }
+    }
+
+    const updateData = await storeUserTable.update(fieldsToUpdate, updateClause)
+    if (!updateData) {
+        return "Erro ao atualizar usuário"
+    }
+
+    return ""
+}
+
+const updateUser = async (req, res) => {
+    const user = req.context.user
+    const foundUser = await findUserByUUID(user?.uuid)
+    if (!foundUser) {
+        res.status(404).json({
+            message: "Usuário não encontrado"
+        })
+        return
+    }
+
+    const userFieldsToUpdate = req.body
+    const addressFieldsToUpdate = userFieldsToUpdate?.address ?? []
+
+    delete userFieldsToUpdate.address
+
+    const userUpdateError = await updateUserData(foundUser.id, userFieldsToUpdate)
+    if (userUpdateError !== "") {
+        res.status(400).json({
+            message: userUpdateError
+        })
+        return
+    }
+
+    for (const a of addressFieldsToUpdate) {
+        const addressUpdateError = await updateAdress(a.id, a)
+        if (addressUpdateError !== "") {
+            res.status(400).json({
+                message: addressUpdateError
+            })
+            return
+        }
+    }
+
+    res.status(200).json({})
 }
 
 export default {
     saveUser,
     getUser,
+    updateUser,
 }

@@ -19,4 +19,19 @@ export default class Address {
         this.createdAt = input?.createdAt || ""
         this.updatedAt = input?.updatedAt || ""
     }
+
+    viewmodel() {
+        return {
+            cep: this.cep,
+            logradouro: this.logradouro,
+            complemento: this.complemento,
+            numero: this.numero,
+            cidade: this.cidade,
+            bairro: this.bairro,
+            uf: this.uf,
+            faturamento: this.faturamento,
+            principal: this.principal,
+            id: this.id,
+        }
+    }
 }

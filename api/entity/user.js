@@ -53,4 +53,16 @@ export default class User {
             password: bcrypt.hashSync(this.password || "", 10)
         }
     }
+
+    viewmodel() {
+        return {
+            uuid: this.uuid,
+            name: this.name,
+            document: this.document,
+            email: this.email,
+            birthDate: this.birthDate,
+            gender: this.gender,
+            address: this.address,
+        }
+    }
 }

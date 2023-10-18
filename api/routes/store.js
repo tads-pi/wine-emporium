@@ -16,3 +16,4 @@ storeRouter.post("/register", userController.saveUser)
 // user
 storeRouter.use(authController.authenticateToken)
 storeRouter.get("/user", userController.getUser)
+storeRouter.put("/user", userController.updateUser)
