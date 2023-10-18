@@ -19,7 +19,6 @@ import { api } from '../../lib/axios';
 import { Slider } from '../Slider';
 import { CartItemCard } from '../CartItemCard';
 import logo from '../../../public/LOGO.png'
-import Loading from "../loading/Loading"
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Perfil', 'Conta', 'Dashboard', 'Sair'];
@@ -217,14 +216,11 @@ export function NavBar() {
       <Slider data={data} />
       <Grid container spacing={2}>
         {
-          data ?
-            data?.map((wine) => (
-              <Grid item key={wine.uuid} xs={12} sm={6} md={4} lg={3}>
-                <CardWine data={wine} addCart={() => addItem(wine)} />
-              </Grid>
-            ))
-            : <Loading />
-        }
+          data?.map((wine) => (
+            <Grid item key={wine.uuid} xs={12} sm={6} md={4} lg={3}>
+              <CardWine data={wine} addCart={() => addItem(wine)} />
+            </Grid>
+          ))}
       </Grid>
     </div>
   );
