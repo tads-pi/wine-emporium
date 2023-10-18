@@ -20,6 +20,14 @@ export default class Address {
         this.updatedAt = input?.updatedAt || ""
     }
 
+    validate() {
+        const invalidFields = []
+
+        // todo
+
+        return invalidFields
+    }
+
     viewmodel() {
         return {
             cep: this.cep,

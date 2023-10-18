@@ -76,8 +76,13 @@ async function findUserByUUID(uuid) {
     }
 
     const addressData = await storeUserAddressTable.findAll({
+        // Sort by field 'principal' in descending order
+        order: [
+            ['principal', 'DESC']
+        ],
         where: {
-            userUUID: userData.uuid
+            userUUID: userData.uuid,
+            deleted: false,
         }
     })
 
@@ -178,8 +183,143 @@ const updateUser = async (req, res) => {
     res.status(200).json({})
 }
 
+const deleteAddress = async (req, res) => {
+    const user = req.context.user
+    const addressID = req.params?.id ?? ""
+    if (!addressID) {
+        res.status(400).json({
+            message: "id de endereço inválido"
+        })
+        return
+    }
+
+    const isUserAddress = await storeUserAddressTable.findOne({
+        where: {
+            id: addressID,
+            userUUID: user.uuid
+        }
+    })
+    if (!isUserAddress) {
+        res.status(404).json({
+            message: "Endereço não encontrado"
+        })
+        return
+    }
+
+    const updateClause = {
+        deleted: true
+    }
+
+    const findClause = {
+        where: {
+            id: addressID
+        }
+    }
+
+    await storeUserAddressTable.update(updateClause, findClause)
+    res.status(200).json({})
+}
+
+const addAddress = async (req, res) => {
+    const address = new Address(req.body)
+    const validate = address.validate()
+    if (validate.length > 0) {
+        res.status(400).json({
+            message: `Campos Inválidos: ${validate.join(", ")}`
+        })
+        return
+    }
+
+    const ok = await storeUserAddressTable.create(address)
+    if (!ok) {
+        res.status(500).json({
+            message: "Erro ao salvar endereço"
+        })
+        return
+    }
+
+    res.status(200).json({
+        message: "Endereço adicionado com sucesso"
+    })
+}
+
+const setMainAddress = async (req, res) => {
+    const user = req.context.user
+    const addressID = req.params?.id ?? ""
+    if (!addressID) {
+        res.status(400).json({
+            message: "id de endereço inválido"
+        })
+        return
+    }
+
+    const isUserAddress = await storeUserAddressTable.findOne({
+        where: {
+            id: addressID,
+            userUUID: user.uuid
+        }
+    })
+    if (!isUserAddress) {
+        res.status(404).json({
+            message: "Endereço não encontrado"
+        })
+        return
+    }
+
+    async function clearAll() {
+        const updateClause = {
+            principal: false
+        }
+
+        const findClause = {
+            where: {
+                userUUID: user.uuid
+            }
+        }
+
+        return await storeUserAddressTable.update(updateClause, findClause)
+    }
+
+    async function setAsMain() {
+        const updateClause = {
+            principal: true
+        }
+
+        const findClause = {
+            where: {
+                id: addressID
+            }
+        }
+
+        return await storeUserAddressTable.update(updateClause, findClause)
+    }
+
+    let ok = await clearAll()
+    if (!ok) {
+        res.status(500).json({
+            message: "Erro ao atualizar endereço"
+        })
+        return
+    }
+
+    ok = await setAsMain()
+    if (!ok) {
+        res.status(500).json({
+            message: "Erro ao atualizar endereço"
+        })
+        return
+    }
+
+    res.status(200).json({
+        message: "Endereço principal atualizado com sucesso"
+    })
+}
+
 export default {
     saveUser,
     getUser,
     updateUser,
+    deleteAddress,
+    addAddress,
+    setMainAddress,
 }
