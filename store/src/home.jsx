@@ -6,6 +6,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useStore } from './zustand-store/index.example';
 import { Link, useNavigate } from 'react-router-dom';
+import { useLogin } from './hooks/useLogin';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,13 +24,15 @@ const Home = () => {
 
     const navigate = useNavigate()
 
-    const { user, isLoading, login } = useStore(store => {
-        return {
-          user: store.user,
-          isLoading: store.isLoading,
-          login: store.login
-        }
-    })
+    // const { user, isLoading, login } = useStore(store => {
+    //     return {
+    //       user: store.user,
+    //       isLoading: store.isLoading,
+    //       login: store.login
+    //     }
+    // })
+
+    const { mutate, isLoading } = useLogin()
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -105,6 +108,7 @@ const Home = () => {
                                 type="submit"
                                 style={{ marginTop: '2rem' }}
                                 disabled={isLoading}
+                                onClick={() => mutate(loginForm)}
                             >
                                 {isLoading ? 'Entrando...' : 'Entrar'}
                             </Button>

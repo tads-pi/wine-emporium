@@ -5,15 +5,16 @@ import { useQuery } from "@tanstack/react-query"
 const fetchData = async () => {
     const response = await api.get('/v1/store/product')
 
-    return response?.data?.data
+    return response.data.products
 }
 
 export function useWineData() {
     const query = useQuery({
         queryFn: fetchData,
-        queryKey: ['wine-data'],
-        initialData: []
+        queryKey: ['winedata'],
+        initialData: [],
     })
 
+    console.log(query)
     return query
 }

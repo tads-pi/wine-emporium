@@ -8,6 +8,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useCartStore } from "../../zustand-store/cartState";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import RemoveRedEyeTwoToneIcon from '@mui/icons-material/RemoveRedEyeTwoTone';
 
 export function CardWine({ data, addCart }) {
   const [open, setOpen] = React.useState(false);
@@ -33,17 +35,15 @@ export function CardWine({ data, addCart }) {
     <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
       <Box
         sx={{ my: 3, mx: 2 }}
-        key={data.uuid}
+        key={data?.uuid}
       >
         <Grid container alignItems="center">
-          <div
-            onClick={() => window.location.href = `/mercado/${data.id}`}
-          >
+          <div>
             <Grid item xs>
               <CardMedia
                 component="img"
                 height="140"
-                image={data.images[0].url}
+                image={data?.images[0].url}
                 alt="Vinho Wine Emporium"
                 style={{ objectFit: "contain" }}
               />
@@ -56,17 +56,17 @@ export function CardWine({ data, addCart }) {
                 }}
               >
                 <Typography gutterBottom variant="h6" component="div">
-                  {data.name}
+                  {data?.name}
                 </Typography>
                 <Typography gutterBottom variant="subtitle1" component="span">
-                  ${data.price}
+                  ${data?.price}
                 </Typography>
               </Grid>
             </Grid>
           </div>
         </Grid>
         <Typography color="text.secondary" variant="subtitle2">
-          {data.description}
+          {data?.description}
         </Typography>
         {/* <Link to={`/mercado/${data.id}`}>Ver Mais</Link> */}
       </Box>
@@ -87,6 +87,15 @@ export function CardWine({ data, addCart }) {
           >
             Adicionar vinho ao carrinho
           </Typography>
+          <IconButton
+            color="primary"
+            aria-label="add to shopping cart"
+            style={{ position: "relative", bottom: "5px" }}
+          >
+            <Link to={`/mercado/${data?.id}`}>
+              <RemoveRedEyeTwoToneIcon />
+            </Link>
+          </IconButton>
           <IconButton
             color="primary"
             aria-label="add to shopping cart"

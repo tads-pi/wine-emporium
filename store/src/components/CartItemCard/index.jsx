@@ -25,7 +25,7 @@ export function CartItemCard({ data, removeCart }) {
                         component="img"
                         height="100"
                         width="100"
-                        image={data.images[0]}
+                        image={data?.images[0]}
                         alt="Vinho Wine Emporium"
                         style={{ objectFit: 'contain', borderRadius: "10px" }}
 
@@ -36,8 +36,8 @@ export function CartItemCard({ data, removeCart }) {
                         justifyContent: "center",
                         marginLeft: "10px"
                     }} >
-                        <Typography style={{ whiteSpace: 'nowrap' }}>Vinho: {data.name}</Typography>
-                        <Typography style={{ whiteSpace: 'nowrap' }}>Valor {data.price}</Typography>
+                        <Typography style={{ whiteSpace: 'nowrap' }}>Vinho: {data?.name}</Typography>
+                        <Typography style={{ whiteSpace: 'nowrap' }}>Valor {data?.price}</Typography>
                     </div>
 
                 </div>
