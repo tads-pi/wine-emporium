@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { authService } from "../../services/authService";
 
 import { SignUpParams } from "../../services/authService/signup";
-import { UpdateUserParams } from "../../services/authService/updateuserid";
+import { UpdateUserParams } from "../../services/authService/updateuserdata";
 import React from "react";
 
 const schema = z.object({
@@ -15,7 +15,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export function useAddressUserController() {
-    const [groupOptions, setGroupOptions] = React.useState<string[]>(['Group 1', 'Group 2', 'Group 3']);
+    // const [groupOptions, setGroupOptions] = React.useState<string[]>(['Group 1', 'Group 2', 'Group 3']);
 
     const {
         register,
@@ -26,9 +26,9 @@ export function useAddressUserController() {
     })
 
     const { mutateAsync, isLoading } = useMutation({
-        mutationKey: ['updateuserid'],
+        mutationKey: ['updateuserdata'],
         mutationFn: async (data: UpdateUserParams) => {
-            return authService.updateuserid(data)
+            return authService.updateuserdata(data)
         },
     })
 
@@ -36,8 +36,8 @@ export function useAddressUserController() {
 
     const handleSubmit = hookFormSubmit(async (data) => {
         try {
-            const { message } = await mutateAsync(data)
-            alert(message)
+            // const { message } = await mutateAsync(data)
+            // alert(message)
 
             // toast.success('Conta criada com sucesso')
         } catch (error) {

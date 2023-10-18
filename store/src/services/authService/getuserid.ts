@@ -1,25 +1,21 @@
 import { httpClient } from "../httpClient";
 
-export interface GetUserIdParams {
-    id: string;
-}
-
 interface GetUserIdResponse {
     id: number
     name: string
     document: string
     email: string
     password: string
-    group: string
+    birthDate: string
     active: boolean
     deleted: boolean
     createAt: string
     updatedAt: string
+    gender: string
 }
 
-export async function getuserid(params: GetUserIdParams) {
-    const { data } = await httpClient.get<GetUserIdResponse>(`/v1/backoffice/user/${params.id}`)
-
+export async function getuserdata() {
+    const { data } = await httpClient.get<GetUserIdResponse>(`/v1/store/user`)
     return data
 }
 

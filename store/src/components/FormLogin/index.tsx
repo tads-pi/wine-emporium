@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import { Paper, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -6,6 +6,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginController } from './useLoginController';
+import { localStorageKeys } from '../../config/localStorageKeys';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -70,8 +71,8 @@ export const FormLogin = () => {
                                     ),
                                 }}
                                 {...register('password')}
-                                    helperText={errors?.password?.message}
-                                    error={!!errors.password}
+                                helperText={errors?.password?.message}
+                                error={!!errors.password}
                             />
                             <div>
                                 Não tem uma conta? <span><Link to="criar-cadastro">Criar cadastro</Link></span>

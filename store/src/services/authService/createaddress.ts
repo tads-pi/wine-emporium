@@ -1,22 +1,21 @@
 import { httpClient } from "../httpClient";
 
-interface AddressData {
+export interface AddressData {
     cep: string
-    rua: string
+    logradouro: string
+    complemento: string
     numero: string
-    bairro: string
-    estado: string
     cidade: string
-    pais: string
+    bairro: string
+    uf: string
 }
 
 export interface CreateAddressParams {
-    idUser: string
     address: AddressData
 }
 
 export async function createaddress(params: CreateAddressParams) {
-    const { data } = await httpClient.post('/auth/signin', params) // alterar aqui
+    const { data } = await httpClient.post('/auth/signin', params)
 
     return data
 }

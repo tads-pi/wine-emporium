@@ -6,7 +6,8 @@ import { authService } from "../../services/authService";
 import { differenceInYears, format } from 'date-fns';
 
 
-import { UpdateUserParams } from "../../services/authService/updateuserid";
+import { UpdateUserParams } from "../../services/authService/updateuserdata";
+import { useEffect } from "react";
 
 const schema = z.object({
     name: z.string().nonempty('Nome é obrigatório'),
@@ -16,13 +17,12 @@ const schema = z.object({
     }, 'Informe um CPF válido'),
     email: z.string().nonempty('E-mail é obrigatório').email('Informe um e-mail válido'),
     password: z.string().nonempty('Senha é obrigatório').min(7, 'Senha deve conter no mínimo 8 caracteres'),
-    group: z.string().nonempty('Grupo é obrigatório'),
     birthdate: z
-    .string()
-    .nonempty('Data de nascimento é obrigatória'),
-    radioOption: z.string().refine(value => ['option1', 'option2', 'option3'].includes(value), {
+        .string()
+        .nonempty('Data de nascimento é obrigatória'),
+    radioOption: z.string().refine(value => ['masculino', 'feminino', 'na'].includes(value), {
         message: 'Selecione uma opção válida.',
-      }),
+    }),
 })
 
 type FormData = z.infer<typeof schema>
@@ -31,6 +31,7 @@ export function useLoggedUserController() {
 
     const {
         register,
+        setValue,
         handleSubmit: hookFormSubmit,
         formState: { errors },
     } = useForm<FormData>({
@@ -38,29 +39,27 @@ export function useLoggedUserController() {
     })
 
     const { mutateAsync, isLoading } = useMutation({
-        mutationKey: ['updateuserid'],
+        mutationKey: ['updateuserdata'],
         mutationFn: async (data: UpdateUserParams) => {
-            return authService.updateuserid(data)
+            return authService.updateuserdata(data)
         },
     })
-
-
 
     const handleSubmit = hookFormSubmit(async (data) => {
         try {
             const { message } = await mutateAsync(data)
-            alert(message)
+            message && alert(message)
 
-            // toast.success('Conta criada com sucesso')
+            window.location.href = '/mercado'
         } catch (error) {
             alert('Erro ao atualizar usuário!')
         }
     })
 
-    return { 
+    return {
         handleSubmit,
         register,
         errors,
         isLoading
-     }
+    }
 }

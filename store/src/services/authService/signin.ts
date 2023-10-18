@@ -12,7 +12,7 @@ interface SigninResponse {
 
 export async function signin(params: SigninParams) {
     const { data } = await httpClient.post<SigninResponse>('/v1/store/auth', params)
-
+    console.log("auth data: ", data);
     return data
 }
 

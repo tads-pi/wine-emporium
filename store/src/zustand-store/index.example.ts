@@ -19,7 +19,7 @@ export const useStore = create<AuthState>((set, get) => {
       set({ isLoading: true })
       
       try {
-        const response = await api.post('/v1/backoffice/auth', user)
+        const response = await api.post('/v1/store/auth', user)
         set({
           // user: response.data,
           isLoading: false,
