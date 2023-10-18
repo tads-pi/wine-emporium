@@ -16,26 +16,7 @@ import { Badge, Drawer, styled } from '@mui/material';
 import { useCartStore } from '../../zustand-store/cartState';
 import { CartItemCard } from '../CartItemCard';
 import logo from '../../../public/LOGO.png'
-import { Link } from 'react-router-dom';
-
-
-const settings = () => {
-  return (
-    <>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem', padding: '.5rem' }}>
-      <Link to="/perfil" style={{ textDecoration: 'none' }}>
-        <span style={{ color: 'black' }}>Perfil</span>
-      </Link>
-      <span style={{ color: 'black' }}>Conta</span>
-      <span style={{ color: 'black' }}>Dashboard</span>
-      <Link to="/" style={{ textDecoration: 'none' }}>
-        <span style={{ color: 'black' }}>Sair</span>
-      </Link>
-    </div>
-    </>
-  )
-}
-
+import { Settings } from '../Settings';
 
 export function Nav() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -144,7 +125,7 @@ export function Nav() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings()}
+                <Settings />
               </Menu>
               <IconButton style={{ color: 'black', marginLeft: '10px' }} aria-label="cart" onClick={hideOrShowDrawer}>
                 <StyledBadge badgeContent={items.length} color="secondary">
