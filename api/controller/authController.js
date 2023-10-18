@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import config from "../config/config.js"
 import BackofficeUser from "../entity/backofficeUser.js"
 import authService from "../service/authService.js"
+import User from "../entity/user.js"
 
 /**
  * retorna um usuario do banco de dados a partir de um token
@@ -11,8 +12,15 @@ import authService from "../service/authService.js"
  */
 async function getUserFromToken(token) {
     const decoded = jwt.decode(token)
-    const user = await authService.findUser(decoded)
-    return new BackofficeUser(user?.dataValues || {})
+    const backofficeUser = await authService.findUser(decoded)
+    if (backofficeUser) {
+        return new BackofficeUser(backofficeUser?.dataValues || {})
+    }
+
+    const storeUser = await authService.findStoreUser(decoded)
+    if (storeUser) {
+        return new User(storeUser?.dataValues || {})
+    }
 }
 
 /**
@@ -70,7 +78,45 @@ const handleBackofficeLogin = async (req, res) => {
     if (bcrypt.compareSync(user?.password || "", foundUser?.dataValues?.password || "")) {
         const token = jwt.sign({
             email: user.email,
-            group: user.group
+            group: foundUser?.dataValues?.group
+        }, config.JWT_SECRET, {
+            algorithm: "HS256",
+            expiresIn: 3600
+        })
+
+        res.status(200).json({
+            access_token: token,
+            expires_in: 3600
+        })
+    } else {
+        res.status(400).json({
+            message: "e-mail ou senha incorretos"
+        })
+    }
+}
+
+const handleStoreLogin = async (req, res) => {
+    const user = {
+        email: req.body?.email ?? "",
+        password: req.body?.password ?? "",
+    }
+
+    const foundUser = await authService.findStoreUser(user)
+    if (!foundUser) {
+        res.status(400).json({
+            message: "e-mail ou senha incorretos"
+        })
+        return
+    }
+
+    if (bcrypt.compareSync(user?.password || "", foundUser?.dataValues?.password || "")) {
+        const token = jwt.sign({
+            id: foundUser?.dataValues?.uuid,
+            email: user.email,
+            name: foundUser?.dataValues?.name,
+            birthDate: foundUser?.dataValues?.birthDate,
+            address: foundUser?.dataValues?.address,
+            gender: foundUser?.dataValues?.gender,
         }, config.JWT_SECRET, {
             algorithm: "HS256",
             expiresIn: 3600
@@ -89,5 +135,6 @@ const handleBackofficeLogin = async (req, res) => {
 
 export default {
     authenticateToken,
-    handleBackofficeLogin
+    handleBackofficeLogin,
+    handleStoreLogin
 }
