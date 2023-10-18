@@ -5,10 +5,9 @@ import { Paper, TextField, Button, Typography, IconButton, InputAdornment } from
 import { styled } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useForm } from 'react-hook-form'
+import InputMask from 'react-input-mask';
 
-import { userLoginFormSchema } from '../../utils/schema';
-import { useCreateUser } from '../../hooks/useCreateUserMutate';
+import { useCreateUserController } from './useCreateUserController';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -19,14 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function FormCreateUser() {
-    const [loginForm, setLoginForm] = React.useState({
-        name: '',
-        document: '',
-        email: '',
-        password: '',
-        group: ''
-    });
-    const { mutate, isLoading } = useCreateUser()
+    const { handleSubmit, register, errors, isLoading } = useCreateUserController()
 
     const [showPassword, setShowPassword] = React.useState(false);
 
@@ -35,66 +27,6 @@ export function FormCreateUser() {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
-    
-    // Função para aplicar a máscara de CPF
-    const formatCPF = (value) => {
-        // Remove caracteres não numéricos
-        const cleanedValue = value.replace(/\D/g, '');
-
-        // Aplica a máscara de CPF (###.###.###-##)
-        const formattedValue = cleanedValue.replace(
-            /^(\d{3})(\d{3})(\d{3})(\d{2})$/,
-            '$1.$2.$3-$4'
-        );
-
-        return formattedValue;
-    };
-
-    const handleCPFChange = (e) => {
-        const formattedCPF = formatCPF(e.target.value);
-        setLoginForm({ ...loginForm, document: formattedCPF });
-    };
-
-
-    const onSubmit = (e) => {
-        e.preventDefault()
-        const data = {
-            name: loginForm.name,
-            document: loginForm.document,
-            email: loginForm.email,
-            password: loginForm.password,
-            group: loginForm.group
-        }
-        mutate(data)
-    };
-
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-    } = useForm({
-        resolver: zodResolver(userLoginFormSchema)
-    })
-
-
-    const handleValuesPassword = (message) => {
-        switch (message) {
-            case 'Senha fraca':
-                return 'error'
-            case 'Senha média':
-                return 'warning'
-            case 'Senha forte':
-                return 'success'
-        }
-    }
-
-    const validateForm = () => {
-        const validateUser = Object.values(loginForm).includes('')
-
-        return validateUser
-    }
     
     return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
@@ -104,57 +36,52 @@ export function FormCreateUser() {
                         <Typography variant='h5' gutterBottom>
                             Cadastro
                         </Typography>
-                        <form onSubmit={onSubmit}>
+
+                        <form onSubmit={handleSubmit}>
                         <div style={{ display: 'flex', gap: 15 }}>
                                 <TextField
-                                    type='text'
                                     label="Nome Completo"
                                     fullWidth
                                     variant="outlined"
                                     margin="normal"
-                                    required
                                     size='small'
-                                    onChange={(e) => {
-                                        setLoginForm({ ...loginForm, name: e.target.value })
-                                    }}
-                                    // {...register('name')}
-                                    // helperText={errors?.name?.message}
-                                    // color={errors?.name?.message ? 'error' : undefined}
+                                    {...register('name')}
+                                    helperText={errors?.name?.message}
+                                    error={!!errors.document}
                                 />
                                 
                                 
                             </div>
                             <div style={{ display: 'flex', gap: 15 }}>
-                                <TextField
-                                     label="CPF"
-                                     fullWidth
-                                     variant="outlined"
-                                     margin="normal"
-                                     required
-                                     size='small'
-                                     inputProps={{maxLength: 14}}
-                                     value={loginForm.document} // Usar o valor formatado do estado
-                                     onChange={handleCPFChange} // Aplicar a máscara no evento onChange
-                                    // {...register('document')}
-                                    // helperText={errors?.document?.message}
-                                    // color={errors?.document?.message ? 'error' : undefined}
-                                />
+                            <TextField
+                                label="CPF"
+                                fullWidth
+                                variant="outlined"
+                                margin="normal"
+                                error={!!errors.document}
+                                size='small'
+                                helperText={errors.document?.message}
+                                {...register('document')}
+                                InputProps={{
+                                    inputComponent: InputMask as any,
+                                    inputProps: {
+                                        mask: '999.999.999-99',
+                                    },
+                                }}
+                            />
                                 
                                 
                             </div>
                             <div style={{ display: 'flex', gap: 15 }}>
                                 <TextField
-                                    type='email'
                                     label="E-mail"
                                     fullWidth
                                     variant="outlined"
                                     margin="normal"
-                                    required
                                     size='small'
-                                    onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-                                    // {...register('email')}
-                                    // helperText={errors?.email?.message}
-                                    // color={errors?.email?.message ? 'error' : undefined}
+                                    {...register('email')}
+                                    helperText={errors?.email?.message}
+                                    error={!!errors.email}
                                 />
                                  <TextField
                                     label="Senha"
@@ -162,9 +89,7 @@ export function FormCreateUser() {
                                     variant="outlined"
                                     margin="normal"
                                     type={showPassword ? 'text' : 'password'} // Mostra ou esconde a senha com base no estado showPassword
-                                    required
                                     size='small'
-                                    onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
@@ -178,25 +103,22 @@ export function FormCreateUser() {
                                             </InputAdornment>
                                         ),
                                     }}
-                                    // {...register('password')}
-                                    // helperText={errors?.password?.message}
-                                    // color={handleValuesPassword(errors?.password?.message)}
+                                    {...register('password')}
+                                    helperText={errors?.password?.message}
+                                    error={!!errors.password}
                                 />
                                 
                             </div>
                             <div style={{ display: 'flex', gap: 15 }}>
                             <TextField
-                                    type='text'
                                     label="Grupo"
                                     fullWidth
                                     variant="outlined"
                                     margin="normal"
-                                    required
                                     size='small'
-                                    onChange={(e) => setLoginForm({ ...loginForm, group: e.target.value })}
-                                    // {...register('group')}
-                                    // helperText={errors?.group?.message}
-                                    // color={errors?.group?.message ? 'error' : undefined}
+                                    {...register('group')}
+                                    helperText={errors?.group?.message}
+                                    error={!!errors.group}
                                 />
                             </div>
                             <Button

@@ -33,7 +33,7 @@ export function Slider({ data }) {
         modules={[Parallax, Pagination, Navigation]}
         className="mySwiper"
       >
-        {data.map((item) => (
+        {data?.map((item) => (
         <SwiperSlide>
           <div className="title" data-swiper-parallax="-300">
             {item.name}

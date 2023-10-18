@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { IUserLoginProps } from "../interface"
-import apiAuth from "../../../services/apiAuth"
+import { httpClient } from "../../../services/httpClient"
 
 interface ConfigurationState {
     data: [],
@@ -14,7 +14,7 @@ const inititalState: ConfigurationState = {
 
 export const fetchAuthentication = createAsyncThunk('appReportLogin/fetchAuthentication', async (user: IUserLoginProps) => {
     try {
-        const response = await apiAuth.post('login', user)
+        const response = await httpClient.post('login', user)
 
         return response.data
     } catch (error) {
