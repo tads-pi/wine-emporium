@@ -6,7 +6,7 @@ import axios from "axios"
 
 const createUserFormSchema = z.object({
   name: z.string().min(3, { message: "nome deve ter no minimo 3 caracteres" })
-    .nonempty("nome não pode ser vazio"),
+    .nonempty("nome não pode ser vazio").regex(/^[A-Za-z]{3,}\s[A-Za-z]{3,}$/, { message: "o nome precisa ter nome e sobrenome com 3 caracteres " }),
 
   email: z.string().email()
     .nonempty("email não pode ser vazio"),
@@ -186,7 +186,7 @@ export function FormCreateUser() {
           }}>
             <h3>endereço de faturamento</h3>
             <div>
-              <div style={{ paddingTop: "10px", flexDirection: "row" }}>
+              <div style={{ paddingTop: "10px", flexDirection: "row", }}>
                 <label htmlFor="cep">CEP</label>
                 <br />
                 <Controller
@@ -207,7 +207,9 @@ export function FormCreateUser() {
                   placeholder="complemento"
 
                 />
-                <input  {...register(`address.0.numero`)}
+                <input style={{
+                  width: "70px"
+                }}  {...register(`address.0.numero`)}
                   placeholder="numero"
                 />
 
@@ -266,7 +268,9 @@ export function FormCreateUser() {
                     placeholder="complemento"
 
                   />
-                  <input  {...register(`address.1.numero`)}
+                  <input style={{
+                    width: "70px"
+                  }}   {...register(`address.1.numero`)}
                     placeholder="numero"
                   />
 
@@ -309,7 +313,9 @@ export function FormCreateUser() {
                       value=""
 
                     />
-                    <input  {...register(`address.1.numero`)}
+                    <input style={{
+                      width: "70px"
+                    }}  {...register(`address.1.numero`)}
                       placeholder="numero"
                       value=""
 
@@ -366,7 +372,9 @@ export function FormCreateUser() {
                         placeholder="complemento"
 
                       />
-                      <input  {...register(`address.${index}.numero`)}
+                      <input style={{
+                        width: "70px"
+                      }}   {...register(`address.${index}.numero`)}
                         placeholder="numero"
                       />
 
@@ -395,17 +403,22 @@ export function FormCreateUser() {
             }
 
             <button type="button" onClick={() => {
-              append({
-                cep: "",
-                logradouro: "",
-                complemento: "",
-                numero: "",
-                cidade: "",
-                bairro: "",
-                uf: "",
-                faturamento: false,
-                principal: false
-              })
+              if (fields.length <= 3) {
+                append({
+                  cep: "",
+                  logradouro: "",
+                  complemento: "",
+                  numero: "",
+                  cidade: "",
+                  bairro: "",
+                  uf: "",
+                  faturamento: false,
+                  principal: false
+                })
+              } else {
+                alert("numero maximo de endereços atingido")
+              }
+
             }}>+</button>
 
           </div>
