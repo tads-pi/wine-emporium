@@ -57,6 +57,8 @@ export function FormCreateUser() {
   })
   const [cep, SetCep] = useState("")
   const [address, setaddress] = useState<any>(null)
+  const [nuemero, setNumero] = useState<any>(null)
+  const [complemento, setComplemento] = useState<any>(null)
   const [addressFaturamento, setaddressFaturamento] = useState<any>(null)
 
   function consultarCep() {
@@ -203,15 +205,25 @@ export function FormCreateUser() {
                   value={addressFaturamento ? addressFaturamento.logradouro : ""}
                 />
 
-                <input  {...register(`address.0.complemento`)}
+                <Controller
+                  control={control}
+                  name={`address.0.complemento`}
+                  render={({ field }) => (
+                    <input  {...register(`address.0.complemento`)}
                   placeholder="complemento"
-
+                      onChange={(e) => field.onChange(setComplemento(e.target.value))} />
+                  )}
                 />
-                <input style={{
-                  width: "70px"
-                }}  {...register(`address.0.numero`)}
+                <Controller
+                  control={control}
+                  name={`address.0.numero`}
+                  render={({ field }) => (
+                    <input  {...register(`address.0.numero`)}
                   placeholder="numero"
+                      onChange={(e) => field.onChange(setNumero(e.target.value))} />
+                  )}
                 />
+
 
                 <input value={addressFaturamento ? addressFaturamento.localidade : ""}
                   placeholder="cicdade"
@@ -266,12 +278,14 @@ export function FormCreateUser() {
 
                   <input  {...register(`address.1.complemento`)}
                     placeholder="complemento"
-
+                    value={complemento}
                   />
                   <input style={{
                     width: "70px"
                   }}   {...register(`address.1.numero`)}
                     placeholder="numero"
+                    value={nuemero}
+
                   />
 
                   <input value={addressFaturamento ? addressFaturamento.localidade : ""}
@@ -310,14 +324,12 @@ export function FormCreateUser() {
 
                     <input  {...register(`address.1.complemento`)}
                       placeholder="complemento"
-                      value=""
 
                     />
                     <input style={{
                       width: "70px"
                     }}  {...register(`address.1.numero`)}
                       placeholder="numero"
-                      value=""
 
                     />
 

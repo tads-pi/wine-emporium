@@ -1,11 +1,11 @@
 import { httpClient } from "../httpClient";
 
 export interface UpdateAddressParams {
-    idAddress: string
+    address: string
 }
 
 export async function updateaddress(params: UpdateAddressParams) {
-    const { data } = await httpClient.put(`/auth/signin${params.idAddress}`, params)
+    const { data } = await httpClient.post(`/v1/store/user/address/mark/${params.address}`, params)
 
     return data
 }

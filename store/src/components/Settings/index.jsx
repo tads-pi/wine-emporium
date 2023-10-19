@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import useAuthStore from "../../zustand-store/authState";
+import { localStorageKeys } from "../../config/localStorageKeys";
 
 export function Settings() {
     const { signout } = useAuthStore((store) => {
@@ -9,6 +10,7 @@ export function Settings() {
     })
   
     const handleSignout = () => {
+      localStorage.removeItem(localStorageKeys.ACCESS_TOKEN)
       signout()
     }
     return (

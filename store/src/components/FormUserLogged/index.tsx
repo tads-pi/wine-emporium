@@ -40,6 +40,7 @@ export function FormUserLogged() {
 
     const [gambiarra, setGambiarra] = useState({
         document: '',
+        email: '',
         name: '',
         birthDate: '',
         gender: ''
@@ -54,7 +55,7 @@ export function FormUserLogged() {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px', width: '50%' }}>
             <Grid container spacing={2} sx={{ maxWidth: '750px' }}>
                 <Grid item xs={12} >
                     <Item sx={{ boxShadow: 5, p: 5 }}>
@@ -102,6 +103,7 @@ export function FormUserLogged() {
                             <div style={{ display: 'flex', gap: 15 }}>
                                 <TextField
                                     label="E-mail"
+                                    defaultValue={gambiarra.email}
                                     fullWidth
                                     variant="outlined"
                                     margin="normal"
@@ -170,17 +172,17 @@ export function FormUserLogged() {
                             <div>
                                 <Controller
                                     control={methods.control}
-                                    name='radioOption'
+                                    name='gender'
                                     defaultValue={gambiarra.gender.toLowerCase().replace('/', '')}
                                     render={({ field }) => (
                                         <RadioGroup
-                                            {...register('radioOption')}
+                                            {...register('gender')}
                                             value={field.value}
                                             onChange={field.onChange}
                                         >
                                             <FormControlLabel value="masculino" control={<Radio />} label="Masculino" />
                                             <FormControlLabel value="feminino" control={<Radio />} label="Feminino" />
-                                            <FormControlLabel value="na" control={<Radio />} label="n/a" />
+                                            <FormControlLabel value="na" control={<Radio />} label="Outros" />
                                         </RadioGroup>
                                     )}
                                 />
