@@ -9,6 +9,8 @@ import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from "@mu
 import PerfilUser from "./components/PerfilUser"
 import { FormUserLogged } from "./components/FormUserLogged"
 import useAuthStore from "../src/zustand-store/authState";
+import { localStorageKeys } from "./config/localStorageKeys"
+import { FormUserAddress } from "./components/FormUserAddress"
 
 
 export function AuthGuard({ isPrivate }) {
@@ -16,20 +18,22 @@ export function AuthGuard({ isPrivate }) {
     return {
       signedIn: store.signedIn,
     };
-})
+  })
+  const storedAccessToken = localStorage.getItem(localStorageKeys.ACCESS_TOKEN)
 
-    if (!signedIn && isPrivate) {
+
+    if (!storedAccessToken && isPrivate) {
         return <Navigate to='/' replace />
     }
 
-    if (signedIn && !isPrivate) {
+    if (storedAccessToken && !isPrivate) {
         // Redicionar para dashboard ('/')
         return <Navigate to='/mercado' replace />
     }
 
     return (
       <>
-        {signedIn && isPrivate ? <Nav /> : null}
+        {storedAccessToken && isPrivate ? <Nav /> : null}
         <Outlet />
       </>
     )
@@ -61,7 +65,7 @@ function App() {
           <Route path="/mercado/:id" element={<VerMais />} />
           <Route element={<EditPerfil />}>
             <Route path="/perfil/alterar-dados" element={<FormUserLogged />} />
-            <Route path="/perfil/endereco-de-entrega" element={<h1>Olá 2</h1>} />
+            <Route path="/perfil/endereco-de-entrega" element={<FormUserAddress />} />
           </Route>
         </Route>
 

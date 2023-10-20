@@ -6,7 +6,7 @@ import axios from "axios"
 
 const createUserFormSchema = z.object({
   name: z.string().min(3, { message: "nome deve ter no minimo 3 caracteres" })
-    .nonempty("nome não pode ser vazio"),
+    .nonempty("nome não pode ser vazio").regex(/^[A-Za-z]{3,}\s[A-Za-z]{3,}$/, { message: "o nome precisa ter nome e sobrenome com 3 caracteres " }),
 
   email: z.string().email()
     .nonempty("email não pode ser vazio"),
@@ -57,6 +57,8 @@ export function FormCreateUser() {
   })
   const [cep, SetCep] = useState("")
   const [address, setaddress] = useState<any>(null)
+  const [nuemero, setNumero] = useState<any>(null)
+  const [complemento, setComplemento] = useState<any>(null)
   const [addressFaturamento, setaddressFaturamento] = useState<any>(null)
 
   function consultarCep() {
@@ -186,7 +188,7 @@ export function FormCreateUser() {
           }}>
             <h3>endereço de faturamento</h3>
             <div>
-              <div style={{ paddingTop: "10px", flexDirection: "row" }}>
+              <div style={{ paddingTop: "10px", flexDirection: "row", }}>
                 <label htmlFor="cep">CEP</label>
                 <br />
                 <Controller
@@ -203,13 +205,25 @@ export function FormCreateUser() {
                   value={addressFaturamento ? addressFaturamento.logradouro : ""}
                 />
 
-                <input  {...register(`address.0.complemento`)}
+                <Controller
+                  control={control}
+                  name={`address.0.complemento`}
+                  render={({ field }) => (
+                    <input  {...register(`address.0.complemento`)}
                   placeholder="complemento"
-
+                      onChange={(e) => field.onChange(setComplemento(e.target.value))} />
+                  )}
                 />
-                <input  {...register(`address.0.numero`)}
+                <Controller
+                  control={control}
+                  name={`address.0.numero`}
+                  render={({ field }) => (
+                    <input  {...register(`address.0.numero`)}
                   placeholder="numero"
+                      onChange={(e) => field.onChange(setNumero(e.target.value))} />
+                  )}
                 />
+
 
                 <input value={addressFaturamento ? addressFaturamento.localidade : ""}
                   placeholder="cicdade"
@@ -264,10 +278,14 @@ export function FormCreateUser() {
 
                   <input  {...register(`address.1.complemento`)}
                     placeholder="complemento"
-
+                    value={complemento}
                   />
-                  <input  {...register(`address.1.numero`)}
+                  <input style={{
+                    width: "70px"
+                  }}   {...register(`address.1.numero`)}
                     placeholder="numero"
+                    value={nuemero}
+
                   />
 
                   <input value={addressFaturamento ? addressFaturamento.localidade : ""}
@@ -306,12 +324,12 @@ export function FormCreateUser() {
 
                     <input  {...register(`address.1.complemento`)}
                       placeholder="complemento"
-                      value=""
 
                     />
-                    <input  {...register(`address.1.numero`)}
+                    <input style={{
+                      width: "70px"
+                    }}  {...register(`address.1.numero`)}
                       placeholder="numero"
-                      value=""
 
                     />
 
@@ -366,7 +384,9 @@ export function FormCreateUser() {
                         placeholder="complemento"
 
                       />
-                      <input  {...register(`address.${index}.numero`)}
+                      <input style={{
+                        width: "70px"
+                      }}   {...register(`address.${index}.numero`)}
                         placeholder="numero"
                       />
 
@@ -395,17 +415,22 @@ export function FormCreateUser() {
             }
 
             <button type="button" onClick={() => {
-              append({
-                cep: "",
-                logradouro: "",
-                complemento: "",
-                numero: "",
-                cidade: "",
-                bairro: "",
-                uf: "",
-                faturamento: false,
-                principal: false
-              })
+              if (fields.length <= 3) {
+                append({
+                  cep: "",
+                  logradouro: "",
+                  complemento: "",
+                  numero: "",
+                  cidade: "",
+                  bairro: "",
+                  uf: "",
+                  faturamento: false,
+                  principal: false
+                })
+              } else {
+                alert("numero maximo de endereços atingido")
+              }
+
             }}>+</button>
 
           </div>

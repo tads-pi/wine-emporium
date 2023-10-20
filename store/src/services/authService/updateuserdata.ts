@@ -4,11 +4,11 @@ import { AddressData } from "./createaddress";
 export interface UpdateUserParams {
     name: string
     document: string
-    password: string
+    // password: string
     email: string
     birthdate: string
-    radioOption: string
-    address?: AddressData[]
+    gender: string
+    // address?: AddressData[]
 }
 
 
@@ -18,8 +18,8 @@ export async function updateuserdata(params: UpdateUserParams) {
         document: params.document,
         email: params.email,
         birthDate: params.birthdate,
-        gender: params.radioOption,
-        address: params.address,
+        gender: params.gender,
+        // address: params.address,
     }
     const { data } = await httpClient.put(`/v1/store/user`, user)
 
