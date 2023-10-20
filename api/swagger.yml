@@ -6,8 +6,6 @@ info:
 servers:
   - url: http://localhost:3000
     description: Local URL
-  - url: https://api.dev.wineemporium.shop
-    description: Development URL
   - url: https://api.wineemporium.shop
     description: Production URL
 security:
@@ -33,21 +31,21 @@ paths:
   /v1/backoffice/auth:
     post:
       tags:
-        - /backoffice/auth
+        - backoffice
       summary: Authenticate User in Backoffice
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BackofficeUserLoginRequest"
+              $ref: "#/components/schemas/LoginRequest"
       responses:
         '200':
           description: ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BackofficeUserLoginResponse'
+                $ref: '#/components/schemas/LoginResponse'
         '400':
           description: BadRequest
           content:
@@ -64,7 +62,7 @@ paths:
   /v1/backoffice/user/{user_id}:
     get:
       tags:
-        - /backoffice/user/{user_id}
+        - backoffice
       summary: Get Some Backoffice User
       parameters:
         - in: path
@@ -94,7 +92,7 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
     put:
       tags:
-        - /backoffice/user/{user_id}
+        - backoffice
       summary: Update User in Backoffice
       parameters:
         - in: path
@@ -130,7 +128,7 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
     delete:
       tags:
-        - /backoffice/user/{user_id}
+        - backoffice
       summary: Delete User in Backoffice
       parameters:
         - in: path
@@ -162,7 +160,7 @@ paths:
   /v1/backoffice/user/{user_id}/toggle-active:  
     delete:
       tags:
-        - /backoffice/user/{user_id}/toggle-active
+        - backoffice
       summary: Toggle User Active status in Backoffice
       parameters:
         - in: path
@@ -194,7 +192,7 @@ paths:
   /v1/backoffice/user:
     get:
       tags:
-        - /backoffice/user
+        - backoffice
       summary: Get all Backoffice Users
       security:
         - Authorization: []
@@ -245,7 +243,7 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
     post:
       tags:
-        - /backoffice/user
+        - backoffice
       summary: Create new User in Backoffice
       requestBody:
         required: true
@@ -279,7 +277,7 @@ paths:
   /v1/backoffice/product/{id}:
     get:
       tags:
-        - /backoffice/product/{id}
+        - backoffice
       summary: Get Some Product
       parameters:
         - in: path
@@ -309,7 +307,7 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
     put:
       tags:
-        - /backoffice/product/{id}
+        - backoffice
       summary: Update Product in Backoffice
       parameters:
         - in: path
@@ -345,7 +343,7 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
     delete:
       tags:
-        - /backoffice/product/{id}
+        - backoffice
       summary: Delete Product in Backoffice
       parameters:
         - in: path
@@ -377,7 +375,7 @@ paths:
   /v1/backoffice/product/{id}/toggle-active:  
     delete:
       tags:
-        - /backoffice/product/{id}/toggle-active
+        - backoffice
       summary: Toggle Product active status
       parameters:
         - in: path
@@ -409,7 +407,7 @@ paths:
   /v1/backoffice/product/{id}/upload:  
     post:
       tags:
-        - /backoffice/product/{id}/upload
+        - backoffice
       summary: Upload image for Product
       parameters:
         - in: path
@@ -445,9 +443,9 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
   
   /v1/backoffice/product/{id}/delete-image:
-    delete:
+    post:
       tags:
-        - /backoffice/product/{id}/delete-image
+        - backoffice
       summary: Delete image of Product
       parameters:
         - in: path
@@ -485,7 +483,7 @@ paths:
   /v1/backoffice/product/{id}/mark-image:
     put:
       tags:
-        - /backoffice/product/{id}/mark-image
+        - backoffice
       summary: Mark image of Product
       parameters:
         - in: path
@@ -523,7 +521,7 @@ paths:
   /v1/backoffice/product/{id}/unmark-image:
     put:
       tags:
-        - /backoffice/product/{id}/unmark-image
+        - backoffice
       summary: Unmark image of Product
       parameters:
         - in: path
@@ -561,7 +559,7 @@ paths:
   /v1/backoffice/product:
     get:
       tags:
-        - /backoffice/product
+        - backoffice
       summary: Get all Products
       security:
         - Authorization: []
@@ -606,7 +604,7 @@ paths:
                 $ref: '#/components/schemas/InternalErrorResponse'
     post:
       tags:
-        - /backoffice/product
+        - backoffice
       summary: Create new Product in Backoffice
       requestBody:
         required: true
@@ -639,7 +637,7 @@ paths:
   /v1/store/product:
     get:
       tags:
-        - /store/product
+        - store
       summary: Get all Products for Store view
       security:
         - Authorization: []
@@ -674,7 +672,7 @@ paths:
   /v1/store/product/{id}:
     get:
       tags:
-        - /store/product/{id}
+        - store
       summary: Get Some Product for Store view
       parameters:
         - in: path
@@ -696,7 +694,206 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalErrorResponse'
- 
+
+  /v1/store/auth:
+    post:
+      tags:
+        - store
+      summary: Authenticate User in Store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvaidFieldsResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+                
+  /v1/store/register:
+    post:
+      tags:
+        - store
+      summary: Register User in Store
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreUserRegisterRequest"
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUserRegisterResponse'
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvaidFieldsResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /v1/store/user:
+    get:
+      tags:
+        - store
+      summary: Get User Data
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUser'
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvaidFieldsResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+    put:
+      tags:
+        - store
+      summary: Update User data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreUserUpdateRequest"
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUserUpdateResponse'
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvaidFieldsResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /v1/store/user/address:
+    post:
+      tags:
+        - store
+      summary: Add to user a new address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoreUserAddAddressRequest"
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUserAddAddressResponse'
+        '400':
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvaidFieldsResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /v1/store/address/mark/{id}:
+    get:
+      tags:
+        - store
+      summary: Mark some address as user's principal
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the address to mark
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUserMarkAddressResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
+  /v1/store/address/{id}:
+    delete:
+      tags:
+        - store
+      summary: Delete some address
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the address to delete
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUserDeleteAddressResponse'
+        '500':
+          description: InternalError
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalErrorResponse'
+
 components:
   schemas:
     InternalErrorResponse:
@@ -723,16 +920,7 @@ components:
         message:
           type: string
           default: "Produto não encontrado"
-
-# BACKOFFICE USER
-
-    GetAllBackofficeUsersResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/backofficeUser'
-    GetBackofficeUserResponse:
-      $ref: '#/components/schemas/backofficeUser'
-    BackofficeUserLoginRequest:
+    LoginRequest:
       type: object
       properties:
         email:
@@ -741,7 +929,7 @@ components:
         password:
           type: string
           default: "senha"
-    BackofficeUserLoginResponse:
+    LoginResponse:
       type: object
       properties:
         access_token:
@@ -750,6 +938,113 @@ components:
         expires_in:
           type: number
           default: 3600
+
+# STORE
+  
+    StoreUser:
+      type: object
+      properties:
+        uuid:
+          type: string
+          default: "d9ae931d-56f4-479a-8fb0-0e4af34b0414"
+        name:
+          type: string
+          default: "Fulano de Tal"
+        document:
+          type: string
+          default: "01234567890"
+        email:
+          type: string
+          default: "email@example.com"
+        birthDate:
+          type: string
+          default: "01/01/2000"
+        gender:
+          type: string
+          default: "Masculino"
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreUserAddress'
+        
+    StoreUserRegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          default: "Fulano de Tal"
+        document:
+          type: string
+          default: "01234567890"
+        email:
+          type: string
+          default: "email@example.com"
+        birthDate:
+          type: string
+          default: "01/01/2000"
+        gender:
+          type: string
+          default: "Masculino"
+        password:
+          type: string
+          default: "aloha"
+    StoreUserRegisterResponse:
+      type: string
+      default: "Usuário criado com sucesso."
+      
+    StoreUserUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          default: "Fulano de Tal"
+        document:
+          type: string
+          default: "01234567890"
+        email:
+          type: string
+          default: "email@example.com"
+        birthDate:
+          type: string
+          default: "01/01/2000"
+        gender:
+          type: string
+          default: "Masculino"
+    StoreUserUpdateResponse:
+      type: string
+      default: ''
+
+    StoreUserAddAddressRequest:
+      $ref: '#/components/schemas/StoreUserAddress'
+    StoreUserAddAddressResponse:
+      type: string
+      default: 'Endereço adicionado com sucesso'
+      
+    StoreUserMarkAddressResponse:
+      type: string
+      default: 'Endereço principal atualizado com sucesso'
+    StoreUserDeleteAddressResponse:
+      type: string
+      default: 'Endereço deletado com sucesso'
+      
+    StoreUserAddress:
+      type: object
+      properties:
+        id:
+          type: string
+          default: "d9ae931d-56f4-479a-8fb0-0e4af34b0414"
+        cep:
+          type: string
+          default: "01001-000"
+
+# BACKOFFICE
+
+    GetAllBackofficeUsersResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/backofficeUser'
+    GetBackofficeUserResponse:
+      $ref: '#/components/schemas/backofficeUser'
     SaveBackofficeUserRequest:
       type: object
       properties:

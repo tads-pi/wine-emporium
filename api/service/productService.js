@@ -24,6 +24,7 @@ const getAllProducts = async (req, res) => {
     const findAllClause = {
         where: {
             deletedAt: null,
+            active: true
         },
         limit: Number(limit),
         offset: Number(offset)
@@ -219,7 +220,7 @@ const deleteProductImage = async (req, res) => {
         return
     }
 
-    const imageUUIDWithExtension = req?.body?.image_id || null
+    const imageUUIDWithExtension = req?.body?.imageID || null
     if (!imageUUIDWithExtension) {
         res.status(400).json({
             message: "ID de imagem inválido"

@@ -140,11 +140,11 @@ export async function uploadProductImage(payload: IUploadProductImage) {
 
 export async function deleteProductImage(payload: IDeleteProductImage) {
     try {
-        const response = await api.delete(`/product/${payload.productID}/delete-image`, {
-            data: {
+        const response = await api.post(`/product/${payload.productID}/delete-image`,
+            {
                 image_id: payload.imageID
             }
-        })
+        )
         return response
     } catch (error: any) {
         console.log("error at deleteProductImage: ", error);

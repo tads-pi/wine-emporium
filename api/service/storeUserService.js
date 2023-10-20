@@ -107,26 +107,6 @@ const getUser = async (req, res) => {
     res.status(200).json(foundUser.viewmodel())
 }
 
-async function updateAdress(id, fieldsToUpdate) {
-    const data = await storeUserAddressTable.findByPk(id)
-    if (!data) {
-        return "Endereço não encontrado"
-    }
-
-    const updateClause = {
-        where: {
-            id: id
-        }
-    }
-
-    const updateData = await storeUserAddressTable.update(fieldsToUpdate, updateClause)
-    if (!updateData) {
-        return "Erro ao atualizar endereço"
-    }
-
-    return ""
-}
-
 async function updateUserData(id, fieldsToUpdate) {
     const data = await storeUserTable.findByPk(id)
     if (!data) {
@@ -158,8 +138,6 @@ const updateUser = async (req, res) => {
     }
 
     const userFieldsToUpdate = req.body
-    const addressFieldsToUpdate = userFieldsToUpdate?.address ?? []
-
     delete userFieldsToUpdate.address
 
     const userUpdateError = await updateUserData(foundUser.id, userFieldsToUpdate)
@@ -168,16 +146,6 @@ const updateUser = async (req, res) => {
             message: userUpdateError
         })
         return
-    }
-
-    for (const a of addressFieldsToUpdate) {
-        const addressUpdateError = await updateAdress(a.id, a)
-        if (addressUpdateError !== "") {
-            res.status(400).json({
-                message: addressUpdateError
-            })
-            return
-        }
     }
 
     res.status(200).json({})
@@ -217,7 +185,9 @@ const deleteAddress = async (req, res) => {
     }
 
     await storeUserAddressTable.update(updateClause, findClause)
-    res.status(200).json({})
+    res.status(200).json({
+        message: "Endereço deletado com sucesso"
+    })
 }
 
 const addAddress = async (req, res) => {

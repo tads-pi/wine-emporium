@@ -5,11 +5,6 @@ import BackofficeUser from "../entity/backofficeUser.js"
 import authService from "../service/authService.js"
 import User from "../entity/user.js"
 
-/**
- * retorna um usuario do banco de dados a partir de um token
- * @param {string} token
- * @returns {Promise<BackofficeUser>}
- */
 async function getUserFromToken(token) {
     const decoded = jwt.decode(token)
     const backofficeUser = await authService.findUser(decoded)
@@ -23,13 +18,6 @@ async function getUserFromToken(token) {
     }
 }
 
-/**
- * middleware para autenticar um usuário com token
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
- * @returns
- */
 const authenticateToken = async (req, res, next) => {
     if (req.method === "OPTIONS") {
         res.status(200).json({})
@@ -55,12 +43,6 @@ const authenticateToken = async (req, res, next) => {
     })
 }
 
-/**
- * rota para gerar um token de autenticação
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
 const handleBackofficeLogin = async (req, res) => {
     const user = {
         email: req.body?.email ?? "",
