@@ -3,13 +3,14 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { CardMedia, IconButton } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardMedia, IconButton } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useCartStore } from "../../zustand-store/cartState";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import RemoveRedEyeTwoToneIcon from '@mui/icons-material/RemoveRedEyeTwoTone';
+import { formatCurrency } from "../../utils/formatCurrency";
 
 export function CardWine({ data, addCart }) {
   const [open, setOpen] = React.useState(false);
@@ -31,85 +32,55 @@ export function CardWine({ data, addCart }) {
     );
   };
 
-  return (
-    <Box sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
-      <Box
-        sx={{ my: 3, mx: 2 }}
-        key={data?.uuid}
-      >
-        <Grid container alignItems="center">
-          <div>
-            <Grid item xs>
-              <CardMedia
-                component="img"
-                height="140"
-                image={data?.images[0].url}
-                alt="Vinho Wine Emporium"
-                style={{ objectFit: "contain" }}
-              />
-              <Grid
-                item
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography gutterBottom variant="h6" component="div">
-                  {data?.name}
-                </Typography>
-                <Typography gutterBottom variant="subtitle1" component="span">
-                  ${data?.price}
-                </Typography>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
-        <Typography color="text.secondary" variant="subtitle2">
-          {data?.description}
-        </Typography>
-        {/* <Link to={`/mercado/${data.id}`}>Ver Mais</Link> */}
-      </Box>
+  console.log('rapaize', data)
 
-      <Divider variant="middle" />
-      <Box sx={{ m: 2 }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
+  return (
+    <Card style={{ width: '100%', height: '370px', display: 'flex', flexDirection: 'column' }}>
+    <CardMedia
+      component="img"
+      alt="Vinho Wine Emporium"
+      height="140"
+      image={data?.images.filter(item => item.marked == true).map(item => item.url)}
+      style={{ objectFit: "contain" }}
+    />
+    <CardContent style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}>
+      <Typography gutterBottom variant="h5" component="div"fontSize={16}>
+        {data.name}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+      {data.description.length > 100 ? `${data?.description.slice(0, 60)}...` : data?.description}
+      </Typography>
+      <Typography  gutterBottom variant="subtitle1" component="span">
+              {/* {formatCurrency(data?.price)} */}
+              {Number(data?.price)}
+      </Typography>
+    </CardContent>
+    <CardActions style={{ display: 'flex', alignItems: 'center' }}>
+        <Typography
+                gutterBottom
+                variant="subtitle2"
+                style={{ color: "gray", flexGrow: 1 }}
+              >
+                Adicionar ao carrinho
+        </Typography>
+        <IconButton
+          color="primary"
+          aria-label="add to shopping cart"
         >
-          <Typography
-            gutterBottom
-            variant="subtitle2"
-            style={{ color: "gray" }}
-          >
-            Adicionar vinho ao carrinho
-          </Typography>
-          <IconButton
-            color="primary"
-            aria-label="add to shopping cart"
-            style={{ position: "relative", bottom: "5px" }}
-          >
-            <Link to={`/mercado/${data?.id}`}>
-              <RemoveRedEyeTwoToneIcon />
-            </Link>
-          </IconButton>
-          <IconButton
-            color="primary"
-            aria-label="add to shopping cart"
-            style={{ position: "relative", bottom: "5px" }}
-          >
-            <AddShoppingCartIcon onClick={handleClickVariant("success")}>
-              Show success snackbar
-            </AddShoppingCartIcon>
-          </IconButton>
-        </div>
-      </Box>
-      {/* <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-                        <Button onClick={() => addCart()}>Adicionar item ao carrinho</Button>
-                    </Box> */}
-    </Box>
-  );
+          <AddShoppingCartIcon onClick={handleClickVariant("success")}>
+            Show success snackbar
+          </AddShoppingCartIcon>
+        </IconButton>
+        <IconButton
+          color="primary"
+          aria-label="add to shopping cart"
+          style={{ position: "relative", bottom: "5px" }}
+        >
+          <Link to={`/mercado/${data?.id}`}>
+            <RemoveRedEyeTwoToneIcon />
+          </Link>
+        </IconButton>
+    </CardActions>
+  </Card>
+);
 }

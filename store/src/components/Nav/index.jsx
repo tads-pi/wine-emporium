@@ -16,12 +16,16 @@ import { Badge, Drawer, styled } from '@mui/material';
 import { useCartStore } from '../../zustand-store/cartState';
 import { CartItemCard } from '../CartItemCard';
 import logo from '../../../public/LOGO.png'
+import cartEmpty from '../../../public/8504.jpg'
 import { Settings } from '../Settings';
+import { formatCurrency } from '../../utils/formatCurrency';
 
 export function Nav() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [totalPrice, setTotalPrice] = React.useState(0);
+    const [numItems, setNumItems] = React.useState(0); // novo estado para controlar o número de itens no carrinho
     const { items, addItem, removeItem } = useCartStore(store => {
         return {
           items: store.items,
@@ -29,6 +33,13 @@ export function Nav() {
           removeItem: store.removeItem
         }
       })
+
+    React.useEffect(() => {
+        // atualiza o preço total sempre que o número de itens no carrinho muda
+        const newTotalPrice = items.reduce((total, item) => Number(total) + Number(item.price), 0);
+        setTotalPrice(newTotalPrice);
+        setNumItems(items.length);
+    }, [items.length]); // usa o novo estado numItems como dependência
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -57,6 +68,7 @@ export function Nav() {
       const hideOrShowDrawer = () => {
         setDrawerOpen(!drawerOpen);
       };
+
 
     return (
         <AppBar position="static" color="transparent">
@@ -128,7 +140,7 @@ export function Nav() {
                 <Settings />
               </Menu>
               <IconButton style={{ color: 'black', marginLeft: '10px' }} aria-label="cart" onClick={hideOrShowDrawer}>
-                <StyledBadge badgeContent={items.length} color="secondary">
+                <StyledBadge badgeContent={numItems} color="secondary">
                   <ShoppingCartIcon />
                 </StyledBadge>
               </IconButton>
@@ -140,6 +152,13 @@ export function Nav() {
                 {items?.map((wine, index) => (
                   <CartItemCard key={index} data={wine} removeCart={() => removeItem(index)} />
                 ))}
+                <div style={{ display: 'flex', justifyContent: 'end', marginRight: '20px', width: '400px' }}>
+                  <Typography style={{ placeSelf: 'self-end' }} variant="h6" component="h6" gutterBottom>
+                    {items.length > 0 && `Total: ${formatCurrency(totalPrice)}`}
+                    {items.length == 0 && <img src={cartEmpty} alt="Carrinho vazio" />}
+                    {/* {items.length == 0 && <p>Meu pau</p>} */}
+                  </Typography>
+                </div>
               </Drawer>
             </Box>
           </Toolbar>
