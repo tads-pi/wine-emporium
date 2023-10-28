@@ -18,5 +18,8 @@
         "titleBar.inactiveBackground": "#c7371099",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#c73710"
+    "peacock.color": "#c73710",
+    "files.associations": {
+        "plyconfig.json": "jsonc"
+    }
 }
