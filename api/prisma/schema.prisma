@@ -6,3 +6,164 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Client {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  name      String
+  password  String
+  birthDate DateTime
+  document  String
+  address   Address[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("client")
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  street    String
+  city      String
+  state     String
+  zip       String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("client_address")
+}
+
+model BackofficeClient {
+  id        String          @id @default(uuid())
+  email     String          @unique
+  name      String
+  document  String
+  password  String
+  group     BackofficeGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId   String
+  active    Boolean         @default(true)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@map("backoffice_client")
+}
+
+model BackofficeGroup {
+  id                        String                      @id @default(uuid())
+  name                      GroupNameEnum               @unique
+  createdAt                 DateTime                    @default(now())
+  updatedAt                 DateTime                    @updatedAt
+  BackofficeClient          BackofficeClient[]
+  BackofficeGroupPermission BackofficeGroupPermission[]
+
+  @@map("backoffice_client_group")
+}
+
+enum GroupNameEnum {
+  ADMINISTRADOR
+  ESTOQUISTA
+}
+
+model BackofficeGroupPermission {
+  id                     String               @id @default(uuid())
+  backofficeGroup        BackofficeGroup      @relation(fields: [backofficeGroupId], references: [id], onDelete: Cascade)
+  backofficeGroupId      String
+  backofficePermission   BackofficePermission @relation(fields: [backofficePermissionId], references: [id], onDelete: Cascade)
+  backofficePermissionId String
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+
+  @@map("backoffice_client_group_permission")
+}
+
+model BackofficePermission {
+  id                        String                       @id @default(uuid())
+  name                      BackofficePermissionNameEnum @unique
+  createdAt                 DateTime                     @default(now())
+  updatedAt                 DateTime                     @updatedAt
+  BackofficeGroupPermission BackofficeGroupPermission[]
+
+  @@map("backoffice_client_permission")
+}
+
+enum BackofficePermissionNameEnum {
+  LIST_USER
+  CREATE_USER
+  READ_USER
+  UPDATE_USER
+  DELETE_USER
+  TOGGLE_USER_ACTIVE
+
+  LIST_PRODUCT
+  CREATE_PRODUCT
+  READ_PRODUCT
+  UPDATE_PRODUCT
+  UPDATE_PRODUCT_NAME
+  UPDATE_PRODUCT_DESCRIPTION
+  UPDATE_PRODUCT_PRICE
+  UPDATE_PRODUCT_RATINGS
+  UPDATE_PRODUCT_STOCK
+  UPDATE_PRODUCT_STOCK_UNIT
+  DELETE_PRODUCT
+
+  CREATE_PRODUCT_IMAGE
+  DELETE_PRODUCT_IMAGE
+  MARK_PRODUCT_IMAGE
+  TOGGLE_PRODUCT_ACTIVE
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  name        String         @unique
+  description String
+  price       Float
+  ratings     Float
+  images      ProductImage[]
+  stock       ProductStock[]
+  active      Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("product")
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("product_image")
+}
+
+model ProductStock {
+  id          String    @id @default(uuid())
+  total       Int
+  unit        StockUnit @relation(fields: [stockUnitId], references: [id], onDelete: Cascade)
+  stockUnitId String
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("product_stock")
+}
+
+model StockUnit {
+  id           String         @id @default(uuid())
+  unit         EnumUnit
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  ProductStock ProductStock[]
+
+  @@map("product_stock_unit")
+}
+
+enum EnumUnit {
+  UNIDADE
+  LITRO
+}
