@@ -1,13 +1,14 @@
 describe('teste end-to-end', () => {
   //setup
   beforeAll(async () => {
-    it.todo('TODO')
+    return
   })
 
   //cleanup
   afterAll(async () => {
-    it.todo('TODO')
+    return
   })
 
   //testes
+  it.todo('TODO')
 })
