@@ -14,11 +14,34 @@ model Client {
   password  String
   birthDate DateTime
   document  String
+  gender    Gender    @relation(fields: [genderId], references: [id])
+  genderId  String
   address   Address[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   @@map("client")
+}
+
+model Gender {
+  id            String           @id @default(uuid())
+  firiendlyName String
+  name          ClientGenderEnum @unique
+  deleteAt      DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  Client        Client[] // TODO find a way to fix this prisma sideeffect that list all users with this gender
+
+  @@map("client_gender")
+}
+
+enum ClientGenderEnum {
+  MASCULINO
+  FEMININO
+  NAO_BINARIO
+  GENERO_FLUIDO
+  OUTRO
+  PREFIRO_NAO_INFORMAR
 }
 
 model Address {

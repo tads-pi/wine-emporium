@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "nova-migration": "npx prisma migrate --name $(expr $(ls -1 | wc -l) - 1) && npm run executar-migrations",
+    "nova-migration": "npx prisma migrate dev --name $(expr $(ls -1 prisma/migrations | wc -l)) && npm run reiniciar-db",
     "executar-migrations": "npx prisma migrate deploy && node prisma/seed.js",
     "apagar-db": "docker-compose rm mysql -s -f -v",
     "criar-db": "docker-compose up mysql --detach && sleep 15 && npm run executar-migrations",

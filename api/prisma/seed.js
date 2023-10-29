@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-async function run() {
+async function addBackofficeClientsGroupsAndPermissions() {
     await prisma.backofficeGroup.create({
         data: {
             name: "ADMINISTRADOR",
@@ -116,10 +116,50 @@ async function run() {
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.TOGGLE_PRODUCT_ACTIVE.id },
         ]
     })
-
 }
 
-run()
+async function addClientGenders() {
+    // todo arrumar caracteres utf-8 zuadins
+    await prisma.gender.createMany({
+        data: [
+            {
+                firiendlyName: "Masculino",
+                name: "MASCULINO",
+            },
+            {
+                firiendlyName: "Feminino",
+                name: "FEMININO",
+            },
+            {
+                firiendlyName: "Não Binário",
+                name: "NAO_BINARIO",
+            },
+            {
+                firiendlyName: "Gênero Fluido",
+                name: "GENERO_FLUIDO",
+            },
+            {
+                firiendlyName: "Outro",
+                name: "OUTRO",
+            },
+            {
+                firiendlyName: "Prefiro não informar",
+                name: "PREFIRO_NAO_INFORMAR",
+            }
+        ],
+    });
+}
+
+
+addBackofficeClientsGroupsAndPermissions()
+    .catch(e => {
+        throw e
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });
+
+addClientGenders()
     .catch(e => {
         throw e
     })
