@@ -1,4 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { AdminService } from './admin.service';
+import { ClientBackofficeViewmodel } from './viewmodel';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('admin')
-export class AdminController {}
+@ApiTags('backoffice')
+@Controller('backoffice')
+export class AdminController {
+    constructor(
+        private svc: AdminService
+    ) { }
+
+    @Get('users')
+    async getAllUsers(): Promise<ClientBackofficeViewmodel[]> {
+        return this.svc.getAllUsers();
+    }
+}
