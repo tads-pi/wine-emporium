@@ -33,8 +33,12 @@ export class JwtStrategy extends PassportStrategy(
                 },
             })
         }
+        if (!user) {
+            return null
+        }
 
-        delete user.password
-        return user
+        return {
+            id: user.id,
+        }
     }
 }

@@ -6,3 +6,5 @@ export class JwtGuard extends AuthGuard(JWT_STRATEGY) {
         super()
     }
 }
+
+// TODO Fazer uma guard pra backoffice e outra pra client

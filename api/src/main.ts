@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
@@ -19,7 +19,28 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.setGlobalPrefix('v2');
   await app.listen(3000);
+
+  logAvailableRoutes(app)
 }
 bootstrap();
+
+
+function logAvailableRoutes(app: INestApplication<any>) {
+  const server = app.getHttpServer();
+  const router = server._events.request._router;
+
+  const availableRoutes: [] = router.stack
+    .map((layer) => {
+      if (layer.route) {
+        return {
+          route: {
+            path: layer.route?.path,
+            method: layer.route?.stack[0].method,
+          },
+        };
+      }
+    })
+    .filter(item => item !== undefined);
+  console.log(availableRoutes);
+}

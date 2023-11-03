@@ -164,29 +164,18 @@ model ProductImage {
 }
 
 model ProductStock {
-  id          String    @id @default(uuid())
-  total       Int
-  unit        StockUnit @relation(fields: [stockUnitId], references: [id], onDelete: Cascade)
-  stockUnitId String
-  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId   String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String        @id @default(uuid())
+  total     Int
+  unit      StockUnitEnum
+  product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
   @@map("product_stock")
 }
 
-model StockUnit {
-  id           String         @id @default(uuid())
-  unit         EnumUnit
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  ProductStock ProductStock[]
-
-  @@map("product_stock_unit")
-}
-
-enum EnumUnit {
+enum StockUnitEnum {
   UNIDADE
   LITRO
 }
