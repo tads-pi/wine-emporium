@@ -14,7 +14,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
                 create: {
                     name: "Administrador",
                     email: "admin@gmail.com",
-                    password: "senha",
+                    password: "$2a$10$fHlpSahCN/xElXUFgg3YMevlIEwshS3nIbtcInOmTQtTNGUbi5jmC",  // password
                     document: "12345678900",
                     active: true,
                 },
@@ -28,7 +28,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
                 create: {
                     name: "Estoquista",
                     email: "estoquista@gmail.com",
-                    password: "senha",
+                    password: "$2a$10$fHlpSahCN/xElXUFgg3YMevlIEwshS3nIbtcInOmTQtTNGUbi5jmC", // password
                     document: "00000000191",
                     active: true,
                 },

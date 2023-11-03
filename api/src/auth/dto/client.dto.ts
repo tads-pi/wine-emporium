@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import { IsDateString, IsEmail, IsISO8601, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class ClientSignInDTO {
     @IsString()
@@ -33,6 +33,8 @@ export class ClientSignUpDTO {
     @IsString()
     @IsNotEmpty()
     @Length(1, 64)
+    @IsDateString()
+    @IsISO8601()
     birth_date: string
 
     @IsString()

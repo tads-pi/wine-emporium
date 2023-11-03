@@ -5,12 +5,21 @@ import { CartModule } from './cart/cart.module';
 import { PaymentModule } from './payment/payment.module';
 import { AdminModule } from './admin/admin.module';
 import { ClientModule } from './client/client.module';
-import { PrismaController } from './prisma/prisma.controller';
 import { PrismaModule } from './prisma/prisma.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [AuthModule, ProductModule, CartModule, PaymentModule, AdminModule, ClientModule, PrismaModule],
-  controllers: [PrismaController],
-  providers: [],
+  imports: [
+    AuthModule,
+    ProductModule,
+    CartModule,
+    PaymentModule,
+    AdminModule,
+    ClientModule,
+    PrismaModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    })
+  ],
 })
-export class AppModule {}
+export class AppModule { }
