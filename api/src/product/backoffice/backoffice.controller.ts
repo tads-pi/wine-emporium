@@ -7,6 +7,7 @@ import { ProductBackofficeViewmodel } from '../viewmodels';
 
 @ApiTags('product/backoffice')
 @Controller('product/backoffice')
+@UseGuards(JwtGuard)
 export class BackofficeController {
     constructor(
         private svc: BackofficeService
@@ -32,7 +33,6 @@ export class BackofficeController {
         return this.svc.getProductById(id);
     }
 
-    @UseGuards(JwtGuard)
     @Post('')
     async saveProduct(
         @Body() dto: SaveProductDTO,
@@ -40,7 +40,6 @@ export class BackofficeController {
         return this.svc.saveProduct(dto);
     }
 
-    @UseGuards(JwtGuard)
     @Post(':id')
     async updateProduct(
         @Param('id') id: string,
@@ -49,7 +48,6 @@ export class BackofficeController {
         return this.svc.updateProduct(id, dto);
     }
 
-    @UseGuards(JwtGuard)
     @Put('stock/:id')
     async updateProductStock(
         @Param('id') id: string,
@@ -58,7 +56,6 @@ export class BackofficeController {
         return this.svc.updateProductStock(id, dto);
     }
 
-    @UseGuards(JwtGuard)
     @Delete(':id')
     async toggleProductActive(
         @Param('id') id: string,
