@@ -1,0 +1,47 @@
+!!!
+- Implementar rotas de imagem de produto
+- prisma
+    - cart
+    - checkout
+    - payment
+    - deliverer
+    - 
+
+- client - rotas de
+    - get me/my anonymous_id
+    - CRUD address
+
+- finalizar rotas de cart
+- finalizar rotas de checkout
+    - address
+    - deliverer
+- finalizar rotas de payment
+    - credit-card
+    - bank-slip
+    
+- finalizar deploy github
+- migrar rotas do backoffice pra nova api
+
+!!
+- finalizar testes de controllers e services
+    - admin
+    - auth
+    - client
+        - address
+    - payment
+        - bank-slip
+        - credit-card
+    - product
+        - backoffice
+        - client
+
+- adicionar guard para o backoffice - um pra estoquista, outro pra admin
+- getAll`s - opção de sorting de user
+
+
+!
+- refatorar rotas de Update com POST method
+- testes e2e
+- automatizar cadastro de produtos
+- stock viewmodel
+- gender viewmodel
