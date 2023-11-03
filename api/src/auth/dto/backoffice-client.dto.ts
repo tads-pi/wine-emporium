@@ -1,6 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString, Length, isString } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
-export class BackofficeClientSigninDTO {
+export class BackofficeClientSignInDTO {
     @IsString()
     @IsNotEmpty()
     @IsEmail()
@@ -13,7 +13,7 @@ export class BackofficeClientSigninDTO {
     password: string;
 }
 
-export class BackofficeClientSignupDTO {
+export class BackofficeClientSignUpDTO {
     @IsString()
     @IsNotEmpty()
     @Length(5, 64)
@@ -33,7 +33,7 @@ export class BackofficeClientSignupDTO {
     @IsString()
     @IsNotEmpty()
     @Length(1, 64)
-    group: string
+    groupId: string
 
     @IsString()
     @IsNotEmpty()

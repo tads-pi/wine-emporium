@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
-export class ClientSigninDTO {
+export class ClientSignInDTO {
     @IsString()
     @IsNotEmpty()
     @IsEmail()
@@ -13,7 +13,7 @@ export class ClientSigninDTO {
     password: string;
 }
 
-export class ClientSignupDTO {
+export class ClientSignUpDTO {
     @IsString()
     @IsNotEmpty()
     @Length(5, 64)
