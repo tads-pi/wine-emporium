@@ -18,7 +18,7 @@
 - finalizar rotas de payment
     - credit-card
     - bank-slip
-    
+
 - finalizar deploy github
 - migrar rotas do backoffice pra nova api
 
@@ -40,6 +40,7 @@
 
 
 !
+- adicionar defaults nas DTOs
 - refatorar rotas de Update com POST method
 - testes e2e
 - automatizar cadastro de produtos
