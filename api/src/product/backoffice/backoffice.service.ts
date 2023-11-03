@@ -2,11 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ProductBackofficeViewmodel } from '../viewmodels';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
+import { S3Service } from 'src/aws/s3/s3.service';
+import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
 
 @Injectable()
 export class BackofficeService {
     constructor(
         private db: PrismaService,
+        private s3: S3Service,
     ) { }
 
     async checkProductExists(id: string): Promise<boolean> {
@@ -49,6 +52,17 @@ export class BackofficeService {
                 },
             })
 
+            const productImages = await this.s3.getImagesFromFolder(`products/${product.id}`)
+            const productImagesViewmodel: ProductImageViewmodel[] = []
+
+            for (const image of productImages) {
+                productImagesViewmodel.push({
+                    id: image.key,
+                    url: image.url,
+                    marked: image.key === product.markedImageID,
+                })
+            }
+
             viewmodel.push({
                 id: product.id,
                 name: product.name,
@@ -56,8 +70,7 @@ export class BackofficeService {
                 price: product.price,
                 ratings: product.ratings,
                 active: product.active,
-                // TODO images
-                images: [],
+                images: productImagesViewmodel,
                 stock: productStock,
             })
         }
@@ -100,6 +113,7 @@ export class BackofficeService {
                 description: dto.description,
                 price: dto.price,
                 ratings: dto.ratings,
+                markedImageID: "",
                 active: true,
             },
         });

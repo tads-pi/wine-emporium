@@ -14,6 +14,7 @@ import { DelivererController } from './checkout/deliverer/deliverer.controller';
 import { CheckoutController } from './checkout/checkout.controller';
 import { CheckoutService } from './checkout/checkout.service';
 import { CheckoutModule } from './checkout/checkout.module';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { CheckoutModule } from './checkout/checkout.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CheckoutModule
+    CheckoutModule,
+    AwsModule
   ],
   controllers: [AddressController, DelivererController, CheckoutController],
   providers: [AddressService, DelivererService, CheckoutService],

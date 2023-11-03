@@ -1,5 +1,4 @@
 !!!
-- Implementar rotas de imagem de produto
 - prisma
     - cart
     - checkout
@@ -46,3 +45,5 @@
 - automatizar cadastro de produtos
 - stock viewmodel
 - gender viewmodel
+
+- atualizar image sem precisar do id+extension (usar só id)

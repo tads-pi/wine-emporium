@@ -8,6 +8,6 @@ import { ImageService } from './image/image.service';
 
 @Module({
   providers: [ClientService, BackofficeService, ImageService],
-  controllers: [ClientController, BackofficeController, ImageController]
+  controllers: [ClientController, BackofficeController, ImageController],
 })
 export class ProductModule {}

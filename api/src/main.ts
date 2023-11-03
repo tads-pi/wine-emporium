@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { json } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('v2');
+  app.use(json({ limit: '10mb' }))
   app.useGlobalPipes(new ValidationPipe({
     // essa flag define que as dtos só podem ter os campos informados no tipo
     // evitando sql injection e etc!
