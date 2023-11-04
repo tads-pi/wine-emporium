@@ -20,6 +20,7 @@ model Client {
   birthDate        DateTime?
   gender           Gender?            @relation(fields: [genderId], references: [id])
   genderId         String?
+  markedAddressID  String? // Gambetas pra não precisar fazer uma puta lógica só pa isso
   Cart             Cart[]
   ClientCreditCard ClientCreditCard[]
   ClientAddress    ClientAddress[]
@@ -96,10 +97,10 @@ model ClientAddress {
 }
 
 model Address {
-  id        String   @id @default(uuid())
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid())
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   country       String
   state         String
@@ -107,6 +108,7 @@ model Address {
   neighborhood  String
   street        String
   number        String
+  complement    String?
   zip           String
   Checkout      Checkout[]
   ClientAddress ClientAddress[]
