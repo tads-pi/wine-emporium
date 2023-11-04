@@ -1,13 +1,39 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ClientBackofficeViewmodel } from './viewmodel';
-import { SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
+import { BackofficeClientSignInDTO, SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
 import * as bcrypt from 'bcrypt';
+import { AuthDTO } from 'src/auth/dto/auth.dto';
+import { AuthService } from 'src/auth/auth.service';
 @Injectable()
 export class AdminService {
     constructor(
-        private db: PrismaService
+        private db: PrismaService,
+        private authSvc: AuthService
     ) { }
+
+    async signIn(dto: BackofficeClientSignInDTO): Promise<AuthDTO> {
+        const backofficeClient = await this.db.backofficeClient.findUnique({
+            where: {
+                email: dto.email,
+            },
+        })
+        if (!backofficeClient) {
+            throw new NotFoundException('E-mail ou senha incorretos')
+        }
+
+        console.log({
+            dtoPassword: dto.password,
+            backofficeClientPassword: backofficeClient.password,
+        });
+
+        const valid = await bcrypt.compare(dto.password, backofficeClient.password)
+        if (!valid) {
+            throw new NotFoundException('E-mail ou senha incorretos')
+        }
+
+        return this.authSvc.getToken(backofficeClient.id)
+    }
 
     async getAllUsers(): Promise<ClientBackofficeViewmodel[]> {
         const users = await this.db.backofficeClient.findMany({

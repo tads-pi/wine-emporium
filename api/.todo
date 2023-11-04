@@ -1,6 +1,5 @@
 !!!
 - client - rotas de
-    - get me/my anonymous_id
     - CRUD address
 
 - finalizar rotas de cart
@@ -40,3 +39,4 @@
 - gender viewmodel
 
 - atualizar image sem precisar do id+extension (usar só id)
+- adicionar campo last_access nas tbs de usuario

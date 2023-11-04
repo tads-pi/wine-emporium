@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { ClientBackofficeViewmodel } from './viewmodel';
 import { ApiTags } from '@nestjs/swagger';
-import { SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
+import { BackofficeClientSignInDTO, SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
 
 @ApiTags('backoffice')
 @Controller('backoffice')
@@ -10,6 +10,14 @@ export class AdminController {
     constructor(
         private svc: AdminService
     ) { }
+
+    @Post('auth')
+    @HttpCode(HttpStatus.OK)
+    async backofficeClientSignIn(
+        @Body() dto: BackofficeClientSignInDTO,
+    ) {
+        return await this.svc.signIn(dto);
+    }
 
     @Get('user')
     async getAllUsers(): Promise<ClientBackofficeViewmodel[]> {

@@ -1,1 +1,1 @@
-export * from './backoffice-client.dto';
+export * from './auth.dto';
