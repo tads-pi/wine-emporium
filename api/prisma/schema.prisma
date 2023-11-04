@@ -8,28 +8,65 @@ datasource db {
 }
 
 model Client {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  name      String
-  password  String
-  birthDate DateTime
-  document  String
-  gender    Gender    @relation(fields: [genderId], references: [id])
-  genderId  String
-  address   Address[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email            String?            @unique
+  document         String?            @unique
+  name             String?
+  password         String?
+  birthDate        DateTime?
+  gender           Gender?            @relation(fields: [genderId], references: [id])
+  genderId         String?
+  Cart             Cart[]
+  ClientCreditCard ClientCreditCard[]
+  ClientAddress    ClientAddress[]
 
   @@map("client")
 }
 
+model ClientCreditCard {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  client       Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId     String
+  creditCard   CreditCard @relation(fields: [creditCardId], references: [id], onDelete: Cascade)
+  creditCardId String
+
+  @@map("client_credit_card")
+}
+
+model CreditCard {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  number                  String
+  cvv                     String
+  expireMonth             Int
+  expireYear              Int
+  flag                    String?
+  ClientCreditCard        ClientCreditCard[]
+  CreditCardPaymentMethod CreditCardPaymentMethod[]
+
+  @@map("credit_card")
+}
+
 model Gender {
-  id            String           @id @default(uuid())
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   firiendlyName String
   name          ClientGenderEnum @unique
   deleteAt      DateTime?
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
   Client        Client[]
 
   @@map("client_gender")
@@ -44,40 +81,62 @@ enum ClientGenderEnum {
   PREFIRO_NAO_INFORMAR
 }
 
-model Address {
+model ClientAddress {
   id        String   @id @default(uuid())
-  street    String
-  city      String
-  state     String
-  zip       String
-  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  clientId  String
+  active    Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  address   Address @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId String
+  client    Client  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId  String
 
   @@map("client_address")
 }
 
+model Address {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  country       String
+  state         String
+  city          String
+  neighborhood  String
+  street        String
+  number        String
+  zip           String
+  Checkout      Checkout[]
+  ClientAddress ClientAddress[]
+
+  @@map("address")
+}
+
 model BackofficeClient {
-  id        String          @id @default(uuid())
-  email     String          @unique
-  name      String
-  document  String
-  password  String
-  group     BackofficeGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  groupId   String
-  active    Boolean         @default(true)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email    String          @unique
+  document String          @unique
+  name     String
+  password String
+  group    BackofficeGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  groupId  String
 
   @@map("backoffice_client")
 }
 
 model BackofficeGroup {
-  id                        String                      @id @default(uuid())
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name                      GroupNameEnum               @unique
-  createdAt                 DateTime                    @default(now())
-  updatedAt                 DateTime                    @updatedAt
   BackofficeClient          BackofficeClient[]
   BackofficeGroupPermission BackofficeGroupPermission[]
 
@@ -90,22 +149,26 @@ enum GroupNameEnum {
 }
 
 model BackofficeGroupPermission {
-  id                     String               @id @default(uuid())
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   backofficeGroup        BackofficeGroup      @relation(fields: [backofficeGroupId], references: [id], onDelete: Cascade)
   backofficeGroupId      String
   backofficePermission   BackofficePermission @relation(fields: [backofficePermissionId], references: [id], onDelete: Cascade)
   backofficePermissionId String
-  createdAt              DateTime             @default(now())
-  updatedAt              DateTime             @updatedAt
 
   @@map("backoffice_client_group_permission")
 }
 
 model BackofficePermission {
-  id                        String                       @id @default(uuid())
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name                      BackofficePermissionNameEnum @unique
-  createdAt                 DateTime                     @default(now())
-  updatedAt                 DateTime                     @updatedAt
   BackofficeGroupPermission BackofficeGroupPermission[]
 
   @@map("backoffice_client_permission")
@@ -138,28 +201,32 @@ enum BackofficePermissionNameEnum {
 }
 
 model Product {
-  id            String         @id @default(uuid())
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   name          String         @unique
   description   String
   price         Float
   ratings       Float
   stock         ProductStock[]
-  markedImageID String
-  active        Boolean        @default(true)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  markedImageID String?
+  CartItems     CartItems[]
 
   @@map("product")
 }
 
 model ProductStock {
-  id        String        @id @default(uuid())
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   total     Int
   unit      StockUnitEnum
   product   Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
 
   @@map("product_stock")
 }
@@ -167,4 +234,144 @@ model ProductStock {
 enum StockUnitEnum {
   UNIDADE
   LITRO
+}
+
+model Cart {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  client    Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId  String
+  checkout  Checkout[]
+  cartItems CartItems[]
+
+  @@map("cart")
+}
+
+model CartItems {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  Cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String
+
+  @@map("cart_items")
+}
+
+model Checkout {
+  id        String    @id @default(uuid())
+  deleteAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  Cart              Cart               @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId            String
+  payment           Payment?           @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  paymentId         String?
+  CheckoutDeliverer Deliverer?         @relation(fields: [delivererId], references: [id], onDelete: Cascade)
+  delivererId       String?
+  CheckoutAddress   Address?           @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId         String?
+  status            CheckoutStatusEnum
+
+  @@map("checkout")
+}
+
+enum CheckoutStatusEnum {
+  ENDERECO_PENDENTE
+  ENTREGADOR_PENDENTE
+  METODO_DE_PAGAMENTO_PENDENTE
+  PAGAMENTO_PENDENTE
+  PAGAMENTO_CONFIRMADO
+  PAGAMENTO_RECUSADO
+  EM_PREPARACAO
+  EM_TRANSPORTE
+  ENTREGUE
+  CANCELADO
+}
+
+model Deliverer {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  fare Float
+
+  Checkout Checkout[]
+
+  @@map("deliverer")
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  method                  PaymentMethod             @relation(fields: [methodId], references: [id])
+  methodId                String
+  methodExternalId        String
+  BankSlipPaymentMethod   BankSlipPaymentMethod[]
+  CreditCardPaymentMethod CreditCardPaymentMethod[]
+  Checkout                Checkout[]
+
+  @@map("payment")
+}
+
+model PaymentMethod {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name         PaymentMethodEnum
+  friendlyName String
+  Payment      Payment[]
+
+  @@map("payment_method")
+}
+
+enum PaymentMethodEnum {
+  CARTAO_DE_CREDITO
+  BOLETO
+}
+
+model BankSlipPaymentMethod {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  installments      Int
+  installmentsValue Float
+  dueDate           DateTime
+  payment           Payment  @relation(fields: [paymentId], references: [id])
+  paymentId         String
+
+  @@map("payment_bank_slip_payment_method")
+}
+
+model CreditCardPaymentMethod {
+  id        String   @id @default(uuid())
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  installments      Int
+  installmentsValue Float
+  dueDate           DateTime
+  payment           Payment    @relation(fields: [paymentId], references: [id])
+  paymentId         String
+  creditCard        CreditCard @relation(fields: [creditCardId], references: [id])
+  creditCardId      String
+
+  @@map("payment_credit_card_payment_method")
 }

@@ -155,19 +155,72 @@ async function addClientGenders() {
     });
 }
 
+async function addPaymentMethods() {
+    await prisma.paymentMethod.createMany({
+        data: [
+            {
+                friendlyName: "Cartão de Crédito",
+                name: "CARTAO_DE_CREDITO",
+            },
+            {
+                friendlyName: "Boleto",
+                name: "BOLETO",
+            },
+        ],
+    });
+}
 
-addBackofficeClientsGroupsAndPermissions()
+async function addDeliverers() {
+    await prisma.deliverer.createMany({
+        data: [
+            {
+                name: "Correios",
+                fare: 20.99,
+            },
+            {
+                name: "WE Transportes",
+                fare: 32.99,
+            },
+            {
+                name: "Retirar na loja",
+                fare: 0,
+            },
+            {
+                name: "Entrega Expressa",
+                fare: 50.99,
+            },
+            {
+                name: "Entregadores Ltda.",
+                fare: 23.99,
+            },
+            {
+                name: "Entregas Rápidas",
+                fare: 15.99,
+            },
+            {
+                name: "Dois Irmãos Transportes",
+                fare: 29.99,
+            },
+            {
+                name: "Sedex",
+                fare: 21.99,
+            }
+        ],
+    });
+}
+
+Promise.all(
+    [
+        addBackofficeClientsGroupsAndPermissions(),
+        addClientGenders(),
+        addPaymentMethods(),
+        addDeliverers()
+    ]
+)
     .catch(e => {
-        throw e
+        console.log(e)
+        process.exit(1)
     })
     .finally(async () => {
-        await prisma.$disconnect();
-    });
-
-addClientGenders()
-    .catch(e => {
-        throw e
+        await prisma.$disconnect()
     })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });

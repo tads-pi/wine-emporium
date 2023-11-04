@@ -1,11 +1,4 @@
 !!!
-- prisma
-    - cart
-    - checkout
-    - payment
-    - deliverer
-    - 
-
 - client - rotas de
     - get me/my anonymous_id
     - CRUD address
