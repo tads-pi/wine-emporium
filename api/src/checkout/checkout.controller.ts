@@ -3,7 +3,9 @@ import { CheckoutService } from './checkout.service';
 import { JwtGuard } from 'src/auth/guard';
 import { GetClient } from 'src/client/decorator/client.decorator';
 import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('checkout')
 @Controller('checkout')
 @UseGuards(JwtGuard)
 export class CheckoutController {

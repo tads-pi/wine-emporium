@@ -1,7 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import { GenderService } from './gender.service';
+import { ApiTags } from '@nestjs/swagger';
 
-@Controller('gender')
+@ApiTags('client/gender')
+@Controller('client/gender')
 export class GenderController {
     constructor(
         private svc: GenderService

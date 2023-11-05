@@ -5,7 +5,7 @@ import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductBackofficeViewmodel } from '../viewmodels';
 
-@ApiTags('product/backoffice')
+@ApiTags('backoffice')
 @Controller('product/backoffice')
 @UseGuards(JwtGuard)
 export class BackofficeController {

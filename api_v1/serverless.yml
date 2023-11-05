@@ -16,6 +16,10 @@ custom:
     domainName: ${self:custom.domain.${self:provider.stage}}
     stage: ${self:provider.stage}
     createRoute53Record: true
+  
+  DB_NAME:
+    dev: dev_wine_emporium_db
+    prd: wine_emporium_db
 
 provider:
   name: aws
@@ -34,15 +38,11 @@ provider:
 
 functions:
   api:
-    handler: dist/lambda.handler
+    handler: index.handler
     runtime: nodejs18.x
-    package:
-      include:
-        - dist/**
-        - node_modules/**
     environment:
       NODE_ENV: ${self:provider.stage}
-      DB_NAME: wine_emporium_db
+      DB_NAME: ${self:custom.DB_NAME.${self:provider.stage}}
 
       DB_HOST: ${ssm:/wine_emporium_db/db-host}
       DB_USER: ${ssm:/wine_emporium_db/db-user}
@@ -58,4 +58,3 @@ functions:
 plugins:
   - serverless-domain-manager
   - serverless-certificate-creator
-  - serverless-jetpack

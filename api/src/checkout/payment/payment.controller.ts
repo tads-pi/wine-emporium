@@ -4,7 +4,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { ApiTags } from '@nestjs/swagger';
 import { GetClient } from 'src/client/decorator/client.decorator';
 
-@ApiTags('checkout/:checkoutId/payment')
+@ApiTags('checkout')
 @Controller('checkout/:checkoutId/payment')
 @UseGuards(JwtGuard)
 export class PaymentController {

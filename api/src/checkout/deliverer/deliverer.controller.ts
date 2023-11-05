@@ -3,7 +3,9 @@ import { DelivererService } from './deliverer.service';
 import { GetClient } from 'src/client/decorator/client.decorator';
 import { DelivererViewmodel } from 'src/product/deliverer/viewmodel';
 import { JwtGuard } from 'src/auth/guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('checkout')
 @Controller('checkout/:checkoutId/deliverer')
 @UseGuards(JwtGuard)
 export class DelivererController {

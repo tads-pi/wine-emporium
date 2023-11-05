@@ -5,34 +5,34 @@ import { JwtGuard } from 'src/auth/guard';
 import { UploadProductImageDto } from './dto';
 
 @ApiTags('product/image')
-@Controller('product')
+@Controller('product/:productId/image')
 @UseGuards(JwtGuard)
 export class ImageController {
     constructor(
         private svc: ImageService
     ) { }
 
-    @Post(':id/image')
+    @Post('')
     async uploadProductImage(
-        @Param('id') id: string,
+        @Param('productId') productId: string,
         @Body() dto: UploadProductImageDto,
     ): Promise<null> {
-        return this.svc.uploadProductImage(id, dto);
+        return this.svc.uploadProductImage(productId, dto);
     }
 
-    @Delete(':id/image/:imageId')
+    @Delete(':imageId')
     async deleteProductImage(
-        @Param('id') id: string,
+        @Param('productId') productId: string,
         @Param('imageId') imageId: string,
     ): Promise<null> {
-        return this.svc.deleteProductImage(id, imageId);
+        return this.svc.deleteProductImage(productId, imageId);
     }
 
-    @Post(':id/image/:imageId/mark')
+    @Post(':imageId/mark')
     async markProductImage(
-        @Param('id') id: string,
+        @Param('productId') productId: string,
         @Param('imageId') imageId: string,
     ): Promise<null> {
-        return this.svc.markProductImage(id, imageId);
+        return this.svc.markProductImage(productId, imageId);
     }
 }
