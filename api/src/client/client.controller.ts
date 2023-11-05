@@ -4,6 +4,8 @@ import { ClientService } from './client.service';
 import { ClientSignInDTO, ClientSignUpDTO } from './dto';
 import { JwtGuard } from 'src/auth/guard';
 import { GetClient } from './decorator/client.decorator';
+import { AuthDTO } from 'src/auth/dto';
+import { ClientViewmodel } from './viewmodels/client.viewmodel';
 
 @ApiTags('client')
 @Controller('client')
@@ -17,7 +19,7 @@ export class ClientController {
     async clientSignIn(
         @Req() req: any,
         @Body() dto: ClientSignInDTO,
-    ) {
+    ): Promise<AuthDTO> {
         return await this.svc.signIn(dto);
     }
 
@@ -26,7 +28,7 @@ export class ClientController {
     async clientSignUp(
         @Req() req: any,
         @Body() dto: ClientSignUpDTO,
-    ) {
+    ): Promise<null> {
         return await this.svc.signUp(dto);
     }
 
@@ -34,12 +36,12 @@ export class ClientController {
     @UseGuards(JwtGuard)
     async getMe(
         @GetClient('id') id: string
-    ) {
+    ): Promise<ClientViewmodel> {
         return await this.svc.getMe(id);
     }
 
     @Get("anonymous")
-    async newAnonymousClient() {
+    async newAnonymousClient(): Promise<AuthDTO> {
         return await this.svc.newAnonymousClient();
     }
 }

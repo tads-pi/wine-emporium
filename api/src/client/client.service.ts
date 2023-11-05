@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AnonymousClientViewmodel, ClientViewmodel } from './viewmodels/client.viewmodel';
+import { ClientViewmodel } from './viewmodels/client.viewmodel';
 import * as bcrypt from 'bcrypt';
 import * as dayjs from 'dayjs';
 import { ClientSignInDTO, ClientSignUpDTO } from './dto';
@@ -79,10 +79,8 @@ export class ClientService {
         );
     }
 
-    async newAnonymousClient(): Promise<AnonymousClientViewmodel> {
+    async newAnonymousClient(): Promise<AuthDTO> {
         const client = await this.db.client.create({ data: {} })
-        return {
-            id: client.id
-        }
+        return this.authSvc.getToken(client.id, {})
     }
 }

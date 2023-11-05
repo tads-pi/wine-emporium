@@ -244,12 +244,19 @@ model Cart {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  client    Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  client    Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId  String
   checkout  Checkout[]
   cartItems CartItems[]
+  status    CartStatusEnum
 
   @@map("cart")
+}
+
+enum CartStatusEnum {
+  OPEN
+  DELETED
+  DONE
 }
 
 model CartItems {
@@ -262,6 +269,7 @@ model CartItems {
   productId String
   Cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId    String
+  amount    Int
 
   @@map("cart_items")
 }

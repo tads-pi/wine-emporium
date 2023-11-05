@@ -17,7 +17,3 @@ export class ClientViewmodel {
         });
     }
 }
-
-export class AnonymousClientViewmodel {
-    id: string;
-}
