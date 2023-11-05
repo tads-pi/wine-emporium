@@ -26,11 +26,10 @@ export class CheckoutController {
         return this.svc.getCheckoutById(clientId, id)
     }
 
-    @Post('start/:cartId')
+    @Post('start')
     async startCheckout(
-        @GetClient('id') clientId: string,
-        @Param('cartId') cartId: string
+        @GetClient('id') clientId: string
     ): Promise<null> {
-        return this.svc.startCheckout(clientId, cartId)
+        return this.svc.startCheckout(clientId)
     }
 }

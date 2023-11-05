@@ -83,9 +83,12 @@ export class CheckoutService {
         return await this.fillCheckoutWithData(c)
     }
 
-    async startCheckout(clientId: string, cartId: string): Promise<null> {
+    async startCheckout(clientId: string): Promise<null> {
         const cart = await this.db.cart.findFirst({
-            where: { id: cartId, clientId: clientId }
+            where: {
+                clientId: clientId,
+                status: "OPEN"
+            }
         })
         if (!cart) {
             throw new NotFoundException('Carrinho não encontrado')
