@@ -49,6 +49,8 @@ functions:
       DB_PASS: ${ssm:/wine_emporium_db/db-pass}
       DB_PORT: ${ssm:/wine_emporium_db/db-port}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
+
+      PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
     events:
       - http:
           path: /{proxy+}
@@ -58,4 +60,4 @@ functions:
 plugins:
   - serverless-domain-manager
   - serverless-certificate-creator
-  - serverless-jetpack
+  - serverless-dotenv-plugin
