@@ -36,6 +36,8 @@ package:
   include:
     - dist/**
     - .env
+  exclude:
+    - node_modules/**
 
 functions:
   api:
