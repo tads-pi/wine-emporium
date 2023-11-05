@@ -1,18 +1,47 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Global, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CartViewmodel, CartViewmodelProduct } from './viewmodel';
-import { Cart } from '@prisma/client';
+import { Cart, CartItems } from '@prisma/client';
 import { S3Service } from 'src/aws/s3/s3.service';
-import { ProductClientViewmodel } from 'src/product/viewmodels/client-product.viewmodel';
 import { ProductImageViewmodel } from 'src/product/image/viewmodel/product-image.viewmodel';
 import { UpdateCartDTO } from './dto/update-cart.dto';
 
+@Global()
 @Injectable()
 export class CartService {
     constructor(
         private db: PrismaService,
         private s3: S3Service,
     ) { }
+
+    async getProductsFromCart(cart: Cart): Promise<CartViewmodelProduct[]> {
+        const cartItems = await this.db.cartItems.findMany({ where: { cartId: cart.id } })
+        const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
+
+        const viewmodel: CartViewmodelProduct[] = []
+        for (const p of products) {
+            const images = await this.s3.getImagesFromFolder(`products/${p.id}`)
+            const imageViewmodel: ProductImageViewmodel[] = images.map(i => {
+                return {
+                    id: i.key,
+                    url: i.url,
+                    marked: i.key === p.markedImageID
+                }
+            })
+
+            viewmodel.push({
+                id: p.id,
+                name: p.name,
+                description: p.description,
+                price: p.price,
+                ratings: p.ratings,
+                images: imageViewmodel,
+                amount: cartItems.find(item => item.productId === p.id).amount,
+            })
+        }
+
+        return viewmodel
+    }
 
     async getOpenCart(clientId: string): Promise<CartViewmodel> {
         let cart: Cart
@@ -39,38 +68,9 @@ export class CartService {
             }
         }
 
-        const cartItems = await this.db.cartItems.findMany({ where: { cartId: cart.id } })
-        const getProducts: () => Promise<CartViewmodelProduct[]> = async () => {
-            const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
-
-            const viewmodel: CartViewmodelProduct[] = []
-            for (const p of products) {
-                const images = await this.s3.getImagesFromFolder(`products/${p.id}`)
-                const imageViewmodel: ProductImageViewmodel[] = images.map(i => {
-                    return {
-                        id: i.key,
-                        url: i.url,
-                        marked: i.key === p.markedImageID
-                    }
-                })
-
-                viewmodel.push({
-                    id: p.id,
-                    name: p.name,
-                    description: p.description,
-                    price: p.price,
-                    ratings: p.ratings,
-                    images: imageViewmodel,
-                    amount: cartItems.find(item => item.productId === p.id).amount,
-                })
-            }
-
-            return viewmodel
-        }
-
         return {
             id: cart.id,
-            products: await getProducts()
+            products: await this.getProductsFromCart(cart)
         }
     }
 

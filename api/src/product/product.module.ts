@@ -5,9 +5,11 @@ import { BackofficeService } from './backoffice/backoffice.service';
 import { BackofficeController } from './backoffice/backoffice.controller';
 import { ImageController } from './image/image.controller';
 import { ImageService } from './image/image.service';
+import { DelivererController } from './deliverer/deliverer.controller';
+import { DelivererService } from './deliverer/deliverer.service';
 
 @Module({
-  providers: [ClientService, BackofficeService, ImageService],
-  controllers: [ClientController, BackofficeController, ImageController],
+  providers: [ClientService, BackofficeService, ImageService, DelivererService],
+  controllers: [ClientController, BackofficeController, ImageController, DelivererController],
 })
 export class ProductModule {}
