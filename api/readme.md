@@ -1,7 +1,11 @@
-# wine-emporium-api
+# wine-emporium api
 
-install vscode thunder client
-import collection
-run `npm start`
-be happy :)
+docs route:
+```
+api.wineeporium.shop/v1/docs
+```
 
+install:
+docker-compose
+
+crie o arquivo .env na root

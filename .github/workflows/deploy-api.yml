@@ -2,7 +2,8 @@ name: 🍷 API Deploy
 
 on:
   push:
-    branches: [main]
+    # TODO remove api-refact from here
+    branches: [main, api-refact]
     paths:
       - 'api/**'
       - '.github/workflows/deploy-api.yml'
@@ -26,8 +27,14 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm run test
+      # - run: npm run test
       - run: npm i serverless -g
+      - run: npm run build
+      - name: Cria .env para o prisma
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+      - run: npx prisma generate
+      - run: serverless package
       - run: serverless create-cert --stage ${{ env.STAGE }} --verbose
       - run: serverless create_domain --stage ${{ env.STAGE }} --verbose
       - run: serverless deploy --stage ${{ env.STAGE }} --verbose

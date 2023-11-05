@@ -1,0 +1,50 @@
+!!!!
+- finalizar deploy github
+- arrumar swagger sem JWT nos headers
+
+!!!
+- vaidar se já tem um checkout em andamento e retornar ele ao inves de criar um novo no /start
+- Add validação pra não passar steps que nao deveria no fluxo de checkout
+
+- adicionar api tags em todos os controllers
+- remover itens do carrinho no update
+- continuar nas rotas de payment
+- validar documento já em uso
+- retornar token JWT após signUp
+- deletar fluxo de cliente anonimo
+- poder adicionar cartão de crédito que está no nome de outra pessoa
+- add rota /end no checkout
+
+- finalizar rotas de payment
+    - bank-slip
+    - add no checkout tb
+
+- migrar rotas do backoffice pra nova api
+
+!!
+- finalizar testes de controllers e services
+    - admin
+    - auth
+    - client
+        - address
+    - payment
+        - bank-slip
+        - credit-card
+    - product
+        - backoffice
+        - client
+
+- adicionar guard para o backoffice - um pra estoquista, outro pra admin
+- getAll`s - opção de sorting de user
+
+
+!
+- adicionar defaults nas DTOs
+- refatorar rotas de Update com POST method
+- testes e2e
+- automatizar cadastro de produtos
+- stock viewmodel
+- gender viewmodel
+
+- atualizar image sem precisar do id+extension (usar só id)
+- adicionar campo last_access nas tbs de usuario

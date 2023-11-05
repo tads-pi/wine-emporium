@@ -1,0 +1,61 @@
+service: wine-emporium
+
+frameworkVersion: "3"
+
+custom:
+  domain:
+    dev: api.dev.wineemporium.shop
+    prd: api.wineemporium.shop
+
+  customCertificate:
+    certificateName: ${self:custom.domain.${self:provider.stage}}
+    hostedZoneNames: ${self:custom.domain.${self:provider.stage}}.
+
+  customDomain:
+    certificateName: ${self:custom.domain.${self:provider.stage}}
+    domainName: ${self:custom.domain.${self:provider.stage}}
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  
+  DB_NAME:
+    dev: dev_wine_emporium_db
+    prd: wine_emporium_db
+
+provider:
+  name: aws
+  region: sa-east-1
+  stage: ${opt:stage, 'prd'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+            - s3:*
+          Resource: "*"
+  deploymentBucket:
+    name: kcalixto-serverless-framework
+  logRetentionInDays: 7
+
+functions:
+  api:
+    handler: index.handler
+    runtime: nodejs18.x
+    environment:
+      NODE_ENV: ${self:provider.stage}
+      DB_NAME: ${self:custom.DB_NAME.${self:provider.stage}}
+
+      DB_HOST: ${ssm:/wine_emporium_db/db-host}
+      DB_USER: ${ssm:/wine_emporium_db/db-user}
+      DB_PASS: ${ssm:/wine_emporium_db/db-pass}
+      DB_PORT: ${ssm:/wine_emporium_db/db-port}
+      JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+plugins:
+  - serverless-domain-manager
+  - serverless-certificate-creator
