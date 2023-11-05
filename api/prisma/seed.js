@@ -1,12 +1,10 @@
+const dotenv = require('dotenv');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-async function addBackofficeClientsGroupsAndPermissions() {
-    // db url
-    console.log({
-        url: process.env.DATABASE_URL,
-    });
+dotenv.config();
 
+async function addBackofficeClientsGroupsAndPermissions() {
     await prisma.backofficeGroup.create({
         data: {
             name: "ADMINISTRADOR",

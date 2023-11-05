@@ -42,12 +42,7 @@ functions:
         - node_modules/**
     environment:
       NODE_ENV: ${self:provider.stage}
-      DB_NAME: wine_emporium_db
-
-      DB_HOST: ${ssm:/wine_emporium_db/db-host}
-      DB_USER: ${ssm:/wine_emporium_db/db-user}
-      DB_PASS: ${ssm:/wine_emporium_db/db-pass}
-      DB_PORT: ${ssm:/wine_emporium_db/db-port}
+      DATABASE_URL: ${ssm:/wine_emporium_db/db-url}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
 
       PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
