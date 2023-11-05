@@ -1,11 +1,6 @@
-# wine-emporium api
+# wine-emporium API
 
-docs route:
+Rota de documentação:
 ```
-api.wineeporium.shop/v1/docs
+api.wineeporium.shop/v2/docs
 ```
-
-install:
-docker-compose
-
-crie o arquivo .env na root

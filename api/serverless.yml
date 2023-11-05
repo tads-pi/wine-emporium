@@ -3,12 +3,6 @@ service: wine-emporium
 frameworkVersion: "3"
 
 custom:
-  webpack:
-    packagerOptions:
-      scripts:
-        - prisma generate
-        - find . -name "libquery_engine-*" -not -name "libquery_engine-arm64-openssl-*" | xargs rm
-
   domain:
     prd: api.wineemporium.shop
 
@@ -38,6 +32,11 @@ provider:
     name: kcalixto-serverless-framework
   logRetentionInDays: 7
 
+package:
+  include:
+    - dist/**
+    - .env
+
 functions:
   api:
     handler: dist/lambda.handler
@@ -56,5 +55,3 @@ functions:
 plugins:
   - serverless-domain-manager
   - serverless-certificate-creator
-  - serverless-dotenv-plugin
-  - serverless-webpack

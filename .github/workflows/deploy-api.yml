@@ -2,8 +2,7 @@ name: 🍷 API Deploy
 
 on:
   push:
-    # TODO remove api-refact from here
-    branches: [main, api-refact]
+    branches: [main]
     paths:
       - 'api/**'
       - '.github/workflows/deploy-api.yml'
@@ -27,7 +26,6 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      # - run: npm run test
       - run: npm i serverless -g
       - run: npm run build
       - name: Cria .env para o prisma
