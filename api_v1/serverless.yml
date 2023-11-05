@@ -35,6 +35,7 @@ provider:
           Resource: "*"
   deploymentBucket:
     name: kcalixto-serverless-framework
+  logRetentionInDays: 7
 
 functions:
   api:
