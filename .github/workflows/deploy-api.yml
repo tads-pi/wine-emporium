@@ -32,7 +32,8 @@ jobs:
       - run: npm run build
       - name: Cria .env para o prisma
         run: |
-          echo "DATABASE_URL=$DATABASE_URL" >> .env    
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+      - run: cat .env
       - run: npm run executar-migrations
       - run: serverless package
       - run: serverless create-cert --stage ${{ env.STAGE }} --verbose
