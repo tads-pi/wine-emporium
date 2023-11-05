@@ -30,6 +30,10 @@ jobs:
       # - run: npm run test
       - run: npm i serverless -g
       - run: npm run build
+      - name: Cria .env para o prisma
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+      - run: npx prisma generate
       - run: serverless package
       - run: serverless create-cert --stage ${{ env.STAGE }} --verbose
       - run: serverless create_domain --stage ${{ env.STAGE }} --verbose

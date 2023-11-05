@@ -3,8 +3,13 @@ service: wine-emporium
 frameworkVersion: "3"
 
 custom:
+  webpack:
+    packagerOptions:
+      scripts:
+        - prisma generate
+        - find . -name "libquery_engine-*" -not -name "libquery_engine-arm64-openssl-*" | xargs rm
+
   domain:
-    dev: api.dev.wineemporium.shop
     prd: api.wineemporium.shop
 
   customCertificate:
@@ -31,20 +36,16 @@ provider:
           Resource: "*"
   deploymentBucket:
     name: kcalixto-serverless-framework
+  logRetentionInDays: 7
 
 functions:
   api:
     handler: dist/lambda.handler
     runtime: nodejs18.x
-    package:
-      include:
-        - dist/**
-        - node_modules/**
     environment:
       NODE_ENV: ${self:provider.stage}
       DATABASE_URL: ${ssm:/wine_emporium_db/db-url}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
-
       PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
     events:
       - http:
@@ -56,3 +57,4 @@ plugins:
   - serverless-domain-manager
   - serverless-certificate-creator
   - serverless-dotenv-plugin
+  - serverless-webpack
