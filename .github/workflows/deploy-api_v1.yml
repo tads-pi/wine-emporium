@@ -2,7 +2,7 @@ name: V1 - 🍷 API Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [main, api-refact]
     paths:
       - 'api_v1/**'
       - '.github/workflows/deploy-api_v1.yml'
