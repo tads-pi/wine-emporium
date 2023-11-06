@@ -2,7 +2,6 @@
 - finalizar deploy github
 
 !!!
-- vaidar se já tem um checkout em andamento e retornar ele ao inves de criar um novo no /start
 - Add validação pra não passar steps que nao deveria no fluxo de checkout
 
 - adicionar api tags em todos os controllers

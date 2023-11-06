@@ -31,7 +31,7 @@ export class CheckoutController {
     @Post('start')
     async startCheckout(
         @GetClient('id') clientId: string
-    ): Promise<null> {
+    ): Promise<CheckoutViewmodel> {
         return this.svc.startCheckout(clientId)
     }
 }

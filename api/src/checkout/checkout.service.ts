@@ -83,7 +83,7 @@ export class CheckoutService {
         return await this.fillCheckoutWithData(c)
     }
 
-    async startCheckout(clientId: string): Promise<null> {
+    async startCheckout(clientId: string): Promise<CheckoutViewmodel> {
         const cart = await this.db.cart.findFirst({
             where: {
                 clientId: clientId,
@@ -94,13 +94,19 @@ export class CheckoutService {
             throw new NotFoundException('Carrinho não encontrado')
         }
 
-        await this.db.checkout.create({
-            data: {
-                cartId: cart.id,
-                status: "ENDERECO_PENDENTE",
-            }
+        let checkout: Checkout | null = null
+        checkout = await this.db.checkout.findFirst({
+            where: { cartId: cart.id }
         })
+        if (!checkout) {
+            checkout = await this.db.checkout.create({
+                data: {
+                    cartId: cart.id,
+                    status: "ENDERECO_PENDENTE",
+                }
+            })
+        }
 
-        return
+        return await this.fillCheckoutWithData(checkout)
     }
 }
