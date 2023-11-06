@@ -12,6 +12,11 @@ export class GenderController {
     @Get()
     async getAllGenders() {
         console.log("BUILD UPDATE TEST");
-        return await this.svc.getAllGenders();
+        // return await this.svc.getAllGenders();
+        return [
+            {
+                "aloha": "aloha"
+            }
+        ]
     }
 }
