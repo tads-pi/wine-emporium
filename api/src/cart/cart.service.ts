@@ -80,18 +80,13 @@ export class CartService {
             throw new NotFoundException('Carrinho não encontrado')
         }
 
-        for (const product of dto.products) {
-            if (product.amount <= 0) {
-                await this.db.cartItems.deleteMany({
-                    where: {
-                        cartId: cart.id,
-                        productId: product.id,
-                    }
-                })
-                continue
+        await this.db.cartItems.deleteMany({
+            where: {
+                cartId: cart.id,
             }
+        })
 
-            // 
+        for (const product of dto.products) {
             const productInCart = await this.db.cartItems.findFirst({
                 where: { productId: product.id, cartId: cart.id }
             })

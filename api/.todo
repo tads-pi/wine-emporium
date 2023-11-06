@@ -2,10 +2,6 @@
 - finalizar deploy github
 
 !!!
-- Add validação pra não passar steps que nao deveria no fluxo de checkout
-
-- adicionar api tags em todos os controllers
-- remover itens do carrinho no update
 - continuar nas rotas de payment
 - validar documento já em uso
 - retornar token JWT após signUp
