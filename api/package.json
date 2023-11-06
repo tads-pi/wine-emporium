@@ -15,7 +15,7 @@
     "apagar-db-test": "docker-compose rm mysql-test -s -f -v",
     "criar-db-test": "docker-compose up mysql-test --detach && sleep 15 && npm run executar-migrations-test",
     "reiniciar-db-test": "npm run apagar-db-test && npm run criar-db-test",
-    "build": "nest build",
+    "build": "webpack --config webpack.config.js",
     "start": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
