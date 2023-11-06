@@ -40,15 +40,11 @@ function logAvailableRoutes(app: INestApplication<any>) {
 
   const availableRoutes: [] = router.stack
     .map((layer) => {
-      if (layer.route) {
-        return {
-          route: {
-            path: layer.route?.path,
-            method: layer.route?.stack[0].method,
-          },
-        };
-      }
+      if (layer.route) return layer.route?.path
     })
     .filter(item => item !== undefined);
-  console.log(availableRoutes);
+  console.log(JSON.stringify({
+    availableRoutes,
+    total: availableRoutes.length
+  }, null, 2));
 }
