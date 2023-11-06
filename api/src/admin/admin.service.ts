@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ClientBackofficeViewmodel } from './viewmodel';
 import { BackofficeClientSignInDTO, SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
 import * as bcrypt from 'bcrypt';
 import { AuthDTO } from 'src/auth/dto/auth.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../auth/auth.service';
 @Injectable()
 export class AdminService {
     constructor(

@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { ProductBackofficeViewmodel } from '../viewmodels';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
-import { S3Service } from 'src/aws/s3/s3.service';
+import { S3Service } from '../../aws/s3/s3.service';
 import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
 
 @Injectable()

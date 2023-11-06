@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
 import { Checkout } from '@prisma/client';
-import { AddressViewmodel } from 'src/client/address/viewmodel/address.viewmodel';
-import { CartService } from 'src/cart/cart.service';
-import { DelivererViewmodel } from 'src/product/deliverer/viewmodel';
+import { AddressViewmodel } from '../client/address/viewmodel/address.viewmodel';
+import { CartService } from '../cart/cart.service';
+import { DelivererViewmodel } from '../product/deliverer/viewmodel';
 
 @Injectable()
 export class CheckoutService {

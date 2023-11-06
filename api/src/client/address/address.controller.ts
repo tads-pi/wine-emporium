@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AddressService } from './address.service';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../../auth/guard';
 import { ApiTags } from '@nestjs/swagger';
 import { AddressViewmodel } from './viewmodel/address.viewmodel';
 import { GetClient } from '../decorator/client.decorator';

@@ -3,6 +3,14 @@ service: wine-emporium
 frameworkVersion: "3"
 
 custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules: true
+    packagerOptions:
+      scripts:
+        - prisma generate
+        - find . -name "libquery_engine-*" -not -name "libquery_engine-rhel-openssl-*" | xargs rm
+
   domain:
     prd: api.wineemporium.shop
 
@@ -57,3 +65,5 @@ functions:
 plugins:
   - serverless-domain-manager
   - serverless-certificate-creator
+  - serverless-dotenv-plugin
+  - serverless-webpack

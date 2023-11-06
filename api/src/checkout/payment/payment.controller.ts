@@ -1,8 +1,8 @@
 import { Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../../auth/guard';
 import { ApiTags } from '@nestjs/swagger';
-import { GetClient } from 'src/client/decorator/client.decorator';
+import { GetClient } from '../../client/decorator/client.decorator';
 
 @ApiTags('checkout')
 @Controller('checkout/:checkoutId/payment')

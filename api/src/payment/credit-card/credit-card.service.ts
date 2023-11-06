@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { ClientCreditCardViewmodel } from './viewmodel/client-credit-card.viewmodel';
 import { SaveCreditCardDTO } from './dto/save-credit-card.dto';
 

@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../../auth/guard';
 import { UploadProductImageDto } from './dto';
 
 @ApiTags('product/image')

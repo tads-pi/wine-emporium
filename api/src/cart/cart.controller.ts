@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../auth/guard';
 import { CartService } from './cart.service';
-import { GetClient } from 'src/client/decorator/client.decorator';
+import { GetClient } from '../client/decorator/client.decorator';
 import { CartViewmodel } from './viewmodel';
 import { UpdateCartDTO } from './dto/update-cart.dto';
 

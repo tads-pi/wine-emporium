@@ -1,6 +1,6 @@
 import { CartViewmodel } from "src/cart/viewmodel";
 import { AddressViewmodel } from "src/client/address/viewmodel/address.viewmodel";
-import { DelivererViewmodel } from "src/product/deliverer/viewmodel";
+import { DelivererViewmodel } from "../../product/deliverer/viewmodel";
 
 export class CheckoutViewmodel {
     id: string

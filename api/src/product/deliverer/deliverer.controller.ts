@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get } from '@nestjs/common';
 import { DelivererService } from './deliverer.service';
 import { DelivererViewmodel } from './viewmodel';
 import { ProductDelivererDTO } from './dto/product-deliverer.dto';

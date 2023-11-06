@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { DelivererService } from './deliverer.service';
-import { GetClient } from 'src/client/decorator/client.decorator';
-import { DelivererViewmodel } from 'src/product/deliverer/viewmodel';
-import { JwtGuard } from 'src/auth/guard';
+import { GetClient } from '../../client/decorator/client.decorator';
+import { DelivererViewmodel } from '../../product/deliverer/viewmodel';
+import { JwtGuard } from '../../auth/guard';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('checkout')

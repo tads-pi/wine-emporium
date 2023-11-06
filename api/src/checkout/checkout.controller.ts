@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
-import { JwtGuard } from 'src/auth/guard';
-import { GetClient } from 'src/client/decorator/client.decorator';
+import { JwtGuard } from '../auth/guard';
+import { GetClient } from '../client/decorator/client.decorator';
 import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
 import { ApiTags } from '@nestjs/swagger';
 

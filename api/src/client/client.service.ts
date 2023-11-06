@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ClientViewmodel } from './viewmodels/client.viewmodel';
 import * as bcrypt from 'bcrypt';
 import * as dayjs from 'dayjs';
 import { ClientSignInDTO, ClientSignUpDTO } from './dto';
-import { AuthDTO } from 'src/auth/dto/auth.dto';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthDTO } from '../auth/dto/auth.dto';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ClientService {

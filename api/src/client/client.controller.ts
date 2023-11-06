@@ -2,9 +2,9 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } fro
 import { ApiTags } from '@nestjs/swagger';
 import { ClientService } from './client.service';
 import { ClientSignInDTO, ClientSignUpDTO } from './dto';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../auth/guard';
 import { GetClient } from './decorator/client.decorator';
-import { AuthDTO } from 'src/auth/dto';
+import { AuthDTO } from '../auth/dto';
 import { ClientViewmodel } from './viewmodels/client.viewmodel';
 
 @ApiTags('client')

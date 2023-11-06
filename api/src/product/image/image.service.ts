@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { UploadProductImageDto } from './dto';
-import { S3Service } from 'src/aws/s3/s3.service';
+import { S3Service } from '../../aws/s3/s3.service';
 import { v4 as uuid } from "uuid";
 
 @Injectable()

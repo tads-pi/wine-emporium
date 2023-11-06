@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Deliverer } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { DelivererViewmodel } from 'src/product/deliverer/viewmodel';
+import { PrismaService } from '../../prisma/prisma.service';
+import { DelivererViewmodel } from '../../product/deliverer/viewmodel';
 
 @Injectable()
 export class DelivererService {

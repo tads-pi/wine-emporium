@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { AddressViewmodel } from './viewmodel/address.viewmodel';
 import { SaveAddressDTO } from './dto/save-address.dto';
 

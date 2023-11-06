@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../../auth/guard';
 import { CreditCardService } from './credit-card.service';
-import { GetClient } from 'src/client/decorator/client.decorator';
+import { GetClient } from '../../client/decorator/client.decorator';
 import { ClientCreditCardViewmodel } from './viewmodel/client-credit-card.viewmodel';
 import { SaveCreditCardDTO } from './dto/save-credit-card.dto';
 
