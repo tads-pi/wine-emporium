@@ -6,7 +6,6 @@ import { json } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('v2');
   app.use(json({ limit: '10mb' }))
   app.useGlobalPipes(new ValidationPipe({
     // essa flag define que as dtos só podem ter os campos informados no tipo
@@ -18,14 +17,15 @@ async function bootstrap() {
     .setTitle('Wine Emporium')
     .setDescription('Wine Emporium API')
     .setVersion('0.2')
-    .setBasePath('v2')
     .addSecurity('bearer', {
       type: 'http',
       scheme: 'bearer',
     })
+    .addServer('http://localhost:3000')
+    .addServer('https://api.wineemporium.shop')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('v2/docs', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(3000);
 
