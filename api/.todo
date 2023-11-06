@@ -1,6 +1,5 @@
 !!!!
 - finalizar deploy github
-- arrumar swagger sem JWT nos headers
 
 !!!
 - vaidar se já tem um checkout em andamento e retornar ele ao inves de criar um novo no /start

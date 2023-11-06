@@ -19,6 +19,10 @@ async function bootstrap() {
     .setDescription('Wine Emporium API')
     .setVersion('0.2')
     .setBasePath('v2')
+    .addSecurity('bearer', {
+      type: 'http',
+      scheme: 'bearer',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('v2/docs', app, document);
