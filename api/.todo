@@ -3,8 +3,6 @@
 
 !!!
 - continuar nas rotas de payment
-- validar documento já em uso
-- retornar token JWT após signUp
 - deletar fluxo de cliente anonimo
 - poder adicionar cartão de crédito que está no nome de outra pessoa
 - add rota /end no checkout

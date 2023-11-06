@@ -28,7 +28,7 @@ export class ClientController {
     async clientSignUp(
         @Req() req: any,
         @Body() dto: ClientSignUpDTO,
-    ): Promise<null> {
+    ): Promise<AuthDTO> {
         return await this.svc.signUp(dto);
     }
 

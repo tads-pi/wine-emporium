@@ -35,15 +35,11 @@ export class ClientService {
         })
     }
 
-    async signUp(dto: ClientSignUpDTO): Promise<null> {
+    async signUp(dto: ClientSignUpDTO): Promise<AuthDTO> {
         const alreadyRegistered = await this.db.backofficeClient.findUnique({
             where: {
                 email: dto.email,
-                OR: [
-                    {
-                        document: dto.document,
-                    }
-                ]
+                OR: [{ document: dto.document }]
             },
         })
         if (alreadyRegistered) {
@@ -55,7 +51,7 @@ export class ClientService {
             throw new BadRequestException('Gênero inválido')
         }
 
-        await this.db.client.create({
+        const c = await this.db.client.create({
             data: {
                 email: dto.email,
                 name: dto.name,
@@ -66,7 +62,7 @@ export class ClientService {
             },
         })
 
-        return null
+        return this.authSvc.getToken(c.id)
     }
 
     async getMe(id: string): Promise<ClientViewmodel> {
