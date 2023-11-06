@@ -6,6 +6,7 @@ custom:
   webpack:
     webpackConfig: webpack.config.js
     includeModules: true
+    packager: 'npm'
     packagerOptions:
       scripts:
         - prisma generate
@@ -55,7 +56,7 @@ functions:
       NODE_ENV: ${self:provider.stage}
       DATABASE_URL: ${ssm:/wine_emporium_db/db-url}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
-      PRISMA_CLI_BINARY_TARGETS: native,rhel-openssl-1.0.x
+      PRISMA_CLI_BINARY_TARGETS: rhel-openssl-1.0.x
     events:
       - http:
           path: /{proxy+}
