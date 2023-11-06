@@ -60,7 +60,7 @@ functions:
     events:
       - http:
           method: any
-          path: /{any+}
+          path: /{proxy+}
           cors: true
 
 plugins:
