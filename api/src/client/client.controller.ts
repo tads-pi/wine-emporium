@@ -39,9 +39,4 @@ export class ClientController {
     ): Promise<ClientViewmodel> {
         return await this.svc.getMe(id);
     }
-
-    @Get("anonymous")
-    async newAnonymousClient(): Promise<AuthDTO> {
-        return await this.svc.newAnonymousClient();
-    }
 }

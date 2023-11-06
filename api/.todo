@@ -3,7 +3,6 @@
 
 !!!
 - continuar nas rotas de payment
-- deletar fluxo de cliente anonimo
 - poder adicionar cartão de crédito que está no nome de outra pessoa
 - add rota /end no checkout
 

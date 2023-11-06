@@ -74,9 +74,4 @@ export class ClientService {
             })
         );
     }
-
-    async newAnonymousClient(): Promise<AuthDTO> {
-        const client = await this.db.client.create({ data: {} })
-        return this.authSvc.getToken(client.id, {})
-    }
 }
