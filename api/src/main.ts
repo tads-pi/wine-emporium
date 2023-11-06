@@ -29,11 +29,9 @@ async function bootstrap() {
 
   await app.listen(3000);
 
-  console.log("HELLO WORLD");
   logAvailableRoutes(app)
 }
 bootstrap();
-
 
 function logAvailableRoutes(app: INestApplication<any>) {
   const server = app.getHttpServer();

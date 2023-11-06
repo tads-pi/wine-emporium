@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { GenderService } from './gender.service';
 import { ApiTags } from '@nestjs/swagger';
+import { GenderDTO } from './dto/gender.dto';
 
 @ApiTags('client/gender')
 @Controller('client/gender')
@@ -10,13 +11,7 @@ export class GenderController {
     ) { }
 
     @Get()
-    async getAllGenders() {
-        console.log("BUILD UPDATE TEST");
-        // return await this.svc.getAllGenders();
-        return [
-            {
-                "aloha": "aloha"
-            }
-        ]
+    async getAllGenders(): Promise<GenderDTO[]> {
+        return await this.svc.getAllGenders();
     }
 }

@@ -59,8 +59,8 @@ functions:
       PRISMA_CLI_BINARY_TARGETS: rhel-openssl-1.0.x
     events:
       - http:
-          path: /{proxy+}
-          method: ANY
+          method: any
+          path: /{any+}
           cors: true
 
 plugins:
