@@ -1,10 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
-import { Checkout } from '@prisma/client';
+import { BankSlipPaymentMethod, Checkout, CreditCardPaymentMethod } from '@prisma/client';
 import { AddressViewmodel } from '../client/address/viewmodel/address.viewmodel';
 import { CartService } from '../cart/cart.service';
 import { DelivererViewmodel } from '../product/deliverer/viewmodel';
+import { ClientCreditCardViewmodel } from 'src/payment/credit-card/viewmodel/client-credit-card.viewmodel';
+import { CheckoutPaymentViewmodel } from './viewmodel/checkout.payment.viewmodel';
 
 @Injectable()
 export class CheckoutService {
@@ -12,6 +14,38 @@ export class CheckoutService {
         private db: PrismaService,
         private cartSvc: CartService,
     ) { }
+
+    private async handlePaymentData(payment: any): Promise<CheckoutPaymentViewmodel> {
+        const method = await this.db.paymentMethod.findUnique({
+            where: { id: payment.methodId }
+        })
+        switch (method.name) {
+            case 'CARTAO_DE_CREDITO':
+                const creditCardPayment = await this.db.creditCardPaymentMethod.findUnique({ where: { id: payment.methodExternalId } })
+                const creditCard = await this.db.creditCard.findUnique({ where: { id: creditCardPayment.creditCardId } })
+                return {
+                    id: creditCardPayment.id,
+                    method: 'credit-card',
+                    installments: creditCardPayment.installments,
+                    installmentsValue: creditCardPayment.installmentsValue,
+                    dueDate: creditCardPayment.dueDate,
+                    creditCard: new ClientCreditCardViewmodel(creditCard)
+                }
+            case 'BOLETO':
+                const bankSlipPayment = await this.db.bankSlipPaymentMethod.findUnique({
+                    where: { id: payment.methodExternalId }
+                })
+                return {
+                    id: bankSlipPayment.id,
+                    method: 'bank-slip',
+                    installments: bankSlipPayment.installments,
+                    installmentsValue: bankSlipPayment.installmentsValue,
+                    dueDate: bankSlipPayment.dueDate,
+                    creditCard: null
+                }
+            default: throw new NotFoundException('Método de pagamento não encontrado')
+        }
+    }
 
     async fillCheckoutWithData(c: Checkout): Promise<CheckoutViewmodel> {
         const cart = await this.db.cart.findFirst({
@@ -24,6 +58,7 @@ export class CheckoutService {
         const payment = await this.db.payment.findFirst({
             where: { id: c.paymentId || '' }
         })
+        const paymentData = await this.handlePaymentData(payment)
         const deliverer = await this.db.deliverer.findFirst({
             where: { id: c.delivererId || '' }
         })
@@ -37,13 +72,7 @@ export class CheckoutService {
             },
             deliverer: deliverer ? new DelivererViewmodel(deliverer) : null,
             address: address ? new AddressViewmodel(address, false) : null,
-            // payment: {
-            //     id: payment.id,
-            //     cardNumber: payment.cardNumber,
-            //     cardName: payment.cardName,
-            //     cardExpiration: payment.cardExpiration,
-            //     cardCVV: payment.cardCVV,
-            // },
+            payment: paymentData,
             price: await this.cartSvc.getCartPrice(cart.clientId) + (deliverer ? deliverer.fare : 0),
         }
 
