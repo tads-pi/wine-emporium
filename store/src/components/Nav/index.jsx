@@ -148,8 +148,9 @@ export function Nav() {
                 anchor="right" // Set the anchor to "right" for right side placement
                 open={drawerOpen} // Control open/close state
                 onClose={hideOrShowDrawer} // Function to close the Drawer
+                style={{ overflow: 'hidden'  }}
               >
-                {items?.map((wine, index) => (
+                {[...new Set(items)].map((wine, index) => (
                   <CartItemCard key={index} data={wine} removeCart={() => removeItem(index)} />
                 ))}
                 <div style={{ display: 'flex', justifyContent: 'end', marginRight: '20px', width: '400px' }}>

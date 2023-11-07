@@ -22,7 +22,6 @@ export function CartItemCard({ data, removeCart }) {
             backgroundColor: '#fff',
             boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
-            overflow: 'hidden',
             marginBottom: '20px'
         }}>
             <div style={{ 
