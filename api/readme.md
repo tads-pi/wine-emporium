@@ -1,7 +1,6 @@
-# wine-emporium-api
+# wine-emporium API
 
-install vscode thunder client
-import collection
-run `npm start`
-be happy :)
-
+Rota de documentação:
+```
+api.wineeporium.shop/v2/docs
+```

@@ -3,8 +3,16 @@ service: wine-emporium
 frameworkVersion: "3"
 
 custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    includeModules: true
+    packager: 'npm'
+    packagerOptions:
+      scripts:
+        - prisma generate
+        - find . -name "libquery_engine-*" -not -name "libquery_engine-rhel-openssl-*" | xargs rm
+
   domain:
-    dev: api.dev.wineemporium.shop
     prd: api.wineemporium.shop
 
   customCertificate:
@@ -16,10 +24,6 @@ custom:
     domainName: ${self:custom.domain.${self:provider.stage}}
     stage: ${self:provider.stage}
     createRoute53Record: true
-  
-  DB_NAME:
-    dev: dev_wine_emporium_db
-    prd: wine_emporium_db
 
 provider:
   name: aws
@@ -35,26 +39,32 @@ provider:
           Resource: "*"
   deploymentBucket:
     name: kcalixto-serverless-framework
+  logRetentionInDays: 7
+
+package:
+  include:
+    - dist/**
+    - .env
+  exclude:
+    - node_modules/**
 
 functions:
   api:
-    handler: index.handler
+    handler: dist/lambda.handler
     runtime: nodejs18.x
     environment:
       NODE_ENV: ${self:provider.stage}
-      DB_NAME: ${self:custom.DB_NAME.${self:provider.stage}}
-
-      DB_HOST: ${ssm:/wine_emporium_db/db-host}
-      DB_USER: ${ssm:/wine_emporium_db/db-user}
-      DB_PASS: ${ssm:/wine_emporium_db/db-pass}
-      DB_PORT: ${ssm:/wine_emporium_db/db-port}
+      DATABASE_URL: ${ssm:/wine_emporium_db/db-url}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
+      PRISMA_CLI_BINARY_TARGETS: rhel-openssl-1.0.x
     events:
       - http:
+          method: any
           path: /{proxy+}
-          method: ANY
           cors: true
 
 plugins:
   - serverless-domain-manager
   - serverless-certificate-creator
+  - serverless-dotenv-plugin
+  - serverless-webpack
