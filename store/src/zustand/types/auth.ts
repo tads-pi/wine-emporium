@@ -4,6 +4,7 @@ export interface Client {
     email: string;
     document: string;
     birthDate: Date;
+    genderId: string;
 }
 
 export interface Register {
@@ -22,4 +23,11 @@ export interface Login {
 export interface LoginResponse {
     access_token: string
     expires_in: number
+}
+
+export interface Update {
+    name?: string;
+    birthDate?: Date;
+    genderId?: string;
+    password?: string;
 }

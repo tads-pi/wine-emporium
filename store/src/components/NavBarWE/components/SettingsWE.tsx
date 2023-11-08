@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import useStore from "../../../zustand/store";
+import { routes } from "../../../config/routes";
 
 export default function SettingsWE() {
   const { signOut } = useStore()
@@ -8,7 +9,7 @@ export default function SettingsWE() {
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem', padding: '.5rem' }}>
-        <Link to="/perfil/alterar-dados" style={{ textDecoration: 'none' }}>
+        <Link to={routes.ACCOUNT_DATA} style={{ textDecoration: 'none' }}>
           <span style={{ color: 'black' }}>Perfil</span>
         </Link>
         <span style={{ color: 'black' }}>Conta</span>

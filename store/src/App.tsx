@@ -45,8 +45,8 @@ function App() {
         <Route path={`${routes.STORE}/:id`} element={<StoreProductWE />} />
 
         <Route element={<EditPerfil />}>
-          <Route path="/perfil/alterar-dados" element={<FormUserLogged />} />
-          <Route path="/perfil/endereco-de-entrega" element={<FormUserAddress />} />
+          <Route path={routes.ACCOUNT_DATA} element={<FormUserLogged />} />
+          <Route path={routes.ACCOUNT_ADDRESS} element={<FormUserAddress />} />
         </Route>
       </Routes>
     </BrowserRouter>
