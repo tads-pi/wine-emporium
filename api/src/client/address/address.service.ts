@@ -50,7 +50,7 @@ export class AddressService {
         return
     }
 
-    async createAddress(clientID: string, address: SaveAddressDTO): Promise<null> {
+    async createAddress(clientID: string, address: SaveAddressDTO): Promise<AddressViewmodel> {
         const a = await this.db.address.create({
             data: {
                 country: address.country,
@@ -71,7 +71,7 @@ export class AddressService {
             }
         })
 
-        return
+        return new AddressViewmodel(a)
     }
 
     async getAddressByID(clientID: string, addressID: string): Promise<AddressViewmodel> {

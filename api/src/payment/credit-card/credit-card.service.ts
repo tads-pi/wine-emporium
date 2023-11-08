@@ -20,7 +20,7 @@ export class CreditCardService {
         return creditCards.map(cc => new ClientCreditCardViewmodel(cc))
     }
 
-    async saveNewCreditCard(clientId: string, dto: SaveCreditCardDTO): Promise<null> {
+    async saveNewCreditCard(clientId: string, dto: SaveCreditCardDTO): Promise<ClientCreditCardViewmodel> {
         const c = await this.db.client.findUnique({ where: { id: clientId } })
         if (!c) {
             throw new NotFoundException('Cliente não encontrado')
@@ -33,7 +33,7 @@ export class CreditCardService {
             throw new BadRequestException('Cartão de crédito expirado')
         }
 
-        await this.db.creditCard.create({
+        const creditCard = await this.db.creditCard.create({
             data: {
                 number: dto.number,
                 cvv: dto.cvv,
@@ -42,18 +42,14 @@ export class CreditCardService {
                 expireYear: expYear,
             }
         })
-            .then(async cc => {
-                await this.db.clientCreditCard.create({
-                    data: {
-                        clientId: clientId,
-                        creditCardId: cc.id
-                    }
-                })
-            })
-            .catch(err => {
-                throw new InternalServerErrorException('Erro ao salvar cartão de crédito')
-            })
 
-        return
+        await this.db.clientCreditCard.create({
+            data: {
+                clientId: clientId,
+                creditCardId: creditCard.id
+            }
+        })
+
+        return new ClientCreditCardViewmodel(creditCard)
     }
 }

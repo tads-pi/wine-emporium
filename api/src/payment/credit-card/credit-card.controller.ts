@@ -25,7 +25,7 @@ export class CreditCardController {
     async saveNewCreditCard(
         @GetClient('id') clientId: string,
         @Body() dto: SaveCreditCardDTO,
-    ): Promise<null> {
+    ): Promise<ClientCreditCardViewmodel> {
         return this.svc.saveNewCreditCard(clientId, dto);
     }
 }
