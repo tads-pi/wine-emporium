@@ -4,6 +4,7 @@ import { DelivererViewmodel } from "../../product/deliverer/viewmodel";
 
 export class CheckoutViewmodel {
     id: string
+    sequentialId: number
     status: string
     cart: CartViewmodel
     // payment: PaymentViewmodel | null // TODO

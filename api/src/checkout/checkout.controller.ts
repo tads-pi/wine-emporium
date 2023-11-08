@@ -34,4 +34,18 @@ export class CheckoutController {
     ): Promise<CheckoutViewmodel> {
         return this.svc.startCheckout(clientId)
     }
+
+    @Post('cancel')
+    async cancelCheckout(
+        @GetClient('id') clientId: string
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.cancelCheckout(clientId)
+    }
+
+    @Post('finish')
+    async finishCheckout(
+        @GetClient('id') clientId: string
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.finishCheckout(clientId)
+    }
 }

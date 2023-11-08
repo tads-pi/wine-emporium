@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
@@ -281,6 +281,7 @@ model Checkout {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
+  sequentialId      Int
   Cart              Cart               @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId            String
   payment           Payment?           @relation(fields: [paymentId], references: [id], onDelete: Cascade)

@@ -30,6 +30,7 @@ export class CheckoutService {
 
         const viewmodel: CheckoutViewmodel = {
             id: c.id,
+            sequentialId: c.sequentialId,
             status: c.status,
             cart: {
                 id: cart.id,
@@ -103,9 +104,70 @@ export class CheckoutService {
                 data: {
                     cartId: cart.id,
                     status: "ENDERECO_PENDENTE",
+                    sequentialId: await this.db.checkout.count() + 1,
                 }
             })
         }
+
+        return await this.fillCheckoutWithData(checkout)
+    }
+
+    async cancelCheckout(clientId: string): Promise<CheckoutViewmodel> {
+        const cart = await this.db.cart.findFirst({
+            where: { clientId: clientId, status: "OPEN" }
+        })
+        if (!cart) {
+            throw new NotFoundException('Carrinho não encontrado')
+        }
+
+        let checkout: Checkout | null = null
+        checkout = await this.db.checkout.findFirst({
+            where: { cartId: cart.id }
+        })
+        if (!checkout) {
+            throw new NotFoundException('Checkout não encontrado')
+        }
+
+        checkout = await this.db.checkout.update({
+            where: { id: checkout.id },
+            data: { status: "CANCELADO" }
+        })
+
+        return await this.fillCheckoutWithData(checkout)
+    }
+
+    async finishCheckout(clientId: string): Promise<CheckoutViewmodel> {
+        const cart = await this.db.cart.findFirst({
+            where: { clientId: clientId, status: "OPEN" }
+        })
+        if (!cart) {
+            throw new NotFoundException('Carrinho não encontrado')
+        }
+
+        let checkout: Checkout | null = null
+        checkout = await this.db.checkout.findFirst({
+            where: { cartId: cart.id }
+        })
+        if (!checkout) {
+            throw new NotFoundException('Checkout não encontrado')
+        }
+
+        if (!checkout.addressId) {
+            throw new NotFoundException('Endereço não encontrado')
+        }
+
+        if (!checkout.paymentId) {
+            throw new NotFoundException('Método de pagamento não encontrado')
+        }
+
+        if (!checkout.delivererId) {
+            throw new NotFoundException('Entregador não encontrado')
+        }
+
+        checkout = await this.db.checkout.update({
+            where: { id: checkout.id },
+            data: { status: "PAGAMENTO_PENDENTE" }
+        })
 
         return await this.fillCheckoutWithData(checkout)
     }
