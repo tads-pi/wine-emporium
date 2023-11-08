@@ -40,6 +40,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
             { name: "CREATE_USER" },
             { name: "READ_USER" },
             { name: "UPDATE_USER" },
+            { name: "DELETE_USER" },
             { name: "TOGGLE_USER_ACTIVE" },
 
             { name: "LIST_PRODUCT" },
@@ -51,7 +52,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
             { name: "UPDATE_PRODUCT_PRICE" },
             { name: "UPDATE_PRODUCT_RATINGS" },
             { name: "UPDATE_PRODUCT_STOCK" },
-            { name: "UPDATE_PRODUCT_STOCK_UNIDADEIT" },
+            { name: "UPDATE_PRODUCT_STOCK_UNIT" },
             { name: "DELETE_PRODUCT" },
 
             { name: "CREATE_PRODUCT_IMAGE" },
