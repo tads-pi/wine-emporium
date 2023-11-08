@@ -41,7 +41,7 @@ export class AddressController {
     async createAddress(
         @GetClient('id') clientID: string,
         @Body() address: SaveAddressDTO
-    ): Promise<null> {
+    ): Promise<AddressViewmodel> {
         return await this.svc.createAddress(clientID, address);
     }
 
