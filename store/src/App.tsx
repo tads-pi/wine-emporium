@@ -11,6 +11,7 @@ import PerfilUser from "./components/PerfilUser"
 import StoreWE from "./pages/store/storeWE"
 import StoreProductWE from "./pages/storeProduct/storeProductWE";
 import LoginWE from "./pages/login/LoginWE";
+import { Checkout } from "./pages/checkout/checkout";
 
 export function AuthGuard() {
   const { isLoggedIn } = useStore()
@@ -44,6 +45,7 @@ function App() {
         <Route path={routes.STORE} element={<StoreWE />} />
         <Route path={`${routes.STORE}/:id`} element={<StoreProductWE />} />
 
+        <Route path={routes.CHECKOUT} element={<Checkout />} />
         <Route element={<EditPerfil />}>
           <Route path={routes.ACCOUNT_DATA} element={<FormUserLogged />} />
           <Route path={routes.ACCOUNT_ADDRESS} element={<FormUserAddress />} />

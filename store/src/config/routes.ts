@@ -4,5 +4,5 @@ export const routes = {
     STORE: '/mercado',
     CHECKOUT: '/checkout',
     ACCOUNT_DATA: '/perfil/alterar-dados',
-    ACCOUNT_ADDRESS: '/perfil/endereco-de-entrega'
+    ACCOUNT_ADDRESS: '/perfil/endereco-de-entrega',
 }
