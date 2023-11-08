@@ -3,18 +3,15 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Badge, Drawer, styled } from '@mui/material';
-import { CartItemCard } from '../CartItemCard';
-import { formatCurrency } from '../../utils/formatCurrency';
+import { Badge, styled } from '@mui/material';
 import SettingsWE from './components/SettingsWE';
 import useNavBarWE from './hooks';
 import LogoWE from './components/LogoWE';
 import AvatarWE from './components/AvatarWE';
-import DrawerWE from './components/DrawerWE';
+import DrawerWE from './components/drawer/DrawerWE';
 
 export function NavBarWE() {
   const {
@@ -23,10 +20,7 @@ export function NavBarWE() {
     hideOrShowDrawer,
     anchorElUser,
     numItems,
-    cartItems,
     drawerOpen,
-    totalPrice,
-    removeCartItem,
     isLoggedIn,
   } = useNavBarWE()
 
@@ -82,12 +76,8 @@ export function NavBarWE() {
             </IconButton>
 
             <DrawerWE
-              isLoggedIn={isLoggedIn}
               drawerOpen={drawerOpen}
               hideOrShowDrawer={hideOrShowDrawer}
-              cartItems={cartItems}
-              totalPrice={totalPrice}
-              removeCartItem={removeCartItem}
             />
           </Box>
         </Toolbar>

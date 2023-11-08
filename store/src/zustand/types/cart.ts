@@ -2,11 +2,8 @@ import { Product } from "./product";
 
 export interface Cart {
     id: string;
-    products: Product[];
-}
-
-export interface UpdateCartRequest {
-    products: Product[];
+    products: CartProduct[];
+    price: number;
 }
 
 export interface UpdateCartPayload {
@@ -14,9 +11,10 @@ export interface UpdateCartPayload {
     amount: number;
 }
 
-// app
-
-export type CartItem = {
-    product: Product;
+export interface CartProduct extends Product {
     amount: number;
+}
+
+export interface UpdateCartRequest {
+    products: Product[];
 }

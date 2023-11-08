@@ -1,13 +1,14 @@
 import { StateCreator } from "zustand"
 import { Slices } from "../store"
 import { httpClient } from "../api/httpClient"
-import { Cart, UpdateCartPayload } from "../types"
+import { Cart, CartProduct, UpdateCartPayload } from "../types"
 
 // Essa parte do storage é responsável por todas as chamadas http para a api
 export interface CartSlice {
+    cartState: Cart | null
     getCart: () => Promise<Cart>
-    updateCart: (payload: UpdateCartPayload) => Promise<void>
-    getCartPrice: () => Promise<number>
+    addProduct: (productId: string) => Promise<void>
+    removeProduct: (productId: string) => Promise<void>
 }
 
 const createCartSlice: StateCreator<
@@ -17,16 +18,24 @@ const createCartSlice: StateCreator<
     CartSlice
 > = (set, slices) => {
     return {
+        cartState: null,
         getCart: async (): Promise<Cart> => {
             const { data } = await httpClient.get<Cart>('/client/cart');
+            const { data: price } = await httpClient.get<number>('/client/cart/price');
+
+            slices().cartApi.cartState = {
+                ...data,
+                price: price,
+            }
             return data;
         },
-        updateCart: async (payload: UpdateCartPayload): Promise<void> => {
-            await httpClient.put('/client/cart', payload);
+        addProduct: async (productId: string): Promise<void> => {
+            await httpClient.put(`/client/cart/${productId}`);
+            slices().cartApi.getCart()
         },
-        getCartPrice: async (): Promise<number> => {
-            const { data } = await httpClient.get<number>('/client/cart/price');
-            return data
+        removeProduct: async (productId: string): Promise<void> => {
+            await httpClient.delete(`/client/cart/${productId}`);
+            slices().cartApi.getCart()
         },
     }
 }

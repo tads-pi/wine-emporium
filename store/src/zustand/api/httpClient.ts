@@ -18,12 +18,14 @@ httpClient.interceptors.request.use(config => {
 httpClient.interceptors.response.use(
     (fulfilled) => {
         console.log({
+            method: fulfilled.config.method,
             path: fulfilled.config.url,
             data: fulfilled.data,
         });
         return fulfilled
     }, rejected => {
         console.error({
+            method: rejected.config.method,
             path: rejected.config.url,
             data: rejected.data,
         });

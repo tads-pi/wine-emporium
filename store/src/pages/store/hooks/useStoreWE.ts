@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
-import useStore from "../../../zustand/store"
 import { Product } from "../../../zustand/types"
+import useStore from "../../../zustand/store"
 
 export default function useStoreWE() {
     const {
         productApi,
-        addCartItem,
+        cartApi,
     } = useStore()
 
     const [products, setProducts] = useState<Product[] | null>(null)
@@ -18,12 +18,12 @@ export default function useStoreWE() {
         fetchData()
     }, [productApi])
 
-    function addCartItemWE(product: Product) {
-        addCartItem(product, 1)
+    function addProductToCart(productId: string) {
+        cartApi.addProduct(productId)
     }
 
     return {
         products,
-        addCartItemWE,
+        addProductToCart,
     }
 };

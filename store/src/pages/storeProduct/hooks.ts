@@ -4,10 +4,9 @@ import { Product } from "../../zustand/types"
 
 export const useStoreProductWE = (productId: string) => {
     const {
-        addCartItem,
         productApi,
+        cartApi,
     } = useStore()
-    console.log({ productApi });
 
     const [currentProduct, setCurrentProduct] = useState<Product | null>(null)
     useEffect(() => {
@@ -18,8 +17,12 @@ export const useStoreProductWE = (productId: string) => {
         fetchData()
     }, [productApi])
 
+    function addCartProduct(productId: string) {
+        cartApi.addProduct(productId)
+    }
+
     return {
         currentProduct,
-        addCartItem,
+        addCartProduct,
     }
 }

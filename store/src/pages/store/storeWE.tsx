@@ -12,7 +12,7 @@ import { NavBarWE } from "../../components/NavBarWE";
 export default function StoreWE() {
     const {
         products,
-        addCartItemWE,
+        addProductToCart,
     } = useStoreWE()
 
     return (
@@ -42,7 +42,7 @@ export default function StoreWE() {
                                 products ?
                                     products?.map((product: Product) => (
                                         <SwiperSlide key={product.id}>
-                                            <CardWine data={product} addCart={() => addCartItemWE(product)} />
+                                            <CardWine data={product} addCart={() => addProductToCart(product.id)} />
                                         </SwiperSlide>
                                     ))
                                     : <Loading />
