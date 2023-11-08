@@ -2,7 +2,6 @@ import axios from 'axios'
 import { localStorageKeys } from '../config/localStorageKeys'
 
 export const httpClient = axios.create({
-    // baseURL: import.meta.env.VITE_API_URL,
     baseURL: 'https://api.wineemporium.shop',
 })
 
@@ -14,4 +13,20 @@ httpClient.interceptors.request.use(config => {
     }
 
     return config
-}) 
+})
+
+httpClient.interceptors.response.use(
+    (fulfilled) => {
+        console.log({
+            path: fulfilled.config.url,
+            data: fulfilled.data,
+        });
+        return fulfilled
+    }, rejected => {
+        console.error({
+            path: rejected.config.url,
+            data: rejected.data,
+        });
+        return rejected
+    }
+)

@@ -103,10 +103,7 @@ export function FormCreateUser() {
         principal: true
       }])
     }
-
   }, [])
-
-
 
   const onSubmit = (data: any) => {
     axios.post("https://api.wineemporium.shop/v1/store/register", data)
@@ -116,9 +113,7 @@ export function FormCreateUser() {
         alert(response.response.data.message)
 
       })
-
   }
-
 
   return (
     <div style={{ padding: "10px 30px" }}>
@@ -210,7 +205,7 @@ export function FormCreateUser() {
                   name={`address.0.complemento`}
                   render={({ field }) => (
                     <input  {...register(`address.0.complemento`)}
-                  placeholder="complemento"
+                      placeholder="complemento"
                       onChange={(e) => field.onChange(setComplemento(e.target.value))} />
                   )}
                 />
@@ -219,7 +214,7 @@ export function FormCreateUser() {
                   name={`address.0.numero`}
                   render={({ field }) => (
                     <input  {...register(`address.0.numero`)}
-                  placeholder="numero"
+                      placeholder="numero"
                       onChange={(e) => field.onChange(setNumero(e.target.value))} />
                   )}
                 />
