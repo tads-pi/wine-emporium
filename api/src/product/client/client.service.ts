@@ -36,6 +36,10 @@ export class ClientService {
                 // TODO opção de sorting de user
                 id: 'desc',
             },
+            where: {
+                active: true,
+                deleteAt: null,
+            }
         });
 
         const viewmodel: ProductClientViewmodel[] = []
@@ -69,6 +73,7 @@ export class ClientService {
             where: {
                 id: id,
                 active: true,
+                deleteAt: null,
             },
         });
         if (!product) {
