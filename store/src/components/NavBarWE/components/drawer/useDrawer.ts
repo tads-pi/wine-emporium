@@ -22,6 +22,7 @@ export default function useDrawer() {
             navigate(routes.LOGIN)
             return
         }
+        navigate(routes.CHECKOUT)
     }
 
 

@@ -159,7 +159,7 @@ function EmptyCart() {
                 alignItems: 'center',
             }}
         >
-            <img src={'../../../public/8504.jpg'} alt="Carrinho vazio" width={250} />
+            <img src={'/8504.jpg'} alt="Carrinho vazio" width={250} />
             <p>Carrinho vazio</p>
         </div>
     )
