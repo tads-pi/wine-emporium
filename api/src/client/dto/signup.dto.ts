@@ -36,19 +36,14 @@ export class ClientSignUpDTO {
 
 export class ClientUpdateDTO {
     @IsString()
-    @Length(5, 64)
-    name?: string
+    name: string
 
     @IsString()
-    @Length(1, 64)
-    @IsDateString()
-    @IsISO8601()
-    birth_date?: string
+    birthDate: string
 
     @IsString()
-    genderId?: string
+    genderId: string
 
     @IsString()
-    @Length(1, 64)
-    password?: string
+    password: string
 }
