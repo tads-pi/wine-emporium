@@ -1,7 +1,7 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ClientService } from './client.service';
-import { ClientSignInDTO, ClientSignUpDTO } from './dto';
+import { ClientSignInDTO, ClientSignUpDTO, ClientUpdateDTO } from './dto';
 import { JwtGuard } from '../auth/guard';
 import { GetClient } from './decorator/client.decorator';
 import { AuthDTO } from '../auth/dto';
@@ -30,6 +30,16 @@ export class ClientController {
         @Body() dto: ClientSignUpDTO,
     ): Promise<AuthDTO> {
         return await this.svc.signUp(dto);
+    }
+
+    @Put('update')
+    @UseGuards(JwtGuard)
+    @HttpCode(HttpStatus.OK)
+    async clientUpdate(
+        @GetClient('id') clientId: string,
+        @Body() dto: ClientUpdateDTO,
+    ): Promise<null> {
+        return await this.svc.update(clientId, dto);
     }
 
     @Get("me")

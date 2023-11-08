@@ -6,6 +6,7 @@ export class ClientViewmodel {
     email: string;
     document: string;
     birthDate: Date;
+    genderId: string;
 
     constructor(c: Client) {
         Object.assign(this, {
@@ -14,6 +15,7 @@ export class ClientViewmodel {
             email: c.email,
             document: c.document,
             birthDate: c.birthDate,
+            genderId: c.genderId,
         });
     }
 }

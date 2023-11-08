@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ClientViewmodel } from './viewmodels/client.viewmodel';
+import { ClientSignInDTO, ClientSignUpDTO, ClientUpdateDTO } from './dto';
+import { AuthService } from '../auth/auth.service';
+import { AuthDTO } from '../auth/dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import * as dayjs from 'dayjs';
-import { ClientSignInDTO, ClientSignUpDTO } from './dto';
-import { AuthDTO } from '../auth/dto/auth.dto';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ClientService {
@@ -63,6 +63,37 @@ export class ClientService {
         })
 
         return this.authSvc.getToken(c.id)
+    }
+
+    async update(clientId: string, dto: ClientUpdateDTO): Promise<null> {
+        const client = await this.db.client.findUnique({ where: { id: clientId } })
+        if (!client) {
+            throw new BadRequestException('Cliente não encontrado')
+        }
+
+        if (dto.name) {
+            client.name = dto.name
+        }
+        if (dto.password) {
+            client.password = bcrypt.hashSync(dto.password, 10)
+        }
+        if (dto.birth_date) {
+            client.birthDate = new Date(dayjs(dto.birth_date).format('YYYY-MM-DDTHH:mm:ssz'))
+        }
+        if (dto.genderId) {
+            const gender = await this.db.gender.findUnique({ where: { id: dto.genderId } })
+            if (!gender) {
+                throw new BadRequestException('Gênero inválido')
+            }
+            client.genderId = dto.genderId
+        }
+
+        await this.db.client.update({
+            where: { id: clientId },
+            data: client
+        })
+
+        return
     }
 
     async getMe(id: string): Promise<ClientViewmodel> {

@@ -33,3 +33,22 @@ export class ClientSignUpDTO {
     @Length(1, 64)
     password: string
 }
+
+export class ClientUpdateDTO {
+    @IsString()
+    @Length(5, 64)
+    name?: string
+
+    @IsString()
+    @Length(1, 64)
+    @IsDateString()
+    @IsISO8601()
+    birth_date?: string
+
+    @IsString()
+    genderId?: string
+
+    @IsString()
+    @Length(1, 64)
+    password?: string
+}
