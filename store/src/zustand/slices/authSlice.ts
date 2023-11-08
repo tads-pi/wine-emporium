@@ -41,9 +41,7 @@ const createAuthSlice: StateCreator<
         },
         update: async (payload: Update): Promise<Client> => {
             await httpClient.put('/client/update', payload)
-
-            const { data } = await httpClient.post<Client>('/client/me')
-            return data
+            return slices().authApi.getMe()
         }
     }
 }
