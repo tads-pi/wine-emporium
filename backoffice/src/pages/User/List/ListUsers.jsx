@@ -17,7 +17,13 @@ export default function ListUsers() {
         onChangePage,
     ] = useListUser()
 
-    const users = data
+    const users = data.map((u, index) => {
+        return {
+            ...u,
+            id: index,
+            group: u?.group?.name || "",
+        }
+    })
 
     const columns = [
         "id",

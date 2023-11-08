@@ -51,7 +51,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
             { name: "UPDATE_PRODUCT_PRICE" },
             { name: "UPDATE_PRODUCT_RATINGS" },
             { name: "UPDATE_PRODUCT_STOCK" },
-            { name: "UPDATE_PRODUCT_STOCK_UNIT" },
+            { name: "UPDATE_PRODUCT_STOCK_UNIDADEIT" },
             { name: "DELETE_PRODUCT" },
 
             { name: "CREATE_PRODUCT_IMAGE" },
@@ -79,7 +79,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
         UPDATE_PRODUCT_PRICE: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_PRICE" } }),
         UPDATE_PRODUCT_RATINGS: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_RATINGS" } }),
         UPDATE_PRODUCT_STOCK: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_STOCK" } }),
-        UPDATE_PRODUCT_STOCK_UNIT: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_STOCK_UNIT" } }),
+        UPDATE_PRODUCT_STOCK_UNIDADEIT: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_STOCK_UNIDADEIT" } }),
         DELETE_PRODUCT: await prisma.backofficePermission.findUnique({ where: { name: "DELETE_PRODUCT" } }),
 
         CREATE_PRODUCT_IMAGE: await prisma.backofficePermission.findUnique({ where: { name: "CREATE_PRODUCT_IMAGE" } }),
@@ -111,7 +111,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.CREATE_PRODUCT.id },
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.READ_PRODUCT.id },
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.UPDATE_PRODUCT_STOCK.id },
-            { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.UPDATE_PRODUCT_STOCK_UNIT.id },
+            { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.UPDATE_PRODUCT_STOCK_UNIDADEIT.id },
 
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.CREATE_PRODUCT_IMAGE.id },
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.DELETE_PRODUCT_IMAGE.id },
@@ -263,6 +263,41 @@ async function addInitialProducts() {
                 "ratings": 2.50,
                 "markedImageID": "2c113421-bf37-4099-8429-61a5a780c3c7.png",
                 "active": true
+            }
+        ]
+    })
+
+    await prisma.productStock.createMany({
+        data: [
+            {
+                "productId": "25816ca5-3cf5-4b79-8128-a8ca20bb6ee7",
+                "total": 55,
+                "unit": "UNIDADE",
+            },
+            {
+                "productId": "c9b02a48-e47d-465c-adfb-e707e5a6684a",
+                "total": 32,
+                "unit": "UNIDADE",
+            },
+            {
+                "productId": "e3fce052-220c-4140-a7ef-1a9669cef205",
+                "total": 12,
+                "unit": "UNIDADE",
+            },
+            {
+                "productId": "3de67daa-f331-4c90-8b08-4804d2a501d2",
+                "total": 22,
+                "unit": "UNIDADE",
+            },
+            {
+                "productId": "c8911ad0-114e-49ed-8959-5a6f8a39475f",
+                "total": 94,
+                "unit": "UNIDADE",
+            },
+            {
+                "productId": "1f9b9b41-b3bc-4184-96c1-e4cba9035958",
+                "total": 13,
+                "unit": "UNIDADE",
             }
         ]
     })

@@ -26,13 +26,24 @@ export class BackofficeService {
         return total;
     }
 
-    async getAllProducts(page: number, limit: number): Promise<ProductBackofficeViewmodel[]> {
+    async getAllProducts(page: number, limit: number, filters: string): Promise<ProductBackofficeViewmodel[]> {
         if (page == null) {
             page = 1;
         }
 
         if (limit == null) {
             limit = 10;
+        }
+
+        const whereClause = {}
+        if (filters !== '') {
+            const allFilters = filters.split(',')
+            for (const f of allFilters) {
+                const parsedFilter = f.split(':')
+                whereClause[parsedFilter[0]] = {
+                    contains: parsedFilter[1],
+                }
+            }
         }
 
         const products = await this.db.product.findMany({
@@ -42,6 +53,7 @@ export class BackofficeService {
                 // TODO opção de sorting de user
                 id: 'desc',
             },
+            where: whereClause
         });
 
         const viewmodel: ProductBackofficeViewmodel[] = []
@@ -94,6 +106,16 @@ export class BackofficeService {
             },
         })
 
+        const productImages = await this.s3.getImagesFromFolder(`products/${product.id}`)
+        const productImagesViewmodel: ProductImageViewmodel[] = []
+        for (const image of productImages) {
+            productImagesViewmodel.push({
+                id: image.key,
+                url: image.url,
+                marked: image.key === product.markedImageID,
+            })
+        }
+
         return {
             id: product.id,
             name: product.name,
@@ -102,7 +124,7 @@ export class BackofficeService {
             ratings: product.ratings,
             active: product.active,
             stock: stock,
-            images: [],
+            images: productImagesViewmodel,
         }
     }
 

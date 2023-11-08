@@ -3,6 +3,12 @@ import api from "..";
 export type IGetAllProductsFilters = {
     page?: number,
     limit?: number,
+    filters?: [
+        {
+            key: string,
+            value: string,
+        }
+    ]
 }
 
 export type IUpdateProduct = {
@@ -11,7 +17,10 @@ export type IUpdateProduct = {
     name: string,
     description: string,
     price: number,
-    stock: number,
+    stock: {
+        id: string,
+        total: number,
+    },
 }
 
 export type IUploadProductImage = {
@@ -24,7 +33,9 @@ export type ISaveNewProduct = {
     name: string,
     description: string,
     price: number,
-    stock: number,
+    stock: {
+        total: number,
+    },
 }
 
 export type IToggleProductActive = {
@@ -68,6 +79,7 @@ export async function getAllProducts(filters: IGetAllProductsFilters) {
             params: {
                 page: filters?.page || 1,
                 limit: filters?.limit || 10,
+                filters: filters?.filters?.join(',') || '',
             }
         })
         return response
@@ -90,13 +102,18 @@ export async function getProductById(productID: string | number) {
 export async function updateProduct(payload: IUpdateProduct) {
     try {
         const newProduct = {
-            ratings: payload.ratings,
             name: payload.name,
             description: payload.description,
+            ratings: payload.ratings,
             price: payload.price,
-            stock: payload.stock
         }
         const response = await api.put(`/product/backoffice/${payload.id}`, { ...newProduct })
+
+        await api.put(`/product/backoffice/${payload.id}/stock`, {
+            stock_id: payload.stock.id,
+            total: payload.stock.total,
+        })
+
         return response
     } catch (error: any) {
         console.log("error at updateProduct: ", error);

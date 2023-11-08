@@ -22,8 +22,9 @@ export class BackofficeController {
     async getAllProducts(
         @Query('page') page: number | null,
         @Query('limit') limit: number | null,
+        @Query('filters') filters: string | null,
     ): Promise<ProductBackofficeViewmodel[]> {
-        return this.svc.getAllProducts(page, limit);
+        return this.svc.getAllProducts(page, limit, filters);
     }
 
     @Get(':id')
@@ -40,7 +41,7 @@ export class BackofficeController {
         return this.svc.saveProduct(dto);
     }
 
-    @Post(':id')
+    @Put(':id')
     async updateProduct(
         @Param('id') id: string,
         @Body() dto: SaveProductDTO,
@@ -48,7 +49,7 @@ export class BackofficeController {
         return this.svc.updateProduct(id, dto);
     }
 
-    @Put('stock/:id')
+    @Put(':id/stock')
     async updateProductStock(
         @Param('id') id: string,
         @Body() dto: UpdateProductStockDTO,

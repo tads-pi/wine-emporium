@@ -17,10 +17,17 @@ export default function ListProducts() {
         onChangePage,
     ] = useListProduct()
 
-    const { products } = data
+    const products = data.map((p, index) => {
+        return {
+            ...p,
+            ID: index,
+            stock: p?.stock[0]?.total || 0,
+        }
+    })
+    console.log({ data });
 
     const columns = [
-        "id",
+        "ID",
         "name",
         "price",
         "stock",
@@ -66,12 +73,12 @@ export default function ListProducts() {
                 }}
                 columns={columns}
                 columnsTitle={columnsTitle}
-                onDoubleClick={onDoubleClick}
+                onDoubleClick={() => { }}
                 loadingData={loading}
                 onSearch={onChangeSearchText}
                 searchTextField={searchTextField}
                 onSearchFieldSelected={onChangeSearchTextField}
-                searchChoices={columns}
+                searchChoices={['name']}
 
                 totalItems={totalItems}
                 currentPage={currentPage}

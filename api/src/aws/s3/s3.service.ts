@@ -55,13 +55,16 @@ export class S3Service {
         };
 
         const data = await this.client.listObjectsV2(listObjectsParams).promise();
-        return data.Contents.map((item) => {
+        const images = data.Contents.map((item) => {
             const fileNameWithExtension = item.Key.split("/").pop() // apaga nome da pasta
             return {
                 key: fileNameWithExtension,
                 url: `https://${this.bucket}.s3.amazonaws.com/${item.Key}`
             }
         });
+
+        // Por algum motivo, o S3 retorna um objeto vazio no primeiro item
+        return images.filter((img) => img.key);
     }
 
     async removeImageFromFolder(folder: string, imageUUIDWithExtension: string) {

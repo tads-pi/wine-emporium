@@ -13,7 +13,7 @@ export default function useListProduct() {
     const [loading, setLoading] = useState(false)
 
     const [searchText, setSearchText] = useState("")
-    const [searchTextField, setSearchTextField] = useState("")
+    const [searchTextField, setSearchTextField] = useState("name")
 
     // pagination feature
     const [totalItems, setTotalItems] = useState(0)
@@ -39,28 +39,14 @@ export default function useListProduct() {
         }
 
         dispatch(api.getAllProducts({
-            // todo
-            // filters: [
-            //     `name:${searchText}`,
-            // ].join(","),
+            filters: [
+                `name:${searchText}`,
+            ],
         }))
     }
 
     function onChangeSearchTextField(field) {
         setSearchTextField(field)
-    }
-
-    function onDoubleClick(product) {
-        if (!product) {
-            navigate("/products")
-            return
-        }
-
-        navigate(`/products/update/${product.id}`, {
-            state: {
-                product: product
-            }
-        })
     }
 
     function onToggleActive(productId, value) {
@@ -77,7 +63,7 @@ export default function useListProduct() {
                 setData(selector.response.data)
             }
             if (selector?.fn?.includes("getTotalProducts") || false) {
-                setTotalItems(Math.ceil(selector?.response?.data?.total || 0))
+                setTotalItems(Math.ceil(selector?.response?.data || 0))
             }
             if (selector?.fn?.includes("toggleProductActive") || false) {
                 // todo fix: snack always not always open due to same message body
@@ -103,7 +89,6 @@ export default function useListProduct() {
         onChangeSearchText,
         searchTextField,
         onChangeSearchTextField,
-        onDoubleClick,
         onToggleActive,
         totalItems,
         currentPage,

@@ -13,17 +13,21 @@ export default function useSaveProduct(props) {
     const [formData, setForm] = useState()
     const [imageData, setImage] = useState([])
 
+    console.log({ formData });
     function onSubmit(action) {
         if (action.preventDefault) action.preventDefault()
 
         if (action === "update") {
             dispatch(api.updateProduct({
                 id: formData?.id || 0,
-                ratings: formData?.ratings || 0,
                 name: formData?.name || "",
+                ratings: formData?.ratings || 0,
                 description: formData?.description || "",
-                price: formData?.price || 0,
-                stock: Number(formData?.stock) || 0,
+                price: Number(formData?.price) || 0,
+                stock: {
+                    id: formData?.stock[0].id || '',
+                    total: Number(formData?.new_stock) || 0,
+                }
             }))
 
             imageData &&
@@ -123,7 +127,10 @@ export default function useSaveProduct(props) {
             }
 
             if (selector.fn.includes("getProductById")) {
-                setForm(selector.response.data.product)
+                setForm({
+                    ...selector.response.data,
+                    new_stock: selector.response.data?.stock[0]?.total || 0,
+                })
                 setLoading(false)
             }
 

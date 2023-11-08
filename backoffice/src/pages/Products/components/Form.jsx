@@ -30,7 +30,7 @@ export default function Form(props) {
         name: "",
         description: "",
         price: "",
-        stock: "",
+        new_stock: "",
     })
     const [imageData, setImageData] = useState()
     const [loading, setLoading] = useState(false)
@@ -60,23 +60,24 @@ export default function Form(props) {
                     }}
                 >
                     {
-                        // TODO getimage base64 and send back to api using the component
                         formData?.images &&
-                        formData?.images.map(({ key, url, marked }, index) => {
+                        formData?.images.map(({ id, url, marked }, index) => {
                             return (
                                 <div
                                     key={index}
                                 >
                                     <ImageHandlerWE
                                         src={url}
-                                        identifier={key}
+                                        identifier={id}
                                         alt="product"
 
                                         marked={marked}
                                         deleteImageHook={(imageID) => {
                                             const confirmation = window.confirm("Deseja mesmo deletar essa imagem?")
                                             if (confirmation) {
+                                                // delete current image from formData
                                                 deleteImage(imageID)
+                                                onFormUpdate("images", formData.images.filter((image) => image?.id !== imageID))
                                             }
                                         }}
                                         markImageHook={(imageID) => {
@@ -86,7 +87,7 @@ export default function Form(props) {
                                                 onFormUpdate("images", formData.images.map((image) => {
                                                     return {
                                                         ...image,
-                                                        marked: image?.key === imageID,
+                                                        marked: image?.id === imageID,
                                                     }
                                                 }))
                                             }
@@ -212,27 +213,27 @@ export default function Form(props) {
                 />
 
                 <TextField
-                    id={"product-name-stock"}
+                    id={"product-name-new_stock"}
                     label="Estoque"
                     type={"number"}
-                    value={formData?.stock || ""}
+                    value={formData?.new_stock || ""}
                     onChange={(e) => {
-                        onFormUpdate("stock", e.target.value)
+                        onFormUpdate("new_stock", e.target.value)
                     }}
                     required
 
-                    error={!!validation.stock}
-                    helperText={validation.stock}
+                    error={!!validation.new_stock}
+                    helperText={validation.new_stock}
                     onBlur={(e) => {
                         if (!e.target.value) {
                             setValidation({
                                 ...validation,
-                                stock: "Campo obrigatório"
+                                new_stock: "Campo obrigatório"
                             })
                         } else {
                             setValidation({
                                 ...validation,
-                                stock: ""
+                                new_stock: ""
                             })
                         }
                     }}

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom"
 import { Provider } from "react-redux"
 import { store } from "./store"
@@ -36,6 +36,10 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="*" element={<PageNotFound />} />
+                    <Route
+                        path="/login"
+                        element={<Navigate to='/' />}
+                    />
                     <Route
                         path="/"
                         element={<Login />}

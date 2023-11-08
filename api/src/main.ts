@@ -13,6 +13,9 @@ async function bootstrap() {
     whitelist: true,
   }));
 
+  // solve cors
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle('Wine Emporium')
     .setDescription('Wine Emporium API')
