@@ -9,6 +9,7 @@ import createPaymentSlice, { PaymentSlice } from './slices/paymentSlice';
 import createProductSlice, { ProductSlice } from './slices/productSlice';
 import { CartItem, Product } from './types';
 import { localStorageKeys } from '../config/localStorageKeys';
+import { persist } from 'zustand/middleware'
 
 export interface AppSlice {
     isLoggedIn: boolean
@@ -70,32 +71,36 @@ export type Slices = {
 } & AppSlice
 
 // Une todos os slices em um único store
-const useStore = create<Slices>()((...a) => ({
-    ...createAppSlice(...a),
-    authApi: {
-        ...createAuthSlice(...a)
-    },
-    addressApi: {
-        ...createAddressSlice(...a),
-    },
-    cartApi: {
-        ...createCartSlice(...a),
-    },
-    checkoutApi: {
-        ...createCheckoutSlice(...a),
-    },
-    delivererApi: {
-        ...createDelivererSlice(...a),
-    },
-    genderApi: {
-        ...createGenderSlice(...a),
-    },
-    paymentApi: {
-        ...createPaymentSlice(...a),
-    },
-    productApi: {
-        ...createProductSlice(...a),
-    },
-}))
+// TODO descobrir como usar persist aqui pra salvar tudo no local storage
+// doc: https://docs.pmnd.rs/zustand/integrations/persisting-store-data
+const useStore = create<Slices>()(
+    (...a) => ({
+        ...createAppSlice(...a),
+        authApi: {
+            ...createAuthSlice(...a)
+        },
+        addressApi: {
+            ...createAddressSlice(...a),
+        },
+        cartApi: {
+            ...createCartSlice(...a),
+        },
+        checkoutApi: {
+            ...createCheckoutSlice(...a),
+        },
+        delivererApi: {
+            ...createDelivererSlice(...a),
+        },
+        genderApi: {
+            ...createGenderSlice(...a),
+        },
+        paymentApi: {
+            ...createPaymentSlice(...a),
+        },
+        productApi: {
+            ...createProductSlice(...a),
+        },
+    }
+    ))
 
 export default useStore

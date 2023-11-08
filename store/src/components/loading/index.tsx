@@ -1,3 +1,4 @@
+import React from "react"
 import loading from "../../assets/oval.svg"
 import "./style.css"
 

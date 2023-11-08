@@ -1,22 +1,24 @@
+import React from 'react'
+
 import { CardMedia, IconButton, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { VariantType, enqueueSnackbar } from 'notistack'
+import { CartItem } from '../../zustand/types';
+import { FALLBACK_IMAGE_URL } from '../../config/images';
 
-import React from 'react'
-import { enqueueSnackbar } from 'notistack'
-import { formatCurrency } from '../../utils/formatCurrency';
+type CartItemCardProps = {
+    data: CartItem,
+    removeFromCart: () => void
+}
 
-export function CartItemCard({ data, removeCart }) {
-
-    const handleClickVariant = (variant) => () => {
-        // variant could be success, error, warning, info, or default
-        removeCart()
+export function CartItemCard({ data, removeFromCart }: CartItemCardProps) {
+    const handleClickVariant = (variant: VariantType) => () => {
+        removeFromCart()
         enqueueSnackbar(<Typography>Vinho removido do carrinho.</Typography>, { variant })
     };
 
-    console.log('rapaize', data)
-
     return (
-        <div style={{ 
+        <div style={{
             width: '100%',
             maxWidth: '400px',
             backgroundColor: '#fff',
@@ -24,9 +26,9 @@ export function CartItemCard({ data, removeCart }) {
             borderRadius: '8px',
             marginBottom: '20px'
         }}>
-            <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '10px 15px',
                 borderBottom: '1px solid #eee'
@@ -40,10 +42,14 @@ export function CartItemCard({ data, removeCart }) {
                         component="img"
                         height="50"
                         width="50"
-                        image={data?.images[0].url}
+                        image={
+                            data.product.images.length > 0
+                                ? data.product.images[0].url
+                                : FALLBACK_IMAGE_URL
+                        }
                         alt="Vinho Wine Emporium"
-                        style={{ 
-                            objectFit: 'contain', 
+                        style={{
+                            objectFit: 'contain',
                             borderRadius: "8px",
                             marginRight: '10px'
                         }}
@@ -53,23 +59,28 @@ export function CartItemCard({ data, removeCart }) {
                         flexDirection: "column",
                         justifyContent: "center",
                     }} >
-                        <Typography style={{ 
+                        <Typography style={{
                             whiteSpace: 'nowrap',
                             fontSize: '16px',
                             fontWeight: 'bold',
                             marginBottom: '5px'
-                        }}>Vinho: {data?.name}</Typography>
-                        <Typography style={{ 
+                        }}>Vinho: {data.product.name}</Typography>
+                        <Typography style={{
                             whiteSpace: 'nowrap',
                             fontSize: '14px',
                             color: '#666'
-                        // }}>Valor: {formatCurrency(data?.price)}</Typography>
-                        }}>Valor: {Number(data?.price)}</Typography>
+                            // }}>Valor: {formatCurrency(data?.price)}</Typography>
+                        }}>Valor: {Number(data.product.price)}</Typography>
                     </div>
                 </div>
                 <div>
-                    <IconButton aria-label="delete" size="small" color='error'>
-                        <DeleteIcon fontSize="small" onClick={handleClickVariant('info')} />
+                    <IconButton
+                        aria-label="deleta item do carrinho"
+                        size="small"
+                        color='error'
+                        onClick={handleClickVariant('info')}
+                    >
+                        <DeleteIcon fontSize="small" />
                     </IconButton>
                 </div>
             </div>

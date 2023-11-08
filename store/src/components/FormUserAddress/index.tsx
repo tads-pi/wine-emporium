@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
-import { Paper, TextField, Button, Typography, IconButton, InputAdornment, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, FormHelperText, SelectChangeEvent, InputLabel, Select, MenuItem } from '@mui/material';
+import { Paper, Button, Typography, FormControl, SelectChangeEvent, InputLabel, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputMask from 'react-input-mask';
 import { useLoggedAddressController } from './useLoggedAddressController';
-import { Controller, useForm } from 'react-hook-form';
-import { authService } from '../../services/authService';
+import { useForm } from 'react-hook-form';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,7 +22,8 @@ export function FormUserAddress() {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
+    // todo evitar any
+    const handleMouseDownPassword = (event: any) => {
         event.preventDefault();
     };
 
@@ -46,9 +43,10 @@ export function FormUserAddress() {
         birthDate: '',
         address: [] as any
     })
-    useEffect(() => {
-        authService.getuserdata().then(setGambiarra)
-    }, [])
+    // useEffect(() => {
+    // TODO arrumar essa rota aqui
+    //     authService.getuserdata().then(setGambiarra)
+    // }, [])
 
     // crazy gambiarra
     if (!gambiarra.name) {
@@ -57,7 +55,7 @@ export function FormUserAddress() {
 
     const handleChangeSelect = (event: SelectChangeEvent) => {
         setAge(event.target.value as string);
-      };
+    };
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '40px', width: '50%' }}>
@@ -71,22 +69,22 @@ export function FormUserAddress() {
                         <form >
 
                             <div style={{ display: 'flex', gap: 15 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Endereço</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    defaultValue={gambiarra.address[0].id}
-                                    label="Endereço"
-                                    onChange={handleChangeSelect}
-                                >
-                                 {gambiarra.address.map((address: any) => 
-                                 (<MenuItem value={address.id}>
-                                    {address.logradouro}, {address.cidade} - {address.cep}
-                                    {/* {address.logradouro, address.cidade} */}
-                                    </MenuItem>))}
-                                </Select>
-                            </FormControl>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Endereço</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        defaultValue={gambiarra.address[0].id}
+                                        label="Endereço"
+                                        onChange={handleChangeSelect}
+                                    >
+                                        {gambiarra.address.map((address: any) =>
+                                        (<MenuItem value={address.id}>
+                                            {address.logradouro}, {address.cidade} - {address.cep}
+                                            {/* {address.logradouro, address.cidade} */}
+                                        </MenuItem>))}
+                                    </Select>
+                                </FormControl>
                             </div>
 
                             <Button

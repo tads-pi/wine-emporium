@@ -1,0 +1,1 @@
+export const FALLBACK_IMAGE_URL = "https://wineemporium-uploads.s3.sa-east-1.amazonaws.com/products/fallback.png"

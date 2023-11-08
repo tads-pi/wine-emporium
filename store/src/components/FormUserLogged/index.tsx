@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
-import { Paper, TextField, Button, Typography, IconButton, InputAdornment, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, FormHelperText } from '@mui/material';
+import { Paper, TextField, Button, Typography, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputMask from 'react-input-mask';
 import { useLoggedUserController } from './useLoggedUserController';
 import { Controller, useForm } from 'react-hook-form';
-import { authService } from '../../services/authService';
+import InputMask from 'react-input-mask';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -26,7 +23,7 @@ export function FormUserLogged() {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownPassword = (event: any) => {
         event.preventDefault();
     };
 
@@ -46,7 +43,8 @@ export function FormUserLogged() {
         gender: ''
     })
     useEffect(() => {
-        authService.getuserdata().then(setGambiarra)
+        // TODO fix here
+        // authService.getuserdata().then(setGambiarra)
     }, [])
 
     // crazy gambiarra

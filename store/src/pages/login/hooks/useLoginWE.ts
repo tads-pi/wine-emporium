@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from "@tanstack/react-query";
-import { mutateKeys } from "../../config/mutationKeys";
+import { mutateKeys } from "../../../config/mutationKeys";
 import { z } from "zod";
-import useStore from "../../zustand/store";
-import { Login } from "../../zustand/types";
+import useStore from "../../../zustand/store";
+import { Login } from "../../../zustand/types";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../../config/routes";
 
 const schema = z.object({
     email: z.string().nonempty('E-mail é obrigatório').email('Informe um e-mail válido'),
@@ -15,6 +17,7 @@ type FormData = z.infer<typeof schema>
 
 export function useLoginController() {
     const { authApi } = useStore()
+    const navigate = useNavigate()
 
     const {
         register,
@@ -35,6 +38,11 @@ export function useLoginController() {
     const handleSubmit = hookFormSubmit(async (data) => {
         try {
             await mutateAsync(data)
+                .then(({ access_token }) => {
+                    if (access_token) {
+                        navigate(`${routes.STORE}`)
+                    }
+                })
         } catch (error) {
             alert('Credenciais inválidas!')
         }

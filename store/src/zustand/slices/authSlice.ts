@@ -6,8 +6,8 @@ import { httpClient } from "../api/httpClient"
 
 // Essa parte do storage é responsável por todas as chamadas http para a api
 export interface AuthSlice {
-    register: (payload: Register) => Promise<void>
-    login: (payload: Login) => Promise<void>
+    register: (payload: Register) => Promise<LoginResponse>
+    login: (payload: Login) => Promise<LoginResponse>
     getMe: () => Promise<Client>
 }
 
@@ -18,10 +18,11 @@ const createAuthSlice: StateCreator<
     AuthSlice
 > = (set, slices) => {
     return {
-        register: async (payload: Register): Promise<void> => {
-            await httpClient.post('/client/register', payload)
+        register: async (payload: Register): Promise<LoginResponse> => {
+            const { data } = await httpClient.post<LoginResponse>('/client/register', payload)
+            return data
         },
-        login: async (payload: Login): Promise<void> => {
+        login: async (payload: Login): Promise<LoginResponse> => {
             const { data } = await httpClient.post<LoginResponse>('/client/auth', payload)
             if (data?.access_token) {
                 localStorage.setItem(
@@ -30,6 +31,8 @@ const createAuthSlice: StateCreator<
                 )
                 slices().setIsLoggedIn(true)
             }
+
+            return data
         },
         getMe: async (): Promise<Client> => {
             const { data } = await httpClient.post<Client>('/client/me')
