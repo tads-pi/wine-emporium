@@ -1,4 +1,4 @@
-import { Body, Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { DelivererService } from './deliverer.service';
 import { DelivererViewmodel } from './viewmodel';
 import { ProductDelivererDTO } from './dto/product-deliverer.dto';
@@ -11,7 +11,7 @@ export class DelivererController {
         private svc: DelivererService
     ) { }
 
-    @Get('')
+    @Post('')
     async listDeliverers(
         @Body() dto: ProductDelivererDTO,
     ): Promise<DelivererViewmodel[]> {
