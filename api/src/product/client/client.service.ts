@@ -38,7 +38,6 @@ export class ClientService {
             },
             where: {
                 active: true,
-                deleteAt: null,
             }
         });
 
@@ -73,7 +72,6 @@ export class ClientService {
             where: {
                 id: id,
                 active: true,
-                deleteAt: null,
             },
         });
         if (!product) {
