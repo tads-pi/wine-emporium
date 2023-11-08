@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { StateCreator, create } from 'zustand';
 import createAuthSlice, { AuthSlice } from './slices/authSlice';
 import createAddressSlice, { AddressSlice } from './slices/addressSlice';
 import createCartSlice, { CartSlice } from './slices/cartSlice';
@@ -8,7 +8,29 @@ import createGenderSlice, { GenderSlice } from './slices/genderSlice';
 import createPaymentSlice, { PaymentSlice } from './slices/paymentSlice';
 import createProductSlice, { ProductSlice } from './slices/productSlice';
 
-export interface Slices {
+export interface AppSlice {
+    isLoggedIn: boolean
+    setIsLoggedIn: (isLoggedIn: boolean) => void
+
+}
+
+const createAppSlice: StateCreator<
+    Slices,
+    [],
+    [],
+    AppSlice
+> = (set, slices) => {
+    // initial slice state
+    return {
+        isLoggedIn: false,
+        setIsLoggedIn: (isLoggedIn: boolean) => {
+            set({ isLoggedIn })
+        },
+
+    }
+}
+
+export type Slices = {
     authApi: AuthSlice
     addressApi: AddressSlice
     cartApi: CartSlice
@@ -17,10 +39,11 @@ export interface Slices {
     genderApi: GenderSlice
     paymentApi: PaymentSlice
     productApi: ProductSlice
-}
+} & AppSlice
 
 // Une todos os slices em um único store
 const useStore = create<Slices>()((...a) => ({
+    ...createAppSlice(...a),
     authApi: {
         ...createAuthSlice(...a)
     },

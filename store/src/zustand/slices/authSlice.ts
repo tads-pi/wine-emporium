@@ -23,9 +23,13 @@ const createAuthSlice: StateCreator<
         },
         login: async (payload: Login): Promise<void> => {
             const { data } = await httpClient.post<LoginResponse>('/client/auth', payload)
-
-            localStorage.setItem(localStorageKeys.ACCESS_TOKEN, data?.access_token || '')
-            // TODO add in storage props for authentication
+            if (data?.access_token) {
+                localStorage.setItem(
+                    localStorageKeys.ACCESS_TOKEN,
+                    data?.access_token,
+                )
+                slices().setIsLoggedIn(true)
+            }
         },
         getMe: async (): Promise<Client> => {
             const { data } = await httpClient.post<Client>('/client/me')
