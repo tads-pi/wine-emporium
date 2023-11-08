@@ -153,13 +153,22 @@ export function Nav() {
                 {[...new Set(items)].map((wine, index) => (
                   <CartItemCard key={index} data={wine} removeCart={() => removeItem(index)} />
                 ))}
-                <div style={{ display: 'flex', justifyContent: 'end', marginRight: '20px', width: '400px' }}>
-                  <Typography style={{ placeSelf: 'self-end' }} variant="h6" component="h6" gutterBottom>
-                    {items.length > 0 && `Total: ${formatCurrency(totalPrice)}`}
-                    {items.length == 0 && <img src={cartEmpty} alt="Carrinho vazio" />}
-                    {/* {items.length == 0 && <p>Meu pau</p>} */}
+                <div 
+                  style={{ 
+                    display: 'flex', 
+                    justifyContent: 'end', 
+                    marginRight: '20px',
+                    width: '400px', 
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                  }}
+                  >
+                  <Typography  variant="h6" component="h6" gutterBottom>
+                    {items.length > 0 && <p style={{ textAlign: 'end' }}>Total: {formatCurrency(totalPrice)}</p>}
+                    {items.length == 0 && <p style={{ textAlign: 'center', marginBottom: '350px' }}>Carrinho vazio</p>}
                   </Typography>
                 </div>
+                  <Button size="large">Finalizar pedido</Button>
               </Drawer>
             </Box>
           </Toolbar>
