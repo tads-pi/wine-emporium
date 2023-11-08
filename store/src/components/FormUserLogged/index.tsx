@@ -85,11 +85,17 @@ export function FormUserLogged() {
                                             {...register('name')}
                                             helperText={errors?.name?.message}
                                             error={!!errors.document}
+                                            onChange={(e) => {
+                                                setClientData({
+                                                    ...clientData,
+                                                    name: e.target.value
+                                                })
+                                            }}
                                         />
 
 
                                     </div>
-                                    <div style={{ display: 'flex', gap: 15 }}>
+                                    {/* <div style={{ display: 'flex', gap: 15 }}>
                                         <TextField
                                             label="CPF"
                                             defaultValue={clientData.document}
@@ -109,7 +115,7 @@ export function FormUserLogged() {
                                         />
 
 
-                                    </div>
+                                    </div> */}
                                     <div style={{ display: 'flex', gap: 15 }}>
                                         <TextField
                                             label="E-mail"
@@ -121,6 +127,13 @@ export function FormUserLogged() {
                                             {...register('email')}
                                             helperText={errors?.email?.message}
                                             error={!!errors.email}
+
+                                            onChange={(e) => {
+                                                setClientData({
+                                                    ...clientData,
+                                                    email: e.target.value
+                                                })
+                                            }}
                                         />
                                         {/* <TextField
                                     label="Senha"
@@ -176,6 +189,13 @@ export function FormUserLogged() {
                                                 inputProps: {
                                                     mask: '9999/99/99',
                                                 },
+                                            }}
+
+                                            onChange={(e) => {
+                                                setClientData({
+                                                    ...clientData,
+                                                    birthDate: e.target.value
+                                                })
                                             }}
                                         />
                                     </div>
