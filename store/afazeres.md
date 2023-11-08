@@ -45,3 +45,6 @@
 	
 - Alertar que está da sainda da sessão 
 - Limpar a sessão do login do cliente   
+
+
+- refatorar textos com "vinho" para "item"

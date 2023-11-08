@@ -2,12 +2,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "../../services/authService";
-import { differenceInYears, format } from 'date-fns';
-
-
-import { UpdateUserParams } from "../../services/authService/updateuserdata";
-import { useEffect } from "react";
 
 const schema = z.object({
     name: z.string().nonempty('Nome é obrigatório'),
@@ -38,15 +32,15 @@ export function useLoggedUserController() {
 
     const { mutateAsync, isLoading } = useMutation({
         mutationKey: ['updateuserdata'],
-        mutationFn: async (data: UpdateUserParams) => {
-            return authService.updateuserdata(data)
-        },
+        // mutationFn: async (data: UpdateUserParams) => {
+        //     return authService.updateuserdata(data)
+        // },
     })
 
     const handleSubmit = hookFormSubmit(async (data) => {
         console.log('nosssaaaaaaa', data)
         try {
-            const { message } = await mutateAsync(data)
+            // const { message } = await mutateAsync(data)
             alert('Usuário atualizado com sucesso!')
         } catch (error) {
             alert('Erro ao atualizar usuário!')

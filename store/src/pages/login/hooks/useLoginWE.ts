@@ -1,11 +1,12 @@
-import useAuthStore from "../../zustand-store/authState";
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from "@tanstack/react-query";
-import { localStorageKeys } from "../../config/localStorageKeys";
+import { mutateKeys } from "../../../config/mutationKeys";
 import { z } from "zod";
-import { authService } from "../../services";
-import { mutateKeys } from "../../config/mutationKeys";
+import useStore from "../../../zustand/store";
+import { Login } from "../../../zustand/types";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../../config/routes";
 
 const schema = z.object({
     email: z.string().nonempty('E-mail é obrigatório').email('Informe um e-mail válido'),
@@ -15,6 +16,9 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export function useLoginController() {
+    const { authApi } = useStore()
+    const navigate = useNavigate()
+
     const {
         register,
         handleSubmit: hookFormSubmit,
@@ -26,22 +30,19 @@ export function useLoginController() {
 
     const { mutateAsync, isLoading, isError, isSuccess } = useMutation({
         mutationKey: [mutateKeys.CLIENT_AUTH],
-        mutationFn: async (data: authService.AuthParams) => {
-            return await authService.auth(data)
+        mutationFn: async (data: Login) => {
+            return await authApi.login(data)
         },
-    })
-
-    const { signedIn, signin } = useAuthStore((store) => {
-        return {
-            signedIn: store.signedIn,
-            signin: store.signin,
-        };
     })
 
     const handleSubmit = hookFormSubmit(async (data) => {
         try {
-            const { access_token } = await mutateAsync(data)
-            signin(access_token)
+            await mutateAsync(data)
+                .then(({ access_token }) => {
+                    if (access_token) {
+                        navigate(`${routes.STORE}`)
+                    }
+                })
         } catch (error) {
             alert('Credenciais inválidas!')
         }

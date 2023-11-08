@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import Grid from '@mui/material/Grid';
-import { Paper, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import React from "react"
+import { Link } from "react-router-dom";
+import { styled } from "@mui/material";
+import { useLoginController } from "./hooks/useLoginWE";
+import { Grid, Paper, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Link, useNavigate } from 'react-router-dom';
-import { useLoginController } from './useLoginController';
-import { localStorageKeys } from '../../config/localStorageKeys';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,20 +14,15 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-export const FormLogin = () => {
-
-    const navigate = useNavigate()
-
+export default function LoginWE() {
     const { handleSubmit, register, errors, isLoading } = useLoginController()
 
     const [showPassword, setShowPassword] = React.useState(false);
-
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event) => {
+    const handleMouseDownPassword = (event: any) => {
         event.preventDefault();
     };
-
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '90vh' }}>
@@ -92,5 +85,5 @@ export const FormLogin = () => {
                 </Grid>
             </Grid>
         </div>
-    );
+    )
 };

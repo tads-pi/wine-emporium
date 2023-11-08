@@ -2,18 +2,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "../../services/authService";
-import { differenceInYears, format } from 'date-fns';
-
-
-import { UpdateUserParams } from "../../services/authService/updateuserdata";
-import { useEffect } from "react";
 
 const schema = z.object({
     address: z.string().nonempty('Nome é obrigatório'),
 })
 
 type FormData = z.infer<typeof schema>
+
+// TODO fix this hook
 
 export function useLoggedAddressController() {
 
@@ -30,14 +26,14 @@ export function useLoggedAddressController() {
     const { mutateAsync, isLoading } = useMutation({
         mutationKey: ['updateuseraddressdata'],
         mutationFn: async (data: { address: string }) => {
-            return authService.updateaddress(data)
+            // return authService.updateaddress(data)
         },
     })
 
     const handleSubmit = hookFormSubmit(async (data) => {
         console.log('nosssaaaaaaa', data)
         try {
-            const { message } = await mutateAsync(data)
+            // const { message } = await mutateAsync(data)
         } catch (error) {
             alert('Erro ao atualizar usuário!')
         }
@@ -45,10 +41,10 @@ export function useLoggedAddressController() {
 
     const handleSubmitMeiosDuvidosos = (async (address: string) => {
         try {
-            const { message } = await mutateAsync({address})
-            if(message) {
-                alert('Endereço padrão definido com sucesso!')
-            }
+            // const { message } = await mutateAsync({ address })
+            // if (message) {
+            // alert('Endereço padrão definido com sucesso!')
+            // }
         } catch (error) {
             alert('Erro ao definir endereço padrão!')
         }

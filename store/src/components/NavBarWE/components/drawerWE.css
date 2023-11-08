@@ -1,0 +1,20 @@
+.checkout-button {
+    color: #fff;
+    font-family: "Lexend";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    width: 100%;
+    /* height: 51px; */
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    background: #d29947;
+    padding: 0.75rem;
+    border: none;
+}
+
+.checkout-button:hover{
+    background: #cb964c;
+    border: none;
+}
