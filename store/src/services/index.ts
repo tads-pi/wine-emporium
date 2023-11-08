@@ -1,6 +1,0 @@
-export * from './httpClient'
-export * as authService from './auth/index'
-export * as addressService from './address/index'
-export * as cartService from './cart/index'
-export * as checkoutService from './checkout/index'
-export * as genderService from './gender/index'

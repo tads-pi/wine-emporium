@@ -1,11 +1,11 @@
+import useAuthStore from "../../zustand-store/authState";
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "../../services/authService";
-import { SigninParams } from "../../services/authService/signin";
-import useAuthStore from "../../zustand-store/authState";
 import { localStorageKeys } from "../../config/localStorageKeys";
+import { z } from "zod";
+import { authService } from "../../services";
+import { mutateKeys } from "../../config/mutationKeys";
 
 const schema = z.object({
     email: z.string().nonempty('E-mail é obrigatório').email('Informe um e-mail válido'),
@@ -25,12 +25,9 @@ export function useLoginController() {
     })
 
     const { mutateAsync, isLoading, isError, isSuccess } = useMutation({
-        mutationKey: ['signin'],
-        mutationFn: async (data: SigninParams) => {
-            const res = await authService.signin(data)
-            // gambiarra
-            localStorage.setItem(localStorageKeys.ACCESS_TOKEN, res?.access_token || '')
-            return res
+        mutationKey: [mutateKeys.CLIENT_AUTH],
+        mutationFn: async (data: authService.AuthParams) => {
+            return await authService.auth(data)
         },
     })
 
