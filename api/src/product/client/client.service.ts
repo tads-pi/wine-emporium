@@ -75,14 +75,24 @@ export class ClientService {
             throw new NotFoundException('Product not found');
         }
 
+        const productImages = await this.s3.getImagesFromFolder(`products/${product.id}`)
+        const productImagesViewmodel: ProductImageViewmodel[] = []
+
+        for (const image of productImages) {
+            productImagesViewmodel.push({
+                id: image.key,
+                url: image.url,
+                marked: image.key === product.markedImageID,
+            })
+        }
+
         return {
             id: product.id,
             name: product.name,
             description: product.description,
             price: product.price,
             ratings: product.ratings,
-            // TODO
-            images: [],
+            images: productImagesViewmodel,
         }
     }
 }
