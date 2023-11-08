@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ProductClientViewmodel } from '../viewmodels/client-product.viewmodel';
+import { S3Service } from 'src/aws/s3/s3.service';
+import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
 
 @Injectable()
 export class ClientService {
     constructor(
         private db: PrismaService,
+        private s3: S3Service,
     ) { }
 
     async getTotalProducts(): Promise<number> {
@@ -33,25 +36,30 @@ export class ClientService {
                 // TODO opção de sorting de user
                 id: 'desc',
             },
-            where: {
-                active: true,
-            }
         });
-        if (products.length === 0) {
-            return [];
-        }
 
-        const viewmodel = products.map((product) => {
-            return {
+        const viewmodel: ProductClientViewmodel[] = []
+        for (const product of products) {
+            const productImages = await this.s3.getImagesFromFolder(`products/${product.id}`)
+            const productImagesViewmodel: ProductImageViewmodel[] = []
+
+            for (const image of productImages) {
+                productImagesViewmodel.push({
+                    id: image.key,
+                    url: image.url,
+                    marked: image.key === product.markedImageID,
+                })
+            }
+
+            viewmodel.push({
                 id: product.id,
                 name: product.name,
                 description: product.description,
                 price: product.price,
                 ratings: product.ratings,
-                // TODO
-                images: [],
-            }
-        })
+                images: productImagesViewmodel,
+            })
+        }
 
         return viewmodel;
     }
