@@ -30,8 +30,6 @@ export function CartProductCard({ product, removeFromCart }: CartProductCardProp
         }
     }
 
-    console.log({ img: product.images });
-
     return (
         <div style={{
             width: '100%',

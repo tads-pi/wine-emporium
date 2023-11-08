@@ -5,6 +5,7 @@ import { Product } from "../../zustand/types"
 export const useStoreProductWE = (productId: string) => {
     const {
         productApi,
+        delivererApi,
         cartApi,
     } = useStore()
 
@@ -21,8 +22,13 @@ export const useStoreProductWE = (productId: string) => {
         cartApi.addProduct(productId)
     }
 
+    function getDeliverers(zip: string) {
+        return delivererApi.listDeliverers()
+    }
+
     return {
         currentProduct,
         addCartProduct,
+        getDeliverers,
     }
 }
