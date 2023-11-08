@@ -154,20 +154,13 @@ function EmptyCart() {
         <div
             style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
             }}
         >
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                <img src={'../../../public/8504.jpg'} alt="Carrinho vazio" width={250} />
-                <p>Carrinho vazio</p>
-            </div>
+            <img src={'../../../public/8504.jpg'} alt="Carrinho vazio" width={250} />
+            <p>Carrinho vazio</p>
         </div>
     )
 }

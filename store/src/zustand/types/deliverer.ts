@@ -1,7 +1,7 @@
 export interface Deliverer {
     id: string;
     name: string;
-    price: number;
+    fare: number;
 }
 
 export interface DelivererListResponse extends Array<Deliverer> {
