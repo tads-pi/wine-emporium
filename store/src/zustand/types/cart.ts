@@ -13,3 +13,10 @@ export interface UpdateCartPayload {
     id: string;
     amount: number;
 }
+
+// app
+
+export type CartItem = {
+    product: Product;
+    amount: number;
+}
