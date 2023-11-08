@@ -13,12 +13,12 @@ export default function StoreProductWE() {
     const { id } = useParams();
     const {
         currentProduct,
-        addCartItem
+        addCartProduct
     } = useStoreProductWE(id || '')
 
     const handleClickVariant = (variant: VariantType, product: Product) => () => {
         // variant could be success, error, warning, info, or default
-        addCartItem(product, 1);
+        addCartProduct(product.id);
         enqueueSnackbar(
             <Typography>Vinho adicionado adicionado ao carrinho.</Typography>,
             { variant }

@@ -3,19 +3,34 @@ import React from 'react'
 import { CardMedia, IconButton, Typography } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { VariantType, enqueueSnackbar } from 'notistack'
-import { CartItem } from '../../zustand/types';
 import { FALLBACK_IMAGE_URL } from '../../config/images';
+import { CartProduct } from '../../zustand/types';
+import { formatCurrency } from '../../utils/formatCurrency';
 
-type CartItemCardProps = {
-    data: CartItem,
+type CartProductCardProps = {
+    product: CartProduct,
     removeFromCart: () => void
 }
 
-export function CartItemCard({ data, removeFromCart }: CartItemCardProps) {
+export function CartProductCard({ product, removeFromCart }: CartProductCardProps) {
     const handleClickVariant = (variant: VariantType) => () => {
         removeFromCart()
         enqueueSnackbar(<Typography>Vinho removido do carrinho.</Typography>, { variant })
     };
+
+    function getImage() {
+        if (product?.images.length > 0) {
+            const [markedImage] = product?.images.filter((img) => img.marked)
+            if (markedImage) {
+                return markedImage.url
+            }
+            return product?.images[0].url
+        } else {
+            return FALLBACK_IMAGE_URL
+        }
+    }
+
+    console.log({ img: product.images });
 
     return (
         <div style={{
@@ -42,11 +57,7 @@ export function CartItemCard({ data, removeFromCart }: CartItemCardProps) {
                         component="img"
                         height="50"
                         width="50"
-                        image={
-                            data.product.images.length > 0
-                                ? data.product.images[0].url
-                                : FALLBACK_IMAGE_URL
-                        }
+                        image={getImage()}
                         alt="Vinho Wine Emporium"
                         style={{
                             objectFit: 'contain',
@@ -63,14 +74,23 @@ export function CartItemCard({ data, removeFromCart }: CartItemCardProps) {
                             whiteSpace: 'nowrap',
                             fontSize: '16px',
                             fontWeight: 'bold',
-                            marginBottom: '5px'
-                        }}>Vinho: {data.product.name}</Typography>
+                            marginBottom: '5px',
+
+                            // limita o numero de caracteres na tela e adiciona reticencias
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            width: '250px',
+                        }}>Vinho: {product.name}</Typography>
                         <Typography style={{
                             whiteSpace: 'nowrap',
                             fontSize: '14px',
                             color: '#666'
-                            // }}>Valor: {formatCurrency(data?.price)}</Typography>
-                        }}>Valor: {Number(data.product.price)}</Typography>
+                        }}>x{Number(product.amount)}</Typography>
+                        <Typography style={{
+                            whiteSpace: 'nowrap',
+                            fontSize: '14px',
+                            color: '#666'
+                        }}>Valor: {formatCurrency(Number(product.price))}</Typography>
                     </div>
                 </div>
                 <div>

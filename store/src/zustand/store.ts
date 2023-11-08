@@ -7,18 +7,12 @@ import createDelivererSlice, { DelivererSlice } from './slices/delivererSlice';
 import createGenderSlice, { GenderSlice } from './slices/genderSlice';
 import createPaymentSlice, { PaymentSlice } from './slices/paymentSlice';
 import createProductSlice, { ProductSlice } from './slices/productSlice';
-import { CartItem, Product } from './types';
 import { localStorageKeys } from '../config/localStorageKeys';
-import { persist } from 'zustand/middleware'
 
 export interface AppSlice {
     isLoggedIn: boolean
     setIsLoggedIn: (isLoggedIn: boolean) => void
     signOut: () => void
-
-    cartItems: CartItem[]
-    addCartItem: (product: Product, amount: number | null) => void
-    removeCartItem: (itemIndex: number) => void
 }
 
 const createAppSlice: StateCreator<
@@ -37,25 +31,6 @@ const createAppSlice: StateCreator<
             localStorage.removeItem(localStorageKeys.ACCESS_TOKEN)
             slices().setIsLoggedIn(false)
         },
-
-        // 
-
-        cartItems: [],
-        addCartItem: (product: Product, amount: number | null) => {
-            const newItem: CartItem = {
-                product,
-                amount: amount || 1,
-            }
-            set((state) => {
-                return {
-                    cartItems: [...state.cartItems, newItem]
-                }
-            })
-        },
-        removeCartItem: (itemIndex: number) => set((state) => {
-            state.cartItems.splice(itemIndex, 1)
-            return { cartItems: state.cartItems }
-        }),
     }
 }
 
