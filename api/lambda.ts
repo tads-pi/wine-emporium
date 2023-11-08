@@ -18,6 +18,9 @@ export const handler = async (event: any, context: any) => {
             whitelist: true,
         }));
 
+        // allow cors from any domains
+        app.enableCors();
+
         // Swagger
         const config = new DocumentBuilder()
             .setTitle('Wine Emporium')
