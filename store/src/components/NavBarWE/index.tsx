@@ -12,6 +12,8 @@ import useNavBarWE from './hooks';
 import LogoWE from './components/LogoWE';
 import AvatarWE from './components/AvatarWE';
 import DrawerWE from './components/drawer/DrawerWE';
+import { Link } from 'react-router-dom';
+import { routes } from '../../config/routes';
 
 export function NavBarWE() {
   const {
@@ -65,7 +67,12 @@ export function NavBarWE() {
                     <SettingsWE />
                   </Menu>
                 </>
-                : null
+                :
+                <>
+                  <Link to={routes.LOGIN} style={{ textDecoration: 'none' }}>
+                    <span style={{ color: 'black' }}>Login</span>
+                  </Link>
+                </>
             }
 
 

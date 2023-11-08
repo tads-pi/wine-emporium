@@ -4,7 +4,7 @@ import React from "react"
 export default function LogoWE() {
     return (
         <>
-            <img src={'../../../public/LOGO.png'} alt="Logo Wine" />
+            <img src={'/LOGO.png'} alt="Logo Wine" />
             <Typography
                 variant="h6"
                 noWrap

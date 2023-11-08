@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand"
 import { Slices } from "../store"
 import { localStorageKeys } from "../../config/localStorageKeys"
-import { Client, Login, LoginResponse, Register } from "../types"
+import { Client, Login, LoginResponse, Register, Update } from "../types"
 import { httpClient } from "../api/httpClient"
 
 // Essa parte do storage é responsável por todas as chamadas http para a api
@@ -9,6 +9,7 @@ export interface AuthSlice {
     register: (payload: Register) => Promise<LoginResponse>
     login: (payload: Login) => Promise<LoginResponse>
     getMe: () => Promise<Client>
+    update: (payload: Update) => Promise<Client>
 }
 
 const createAuthSlice: StateCreator<
@@ -35,6 +36,12 @@ const createAuthSlice: StateCreator<
             return data
         },
         getMe: async (): Promise<Client> => {
+            const { data } = await httpClient.get<Client>('/client/me')
+            return data
+        },
+        update: async (payload: Update): Promise<Client> => {
+            await httpClient.put('/client/update', payload)
+
             const { data } = await httpClient.post<Client>('/client/me')
             return data
         }

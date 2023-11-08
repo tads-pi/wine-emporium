@@ -12,9 +12,7 @@ const schema = z.object({
     email: z.string().nonempty('E-mail é obrigatório').email('Informe um e-mail válido'),
     // password: z.string().nonempty('Senha é obrigatório').min(7, 'Senha deve conter no mínimo 8 caracteres'),
     birthdate: z.string().nonempty('Data de nascimento é obrigatória'),
-    gender: z.string().refine(value => ['masculino', 'feminino', 'outros'].includes(value), {
-        message: 'Selecione uma opção válida.',
-    }),
+    genderId: z.string(),
 })
 
 type FormData = z.infer<typeof schema>
