@@ -74,42 +74,60 @@ export class CartService {
         }
     }
 
-    async updateOpenCart(clientId: string, dto: UpdateCartDTO): Promise<CartViewmodel> {
+    async addProduct(clientId: string, productId: string): Promise<CartViewmodel> {
         const cart = await this.db.cart.findFirst({ where: { clientId, status: 'OPEN' } })
         if (!cart) {
             throw new NotFoundException('Carrinho não encontrado')
         }
 
-        await this.db.cartItems.deleteMany({
+        const productInCart = await this.db.cartItems.findFirst({
+            where: { productId: productId, cartId: cart.id }
+        })
+        if (productInCart) {
+            await this.db.cartItems.updateMany({
+                where: {
+                    cartId: cart.id,
+                    productId: productId,
+                },
+                data: {
+                    amount: productInCart.amount + 1,
+                }
+            })
+        } else {
+            await this.db.cartItems.create({
+                data: {
+                    cartId: cart.id,
+                    productId: productId,
+                    amount: 1,
+                }
+            })
+        }
+
+        return
+    }
+
+    async removeProduct(clientId: string, productId: string): Promise<CartViewmodel> {
+        const cart = await this.db.cart.findFirst({ where: { clientId, status: 'OPEN' } })
+        if (!cart) {
+            throw new NotFoundException('Carrinho não encontrado')
+        }
+
+        const productInCart = await this.db.cartItems.findFirst({
+            where: { productId: productId, cartId: cart.id }
+        })
+        if (!productInCart) {
+            return
+        }
+
+        await this.db.cartItems.updateMany({
             where: {
                 cartId: cart.id,
+                productId: productId,
+            },
+            data: {
+                amount: productInCart.amount - 1,
             }
         })
-
-        for (const product of dto.products) {
-            const productInCart = await this.db.cartItems.findFirst({
-                where: { productId: product.id, cartId: cart.id }
-            })
-            if (productInCart) {
-                await this.db.cartItems.updateMany({
-                    where: {
-                        cartId: cart.id,
-                        productId: product.id,
-                    },
-                    data: {
-                        amount: product.amount
-                    }
-                })
-            } else {
-                await this.db.cartItems.create({
-                    data: {
-                        cartId: cart.id,
-                        productId: product.id,
-                        amount: product.amount,
-                    }
-                })
-            }
-        }
 
         return
     }

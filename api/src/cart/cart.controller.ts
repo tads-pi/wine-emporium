@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guard';
 import { CartService } from './cart.service';
@@ -21,12 +21,20 @@ export class CartController {
         return this.svc.getOpenCart(clientId)
     }
 
-    @Put('')
-    async updateOpenCart(
+    @Put('/:productId')
+    async addProduct(
         @GetClient('id') clientId: string,
-        @Body() dto: UpdateCartDTO
+        @Param('productId') productId: string,
     ): Promise<CartViewmodel> {
-        return this.svc.updateOpenCart(clientId, dto)
+        return this.svc.addProduct(clientId, productId)
+    }
+
+    @Delete('/:productId')
+    async removeProduct(
+        @GetClient('id') clientId: string,
+        @Param('productId') productId: string,
+    ): Promise<CartViewmodel> {
+        return this.svc.removeProduct(clientId, productId)
     }
 
     @Get('price')
