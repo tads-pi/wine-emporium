@@ -119,6 +119,16 @@ export class CartService {
             return
         }
 
+        if (productInCart.amount <= 0) {
+            await this.db.cartItems.deleteMany({
+                where: {
+                    cartId: cart.id,
+                    productId: productId,
+                }
+            })
+            return
+        }
+
         await this.db.cartItems.updateMany({
             where: {
                 cartId: cart.id,
