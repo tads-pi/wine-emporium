@@ -1,7 +1,5 @@
 # calixto da zs
 
-- arrumar rotas para nova api
-
 - Adicionar campo para calcular frete na tela de detalhe de produto
   https://github.com/tads-pi/wine-emporium/issues/31
 
