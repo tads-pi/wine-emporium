@@ -57,6 +57,7 @@ functions:
       DATABASE_URL: ${ssm:/wine_emporium_db/db-url}
       JWT_SECRET: ${ssm:/wine-emporium-api/jwt-secret}
       PRISMA_CLI_BINARY_TARGETS: rhel-openssl-1.0.x
+      S3_BUCKET_NAME: wine-emporium-uploads
     events:
       - http:
           method: any
