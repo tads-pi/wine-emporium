@@ -77,8 +77,8 @@ export class ClientService {
         if (dto.password) {
             client.password = bcrypt.hashSync(dto.password, 10)
         }
-        if (dto.birth_date) {
-            client.birthDate = new Date(dayjs(dto.birth_date).format('YYYY-MM-DDTHH:mm:ssz'))
+        if (dto.birthDate) {
+            client.birthDate = new Date(dayjs(dto.birthDate).format('YYYY-MM-DDTHH:mm:ssz'))
         }
         if (dto.genderId) {
             const gender = await this.db.gender.findUnique({ where: { id: dto.genderId } })
