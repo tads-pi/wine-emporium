@@ -49,7 +49,7 @@ export async function getAllUsers(filter?: IGetUsersFilter) {
         // }
 
 
-        const response = await api.get('/user', { params })
+        const response = await api.get('/backoffice/user', { params })
         return response
     } catch (error: any) {
         console.log("error at getAllUsers: ", error);
@@ -59,7 +59,7 @@ export async function getAllUsers(filter?: IGetUsersFilter) {
 
 export async function saveNewUser(user: ISaveNewUser) {
     try {
-        const response = await api.post("/user", user)
+        const response = await api.post("/backoffice/user", user)
         return response
     } catch (error: any) {
         console.log("error at saveNewUser: ", error);
@@ -80,7 +80,7 @@ export async function saveNewUser(user: ISaveNewUser) {
 
 export async function getUserById(userID: string | number) {
     try {
-        const response = await api.get(`/user/${userID}`)
+        const response = await api.get(`/backoffice/user/${userID}`)
         return response
     } catch (error: any) {
         console.log("error at getUserById: ", error);
@@ -97,7 +97,7 @@ export async function updateUser(payload: IUpdateUser) {
             group: payload.group,
             password: payload.password,
         }
-        const response = await api.put(`/user/${payload.id}`, { ...newUser })
+        const response = await api.put(`/backoffice/user/${payload.id}`, { ...newUser })
         return response
     } catch (error: any) {
         console.log("error at updateUser: ", error);
@@ -107,22 +107,10 @@ export async function updateUser(payload: IUpdateUser) {
 
 export async function toggleUserActive(payload: IToggleUserActive) {
     try {
-        const response = await api.post(`/user/${payload.userID}/toggle-active`, {
-            active: payload.active
-        })
+        const response = await api.delete(`/backoffice/user/${payload.userID}`)
         return response
     } catch (error: any) {
         console.log("error at toggleUserActive: ", error);
-        return error?.response ?? {}
-    }
-}
-
-export async function deleteUser(userID: string) {
-    try {
-        const response = await api.delete(`/user/${userID}`)
-        return response
-    } catch (error: any) {
-        console.log("error at deleteUser: ", error);
         return error?.response ?? {}
     }
 }

@@ -7,8 +7,6 @@
     - bank-slip
     - add no checkout tb
 
-- migrar rotas do backoffice pra nova api
-
 !!
 - finalizar testes de controllers e services
     - admin

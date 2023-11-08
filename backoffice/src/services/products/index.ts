@@ -44,7 +44,7 @@ export type IMarkProductImage = {
 
 export async function saveNewProduct(product: ISaveNewProduct) {
     try {
-        const response = await api.post("/product", product)
+        const response = await api.post("/product/backoffice", product)
         return response
     } catch (error: any) {
         console.log("error at saveNewProduct: ", error);
@@ -54,7 +54,7 @@ export async function saveNewProduct(product: ISaveNewProduct) {
 
 export async function getTotalProducts() {
     try {
-        const response = await api.get("/product/total")
+        const response = await api.get("/product/backoffice/total")
         return response
     } catch (error: any) {
         console.log("error at getTotalProducts: ", error);
@@ -64,7 +64,7 @@ export async function getTotalProducts() {
 
 export async function getAllProducts(filters: IGetAllProductsFilters) {
     try {
-        const response = await api.get("/product", {
+        const response = await api.get("/product/backoffice", {
             params: {
                 page: filters?.page || 1,
                 limit: filters?.limit || 10,
@@ -79,7 +79,7 @@ export async function getAllProducts(filters: IGetAllProductsFilters) {
 
 export async function getProductById(productID: string | number) {
     try {
-        const response = await api.get(`/product/${productID}`)
+        const response = await api.get(`/product/backoffice/${productID}`)
         return response
     } catch (error: any) {
         console.log("error at getProductById: ", error);
@@ -96,7 +96,7 @@ export async function updateProduct(payload: IUpdateProduct) {
             price: payload.price,
             stock: payload.stock
         }
-        const response = await api.put(`/product/${payload.id}`, { ...newProduct })
+        const response = await api.put(`/product/backoffice/${payload.id}`, { ...newProduct })
         return response
     } catch (error: any) {
         console.log("error at updateProduct: ", error);
@@ -106,9 +106,7 @@ export async function updateProduct(payload: IUpdateProduct) {
 
 export async function toggleProductActive(payload: IToggleProductActive) {
     try {
-        const response = await api.post(`/product/${payload.productID}/toggle-active`, {
-            active: payload.active
-        })
+        const response = await api.delete(`/product/backoffice/${payload.productID}`)
         return response
     } catch (error: any) {
         console.log("error at deactivateProduct: ", error);
@@ -116,19 +114,9 @@ export async function toggleProductActive(payload: IToggleProductActive) {
     }
 }
 
-export async function deleteProduct(productID: string) {
-    try {
-        const response = await api.delete(`/product/${productID}`)
-        return response
-    } catch (error: any) {
-        console.log("error at deleteProduct: ", error);
-        return error?.response ?? {}
-    }
-}
-
 export async function uploadProductImage(payload: IUploadProductImage) {
     try {
-        const response = await api.post(`/product/${payload.productID}/upload`, {
+        const response = await api.post(`/product/${payload.productID}/image`, {
             imageBinary: payload.base64Image
         })
         return response
@@ -140,11 +128,7 @@ export async function uploadProductImage(payload: IUploadProductImage) {
 
 export async function deleteProductImage(payload: IDeleteProductImage) {
     try {
-        const response = await api.post(`/product/${payload.productID}/delete-image`,
-            {
-                image_id: payload.imageID
-            }
-        )
+        const response = await api.delete(`/product/${payload.productID}/image/${payload.imageID}`)
         return response
     } catch (error: any) {
         console.log("error at deleteProductImage: ", error);
@@ -154,11 +138,7 @@ export async function deleteProductImage(payload: IDeleteProductImage) {
 
 export async function markProductImage(payload: IMarkProductImage) {
     try {
-        const response = await api.put(`/product/${payload.productID}/mark-image`,
-            {
-                image_id: payload.imageID
-            }
-        )
+        const response = await api.post(`/product/${payload.productID}/image/${payload.imageID}/mark`)
         return response
     } catch (error: any) {
         console.log("error at markProductImage: ", error);
