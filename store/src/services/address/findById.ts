@@ -4,7 +4,7 @@ export interface FindAddressByIdRequest {
     id: string;
 }
 
-export interface FindAddressByIdResponse {
+export interface Address {
     id: string;
     country: string;
     state: string;
@@ -18,6 +18,6 @@ export interface FindAddressByIdResponse {
 }
 
 export async function getAddressDetails(params: FindAddressByIdRequest) {
-    const { data } = await httpClient.get<FindAddressByIdResponse>(`/client/address/${params.id}`);
+    const { data } = await httpClient.get<Address>(`/client/address/${params.id}`);
     return data;
 }

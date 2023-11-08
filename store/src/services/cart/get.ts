@@ -1,27 +1,11 @@
 import { httpClient } from "../httpClient";
+import { ProductItem } from "../product";
 
 export interface GetCartRequest { }
 
 export interface GetCartResponse {
     id: string;
-    products: CartProduct[];
-}
-
-// TODO move to products folder
-export interface CartProduct {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    ratings: number;
-    images: ProductImage[];
-    amount: number;
-}
-
-export interface ProductImage {
-    id: string
-    url: string
-    marked: boolean
+    products: ProductItem[];
 }
 
 export async function getCart(params: GetCartRequest) {
