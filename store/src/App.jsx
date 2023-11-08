@@ -33,7 +33,8 @@ export function AuthGuard({ isPrivate }) {
 
     return (
       <>
-        {storedAccessToken && isPrivate ? <Nav /> : null}
+        {/* {storedAccessToken && isPrivate ? <Nav /> : null} */}
+        {!isPrivate ? <Nav /> : null}
         <Outlet />
       </>
     )
@@ -60,7 +61,7 @@ function App() {
           <Route path="/criar-cadastro" element={<FormCreateUser />} />
         </Route>
 
-        <Route element={<AuthGuard isPrivate />}>
+        <Route element={<AuthGuard isPrivate={false} />}>
           <Route path="/mercado" element={<NavBar />} />
           <Route path="/mercado/:id" element={<VerMais />} />
           <Route element={<EditPerfil />}>
