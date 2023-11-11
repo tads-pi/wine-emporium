@@ -103,7 +103,7 @@ export class CartService {
             })
         }
 
-        return
+        return await this.getOpenCart(clientId)
     }
 
     async removeProduct(clientId: string, productId: string): Promise<CartViewmodel> {
@@ -115,31 +115,28 @@ export class CartService {
         const productInCart = await this.db.cartItems.findFirst({
             where: { productId: productId, cartId: cart.id }
         })
-        if (!productInCart) {
-            return
-        }
-
-        if (productInCart.amount <= 0) {
-            await this.db.cartItems.deleteMany({
-                where: {
-                    cartId: cart.id,
-                    productId: productId,
-                }
-            })
-            return
-        }
-
-        await this.db.cartItems.updateMany({
-            where: {
-                cartId: cart.id,
-                productId: productId,
-            },
-            data: {
-                amount: productInCart.amount - 1,
+        if (productInCart) {
+            if (productInCart.amount <= 1) {
+                await this.db.cartItems.deleteMany({
+                    where: {
+                        cartId: cart.id,
+                        productId: productId,
+                    }
+                })
+            } else {
+                await this.db.cartItems.updateMany({
+                    where: {
+                        cartId: cart.id,
+                        productId: productId,
+                    },
+                    data: {
+                        amount: productInCart.amount - 1,
+                    }
+                })
             }
-        })
+        }
 
-        return
+        return await this.getOpenCart(clientId)
     }
 
     async getCartPrice(clientId: string): Promise<number> {
