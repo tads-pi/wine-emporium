@@ -20,14 +20,6 @@ export class CheckoutController {
         return this.svc.listCheckout(clientId);
     }
 
-    @Get(':id')
-    async getCheckoutById(
-        @GetClient('id') clientId: string,
-        @Param('id') id: string
-    ): Promise<CheckoutViewmodel> {
-        return this.svc.getCheckoutById(clientId, id)
-    }
-
     @Post('start')
     async startCheckout(
         @GetClient('id') clientId: string
@@ -47,6 +39,14 @@ export class CheckoutController {
         @GetClient('id') clientId: string
     ): Promise<CheckoutViewmodel> {
         return this.svc.finishCheckout(clientId)
+    }
+
+    @Get(':checkoutId')
+    async getCheckoutById(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') id: string
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.getCheckoutById(clientId, id)
     }
 
     @Post('/:checkoutId/address/:addressId')
