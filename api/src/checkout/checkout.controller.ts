@@ -48,4 +48,33 @@ export class CheckoutController {
     ): Promise<CheckoutViewmodel> {
         return this.svc.finishCheckout(clientId)
     }
+
+    @Post('/:checkoutId/address/:addressId')
+    async setCheckoutAddress(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('addressId') addressId: string,
+    ): Promise<null> {
+        return this.svc.setCheckoutAddress(clientId, checkoutId, addressId);
+    }
+
+    @Post('/:checkoutId/deliverer/:delivererId')
+    async setCheckoutDeliverer(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('delivererId') delivererId: string
+    ): Promise<null> {
+        return this.svc.setCheckoutDeliverer(clientId, checkoutId, delivererId);
+    }
+
+    @Post(':paymentId')
+    async setCheckoutPaymentMethod(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('paymentId') paymentId: string,
+    ): Promise<null> {
+        return null
+        // WORK IN PROGRESS HERE
+        // return this.svc.setCheckoutPaymentMethod(clientId, checkoutId, paymentId);
+    }
 }
