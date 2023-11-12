@@ -4,7 +4,7 @@ import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
 import { Checkout } from '@prisma/client';
 import { AddressViewmodel } from '../client/address/viewmodel/address.viewmodel';
 import { CartService } from '../cart/cart.service';
-import { DelivererViewmodel } from '../product/deliverer/viewmodel';
+import { DelivererViewmodel } from '../deliverer/viewmodel';
 import { SetCheckoutPaymentMethodDTO } from './dto';
 
 @Injectable()
