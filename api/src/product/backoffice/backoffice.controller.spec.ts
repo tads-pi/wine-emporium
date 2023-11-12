@@ -1,12 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BackofficeController } from './backoffice.controller';
 import { BackofficeService } from './backoffice.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from 'src/auth/auth.service';
-import { S3Service } from 'src/aws/s3/s3.service';
+import { AuthService } from '../../auth/auth.service';
+import { S3Service } from '../../aws/s3/s3.service';
 import { Product, ProductStock } from '@prisma/client';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
+import { JwtService } from '@nestjs/jwt';
 
 describe('BackofficeController', () => {
   let controller: BackofficeController;
@@ -15,10 +16,11 @@ describe('BackofficeController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BackofficeController],
-      providers: [BackofficeService, PrismaService, ConfigService, AuthService, S3Service]
+      providers: [BackofficeService, PrismaService, ConfigService, AuthService, S3Service, JwtService]
     }).compile();
 
     controller = module.get<BackofficeController>(BackofficeController);
+    db = module.get<PrismaService>(PrismaService);
   });
 
   it('should be defined', () => {
@@ -150,11 +152,13 @@ describe('BackofficeController', () => {
       // Setup
       const PRODUCT = MOCK_PRODUCT_01
 
-      db.product.findUnique = jest.fn().mockReturnValueOnce(PRODUCT)
+      db.product.findUnique = jest.fn().mockReturnValue(PRODUCT)
       db.product.update = jest.fn().mockImplementation(async ({ data }) => {
         PRODUCT.name = data.name
         return PRODUCT
       })
+
+      db.productStock.findMany = jest.fn().mockReturnValue([MOCK_PRODUCT_01_STOCK])
 
       // Teste
       const NEW_NAME = 'Produto 01 atualizado'
@@ -176,11 +180,13 @@ describe('BackofficeController', () => {
       // Setup
       const STOCK = MOCK_PRODUCT_01_STOCK
 
-      db.product.findUnique = jest.fn().mockReturnValueOnce(MOCK_PRODUCT_01)
+      db.product.findUnique = jest.fn().mockReturnValue(MOCK_PRODUCT_01)
       db.productStock.update = jest.fn().mockImplementation(async ({ data }) => {
         STOCK.total = data.total
         return STOCK
       })
+
+      db.productStock.findMany = jest.fn().mockReturnValue([STOCK])
 
       // Teste
       const NEW_TOTAL = 100
@@ -193,7 +199,7 @@ describe('BackofficeController', () => {
       expect(product).toBeDefined()
       expect(db.productStock.update).toHaveBeenCalledTimes(1)
       expect(product.id).toBe(STOCK.id)
-      expect(product.stock).toBe(NEW_TOTAL)
+      expect(product.stock[0].total).toBe(NEW_TOTAL)
     })
 
     it('deve desativar um produto', async () => {

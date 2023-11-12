@@ -37,7 +37,7 @@ export class BackofficeService {
         }
 
         const whereClause = {}
-        if (filters !== '') {
+        if (filters && filters !== '') {
             const allFilters = filters.split(',')
             for (const f of allFilters) {
                 const parsedFilter = f.split(':')
