@@ -24,9 +24,13 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - name: Cria .env para o prisma
+      - name: Cria o .env
         run: |
+          echo "NODE_ENVL=test" > .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+          echo "PRISMA_CLI_BINARY_TARGETS=rhel-openssl-1.0.x" >> .env
+          echo "S3_BUCKET_NAME=wineemporium-uploads" >> .env
+          echo "JWT_SECRET=aloha" >> .env
       - run: npx prisma generate
       - run: npx jest --noStackTrace --verbose
 
