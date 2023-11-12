@@ -4,7 +4,6 @@ import { CartViewmodel, CartViewmodelProduct } from './viewmodel';
 import { Cart } from '@prisma/client';
 import { S3Service } from '../aws/s3/s3.service';
 import { ProductImageViewmodel } from '../product/image/viewmodel/product-image.viewmodel';
-import { UpdateCartDTO } from './dto/update-cart.dto';
 
 @Global()
 @Injectable()

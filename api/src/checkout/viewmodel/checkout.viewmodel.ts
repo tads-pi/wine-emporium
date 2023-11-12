@@ -1,5 +1,5 @@
-import { CartViewmodel } from "src/cart/viewmodel";
-import { AddressViewmodel } from "src/client/address/viewmodel/address.viewmodel";
+import { CartViewmodel } from "../../cart/viewmodel";
+import { AddressViewmodel } from "../../client/address/viewmodel/address.viewmodel";
 import { DelivererViewmodel } from "../../deliverer/viewmodel";
 
 export class CheckoutViewmodel {

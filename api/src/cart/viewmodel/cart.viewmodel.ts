@@ -1,4 +1,4 @@
-import { ProductClientViewmodel } from "src/product/viewmodels/client-product.viewmodel";
+import { ProductClientViewmodel } from "../../product/viewmodels/client-product.viewmodel";
 
 export class CartViewmodelProduct extends ProductClientViewmodel {
     amount: number
