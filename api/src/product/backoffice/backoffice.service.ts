@@ -4,6 +4,7 @@ import { ProductBackofficeViewmodel } from '../viewmodels';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
 import { S3Service } from '../../aws/s3/s3.service';
 import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
+import { Product } from '@prisma/client';
 
 @Injectable()
 export class BackofficeService {
@@ -128,7 +129,7 @@ export class BackofficeService {
         }
     }
 
-    async saveProduct(dto: SaveProductDTO): Promise<null> {
+    async saveProduct(dto: SaveProductDTO): Promise<ProductBackofficeViewmodel> {
         const product = await this.db.product.create({
             data: {
                 name: dto.name,
@@ -140,7 +141,7 @@ export class BackofficeService {
             },
         });
 
-        await this.db.productStock.create({
+        const productStock = await this.db.productStock.create({
             data: {
                 total: 0,
                 productId: product.id,
@@ -148,10 +149,21 @@ export class BackofficeService {
             },
         })
 
-        return
+        const viewmodel: ProductBackofficeViewmodel = {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            ratings: product.ratings,
+            active: product.active,
+            images: [],
+            stock: [productStock],
+        }
+
+        return viewmodel
     }
 
-    async updateProduct(id: string, dto: SaveProductDTO): Promise<null> {
+    async updateProduct(id: string, dto: SaveProductDTO): Promise<ProductBackofficeViewmodel> {
         if (!await this.checkProductExists(id)) {
             throw new NotFoundException('Product not found');
         }
@@ -170,10 +182,10 @@ export class BackofficeService {
             },
         });
 
-        return
+        return await this.getProductById(id);
     }
 
-    async updateProductStock(id: string, dto: UpdateProductStockDTO): Promise<null> {
+    async updateProductStock(id: string, dto: UpdateProductStockDTO): Promise<ProductBackofficeViewmodel> {
         // TODO check permissions before update
         // TODO make new guard for this
         if (!await this.checkProductExists(id)) {
@@ -190,7 +202,7 @@ export class BackofficeService {
             },
         })
 
-        return
+        return await this.getProductById(id);
     }
 
     async toggleProductActive(id: string): Promise<null> {
@@ -214,7 +226,7 @@ export class BackofficeService {
             },
         });
 
-        return
+        return null
     }
 
 }
