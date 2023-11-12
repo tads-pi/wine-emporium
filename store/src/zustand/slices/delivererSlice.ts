@@ -16,10 +16,7 @@ const createDelivererSlice: StateCreator<
 > = (set, slices) => {
     return {
         listDeliverers: async (): Promise<DelivererListResponse> => {
-            const { data } = await httpClient.post<Deliverer[]>(`/product/deliverer`, {
-                productId: '010000000',
-                zip: '01001000',
-            });
+            const { data } = await httpClient.post<Deliverer[]>(`/deliverer`);
             return data as DelivererListResponse;
         }
     }

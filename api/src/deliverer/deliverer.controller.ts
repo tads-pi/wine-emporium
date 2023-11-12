@@ -1,17 +1,17 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { DelivererService } from './deliverer.service';
 import { DelivererViewmodel } from './viewmodel';
 import { ProductDelivererDTO } from './dto/product-deliverer.dto';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('product/deliverer')
-@Controller('product/deliverer')
+@ApiTags('deliverer')
+@Controller('deliverer')
 export class DelivererController {
     constructor(
         private svc: DelivererService
     ) { }
 
-    @Post('')
+    @Get('')
     async listDeliverers(): Promise<DelivererViewmodel[]> {
         return this.svc.listDeliverers()
     }
