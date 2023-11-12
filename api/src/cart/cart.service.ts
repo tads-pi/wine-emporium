@@ -14,6 +14,18 @@ export class CartService {
         private s3: S3Service,
     ) { }
 
+    // Essa fn precisa ser public pra usarmos no controller de checkout
+    public async calculateCartPrice(cartId: string): Promise<number> {
+        const cartItems = await this.db.cartItems.findMany({ where: { cartId: cartId } })
+        const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
+        const total = products.reduce((previousResult, product) => {
+            const item = cartItems.find(item => item.productId === product.id)
+            return previousResult + (product.price * item.amount)
+        }, 0)
+
+        return total
+    }
+
     async getProductsFromCart(cart: Cart): Promise<CartViewmodelProduct[]> {
         const cartItems = await this.db.cartItems.findMany({ where: { cartId: cart.id } })
         const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
@@ -145,13 +157,6 @@ export class CartService {
             throw new NotFoundException('Carrinho não encontrado')
         }
 
-        const cartItems = await this.db.cartItems.findMany({ where: { cartId: cart.id } })
-        const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
-        const total = products.reduce((previousResult, product) => {
-            const item = cartItems.find(item => item.productId === product.id)
-            return previousResult + (product.price * item.amount)
-        }, 0)
-
-        return total
+        return this.calculateCartPrice(cart.id)
     }
 }

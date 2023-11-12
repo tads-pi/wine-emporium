@@ -54,7 +54,7 @@ export class CheckoutController {
         @GetClient('id') clientId: string,
         @Param('checkoutId') checkoutId: string,
         @Param('addressId') addressId: string,
-    ): Promise<null> {
+    ): Promise<CheckoutViewmodel> {
         return this.svc.setCheckoutAddress(clientId, checkoutId, addressId);
     }
 
@@ -63,7 +63,7 @@ export class CheckoutController {
         @GetClient('id') clientId: string,
         @Param('checkoutId') checkoutId: string,
         @Param('delivererId') delivererId: string
-    ): Promise<null> {
+    ): Promise<CheckoutViewmodel> {
         return this.svc.setCheckoutDeliverer(clientId, checkoutId, delivererId);
     }
 
@@ -73,6 +73,7 @@ export class CheckoutController {
         @Param('checkoutId') checkoutId: string,
         @Param('paymentId') paymentId: string,
     ): Promise<null> {
+        // ): Promise<CheckoutViewmodel> {
         return null
         // WORK IN PROGRESS HERE
         // return this.svc.setCheckoutPaymentMethod(clientId, checkoutId, paymentId);
