@@ -1,4 +1,4 @@
-name: 🍷 API Deploy
+name: ⚙️ API Workflow
 
 on:
   pull_request:
