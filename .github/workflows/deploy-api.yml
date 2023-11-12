@@ -24,16 +24,10 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - name: Install jq
-        run: sudo apt-get install jq
       - name: Cria .env para o prisma
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-      - name: Run Jest
-        run: npx jest --verbose --json > test-results.json  || echo "Jest finished"
-      - name: Show failed tests
-        run: |
-          cat test-results.json | jq -r '.testResults[] | select(.status == "failed") | "\(.ancestorTitles) \(.title) failed"' || echo "No failed tests"
+      - run: npx jest --noStackTrace --verbose
 
   deploy:
     name: 🍷 API Deploy
