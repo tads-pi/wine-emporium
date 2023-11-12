@@ -26,8 +26,8 @@ jobs:
       - run: npm ci
       - name: Cria .env para o prisma
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-      - run: npx jest
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > ../.env
+      - run: npx jest --verbose
 
   deploy:
     name: 🍷 API Deploy
@@ -54,7 +54,7 @@ jobs:
       - run: npm run build
       - name: Cria .env para o prisma
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > ../.env
       - run: npx prisma generate
       - run: serverless create-cert --stage ${{ env.STAGE }} --verbose
       - run: serverless create_domain --stage ${{ env.STAGE }} --verbose
