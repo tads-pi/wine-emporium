@@ -33,7 +33,7 @@ export class AddressService {
             data: { markedAddressID: address.id }
         })
 
-        return
+        return null
     }
 
     async deleteAddress(clientID: string, addressID: string): Promise<null> {
@@ -47,7 +47,7 @@ export class AddressService {
             data: { deletedAt: new Date() }
         })
 
-        return
+        return null
     }
 
     async createAddress(clientID: string, address: SaveAddressDTO): Promise<AddressViewmodel> {
@@ -59,7 +59,7 @@ export class AddressService {
                 neighborhood: address.neighborhood,
                 street: address.street,
                 number: address.number,
-                zip: address.zip,
+                zip: address.zip.replaceAll('-', ''),
                 complement: address.complement
             }
         })
