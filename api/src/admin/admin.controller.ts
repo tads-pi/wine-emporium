@@ -4,8 +4,8 @@ import { BackofficeClientViewmodel } from './viewmodel';
 import { ApiTags } from '@nestjs/swagger';
 import { BackofficeClientSignInDTO, SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
 import { BackofficeGroupViewmodel } from './viewmodel/backoffice-group.viewmodel';
-import { BackofficeAdminGuard, BackofficeGuard } from 'src/auth/guard/backoffice.guard';
-import { JwtGuard } from 'src/auth/guard';
+import { BackofficeAdminGuard, BackofficeGuard } from '../auth/guard/backoffice.guard';
+import { JwtGuard } from '../auth/guard';
 
 @ApiTags('backoffice')
 @Controller('backoffice')

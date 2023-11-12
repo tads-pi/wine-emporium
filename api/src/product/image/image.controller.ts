@@ -3,7 +3,7 @@ import { ImageService } from './image.service';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../auth/guard';
 import { UploadProductImageDto } from './dto';
-import { BackofficeAdminGuard } from 'src/auth/guard/backoffice.guard';
+import { BackofficeAdminGuard } from '../../auth/guard/backoffice.guard';
 
 @ApiTags('product/image')
 @Controller('product/:productId/image')

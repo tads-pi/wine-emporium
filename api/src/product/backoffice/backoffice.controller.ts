@@ -4,7 +4,7 @@ import { JwtGuard } from '../../auth/guard';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductBackofficeViewmodel } from '../viewmodels';
-import { BackofficeAdminGuard, BackofficeGuard } from 'src/auth/guard/backoffice.guard';
+import { BackofficeAdminGuard, BackofficeGuard } from '../../auth/guard/backoffice.guard';
 
 @ApiTags('backoffice')
 @Controller('product/backoffice')
