@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { AuthDTO } from '../auth/dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 import * as dayjs from 'dayjs';
+import { Client } from '@prisma/client';
 
 @Injectable()
 export class ClientService {
@@ -36,7 +37,7 @@ export class ClientService {
     }
 
     async signUp(dto: ClientSignUpDTO): Promise<AuthDTO> {
-        const alreadyRegistered = await this.db.backofficeClient.findUnique({
+        const alreadyRegistered = await this.db.client.findUnique({
             where: {
                 email: dto.email,
                 OR: [{ document: dto.document }]
@@ -65,8 +66,9 @@ export class ClientService {
         return this.authSvc.getToken(c.id)
     }
 
-    async update(clientId: string, dto: ClientUpdateDTO): Promise<null> {
-        const client = await this.db.client.findUnique({ where: { id: clientId } })
+    async update(clientId: string, dto: ClientUpdateDTO): Promise<ClientViewmodel> {
+        let client: Client | null
+        client = await this.db.client.findUnique({ where: { id: clientId } })
         if (!client) {
             throw new BadRequestException('Cliente não encontrado')
         }
@@ -88,12 +90,12 @@ export class ClientService {
             client.genderId = dto.genderId
         }
 
-        await this.db.client.update({
+        client = await this.db.client.update({
             where: { id: clientId },
             data: client
         })
 
-        return
+        return new ClientViewmodel(client)
     }
 
     async getMe(id: string): Promise<ClientViewmodel> {
