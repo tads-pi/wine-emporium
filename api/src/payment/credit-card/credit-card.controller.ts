@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../auth/guard';
 import { CreditCardService } from './credit-card.service';
@@ -27,5 +27,13 @@ export class CreditCardController {
         @Body() dto: SaveCreditCardDTO,
     ): Promise<ClientCreditCardViewmodel> {
         return this.svc.saveNewCreditCard(clientId, dto);
+    }
+
+    @Delete('/:creditCardId')
+    async deleteCreditCard(
+        @GetClient('id') clientId: string,
+        @Param('creditCardId') creditCardId: string,
+    ): Promise<null> {
+        return this.svc.deleteCreditCard(clientId, creditCardId);
     }
 }
