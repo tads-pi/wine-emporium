@@ -24,10 +24,15 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
+      - name: Install jq
+        run: sudo apt-get install jq
       - name: Cria .env para o prisma
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > ../.env
-      - run: npx jest --verbose
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+      - run: npx jest --verbose --json > test-results.json
+      - name: Show failed tests
+        run: |
+          cat test-results.json | jq -r '.testResults[] | select(.status === "failed") | "\(.ancestorTitles) \(.title) failed"'
 
   deploy:
     name: 🍷 API Deploy
@@ -54,7 +59,7 @@ jobs:
       - run: npm run build
       - name: Cria .env para o prisma
         run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > ../.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
       - run: npx prisma generate
       - run: serverless create-cert --stage ${{ env.STAGE }} --verbose
       - run: serverless create_domain --stage ${{ env.STAGE }} --verbose
