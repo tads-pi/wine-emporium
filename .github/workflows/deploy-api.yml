@@ -24,7 +24,11 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
+      - name: Cria .env para o prisma
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
       - run: npx jest
+
   deploy:
     name: 🍷 API Deploy
     runs-on: ubuntu-latest

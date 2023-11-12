@@ -11,7 +11,6 @@ import { BackofficeClientViewmodel } from './viewmodel';
 
 describe('AdminController', () => {
   let controller: AdminController;
-  let service: AdminService;
   let db: PrismaService;
 
   beforeEach(async () => {
@@ -21,7 +20,6 @@ describe('AdminController', () => {
     }).compile();
 
     controller = module.get<AdminController>(AdminController);
-    service = module.get<AdminService>(AdminService);
     db = module.get<PrismaService>(PrismaService);
   });
 
