@@ -29,10 +29,11 @@ jobs:
       - name: Cria .env para o prisma
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
-      - run: npx jest --verbose --json > test-results.json  || echo "Jest finished"
+      - name: Run Jest
+        run: npx jest --verbose --json > test-results.json  || echo "Jest finished"
       - name: Show failed tests
         run: |
-          cat test-results.json | jq -r '.testResults[] | select(.status === "failed") | "\(.ancestorTitles) \(.title) failed"'
+          cat test-results.json | jq -r '.testResults[] | select(.status == "failed") | "\(.ancestorTitles) \(.title) failed"' || echo "No failed tests"
 
   deploy:
     name: 🍷 API Deploy
