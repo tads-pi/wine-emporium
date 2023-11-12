@@ -4,10 +4,11 @@ import { JwtGuard } from '../../auth/guard';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductBackofficeViewmodel } from '../viewmodels';
+import { BackofficeAdminGuard, BackofficeGuard } from 'src/auth/guard/backoffice.guard';
 
 @ApiTags('backoffice')
 @Controller('product/backoffice')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, BackofficeGuard)
 export class BackofficeController {
     constructor(
         private svc: BackofficeService
@@ -35,6 +36,7 @@ export class BackofficeController {
     }
 
     @Post('')
+    @UseGuards(JwtGuard, BackofficeAdminGuard)
     async saveProduct(
         @Body() dto: SaveProductDTO,
     ): Promise<ProductBackofficeViewmodel> {
@@ -42,6 +44,7 @@ export class BackofficeController {
     }
 
     @Put(':id')
+    @UseGuards(JwtGuard, BackofficeAdminGuard)
     async updateProduct(
         @Param('id') id: string,
         @Body() dto: SaveProductDTO,
@@ -58,6 +61,7 @@ export class BackofficeController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtGuard, BackofficeAdminGuard)
     async toggleProductActive(
         @Param('id') id: string,
     ): Promise<null> {
