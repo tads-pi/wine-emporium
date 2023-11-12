@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { DelivererViewmodel } from './viewmodel';
 import { Deliverer } from '@prisma/client';
-import { ProductDelivererDTO } from './dto/product-deliverer.dto';
 
 @Injectable()
 export class DelivererService {
@@ -18,7 +17,7 @@ export class DelivererService {
         return array;
     };
 
-    async listDeliverers(dto: ProductDelivererDTO): Promise<DelivererViewmodel[]> {
+    async listDeliverers(): Promise<DelivererViewmodel[]> {
         let allDeliverers: Deliverer[]
         allDeliverers = await this.db.deliverer.findMany()
         // chose 3 random in all deliverers array

@@ -52,4 +52,32 @@ export class CreditCardService {
 
         return new ClientCreditCardViewmodel(creditCard)
     }
+
+    async deleteCreditCard(clientId: string, creditCardId: string): Promise<null> {
+        const cc = await this.db.clientCreditCard.findUnique({
+            where: {
+                id: creditCardId,
+                clientId: clientId,
+            }
+        })
+        if (!cc) {
+            throw new NotFoundException('Cartão de crédito não encontrado')
+        }
+
+        try {
+            await this.db.clientCreditCard.update({
+                where: {
+                    id: creditCardId,
+                    clientId: clientId,
+                },
+                data: {
+                    active: false
+                }
+            })
+        } catch (error) {
+            throw new InternalServerErrorException('Erro ao deletar cartão de crédito')
+        }
+
+        return null
+    }
 }

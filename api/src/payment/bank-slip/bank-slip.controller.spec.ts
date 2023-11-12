@@ -15,4 +15,6 @@ describe('BankSlipController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it.todo('')
 });

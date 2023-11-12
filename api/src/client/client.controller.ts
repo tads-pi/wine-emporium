@@ -17,7 +17,6 @@ export class ClientController {
     @Post('auth')
     @HttpCode(HttpStatus.OK)
     async clientSignIn(
-        @Req() req: any,
         @Body() dto: ClientSignInDTO,
     ): Promise<AuthDTO> {
         return await this.svc.signIn(dto);
@@ -26,7 +25,6 @@ export class ClientController {
     @Post('register')
     @HttpCode(HttpStatus.OK)
     async clientSignUp(
-        @Req() req: any,
         @Body() dto: ClientSignUpDTO,
     ): Promise<AuthDTO> {
         return await this.svc.signUp(dto);
@@ -38,7 +36,7 @@ export class ClientController {
     async clientUpdate(
         @GetClient('id') clientId: string,
         @Body() dto: ClientUpdateDTO,
-    ): Promise<null> {
+    ): Promise<ClientViewmodel> {
         return await this.svc.update(clientId, dto);
     }
 

@@ -12,10 +12,8 @@ export class DelivererController {
     ) { }
 
     @Post('')
-    async listDeliverers(
-        @Body() dto: ProductDelivererDTO,
-    ): Promise<DelivererViewmodel[]> {
-        return this.svc.listDeliverers(dto)
+    async listDeliverers(): Promise<DelivererViewmodel[]> {
+        return this.svc.listDeliverers()
     }
 
 }

@@ -1,8 +1,9 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { ClientBackofficeViewmodel } from './viewmodel';
+import { BackofficeClientViewmodel } from './viewmodel';
 import { ApiTags } from '@nestjs/swagger';
 import { BackofficeClientSignInDTO, SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
+import { BackofficeGroupViewmodel } from './viewmodel/backoffice-group.viewmodel';
 
 @ApiTags('backoffice')
 @Controller('backoffice')
@@ -20,14 +21,14 @@ export class AdminController {
     }
 
     @Get('user')
-    async getAllUsers(): Promise<ClientBackofficeViewmodel[]> {
+    async getAllUsers(): Promise<BackofficeClientViewmodel[]> {
         return this.svc.getAllUsers();
     }
 
     @Post('user')
     async saveUser(
         @Body() dto: SaveBackofficeClientDTO,
-    ): Promise<null> {
+    ): Promise<string> {
         return this.svc.saveUser(dto);
     }
 
@@ -42,7 +43,7 @@ export class AdminController {
     @Get('user/:id')
     async getUserById(
         @Param('id') id: string,
-    ): Promise<ClientBackofficeViewmodel> {
+    ): Promise<BackofficeClientViewmodel> {
         return this.svc.getUserById(id);
     }
 
@@ -51,5 +52,10 @@ export class AdminController {
         @Param('id') id: string,
     ): Promise<null> {
         return this.svc.toggleUserActive(id);
+    }
+
+    @Get('groups')
+    async listGroups(): Promise<BackofficeGroupViewmodel[]> {
+        return this.svc.listGroups();
     }
 }

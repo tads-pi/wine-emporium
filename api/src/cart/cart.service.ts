@@ -14,6 +14,18 @@ export class CartService {
         private s3: S3Service,
     ) { }
 
+    // Essa fn precisa ser public pra usarmos no controller de checkout
+    public async calculateCartPrice(cartId: string): Promise<number> {
+        const cartItems = await this.db.cartItems.findMany({ where: { cartId: cartId } })
+        const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
+        const total = products.reduce((previousResult, product) => {
+            const item = cartItems.find(item => item.productId === product.id)
+            return previousResult + (product.price * item.amount)
+        }, 0)
+
+        return total
+    }
+
     async getProductsFromCart(cart: Cart): Promise<CartViewmodelProduct[]> {
         const cartItems = await this.db.cartItems.findMany({ where: { cartId: cart.id } })
         const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
@@ -103,7 +115,7 @@ export class CartService {
             })
         }
 
-        return
+        return await this.getOpenCart(clientId)
     }
 
     async removeProduct(clientId: string, productId: string): Promise<CartViewmodel> {
@@ -115,31 +127,28 @@ export class CartService {
         const productInCart = await this.db.cartItems.findFirst({
             where: { productId: productId, cartId: cart.id }
         })
-        if (!productInCart) {
-            return
-        }
-
-        if (productInCart.amount <= 0) {
-            await this.db.cartItems.deleteMany({
-                where: {
-                    cartId: cart.id,
-                    productId: productId,
-                }
-            })
-            return
-        }
-
-        await this.db.cartItems.updateMany({
-            where: {
-                cartId: cart.id,
-                productId: productId,
-            },
-            data: {
-                amount: productInCart.amount - 1,
+        if (productInCart) {
+            if (productInCart.amount <= 1) {
+                await this.db.cartItems.deleteMany({
+                    where: {
+                        cartId: cart.id,
+                        productId: productId,
+                    }
+                })
+            } else {
+                await this.db.cartItems.updateMany({
+                    where: {
+                        cartId: cart.id,
+                        productId: productId,
+                    },
+                    data: {
+                        amount: productInCart.amount - 1,
+                    }
+                })
             }
-        })
+        }
 
-        return
+        return await this.getOpenCart(clientId)
     }
 
     async getCartPrice(clientId: string): Promise<number> {
@@ -148,13 +157,6 @@ export class CartService {
             throw new NotFoundException('Carrinho não encontrado')
         }
 
-        const cartItems = await this.db.cartItems.findMany({ where: { cartId: cart.id } })
-        const products = await this.db.product.findMany({ where: { id: { in: cartItems.map(item => item.productId) } } })
-        const total = products.reduce((previousResult, product) => {
-            const item = cartItems.find(item => item.productId === product.id)
-            return previousResult + (product.price * item.amount)
-        }, 0)
-
-        return total
+        return this.calculateCartPrice(cart.id)
     }
 }

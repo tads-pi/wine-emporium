@@ -37,7 +37,7 @@ export class BackofficeController {
     @Post('')
     async saveProduct(
         @Body() dto: SaveProductDTO,
-    ): Promise<null> {
+    ): Promise<ProductBackofficeViewmodel> {
         return this.svc.saveProduct(dto);
     }
 
@@ -45,7 +45,7 @@ export class BackofficeController {
     async updateProduct(
         @Param('id') id: string,
         @Body() dto: SaveProductDTO,
-    ): Promise<null> {
+    ): Promise<ProductBackofficeViewmodel> {
         return this.svc.updateProduct(id, dto);
     }
 
@@ -53,7 +53,7 @@ export class BackofficeController {
     async updateProductStock(
         @Param('id') id: string,
         @Body() dto: UpdateProductStockDTO,
-    ): Promise<null> {
+    ): Promise<ProductBackofficeViewmodel> {
         return this.svc.updateProductStock(id, dto);
     }
 

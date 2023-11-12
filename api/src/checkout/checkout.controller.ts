@@ -20,14 +20,6 @@ export class CheckoutController {
         return this.svc.listCheckout(clientId);
     }
 
-    @Get(':id')
-    async getCheckoutById(
-        @GetClient('id') clientId: string,
-        @Param('id') id: string
-    ): Promise<CheckoutViewmodel> {
-        return this.svc.getCheckoutById(clientId, id)
-    }
-
     @Post('start')
     async startCheckout(
         @GetClient('id') clientId: string
@@ -47,5 +39,43 @@ export class CheckoutController {
         @GetClient('id') clientId: string
     ): Promise<CheckoutViewmodel> {
         return this.svc.finishCheckout(clientId)
+    }
+
+    @Get(':checkoutId')
+    async getCheckoutById(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') id: string
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.getCheckoutById(clientId, id)
+    }
+
+    @Post('/:checkoutId/address/:addressId')
+    async setCheckoutAddress(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('addressId') addressId: string,
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.setCheckoutAddress(clientId, checkoutId, addressId);
+    }
+
+    @Post('/:checkoutId/deliverer/:delivererId')
+    async setCheckoutDeliverer(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('delivererId') delivererId: string
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.setCheckoutDeliverer(clientId, checkoutId, delivererId);
+    }
+
+    @Post(':paymentId')
+    async setCheckoutPaymentMethod(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('paymentId') paymentId: string,
+    ): Promise<null> {
+        // ): Promise<CheckoutViewmodel> {
+        return null
+        // WORK IN PROGRESS HERE
+        // return this.svc.setCheckoutPaymentMethod(clientId, checkoutId, paymentId);
     }
 }
