@@ -27,6 +27,7 @@ jobs:
       - name: Cria .env para o prisma
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+      - run: npx prisma generate
       - run: npx jest --noStackTrace --verbose
 
   deploy:
