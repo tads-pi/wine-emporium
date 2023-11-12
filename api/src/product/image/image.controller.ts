@@ -3,10 +3,11 @@ import { ImageService } from './image.service';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtGuard } from '../../auth/guard';
 import { UploadProductImageDto } from './dto';
+import { BackofficeAdminGuard } from 'src/auth/guard/backoffice.guard';
 
 @ApiTags('product/image')
 @Controller('product/:productId/image')
-@UseGuards(JwtGuard)
+@UseGuards(JwtGuard, BackofficeAdminGuard)
 export class ImageController {
     constructor(
         private svc: ImageService
