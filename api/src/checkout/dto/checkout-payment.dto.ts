@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from "class-validator"
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator"
 
 export class SetCheckoutPaymentMethodDTO {
     @IsString()
@@ -9,4 +9,16 @@ export class SetCheckoutPaymentMethodDTO {
     @IsString()
     @IsNotEmpty()
     methodId: string
+
+    @IsNumber()
+    @IsNotEmpty()
+    installments: number
+
+    @IsNumber()
+    @IsNotEmpty()
+    installmentsValue: number
+
+    @IsNumber()
+    @IsNotEmpty()
+    dueDate: number
 }

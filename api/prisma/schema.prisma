@@ -49,6 +49,7 @@ model CreditCard {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  full_name               String
   number                  String
   cvv                     String
   expireMonth             Int
@@ -330,7 +331,6 @@ model Payment {
 
   method                  PaymentMethod             @relation(fields: [methodId], references: [id])
   methodId                String
-  methodExternalId        String
   BankSlipPaymentMethod   BankSlipPaymentMethod[]
   CreditCardPaymentMethod CreditCardPaymentMethod[]
   Checkout                Checkout[]
@@ -364,7 +364,7 @@ model BankSlipPaymentMethod {
 
   installments      Int
   installmentsValue Float
-  dueDate           DateTime
+  dueDate           Int
   payment           Payment  @relation(fields: [paymentId], references: [id])
   paymentId         String
 
@@ -379,7 +379,7 @@ model CreditCardPaymentMethod {
 
   installments      Int
   installmentsValue Float
-  dueDate           DateTime
+  dueDate           Int
   payment           Payment    @relation(fields: [paymentId], references: [id])
   paymentId         String
   creditCard        CreditCard @relation(fields: [creditCardId], references: [id])

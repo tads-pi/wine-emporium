@@ -1,5 +1,6 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString, Length } from "class-validator"
 
+// No caso de cartão, o mesmo deve pedir o número, código verificador, Nome Completo, data de vencimento e quantidade de parcelas.
 export class SaveCreditCardDTO {
     @IsString()
     @IsNotEmpty()
@@ -15,7 +16,7 @@ export class SaveCreditCardDTO {
     @IsNotEmpty()
     @Length(2, 2)
     expireYear: string
-    
+
     @IsString()
     @IsNotEmpty()
     @Length(3, 3)
@@ -26,9 +27,8 @@ export class SaveCreditCardDTO {
     @IsEnum(['VISA', 'MASTERCARD'])
     flag: string
 
-    // TODO: 
-    // name: string
-    // cpf: string
-    // birthDate: string
-    // phone: string
+    @IsString()
+    @IsNotEmpty()
+    @Length(5, 64)
+    full_name: string
 }

@@ -5,7 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { CartService } from '../cart/cart.service';
 import { S3Service } from '../aws/s3/s3.service';
-import { Address, Cart, Checkout, Deliverer } from '@prisma/client';
+import { Address, BankSlipPaymentMethod, Cart, Checkout, CreditCard, CreditCardPaymentMethod, Deliverer, Payment, PaymentMethod } from '@prisma/client';
+import { SetCheckoutPaymentMethodDTO } from './dto';
 
 describe('CheckoutController', () => {
   let controller: CheckoutController;
@@ -253,6 +254,149 @@ describe('CheckoutController', () => {
       expect(c.status).toBe('METODO_DE_PAGAMENTO_PENDENTE')
     })
 
-    it.todo('deve definir o método de pagamento')
+    it('deve definir o método de pegamento (cartao de credito)', async () => {
+      // Setup
+      let CHECKOUT: Checkout = MOCK_CHECKOUT_01
+      const PAYMENT_METHOD_CREDIT_CARD: PaymentMethod = {
+        id: '123',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        name: 'CARTAO_DE_CREDITO',
+        friendlyName: 'Cartão de crédito',
+      }
+      const MOCK_PAYMENT: Payment = {
+        id: '1111',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        methodId: PAYMENT_METHOD_CREDIT_CARD.id,
+      }
+      const MOCK_CREDIT_CARD: CreditCard = {
+        id: '132',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        full_name: 'Fulano de Tal',
+        number: '1234123412341234',
+        cvv: '123',
+        expireMonth: 12,
+        expireYear: 2021,
+        flag: 'VISA',
+      }
+      const MOCK_CREDIT_CARD_PAYMENT_METHOD: CreditCardPaymentMethod = {
+        id: '142',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        installments: 1,
+        installmentsValue: 100,
+        dueDate: 1,
+        paymentId: MOCK_PAYMENT.id,
+        creditCardId: MOCK_CREDIT_CARD.id,
+      }
+
+      db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
+      db.checkout.findFirst = jest.fn().mockReturnValueOnce(CHECKOUT)
+
+      db.paymentMethod.findFirst = jest.fn().mockReturnValue(PAYMENT_METHOD_CREDIT_CARD)
+      db.payment.create = jest.fn().mockReturnValueOnce(MOCK_PAYMENT)
+      db.creditCard.findUnique = jest.fn().mockReturnValue(MOCK_CREDIT_CARD)
+      db.creditCardPaymentMethod.create = jest.fn().mockReturnValueOnce(MOCK_CREDIT_CARD_PAYMENT_METHOD)
+
+      db.checkout.update = jest.fn().mockImplementation((args) => {
+        CHECKOUT.paymentId = args.data.paymentId
+        CHECKOUT.status = args.data.status
+        return CHECKOUT
+      })
+
+      db.payment.findUnique = jest.fn().mockReturnValueOnce(MOCK_PAYMENT)
+      db.creditCardPaymentMethod.findFirst = jest.fn().mockReturnValueOnce(MOCK_CREDIT_CARD_PAYMENT_METHOD)
+
+      // Teste
+      const input: SetCheckoutPaymentMethodDTO = {
+        paymentMethod: 'credit-card',
+        methodId: MOCK_CREDIT_CARD.id,
+        installments: 1,
+        installmentsValue: 100,
+        dueDate: 1,
+      }
+
+      const c = await controller.setCheckoutPaymentMethod(CLIENT_ID, CHECKOUT.id, input)
+      expect(c).toBeDefined()
+      expect(db.checkout.update).toHaveBeenCalledTimes(1)
+
+      expect(c.id).toBe(CHECKOUT.id)
+      expect(c.payment.id).toBe(MOCK_PAYMENT.id)
+      expect(c.payment.bankSlip).toBe(false)
+      expect(c.payment.creditCard.id).toBe(MOCK_CREDIT_CARD.id)
+      expect(c.status).toBe('PAGAMENTO_PENDENTE')
+    })
+
+    it('deve definir o método de pegamento (boleto)', async () => {
+      // Setup
+      let CHECKOUT: Checkout = MOCK_CHECKOUT_01
+      const PAYMENT_METHOD_BANK_SLIP: PaymentMethod = {
+        id: '132',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        name: 'BOLETO',
+        friendlyName: 'Boleto',
+      }
+      const MOCK_PAYMENT: Payment = {
+        id: '141',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        methodId: PAYMENT_METHOD_BANK_SLIP.id,
+      }
+      const MOCK_BANK_SLIP_PAYMENT_METHOD: BankSlipPaymentMethod = {
+        id: '111',
+        active: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        installments: 1,
+        installmentsValue: 100,
+        dueDate: 1,
+        paymentId: MOCK_PAYMENT.id,
+      }
+
+      db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
+      db.checkout.findFirst = jest.fn().mockReturnValueOnce(CHECKOUT)
+
+      db.paymentMethod.findFirst = jest.fn().mockReturnValue(PAYMENT_METHOD_BANK_SLIP)
+      db.payment.create = jest.fn().mockReturnValueOnce(MOCK_PAYMENT)
+      db.bankSlipPaymentMethod.create = jest.fn().mockReturnValueOnce(MOCK_BANK_SLIP_PAYMENT_METHOD)
+
+      db.checkout.update = jest.fn().mockImplementation((args) => {
+        CHECKOUT.paymentId = args.data.paymentId
+        CHECKOUT.status = args.data.status
+        return CHECKOUT
+      })
+
+      db.payment.findUnique = jest.fn().mockReturnValueOnce(MOCK_PAYMENT)
+      db.bankSlipPaymentMethod.findFirst = jest.fn().mockReturnValueOnce(MOCK_BANK_SLIP_PAYMENT_METHOD)
+
+      // Teste
+      const input: SetCheckoutPaymentMethodDTO = {
+        paymentMethod: 'bank-slip',
+        methodId: null,
+        installments: 1,
+        installmentsValue: 100,
+        dueDate: 1,
+      }
+
+      const c = await controller.setCheckoutPaymentMethod(CLIENT_ID, CHECKOUT.id, input)
+      expect(c).toBeDefined()
+      expect(db.checkout.update).toHaveBeenCalledTimes(1)
+
+      expect(c.id).toBe(CHECKOUT.id)
+      expect(c.payment.id).toBe(MOCK_PAYMENT.id)
+      expect(c.payment.bankSlip).toBe(true)
+      expect(c.payment.creditCard).toBeNull()
+      expect(c.status).toBe('PAGAMENTO_PENDENTE')
+    })
+
   })
 });

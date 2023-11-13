@@ -1,17 +1,17 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from '../../auth/guard';
-import { CreditCardService } from './credit-card.service';
-import { GetClient } from '../../client/decorator/client.decorator';
+import { JwtGuard } from '../auth/guard';
+import { PaymentService } from './payment.service';
+import { GetClient } from '../client/decorator/client.decorator';
 import { ClientCreditCardViewmodel } from './viewmodel/client-credit-card.viewmodel';
 import { SaveCreditCardDTO } from './dto/save-credit-card.dto';
 
 @ApiTags('client/credit-card')
 @Controller('client/credit-card')
 @UseGuards(JwtGuard)
-export class CreditCardController {
+export class PaymentController {
     constructor(
-        private svc: CreditCardService
+        private svc: PaymentService
     ) { }
 
     @Get('')
