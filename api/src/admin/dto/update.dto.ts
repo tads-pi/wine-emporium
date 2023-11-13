@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, Length } from "class-validator";
+import { IsEnum, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class UpdateBackofficeClientDTO {
     @IsString()
@@ -13,5 +13,6 @@ export class UpdateBackofficeClientDTO {
 
     @IsString()
     @IsNotEmpty()
-    groupId: string;
+    @IsEnum(['ADMINISTRADOR', 'ESTOQUISTA'])
+    group: string;
 }

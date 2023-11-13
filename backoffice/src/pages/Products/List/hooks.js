@@ -49,6 +49,19 @@ export default function useListProduct() {
         setSearchTextField(field)
     }
 
+    function onDoubleClick(product) {
+        if (!product) {
+            navigate("/products")
+            return
+        }
+
+        navigate(`/products/update/${product.id}`, {
+            state: {
+                product: product
+            }
+        })
+    }
+
     function onToggleActive(productId) {
         dispatch(api.toggleProductActive({ productId }))
     }
@@ -85,6 +98,7 @@ export default function useListProduct() {
         onChangeSearchText,
         searchTextField,
         onChangeSearchTextField,
+        onDoubleClick,
         onToggleActive,
         totalItems,
         currentPage,

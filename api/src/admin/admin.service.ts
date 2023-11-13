@@ -98,7 +98,16 @@ export class AdminService {
         if (!c) {
             throw new NotFoundException('Cliente não encontrado')
         }
-        const g = await this.db.backofficeGroup.findUnique({ where: { id: dto.groupId } })
+
+        // Gambiarrinha
+        const group = dto.group
+        if (!(group === 'ADMINISTRADOR' || group === 'ESTOQUISTA')) {
+            throw new NotFoundException('Grupo não encontrado')
+        }
+
+        const g = await this.db.backofficeGroup.findFirst({
+            where: { name: group }
+        })
         if (!g) {
             throw new NotFoundException('Grupo não encontrado')
         }
@@ -125,7 +134,7 @@ export class AdminService {
                 document: dto.document,
                 group: {
                     connect: {
-                        id: dto.groupId,
+                        name: group,
                     }
                 }
             },

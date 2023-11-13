@@ -10,6 +10,7 @@ export default function ListProducts() {
         onChangeSearchText,
         searchTextField,
         onChangeSearchTextField,
+        onDoubleClick,
         onToggleActive,
         totalItems,
         currentPage,
@@ -70,7 +71,7 @@ export default function ListProducts() {
                 }}
                 columns={columns}
                 columnsTitle={columnsTitle}
-                onDoubleClick={() => { }}
+                onDoubleClick={onDoubleClick}
                 loadingData={loading}
                 onSearch={onChangeSearchText}
                 searchTextField={searchTextField}
