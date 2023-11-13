@@ -223,6 +223,7 @@ describe('CheckoutController', () => {
     it('deve definir o entregador', async () => {
       // Setup
       let CHECKOUT: Checkout = MOCK_CHECKOUT_01
+      CHECKOUT.status = 'ENTREGADOR_PENDENTE'
 
       const MOCK_DELIVERER: Deliverer = {
         id: '1',
@@ -233,9 +234,10 @@ describe('CheckoutController', () => {
         fare: 10.99,
       }
 
-      db.checkout.findUnique = jest.fn().mockReturnValueOnce(CHECKOUT)
+      db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
+      db.checkout.findUnique = jest.fn().mockReturnValue(CHECKOUT)
+      
       db.deliverer.findUnique = jest.fn().mockReturnValue(MOCK_DELIVERER)
-
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
 
       db.checkout.update = jest.fn().mockImplementation((args) => {
@@ -257,6 +259,7 @@ describe('CheckoutController', () => {
     it('deve definir o método de pegamento (cartao de credito)', async () => {
       // Setup
       let CHECKOUT: Checkout = MOCK_CHECKOUT_01
+      CHECKOUT.status = 'METODO_DE_PAGAMENTO_PENDENTE'
       const PAYMENT_METHOD_CREDIT_CARD: PaymentMethod = {
         id: '123',
         active: true,
@@ -297,7 +300,7 @@ describe('CheckoutController', () => {
       }
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
-      db.checkout.findFirst = jest.fn().mockReturnValueOnce(CHECKOUT)
+      db.checkout.findUnique = jest.fn().mockReturnValue(CHECKOUT)
 
       db.paymentMethod.findFirst = jest.fn().mockReturnValue(PAYMENT_METHOD_CREDIT_CARD)
       db.payment.create = jest.fn().mockReturnValueOnce(MOCK_PAYMENT)
@@ -336,6 +339,7 @@ describe('CheckoutController', () => {
     it('deve definir o método de pegamento (boleto)', async () => {
       // Setup
       let CHECKOUT: Checkout = MOCK_CHECKOUT_01
+      CHECKOUT.status = 'METODO_DE_PAGAMENTO_PENDENTE'
       const PAYMENT_METHOD_BANK_SLIP: PaymentMethod = {
         id: '132',
         active: true,
@@ -363,7 +367,7 @@ describe('CheckoutController', () => {
       }
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
-      db.checkout.findFirst = jest.fn().mockReturnValueOnce(CHECKOUT)
+      db.checkout.findUnique = jest.fn().mockReturnValueOnce(CHECKOUT)
 
       db.paymentMethod.findFirst = jest.fn().mockReturnValue(PAYMENT_METHOD_BANK_SLIP)
       db.payment.create = jest.fn().mockReturnValueOnce(MOCK_PAYMENT)

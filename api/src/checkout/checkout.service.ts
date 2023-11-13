@@ -27,7 +27,7 @@ export class CheckoutService {
             throw new NotFoundException('Carrinho não encontrado')
         }
 
-        const checkout = await this.db.checkout.findFirst({
+        const checkout = await this.db.checkout.findUnique({
             where: {
                 id: checkoutId,
                 cartId: cart.id
