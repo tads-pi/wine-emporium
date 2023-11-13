@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ClientCreditCardViewmodel } from './viewmodel/client-credit-card.viewmodel';
 import { SaveCreditCardDTO } from './dto/save-credit-card.dto';
 
 @Injectable()
-export class CreditCardService {
+export class PaymentService {
     constructor(
         private db: PrismaService
     ) { }
@@ -40,6 +40,7 @@ export class CreditCardService {
                 flag: dto.flag,
                 expireMonth: expMonth,
                 expireYear: expYear,
+                full_name: dto.full_name
             }
         })
 

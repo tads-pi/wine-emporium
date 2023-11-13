@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
 import { JwtGuard } from '../auth/guard';
 import { GetClient } from '../client/decorator/client.decorator';
 import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
 import { ApiTags } from '@nestjs/swagger';
+import { SetCheckoutPaymentMethodDTO } from './dto';
 
 @ApiTags('checkout')
 @Controller('checkout')
@@ -67,15 +68,12 @@ export class CheckoutController {
         return this.svc.setCheckoutDeliverer(clientId, checkoutId, delivererId);
     }
 
-    @Post(':paymentId')
+    @Post('/:checkoutId/payment')
     async setCheckoutPaymentMethod(
         @GetClient('id') clientId: string,
         @Param('checkoutId') checkoutId: string,
-        @Param('paymentId') paymentId: string,
-    ): Promise<null> {
-        // ): Promise<CheckoutViewmodel> {
-        return null
-        // WORK IN PROGRESS HERE
-        // return this.svc.setCheckoutPaymentMethod(clientId, checkoutId, paymentId);
+        @Body('') dto: SetCheckoutPaymentMethodDTO,
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.setCheckoutPaymentMethod(clientId, checkoutId, dto);
     }
 }

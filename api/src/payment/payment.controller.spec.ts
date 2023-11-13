@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreditCardController } from './credit-card.controller';
-import { CreditCardService } from './credit-card.service';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PaymentController } from './payment.controller';
+import { PaymentService } from './payment.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { ClientCreditCard, CreditCard } from '@prisma/client';
 import { SaveCreditCardDTO } from './dto/save-credit-card.dto';
 
 describe('CreditCardController', () => {
-  let controller: CreditCardController;
+  let controller: PaymentController;
   let db: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CreditCardController],
-      providers: [CreditCardService, PrismaService, ConfigService]
+      controllers: [PaymentController],
+      providers: [PaymentService, PrismaService, ConfigService]
     }).compile();
 
-    controller = module.get<CreditCardController>(CreditCardController);
+    controller = module.get<PaymentController>(PaymentController);
     db = module.get<PrismaService>(PrismaService);
   });
 
@@ -34,9 +34,10 @@ describe('CreditCardController', () => {
       flag: 'VISA',
       expireMonth: 12,
       expireYear: 2030,
+      full_name: 'Fulano de Tal',
       createdAt: new Date(),
       updatedAt: new Date(),
-      active: true
+      active: true,
     }
     const MOCK_CLIENT_CREDIT_CARD: ClientCreditCard = {
       id: '1',
@@ -71,7 +72,8 @@ describe('CreditCardController', () => {
         cvv: MOCK_CREDIT_CARD.cvv,
         flag: MOCK_CREDIT_CARD.flag,
         expireMonth: MOCK_CREDIT_CARD.expireMonth.toString(),
-        expireYear: MOCK_CREDIT_CARD.expireYear.toString()
+        expireYear: MOCK_CREDIT_CARD.expireYear.toString(),
+        full_name: MOCK_CREDIT_CARD.full_name,
       }
 
       const result = await controller.saveNewCreditCard(CLIENT_ID, input);

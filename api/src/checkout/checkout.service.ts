@@ -6,6 +6,8 @@ import { AddressViewmodel } from '../client/address/viewmodel/address.viewmodel'
 import { CartService } from '../cart/cart.service';
 import { DelivererViewmodel } from '../deliverer/viewmodel';
 import { SetCheckoutPaymentMethodDTO } from './dto';
+import { PaymentViewmodel } from '../payment/viewmodel/payment.viewmodel';
+import { ClientCreditCardViewmodel } from '../payment/viewmodel/client-credit-card.viewmodel';
 
 @Injectable()
 export class CheckoutService {
@@ -14,7 +16,28 @@ export class CheckoutService {
         private cartSvc: CartService,
     ) { }
 
-    async fillCheckoutWithData(c: Checkout): Promise<CheckoutViewmodel> {
+    private async getClientCheckout(clientId: string, checkoutId): Promise<Checkout> {
+        const cart = await this.db.cart.findFirst({
+            where: {
+                clientId: clientId,
+                status: "OPEN"
+            }
+        })
+        if (!cart) {
+            throw new NotFoundException('Carrinho não encontrado')
+        }
+
+        const checkout = await this.db.checkout.findUnique({
+            where: {
+                id: checkoutId,
+                cartId: cart.id
+            }
+        })
+
+        return checkout
+    }
+
+    private async fillCheckoutWithData(c: Checkout): Promise<CheckoutViewmodel> {
         const cart = await this.db.cart.findFirst({
             where: { id: c.cartId }
         })
@@ -29,6 +52,51 @@ export class CheckoutService {
             where: { id: c.delivererId || '' }
         })
 
+        let paymentViewmodel: PaymentViewmodel
+        if (payment) {
+            const PAYMENT_METHOD = await this.db.paymentMethod.findFirst({
+                where: { id: payment.methodId }
+            })
+
+            switch (PAYMENT_METHOD.name) {
+                case 'CARTAO_DE_CREDITO':
+                    const ccpm = await this.db.creditCardPaymentMethod.findFirst({
+                        where: { paymentId: payment.id }
+                    })
+                    const cc = await this.db.creditCard.findUnique({
+                        where: { id: ccpm.creditCardId }
+                    })
+
+                    paymentViewmodel = {
+                        id: payment.id,
+                        bankSlip: false,
+                        creditCard: new ClientCreditCardViewmodel(cc),
+                        installments: ccpm.installments,
+                        installmentsValue: ccpm.installmentsValue,
+                        dueDate: ccpm.dueDate,
+                        status: c.status,
+                    }
+                    break;
+
+                case 'BOLETO':
+                    const bspm = await this.db.bankSlipPaymentMethod.findFirst({
+                        where: { paymentId: payment.id }
+                    })
+
+                    paymentViewmodel = {
+                        id: payment.id,
+                        bankSlip: true,
+                        creditCard: null,
+                        installments: bspm.installments,
+                        installmentsValue: bspm.installmentsValue,
+                        dueDate: bspm.dueDate,
+                        status: c.status,
+                    }
+                    break;
+            }
+        }
+
+
         const viewmodel: CheckoutViewmodel = {
             id: c.id,
             sequentialId: c.sequentialId,
@@ -39,13 +107,7 @@ export class CheckoutService {
             },
             deliverer: deliverer ? new DelivererViewmodel(deliverer) : null,
             address: address ? new AddressViewmodel(address, false) : null,
-            // payment: {
-            //     id: payment.id,
-            //     cardNumber: payment.cardNumber,
-            //     cardName: payment.cardName,
-            //     cardExpiration: payment.cardExpiration,
-            //     cardCVV: payment.cardCVV,
-            // },
+            payment: payment ? paymentViewmodel : null,
             price: await this.cartSvc.calculateCartPrice(cart.id) + (deliverer ? deliverer.fare : 0),
         }
 
@@ -174,13 +236,9 @@ export class CheckoutService {
     }
 
     async setCheckoutAddress(clientId: string, checkoutId: string, addressId: string): Promise<CheckoutViewmodel> {
-        let c: Checkout | null = null
-        c = await this.db.checkout.findUnique({
-            where: { id: checkoutId },
-        });
-        if (!c) {
-            throw new NotFoundException('Checkout não encontrado');
-        }
+        // Verifica se o checkout pertence ao cliente em questão
+        let c = await this.getClientCheckout(clientId, checkoutId)
+
         const a = await this.db.address.findUnique({
             where: { id: addressId },
         });
@@ -200,13 +258,12 @@ export class CheckoutService {
     }
 
     async setCheckoutDeliverer(clientId: string, checkoutId: string, delivererId: string): Promise<CheckoutViewmodel> {
-        let c: Checkout | null = null
-        c = await this.db.checkout.findUnique({
-            where: { id: checkoutId },
-        });
-        if (!c) {
-            throw new NotFoundException('Checkout não encontrado');
+        // Verifica se o checkout pertence ao cliente em questão
+        let c = await this.getClientCheckout(clientId, checkoutId)
+        if (c.status !== 'ENTREGADOR_PENDENTE') {
+            throw new BadRequestException('Defina o endereço antes.')
         }
+
         const e = await this.db.deliverer.findUnique({
             where: { id: delivererId },
         });
@@ -225,43 +282,81 @@ export class CheckoutService {
         return this.fillCheckoutWithData(c);
     }
 
-    async setCheckoutPaymentMethod(clientId: string, checkoutId: string, dto: SetCheckoutPaymentMethodDTO): Promise<null> {
-        let c: Checkout | null = null
-        c = await this.db.checkout.findUnique({ where: { id: checkoutId } })
-        if (!c) {
-            throw new NotFoundException('Checkout não encontrado')
+    async setCheckoutPaymentMethod(clientId: string, checkoutId: string, dto: SetCheckoutPaymentMethodDTO): Promise<CheckoutViewmodel> {
+        // Verifica se o checkout pertence ao cliente em questão
+        let c = await this.getClientCheckout(clientId, checkoutId)
+        if (c.status !== 'METODO_DE_PAGAMENTO_PENDENTE') {
+            throw new BadRequestException('Defina o entregador antes.')
         }
 
-        if (dto.paymentMethod === 'credit-card') {
-            await this.handleCreditCardPaymentMethod(clientId, dto.methodId)
-        } else if (dto.paymentMethod === 'bank-slip') {
-            await this.handleBankSlipPaymentMethod(clientId, dto.methodId)
-        } else {
-            throw new BadRequestException('Método de pagamento inválido')
+        let paymentId: string
+        switch (dto.paymentMethod) {
+            case 'credit-card':
+                paymentId = await this.newCreditCardPayment(dto)
+                break;
+            case 'bank-slip':
+                paymentId = await this.newBankSlipPayment(dto)
+                break;
+            default:
+                throw new BadRequestException('Método de pagamento inválido')
         }
-        return
+
+        c = await this.db.checkout.update({
+            where: { id: checkoutId },
+            data: {
+                paymentId: paymentId,
+                status: 'PAGAMENTO_PENDENTE'
+            }
+        })
+
+        return await this.fillCheckoutWithData(c)
     }
 
-    // WORK IN PROGRESS HERE
-    private async handleCreditCardPaymentMethod(checkoutId: string, id: string) {
-        let c: Checkout | null = null
-        c = await this.db.checkout.findUnique({ where: { id: checkoutId } })
-        if (!c) {
-            throw new NotFoundException('Checkout não encontrado')
-        }
+    private async newCreditCardPayment(dto: SetCheckoutPaymentMethodDTO): Promise<string> {
+        const CREDIT_CARD_METHOD = await this.db.paymentMethod.findFirst({
+            where: { name: 'CARTAO_DE_CREDITO' },
+        })
 
-        const creditCard = await this.db.creditCard.findUnique({ where: { id: id } })
+        const payment = await this.db.payment.create({
+            data: { methodId: CREDIT_CARD_METHOD.id }
+        })
+
+        const creditCard = await this.db.creditCard.findUnique({ where: { id: dto.methodId } })
         if (!creditCard) {
             throw new NotFoundException('Cartão de crédito não encontrado')
         }
 
-        // WIP
-        // await this.db.checkout.update({
-        //     where: {
-        //         id: checkoutId,
+        await this.db.creditCardPaymentMethod.create({
+            data: {
+                installments: dto.installments,
+                installmentsValue: dto.installmentsValue,
+                dueDate: dto.dueDate,
+                paymentId: payment.id,
+                creditCardId: creditCard.id,
+            }
+        })
 
-        //     }
-        // })
+        return payment.id
     }
-    private async handleBankSlipPaymentMethod(checkoutId: string, id: string) { }
+
+    private async newBankSlipPayment(dto: SetCheckoutPaymentMethodDTO): Promise<string> {
+        const BANK_SLIP_METHOD = await this.db.paymentMethod.findFirst({
+            where: { name: 'BOLETO' }
+        })
+
+        const payment = await this.db.payment.create({
+            data: { methodId: BANK_SLIP_METHOD.id }
+        })
+
+        await this.db.bankSlipPaymentMethod.create({
+            data: {
+                installments: dto.installments,
+                installmentsValue: dto.installmentsValue,
+                dueDate: dto.dueDate,
+                paymentId: payment.id,
+            }
+        })
+
+        return payment.id
+    }
 }
