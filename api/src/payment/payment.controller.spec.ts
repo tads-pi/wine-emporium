@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreditCardController } from './payment.controller';
-import { CreditCardService } from './payment.service';
+import { PaymentController } from './payment.controller';
+import { PaymentService } from './payment.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { ClientCreditCard, CreditCard } from '@prisma/client';
 import { SaveCreditCardDTO } from './dto/save-credit-card.dto';
 
 describe('CreditCardController', () => {
-  let controller: CreditCardController;
+  let controller: PaymentController;
   let db: PrismaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CreditCardController],
-      providers: [CreditCardService, PrismaService, ConfigService]
+      controllers: [PaymentController],
+      providers: [PaymentService, PrismaService, ConfigService]
     }).compile();
 
-    controller = module.get<CreditCardController>(CreditCardController);
+    controller = module.get<PaymentController>(PaymentController);
     db = module.get<PrismaService>(PrismaService);
   });
 
