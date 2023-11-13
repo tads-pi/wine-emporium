@@ -4,7 +4,11 @@ import useStore from "../../../zustand/store";
 import { routes } from "../../../config/routes";
 
 export default function SettingsWE() {
-  const { signOut } = useStore()
+  const { signOut: storeSignOut } = useStore()
+
+  function signOut() {
+    confirm('Deseja realmente sair?') && storeSignOut()
+  }
 
   return (
     <>
