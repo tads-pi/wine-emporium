@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import Carousel from 'react-bootstrap/Carousel';
 import Loading from "../../components/loading"
-import { Button, Input, Rating, Typography } from "@mui/material";
+import { useParams } from "react-router-dom";
+import { Rating, Typography } from "@mui/material";
 import { useStoreProductWE } from "./hooks";
 import { VariantType, enqueueSnackbar } from "notistack";
-import { Deliverer, Product } from "../../zustand/types";
+import { Product } from "../../zustand/types";
 import { NavBarWE } from "../../components/NavBarWE";
 import './storeProductWE.css'
-import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function StoreProductWE() {
     const { id } = useParams();
     const {
         currentProduct,
         addCartProduct,
-        getDeliverers,
     } = useStoreProductWE(id || '')
 
     const handleClickVariant = (variant: VariantType, product: Product) => () => {
@@ -26,9 +24,6 @@ export default function StoreProductWE() {
             { variant }
         );
     };
-
-    const [zipCode, setZipCode] = useState<string>("")
-    const [deliverers, setDeliverers] = useState<Deliverer[]>([])
 
     return (
         <>
@@ -79,42 +74,6 @@ export default function StoreProductWE() {
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "40px" }}>
                                     <button className="adiconar-sacola-verMais" onClick={(handleClickVariant("success", currentProduct))}>Adicionar à sacola</button>
                                 </div>
-                            </div>
-
-                            <div>
-                                <Input
-                                    placeholder="Digite seu CEP"
-                                    value={zipCode}
-                                    onChange={(e) => {
-                                        if (e.target.value.length <= 8) {
-                                            setZipCode(e.target.value)
-                                        }
-                                    }}
-                                />
-                                {
-                                    zipCode.length >= 8 &&
-                                    <Button onClick={() => {
-                                        getDeliverers(zipCode).then((d) => {
-                                            console.log({ d });
-                                            setDeliverers(d)
-                                        })
-                                    }
-                                    }>Calcular Frete</Button>
-                                }
-
-                                <ul>
-                                    {
-                                        deliverers.length > 0 &&
-                                        deliverers.map((deliverer) => (
-                                            <li key={deliverer.id}>
-                                                <div>
-                                                    <p>{deliverer.name}</p>
-                                                    <p>{formatCurrency(Number(deliverer.fare))}</p>
-                                                </div>
-                                            </li>
-                                        ))
-                                    }
-                                </ul>
                             </div>
                         </div>
 
