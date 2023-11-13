@@ -23,22 +23,21 @@ export const toggleUserActive = createAsyncThunk('appReportBackofficeUsers/toggl
 export const getUserById = createAsyncThunk("appReportBackofficeUsers/getUserById", usersService.getUserById)
 export const saveNewUser = createAsyncThunk("appReportBackofficeUsers/saveNewUser", usersService.saveNewUser)
 export const updateUser = createAsyncThunk("appReportBackofficeUsers/updateUser", usersService.updateUser)
-export const deleteUser = createAsyncThunk("appReportBackofficeUsers/deleteUser", usersService.deleteUser)
 export const appReportBackofficeUsersSlice = createSlice({
     name: "appReportBackofficeUsers",
     initialState: initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addMatcher(isAnyOf(fetchBackofficeUsers.pending, getUserById.pending, saveNewUser.pending, updateUser.pending, toggleUserActive.pending, deleteUser.pending), (state, action) => {
+        builder.addMatcher(isAnyOf(fetchBackofficeUsers.pending, getUserById.pending, saveNewUser.pending, updateUser.pending, toggleUserActive.pending), (state, action) => {
             state.fn = action.type
             state.loading = true
         })
-        builder.addMatcher(isAnyOf(fetchBackofficeUsers.fulfilled, getUserById.fulfilled, saveNewUser.fulfilled, updateUser.fulfilled, toggleUserActive.fulfilled, deleteUser.fulfilled), (state, action) => {
+        builder.addMatcher(isAnyOf(fetchBackofficeUsers.fulfilled, getUserById.fulfilled, saveNewUser.fulfilled, updateUser.fulfilled, toggleUserActive.fulfilled), (state, action) => {
             state.fn = action.type
             state.response = action.payload
             state.loading = false
         })
-        builder.addMatcher(isAnyOf(fetchBackofficeUsers.rejected, getUserById.rejected, saveNewUser.rejected, updateUser.rejected, toggleUserActive.rejected, deleteUser.rejected), (state, action) => {
+        builder.addMatcher(isAnyOf(fetchBackofficeUsers.rejected, getUserById.rejected, saveNewUser.rejected, updateUser.rejected, toggleUserActive.rejected), (state, action) => {
             state.fn = action.type
             state.loading = false
         })

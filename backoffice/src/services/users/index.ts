@@ -30,8 +30,7 @@ export type ISaveNewUser = {
 }
 
 export type IToggleUserActive = {
-    userID: string,
-    active: boolean
+    userId: string
 }
 
 export async function getAllUsers(filter?: IGetUsersFilter) {
@@ -107,7 +106,7 @@ export async function updateUser(payload: IUpdateUser) {
 
 export async function toggleUserActive(payload: IToggleUserActive) {
     try {
-        const response = await api.delete(`/backoffice/user/${payload.userID}`)
+        const response = await api.delete(`/backoffice/user/${payload.userId}`)
         return response
     } catch (error: any) {
         console.log("error at toggleUserActive: ", error);

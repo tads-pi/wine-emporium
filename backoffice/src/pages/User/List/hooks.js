@@ -63,12 +63,9 @@ export default function useListUser() {
         })
     }
 
-    function onToggleActive(userId, value) {
-        // send confirm message
-        dispatch(api.toggleUserActive({
-            userID: userId,
-            active: value,
-        }))
+    function onToggleActive(userId) {
+        console.log({ userId });
+        dispatch(api.toggleUserActive({ userId }))
     }
 
     useEffect(() => {

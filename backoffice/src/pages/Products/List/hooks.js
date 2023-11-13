@@ -49,12 +49,8 @@ export default function useListProduct() {
         setSearchTextField(field)
     }
 
-    function onToggleActive(productId, value) {
-        // send confirm message
-        dispatch(api.toggleProductActive({
-            productID: productId,
-            active: value,
-        }))
+    function onToggleActive(productId) {
+        dispatch(api.toggleProductActive({ productId }))
     }
 
     useEffect(() => {

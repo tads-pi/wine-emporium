@@ -20,13 +20,13 @@ export default function ListUsers() {
     const users = data.map((u, index) => {
         return {
             ...u,
-            id: index,
+            fake_id: index,
             group: u?.group?.name || "",
         }
     })
 
     const columns = [
-        "id",
+        "fake_id",
         "name",
         "email",
         "group",
@@ -40,7 +40,6 @@ export default function ListUsers() {
         "Estado"
     ]
 
-    // TODO make it work
     function SliderWE(row) {
         return (
             <div className="toggle__container">
@@ -49,10 +48,15 @@ export default function ListUsers() {
                         const value = e?.target?.value === 1
                         const check = window.confirm(`Deseja mesmo ${value ? "ativar" : "desativar"} esse usuário?`)
                         if (check) {
-                            onToggleActive(row?.id || 0, value)
+                            console.log({
+                                id: users[row?.fake_id]?.id,
+                                user: users[row?.fake_id],
+                                row: row
+                            });
+                            onToggleActive(users[row?.fake_id]?.id)
                         }
                     }}
-                    defaultValue={row?.active ? 1 : 0}
+                    defaultValue={users[row?.fake_id]?.active ? 1 : 0}
                     valueLabelDisplay="auto"
                     step={1}
                     marks

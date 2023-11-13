@@ -39,8 +39,7 @@ export type ISaveNewProduct = {
 }
 
 export type IToggleProductActive = {
-    productID: string,
-    active: boolean
+    productId: string
 }
 
 export type IDeleteProductImage = {
@@ -123,7 +122,7 @@ export async function updateProduct(payload: IUpdateProduct) {
 
 export async function toggleProductActive(payload: IToggleProductActive) {
     try {
-        const response = await api.delete(`/product/backoffice/${payload.productID}`)
+        const response = await api.delete(`/product/backoffice/${payload.productId}`)
         return response
     } catch (error: any) {
         console.log("error at deactivateProduct: ", error);

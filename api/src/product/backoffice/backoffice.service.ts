@@ -206,8 +206,6 @@ export class BackofficeService {
     }
 
     async toggleProductActive(id: string): Promise<null> {
-        // TODO check permissions before update
-        // TODO make new guard for this
         const product = await this.db.product.findUnique({
             where: {
                 id: id,

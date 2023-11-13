@@ -10,7 +10,6 @@ export default function ListProducts() {
         onChangeSearchText,
         searchTextField,
         onChangeSearchTextField,
-        onDoubleClick,
         onToggleActive,
         totalItems,
         currentPage,
@@ -20,14 +19,13 @@ export default function ListProducts() {
     const products = data.map((p, index) => {
         return {
             ...p,
-            ID: index,
+            fake_id: index,
             stock: p?.stock[0]?.total || 0,
         }
     })
-    console.log({ data });
 
     const columns = [
-        "ID",
+        "fake_id",
         "name",
         "price",
         "stock",
@@ -41,7 +39,6 @@ export default function ListProducts() {
         "Estado"
     ]
 
-    // TODO make it work
     function SliderWE(row) {
         return (
             <div className="toggle__container">
@@ -50,10 +47,10 @@ export default function ListProducts() {
                         const value = e?.target?.value === 1
                         const check = window.confirm(`Deseja mesmo ${value ? "ativar" : "desativar"} esse produto?`)
                         if (check) {
-                            onToggleActive(row?.id || 0, value)
+                            onToggleActive(products[row?.fake_id].id)
                         }
                     }}
-                    defaultValue={row?.active ? 1 : 0}
+                    defaultValue={products[row?.fake_id].active ? 1 : 0}
                     valueLabelDisplay="auto"
                     step={1}
                     marks
