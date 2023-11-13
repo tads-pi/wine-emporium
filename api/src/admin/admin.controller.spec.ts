@@ -237,7 +237,7 @@ describe('AdminController', () => {
         {
           name: NEW_NAME,
           document: BACKOFFICE_CLIENT.document,
-          groupId: BACKOFFICE_CLIENT.group.id,
+          group: BACKOFFICE_CLIENT.group.name,
         }
       )
       expect(res).toBeNull()
