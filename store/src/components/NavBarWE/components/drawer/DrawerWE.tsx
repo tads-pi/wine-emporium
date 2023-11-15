@@ -17,6 +17,7 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
     const {
         cartState,
         getCart,
+        addProduct,
         removeProduct,
         handleGoToCheckout
     } = useDrawer()
@@ -27,20 +28,26 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
         setPrice(cartState?.price || 0)
     }, [])
 
+    // Força o update do drawer!
+    setInterval(() => {
+        setFakeState(!fakeState)
+        setPrice(cartState?.price || 0)
+    }, 100)
+
     const [fakeState, setFakeState] = useState<boolean>(false)
     return (
         <Drawer
             anchor="right"
             open={drawerOpen}
             onClose={hideOrShowDrawer}
-            onMouseMove={() => {
-                // TODO por algum motivo o drawer não atualiza quando deveria,
-                // então eu criei esse state fake pra forçar a atualização
-                // soh que isso cria uma porrada de atualização de uma vez, o ideal
-                // é tentar refatorar isso pra alguma outra coisa!!
-                setFakeState(!fakeState)
-                setPrice(cartState?.price || 0)
-            }}
+            // onMouseMove={() => {
+            //     // TODO por algum motivo o drawer não atualiza quando deveria,
+            //     // então eu criei esse state fake pra forçar a atualização
+            //     // soh que isso cria uma porrada de atualização de uma vez, o ideal
+            //     // é tentar refatorar isso pra alguma outra coisa!!
+            //     setFakeState(!fakeState)
+            //     setPrice(cartState?.price || 0)
+            // }}
 
             style={{
                 overflow: 'hidden'
@@ -56,6 +63,7 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
                                     ?
                                     <ShowCartProducts
                                         cart={cartState}
+                                        addProduct={addProduct}
                                         removeProduct={removeProduct}
                                     />
 
@@ -69,7 +77,7 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
                                 cartState.products.length > 0 &&
                                 <>
                                     <Typography variant="h6" gutterBottom>
-                                        Total: ${formatCurrency(price)}
+                                        Total: {formatCurrency(price)}
                                     </Typography>
                                     <GoToCheckoutButton
                                         handleGoToCheckout={handleGoToCheckout}
@@ -137,7 +145,9 @@ function GoToCheckoutButton({ handleGoToCheckout }: { handleGoToCheckout: () => 
     )
 }
 
-function ShowCartProducts({ cart, removeProduct }: { cart: Cart, removeProduct: (productId: string) => void }) {
+function ShowCartProducts({ cart, addProduct, removeProduct }: { cart: Cart, addProduct: (productId: string) => void, removeProduct: (productId: string) => void }) {
+    cart.products = cart.products.sort((a, b) => a.name.localeCompare(b.name))
+
     return (
         <>
             {
@@ -145,6 +155,7 @@ function ShowCartProducts({ cart, removeProduct }: { cart: Cart, removeProduct: 
                     <CartProductCard
                         key={product.id}
                         product={product}
+                        addInCart={() => addProduct(product.id)}
                         removeFromCart={() => removeProduct(product.id)}
                     />
                 ))

@@ -9,14 +9,17 @@ import { formatCurrency } from '../../utils/formatCurrency';
 
 type CartProductCardProps = {
     product: CartProduct,
+    addInCart: () => void
     removeFromCart: () => void
 }
 
-export function CartProductCard({ product, removeFromCart }: CartProductCardProps) {
-    const handleClickVariant = (variant: VariantType) => () => {
+export function CartProductCard({ product, addInCart, removeFromCart }: CartProductCardProps) {
+    function removeItem() {
         removeFromCart()
-        enqueueSnackbar(<Typography>Vinho removido do carrinho.</Typography>, { variant })
-    };
+    }
+    function addItem() {
+        addInCart()
+    }
 
     function getImage() {
         if (product?.images.length > 0) {
@@ -89,17 +92,46 @@ export function CartProductCard({ product, removeFromCart }: CartProductCardProp
                             fontSize: '14px',
                             color: '#666'
                         }}>Valor: {formatCurrency(Number(product.price))}</Typography>
+
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '0.5rem',
+                            }}
+                        >
+                            <div>
+                                <IconButton
+                                    aria-label="remove uma unidade do carrinho"
+                                    size="small"
+                                    onClick={removeItem}
+                                    style={{
+                                        backgroundColor: 'lightcoral',
+                                        borderRadius: '50%',
+                                        width: '25px',
+                                        height: '25px',
+                                    }}
+                                >
+                                    -
+                                </IconButton>
+                            </div>
+                            <div>
+                                <IconButton
+                                    aria-label="adiciona uma unidade ao carrinho"
+                                    size="small"
+                                    onClick={addItem}
+                                    style={{
+                                        backgroundColor: 'lightgreen',
+                                        borderRadius: '50%',
+                                        width: '25px',
+                                        height: '25px',
+                                    }}
+                                >
+                                    +
+                                </IconButton>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <IconButton
-                        aria-label="deleta item do carrinho"
-                        size="small"
-                        color='error'
-                        onClick={handleClickVariant('info')}
-                    >
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
                 </div>
             </div>
         </div>
