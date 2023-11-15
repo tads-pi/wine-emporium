@@ -19,8 +19,10 @@ export class ClientController {
     async getAllProducts(
         @Query('page') page: number | null,
         @Query('limit') limit: number | null,
+        @Query('filters') filters: string | null,
+        @Query('sort') sort: string | null,
     ): Promise<ProductClientViewmodel[]> {
-        return this.svc.getAllProducts(page, limit);
+        return this.svc.getAllProducts(page, limit, filters, sort);
     }
 
     @Get(':id')

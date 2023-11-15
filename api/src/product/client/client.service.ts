@@ -20,7 +20,7 @@ export class ClientService {
         return total;
     }
 
-    async getAllProducts(page: number, limit: number): Promise<ProductClientViewmodel[]> {
+    async getAllProducts(page: number, limit: number, filters: string, sort: string): Promise<ProductClientViewmodel[]> {
         if (page == null) {
             page = 1;
         }
@@ -29,16 +29,41 @@ export class ClientService {
             limit = 10;
         }
 
+        if (sort == null) {
+            sort = 'id';
+        }
+
+        const whereClause = {
+            active: true
+        }
+        if (filters && filters !== '') {
+            const allFilters = filters.split(',')
+            for (const f of allFilters) {
+                const parsedFilter = f.split(':')
+                whereClause[parsedFilter[0]] = {
+                    contains: parsedFilter[1],
+                }
+            }
+        }
+
+        let orderByClause = {}
+        const sortableFields = ['id', 'name', 'price', 'ratings']
+        const sortableOrders = ['desc', 'asc']
+        const [field, direction] = sort.split(':')
+        if (
+            sortableFields.includes(field) &&
+            sortableOrders.includes(direction)
+        ) {
+            orderByClause = {
+                [field]: direction,
+            }
+        }
+
         const products = await this.db.product.findMany({
             skip: Number((page - 1) * limit),
             take: Number(limit),
-            orderBy: {
-                // TODO opção de sorting de user
-                id: 'desc',
-            },
-            where: {
-                active: true,
-            }
+            orderBy: orderByClause,
+            where: whereClause,
         });
 
         const viewmodel: ProductClientViewmodel[] = []
