@@ -101,7 +101,6 @@ describe('ClientController', () => {
       const NEW_NAME = 'new name'
       const input: ClientUpdateDTO = {
         name: NEW_NAME,
-        password: null,
         birthDate: null,
         genderId: null,
       }
