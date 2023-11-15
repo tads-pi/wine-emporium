@@ -41,6 +41,10 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
                 setFakeState(!fakeState)
                 setPrice(cartState?.price || 0)
             }}
+
+            style={{
+                overflow: 'hidden'
+            }}
         >
             {
                 cartState
