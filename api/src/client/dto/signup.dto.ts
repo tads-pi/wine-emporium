@@ -43,7 +43,4 @@ export class ClientUpdateDTO {
 
     @IsString()
     genderId: string
-
-    @IsString()
-    password: string
 }

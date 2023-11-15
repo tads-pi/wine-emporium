@@ -7,18 +7,28 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { routes } from '../../config/routes';
 
-export default function PerfilUser() {
+export default function ProfileWE() {
   return (
     <Card style={{ width: '400px', marginTop: '40px', marginLeft: '35px', height: '150px' }}>
       <CardContent>
-        <Link to='/perfil/alterar-dados' style={{ textDecoration: 'none' }}>
+        <Link to={routes.ACCOUNT_DATA} style={{ textDecoration: 'none' }}>
           <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
             Perfil
           </Typography>
         </Link>
-        <Link to='/perfil/endereco-de-entrega' style={{ textDecoration: 'none' }}>
+        <Link to={routes.ACCOUNT_ADDRESS} style={{ textDecoration: 'none' }}>
           <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
             Endereço de entrega
+          </Typography>
+        </Link>
+        <Link to={routes.ACCOUNT_CREDIT_CARD} style={{ textDecoration: 'none' }}>
+          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
+            Cartões de Crédito
+          </Typography>
+        </Link>
+        <Link to={routes.ACCOUNT_CHECKOUTS} style={{ textDecoration: 'none' }}>
+          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
+            Compras
           </Typography>
         </Link>
       </CardContent>
