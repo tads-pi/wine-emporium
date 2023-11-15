@@ -5,7 +5,6 @@ import { FormCreateUser } from "./components/FormCreateUser"
 import { Navigate, Outlet } from "react-router-dom";
 import { routes } from "./config/routes"
 import useStore from "./zustand/store"
-import PerfilUser from "./pages/profile"
 import StoreWE from "./pages/store/storeWE"
 import StoreProductWE from "./pages/storeProduct/storeProductWE";
 import LoginWE from "./pages/login/LoginWE";
@@ -14,6 +13,7 @@ import ProfileWEAddress from "./pages/profile/components/Address";
 import ProfileWEUserData from "./pages/profile/components/UserData";
 import ProfileWECreditCard from "./pages/profile/components/CreditCard";
 import ProfileWECheckout from "./pages/profile/components/Checkout";
+import ProfileWEBanner from "./pages/profile/components/Banner";
 
 export function AuthGuard() {
   const { isLoggedIn } = useStore()
@@ -22,17 +22,6 @@ export function AuthGuard() {
   }
 
   return <Outlet />
-}
-
-function EditPerfil() {
-  return (
-    <>
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <PerfilUser />
-        <Outlet />
-      </div>
-    </>
-  )
 }
 
 function App() {
@@ -49,7 +38,7 @@ function App() {
 
         <Route path={routes.CHECKOUT} element={<Checkout />} />
 
-        <Route element={<EditPerfil />}>
+        <Route element={<ProfileWEBanner />}>
           <Route path={routes.ACCOUNT_DATA} element={<ProfileWEUserData />} />
           <Route path={routes.ACCOUNT_ADDRESS} element={<ProfileWEAddress />} />
           <Route path={routes.ACCOUNT_CREDIT_CARD} element={<ProfileWECreditCard />} />

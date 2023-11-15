@@ -1,10 +1,9 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import RemoveRedEyeTwoToneIcon from '@mui/icons-material/RemoveRedEyeTwoTone';
 import { Card, CardActions, CardContent, CardMedia, IconButton } from "@mui/material";
-import { VariantType, useSnackbar } from "notistack";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 import { Product } from "../../zustand/types";
 import { FALLBACK_IMAGE_URL } from "../../config/images";
 import { routes } from "../../config/routes";

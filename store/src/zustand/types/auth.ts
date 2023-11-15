@@ -29,5 +29,5 @@ export interface Update {
     name?: string;
     birthDate?: Date;
     genderId?: string;
-    password?: string;
+    email?: string;
 }

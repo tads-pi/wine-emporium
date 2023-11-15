@@ -9,7 +9,9 @@ import { routes } from '../../config/routes';
 
 export default function ProfileWE() {
   return (
-    <Card style={{ width: '400px', marginTop: '40px', marginLeft: '35px', height: '150px' }}>
+    <Card style={{
+      minWidth: 'fit-content',
+    }}>
       <CardContent>
         <Link to={routes.ACCOUNT_DATA} style={{ textDecoration: 'none' }}>
           <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
