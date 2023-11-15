@@ -76,9 +76,6 @@ export class ClientService {
         if (dto.name) {
             client.name = dto.name
         }
-        if (dto.password) {
-            client.password = bcrypt.hashSync(dto.password, 10)
-        }
         if (dto.birthDate) {
             client.birthDate = new Date(dayjs(dto.birthDate).format('YYYY-MM-DDTHH:mm:ssz'))
         }
