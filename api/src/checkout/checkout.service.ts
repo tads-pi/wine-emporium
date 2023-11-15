@@ -166,7 +166,7 @@ export class CheckoutService {
             checkout = await this.db.checkout.create({
                 data: {
                     cartId: cart.id,
-                    status: "ENDERECO_PENDENTE",
+                    status: 'ENDERECO_PENDENTE',
                     sequentialId: await this.db.checkout.count() + 1,
                 }
             })

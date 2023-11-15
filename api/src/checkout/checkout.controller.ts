@@ -42,7 +42,7 @@ export class CheckoutController {
         return this.svc.finishCheckout(clientId)
     }
 
-    @Get(':checkoutId')
+    @Get('/find/:checkoutId')
     async getCheckoutById(
         @GetClient('id') clientId: string,
         @Param('checkoutId') id: string
@@ -83,7 +83,7 @@ export class CheckoutController {
     }
 
     @Put('/:checkoutId/status/:status')
-    async upadateStatus(
+    async updateStatus(
         @GetClient('id') clientId: string,
         @Param('checkoutId') checkoutId: string,
         @Param('status') status: string,

@@ -83,6 +83,7 @@ describe('CartController', () => {
         description: 'Descrição do produto 1',
         price: 10,
         ratings: 5,
+        category: 'OUTROS',
         markedImageID: null,
       }
 
@@ -129,6 +130,7 @@ describe('CartController', () => {
         description: 'Descrição do produto 1',
         price: 10,
         ratings: 5,
+        category: 'OUTROS',
         markedImageID: null,
       }
 
@@ -182,6 +184,7 @@ describe('CartController', () => {
         description: 'Descrição do produto 1',
         price: 10,
         ratings: 5,
+        category: 'OUTROS',
         markedImageID: null,
       }
 
@@ -235,6 +238,7 @@ describe('CartController', () => {
         description: 'Descrição do produto 1',
         price: 10,
         ratings: 5,
+        category: 'OUTROS',
         markedImageID: null,
       }
 
@@ -282,6 +286,7 @@ describe('CartController', () => {
         description: 'Descrição do produto 1',
         price: 99.99,
         ratings: 5,
+        category: 'OUTROS',
         markedImageID: null,
       }
 

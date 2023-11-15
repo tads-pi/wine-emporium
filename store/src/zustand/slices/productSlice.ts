@@ -8,6 +8,7 @@ export interface ProductSlice {
     list: (page: number | null, limit: number | null) => Promise<Product[]>
     findById: (id: string) => Promise<Product>
     total: () => Promise<number>
+    listCategories: () => Promise<string[]>
 }
 
 const createProductSlice: StateCreator<
@@ -27,6 +28,10 @@ const createProductSlice: StateCreator<
         },
         total: async (): Promise<number> => {
             const { data } = await httpClient.get<number>('/product/store/total');
+            return data;
+        },
+        listCategories: async (): Promise<string[]> => {
+            const { data } = await httpClient.get<string[]>('/product/categories');
             return data;
         }
     }

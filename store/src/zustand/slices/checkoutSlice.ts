@@ -8,6 +8,7 @@ export interface CheckoutSlice {
     findById: (id: string) => Promise<Checkout>
     list: (id: string) => Promise<Checkout[]>
     listDeliverer: (checkoutId: string) => Promise<Checkout[]>
+    listStatus: () => Promise<string[]>
     price: (id: string) => Promise<number>
     setAddress: (id: string, addressId: string) => Promise<Checkout>
     setDeliverer: (id: string, delivererId: string) => Promise<Checkout>
@@ -25,7 +26,7 @@ const createCheckoutSlice: StateCreator<
 > = (set, slices) => {
     return {
         findById: async (id: string): Promise<Checkout> => {
-            const { data } = await httpClient.get<Checkout>(`/checkout/${id}`);
+            const { data } = await httpClient.get<Checkout>(`/checkout/find/${id}`);
             return data
         },
         list: async (): Promise<Checkout[]> => {
@@ -34,6 +35,10 @@ const createCheckoutSlice: StateCreator<
         },
         listDeliverer: async (checkoutId: string): Promise<Checkout[]> => {
             const { data } = await httpClient.get<Checkout[]>(`/checkout/${checkoutId}/deliverer`);
+            return data
+        },
+        listStatus: async (): Promise<string[]> => {
+            const { data } = await httpClient.get<string[]>(`/checkout/status`);
             return data
         },
         price: async (id: string): Promise<number> => {

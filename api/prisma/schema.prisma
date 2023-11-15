@@ -210,15 +210,22 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name          String         @unique
+  name          String              @unique
   description   String
   price         Float
   ratings       Float
+  category      ProductCategoryEnum @default(OUTROS)
   stock         ProductStock[]
   markedImageID String?
   CartItems     CartItems[]
 
   @@map("product")
+}
+
+enum ProductCategoryEnum {
+  VINHOS
+  UTILITARIOS
+  OUTROS
 }
 
 model ProductStock {
@@ -365,7 +372,7 @@ model BankSlipPaymentMethod {
   installments      Int
   installmentsValue Float
   dueDate           Int
-  payment           Payment  @relation(fields: [paymentId], references: [id])
+  payment           Payment @relation(fields: [paymentId], references: [id])
   paymentId         String
 
   @@map("payment_bank_slip_payment_method")

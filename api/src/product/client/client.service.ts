@@ -39,15 +39,33 @@ export class ClientService {
         if (filters && filters !== '') {
             const allFilters = filters.split(',')
             for (const f of allFilters) {
-                const parsedFilter = f.split(':')
-                whereClause[parsedFilter[0]] = {
-                    contains: parsedFilter[1],
+                const filterableFields: string[] = ['name', 'category']
+                const [field, query] = f.split(':')
+
+                if (!filterableFields.includes(field)) {
+                    continue
+                }
+
+                if (field === 'name') {
+                    whereClause[field] = {
+                        contains: query,
+                    }
+                } else {
+                    const validQueries: string[] = ["VINHOS", "UTILIDADES", "OUTROS"]
+
+                    if (!validQueries.includes(query)) {
+                        continue
+                    }
+
+                    whereClause[field] = {
+                        equals: query,
+                    }
                 }
             }
         }
 
         let orderByClause = {}
-        const sortableFields = ['id', 'name', 'price', 'ratings']
+        const sortableFields = ['id', 'name', 'price', 'ratings', 'category']
         const sortableOrders = ['desc', 'asc']
         const [field, direction] = sort.split(':')
         if (
@@ -122,5 +140,13 @@ export class ClientService {
             ratings: product.ratings,
             images: productImagesViewmodel,
         }
+    }
+
+    async listCategories(): Promise<string[]> {
+        return [
+            "VINHOS",
+            "UTILIDADES",
+            "OUTROS",
+        ]
     }
 }

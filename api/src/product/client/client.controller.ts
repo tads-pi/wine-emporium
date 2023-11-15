@@ -4,18 +4,18 @@ import { ApiTags } from '@nestjs/swagger';
 import { ProductClientViewmodel } from '../viewmodels/client-product.viewmodel';
 
 @ApiTags('product/store')
-@Controller('product/store')
+@Controller('product')
 export class ClientController {
     constructor(
         private svc: ClientService
     ) { }
 
-    @Get('total')
+    @Get('store/total')
     async getTotalProducts(): Promise<number> {
         return this.svc.getTotalProducts();
     }
 
-    @Get('')
+    @Get('store')
     async getAllProducts(
         @Query('page') page: number | null,
         @Query('limit') limit: number | null,
@@ -25,10 +25,15 @@ export class ClientController {
         return this.svc.getAllProducts(page, limit, filters, sort);
     }
 
-    @Get(':id')
+    @Get('store/:id')
     async getProductById(
         @Param('id') id: string,
     ): Promise<ProductClientViewmodel> {
         return this.svc.getProductById(id);
+    }
+
+    @Get('categories')
+    async listCategories(): Promise<string[]> {
+        return this.svc.listCategories();
     }
 }

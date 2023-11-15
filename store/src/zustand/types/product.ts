@@ -10,5 +10,6 @@ export interface Product {
     description: string;
     price: number;
     ratings: number;
+    category: string;
     images: ProductImage[];
 }

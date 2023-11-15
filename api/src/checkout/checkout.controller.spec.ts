@@ -424,7 +424,7 @@ describe('CheckoutController', () => {
       })
 
       // Teste
-      const c = await controller.upadateStatus(CLIENT_ID, CHECKOUT.id, NEW_STATUS)
+      const c = await controller.updateStatus(CLIENT_ID, CHECKOUT.id, NEW_STATUS)
       expect(c).toBeDefined()
       expect(c.id).toBe(CHECKOUT.id)
       expect(c.status).toBe(NEW_STATUS)

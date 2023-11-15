@@ -31,6 +31,7 @@ describe('ClientController', () => {
       description: 'Descrição do produto 01',
       price: 100,
       ratings: 5,
+      category: 'OUTROS',
       markedImageID: null,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -42,6 +43,7 @@ describe('ClientController', () => {
       description: 'Descrição do produto 02',
       price: 200,
       ratings: 4,
+      category: 'OUTROS',
       markedImageID: null,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -80,7 +82,7 @@ describe('ClientController', () => {
       db.product.findMany = jest.fn().mockReturnValueOnce([MOCK_PRODUCT_01, MOCK_PRODUCT_02])
 
       // Teste
-      const products = await controller.getAllProducts(null, null);
+      const products = await controller.getAllProducts(null, null, null, null);
       expect(products).toBeDefined();
       expect(products.length).toBe(2);
       expect(products[0].id).toBe(MOCK_PRODUCT_01.id);
