@@ -229,7 +229,7 @@ export class CheckoutService {
 
         checkout = await this.db.checkout.update({
             where: { id: checkout.id },
-            data: { status: "PAGAMENTO_PENDENTE" }
+            data: { status: "AGUARDANDO_PAGAMENTO" }
         })
 
         return await this.fillCheckoutWithData(checkout)
@@ -305,7 +305,7 @@ export class CheckoutService {
             where: { id: checkoutId },
             data: {
                 paymentId: paymentId,
-                status: 'PAGAMENTO_PENDENTE'
+                status: 'AGUARDANDO_PAGAMENTO'
             }
         })
 
@@ -358,5 +358,37 @@ export class CheckoutService {
         })
 
         return payment.id
+    }
+
+    async listStatus(): Promise<string[]> {
+        return [
+            'AGUARDANDO_PAGAMENTO',
+            'PAGAMENTO_COM_SUCESSO',
+            'PAGAMENTO_REJEITADO',
+            'AGUARDANDO_RETIRADA',
+            'EM_TRANSITO',
+            'ENTREGUE',
+        ]
+    }
+
+    async updateStatus(clientId: string, checkoutId: string, status: string): Promise<CheckoutViewmodel> {
+        // Verifica se o checkout pertence ao cliente em questão
+        let c = await this.getClientCheckout(clientId, checkoutId)
+        if (c.status !== 'AGUARDANDO_PAGAMENTO') {
+            throw new BadRequestException('Método de pagamento não foi definido.')
+        }
+
+        type StatusEnum = 'AGUARDANDO_PAGAMENTO' | 'PAGAMENTO_COM_SUCESSO' | 'PAGAMENTO_REJEITADO' | 'AGUARDANDO_RETIRADA' | 'EM_TRANSITO' | 'ENTREGUE'
+        const statusEnum: StatusEnum = status as StatusEnum
+        if (!statusEnum) {
+            throw new BadRequestException('Status inválido')
+        }
+
+        c = await this.db.checkout.update({
+            where: { id: checkoutId },
+            data: { status: statusEnum }
+        })
+
+        return await this.fillCheckoutWithData(c)
     }
 }

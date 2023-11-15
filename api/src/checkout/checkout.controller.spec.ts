@@ -166,7 +166,7 @@ describe('CheckoutController', () => {
       expect(db.checkout.update).toHaveBeenCalledTimes(1)
 
       expect(c.id).toBe(CHECKOUT.id)
-      expect(c.status).toBe('PAGAMENTO_PENDENTE')
+      expect(c.status).toBe('AGUARDANDO_PAGAMENTO')
     })
 
     it('deve retornar um checkout pelo ID', async () => {
@@ -236,7 +236,7 @@ describe('CheckoutController', () => {
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
       db.checkout.findUnique = jest.fn().mockReturnValue(CHECKOUT)
-      
+
       db.deliverer.findUnique = jest.fn().mockReturnValue(MOCK_DELIVERER)
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
 
@@ -333,7 +333,7 @@ describe('CheckoutController', () => {
       expect(c.payment.id).toBe(MOCK_PAYMENT.id)
       expect(c.payment.bankSlip).toBe(false)
       expect(c.payment.creditCard.id).toBe(MOCK_CREDIT_CARD.id)
-      expect(c.status).toBe('PAGAMENTO_PENDENTE')
+      expect(c.status).toBe('AGUARDANDO_PAGAMENTO')
     })
 
     it('deve definir o método de pegamento (boleto)', async () => {
@@ -399,7 +399,36 @@ describe('CheckoutController', () => {
       expect(c.payment.id).toBe(MOCK_PAYMENT.id)
       expect(c.payment.bankSlip).toBe(true)
       expect(c.payment.creditCard).toBeNull()
-      expect(c.status).toBe('PAGAMENTO_PENDENTE')
+      expect(c.status).toBe('AGUARDANDO_PAGAMENTO')
+    })
+
+    it('deve listar os próximos status possíveis para o checkout', async () => {
+      const s = await controller.listStatus()
+      expect(s).toBeDefined()
+      expect(s.length).toBeGreaterThan(0)
+    })
+
+    it('deve atualizar o status de checkout pós método de pagamento definido', async () => {
+      // Setup
+      const CHECKOUT = MOCK_CHECKOUT_01
+      const NEW_STATUS = 'PAGAMENTO_REJEITADO'
+
+      db.checkout.update = jest.fn().mockImplementation((args) => { })
+
+      db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
+      db.checkout.findUnique = jest.fn().mockReturnValueOnce(CHECKOUT)
+
+      db.checkout.update = jest.fn().mockImplementation((args) => {
+        CHECKOUT.status = args.data.status
+        return CHECKOUT
+      })
+
+      // Teste
+      const c = await controller.upadateStatus(CLIENT_ID, CHECKOUT.id, NEW_STATUS)
+      expect(c).toBeDefined()
+      expect(c.id).toBe(CHECKOUT.id)
+      expect(c.status).toBe(NEW_STATUS)
+      expect(db.checkout.update).toHaveBeenCalledTimes(1)
     })
 
   })

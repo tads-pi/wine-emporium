@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CheckoutService } from './checkout.service';
 import { JwtGuard } from '../auth/guard';
 import { GetClient } from '../client/decorator/client.decorator';
@@ -75,5 +75,19 @@ export class CheckoutController {
         @Body('') dto: SetCheckoutPaymentMethodDTO,
     ): Promise<CheckoutViewmodel> {
         return this.svc.setCheckoutPaymentMethod(clientId, checkoutId, dto);
+    }
+
+    @Get('/status')
+    async listStatus(): Promise<string[]> {
+        return this.svc.listStatus();
+    }
+
+    @Put('/:checkoutId/status/:status')
+    async upadateStatus(
+        @GetClient('id') clientId: string,
+        @Param('checkoutId') checkoutId: string,
+        @Param('status') status: string,
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.updateStatus(clientId, checkoutId, status);
     }
 }
