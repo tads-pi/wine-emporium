@@ -7,12 +7,8 @@ import createDelivererSlice, { DelivererSlice } from './slices/delivererSlice';
 import createGenderSlice, { GenderSlice } from './slices/genderSlice';
 import createPaymentSlice, { PaymentSlice } from './slices/paymentSlice';
 import createProductSlice, { ProductSlice } from './slices/productSlice';
-import { localStorageKeys } from '../config/localStorageKeys';
 
 export interface AppSlice {
-    isLoggedIn: boolean
-    setIsLoggedIn: (isLoggedIn: boolean) => void
-    signOut: () => void
 }
 
 const createAppSlice: StateCreator<
@@ -23,14 +19,6 @@ const createAppSlice: StateCreator<
 > = (set, slices) => {
     // initial slice state
     return {
-        isLoggedIn: false,
-        setIsLoggedIn: (isLoggedIn: boolean) => {
-            set({ isLoggedIn })
-        },
-        signOut: () => {
-            localStorage.removeItem(localStorageKeys.ACCESS_TOKEN)
-            slices().setIsLoggedIn(false)
-        },
     }
 }
 

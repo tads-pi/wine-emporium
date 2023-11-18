@@ -18,8 +18,9 @@ import ProfileWEAddressAddNewAddress from "./pages/profile/components/AddNewAddr
 import ProfileWECreditCardAddNewCard from "./pages/profile/components/AddNewCreditCard";
 
 export function AuthGuard() {
-  const { isLoggedIn } = useStore()
-  if (!isLoggedIn) {
+  const { authApi } = useStore()
+
+  if (!authApi.isLoggedIn) {
     return <Navigate to='/' replace />
   }
 

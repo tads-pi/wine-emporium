@@ -10,6 +10,8 @@ export interface AuthSlice {
     login: (payload: Login) => Promise<LoginResponse>
     getMe: () => Promise<Client>
     update: (payload: Update) => Promise<Client>
+    isLoggedIn: boolean
+    logout: () => void
 }
 
 const createAuthSlice: StateCreator<
@@ -30,7 +32,8 @@ const createAuthSlice: StateCreator<
                     localStorageKeys.ACCESS_TOKEN,
                     data?.access_token,
                 )
-                slices().setIsLoggedIn(true)
+
+                slices().authApi.isLoggedIn = true
             }
 
             return data
@@ -42,6 +45,11 @@ const createAuthSlice: StateCreator<
         update: async (payload: Update): Promise<Client> => {
             await httpClient.put('/client/update', payload)
             return slices().authApi.getMe()
+        },
+        isLoggedIn: !!localStorage.getItem(localStorageKeys.ACCESS_TOKEN),
+        logout: () => {
+            localStorage.removeItem(localStorageKeys.ACCESS_TOKEN)
+            slices().authApi.isLoggedIn = false
         }
     }
 }

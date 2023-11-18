@@ -8,11 +8,11 @@ type AvatarProps = {
 }
 
 export default function AvatarWE({ handleOpenUserMenu }: AvatarProps) {
-    const { isLoggedIn, authApi } = useStore()
+    const { authApi } = useStore()
     let userData: Client = {} as Client;
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (authApi.isLoggedIn) {
             authApi.getMe()
                 .then((user) => {
                     userData = user
@@ -25,8 +25,6 @@ export default function AvatarWE({ handleOpenUserMenu }: AvatarProps) {
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                     alt={userData?.name}
-
-                // src="/static/images/avatar/2.jpg"
                 />
             </IconButton>
         </Tooltip>

@@ -7,20 +7,11 @@ export default function useNavBarWE() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [numItems, setNumItems] = useState(0); // novo estado para controlar o número de itens no carrinho
     const {
-        isLoggedIn,
-        cartApi,
+        authApi,
     } = useStore()
 
-    // TODO será que pode ser any mesmo?
-    const handleOpenNavMenu = (event: any) => {
-        setAnchorElNav(event.currentTarget);
-    };
     const handleOpenUserMenu = (event: any) => {
         setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
     };
 
     const handleCloseUserMenu = () => {
@@ -38,6 +29,6 @@ export default function useNavBarWE() {
         anchorElUser,
         numItems,
         drawerOpen,
-        isLoggedIn,
+        isLoggedIn: authApi.isLoggedIn,
     }
 };

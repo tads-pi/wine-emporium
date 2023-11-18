@@ -4,10 +4,10 @@ import useStore from "../../../zustand/store";
 import { routes } from "../../../config/routes";
 
 export default function SettingsWE() {
-  const { signOut: storeSignOut } = useStore()
+  const { authApi } = useStore()
 
   function signOut() {
-    confirm('Deseja realmente sair?') && storeSignOut()
+    confirm('Deseja realmente sair?') && authApi.logout()
   }
 
   return (
