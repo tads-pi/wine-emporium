@@ -14,6 +14,7 @@ import ProfileWEUserData from "./pages/profile/components/UserData";
 import ProfileWECreditCard from "./pages/profile/components/CreditCard";
 import ProfileWECheckout from "./pages/profile/components/Checkout";
 import ProfileWEBanner from "./pages/profile/components/Banner";
+import ProfileWEAddressAddNewAddress from "./pages/profile/components/AddNewAddress";
 
 export function AuthGuard() {
   const { isLoggedIn } = useStore()
@@ -41,6 +42,7 @@ function App() {
         <Route element={<ProfileWEBanner />}>
           <Route path={routes.ACCOUNT_DATA} element={<ProfileWEUserData />} />
           <Route path={routes.ACCOUNT_ADDRESS} element={<ProfileWEAddress />} />
+          <Route path={routes.ACCOUNT_ADDRESS_NEW_ADDRESS} element={<ProfileWEAddressAddNewAddress />} />
           <Route path={routes.ACCOUNT_CREDIT_CARD} element={<ProfileWECreditCard />} />
           <Route path={routes.ACCOUNT_CHECKOUTS} element={<ProfileWECheckout />} />
         </Route>
