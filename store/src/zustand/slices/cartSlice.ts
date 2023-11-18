@@ -26,7 +26,7 @@ const createCartSlice: StateCreator<
     return {
         cartState: emptyCard,
         getCart: async (): Promise<Cart> => {
-            if (slices().isLoggedIn) {
+            if (slices().authApi.isLoggedIn) {
                 const { data } = await httpClient.get<Cart>('/client/cart');
                 const { data: price } = await httpClient.get<number>('/client/cart/price');
 
@@ -47,7 +47,7 @@ const createCartSlice: StateCreator<
             return slices().cartApi.cartState
         },
         addProduct: async (productId: string): Promise<void> => {
-            if (slices().isLoggedIn) {
+            if (slices().authApi.isLoggedIn) {
                 await httpClient.put(`/client/cart/${productId}`);
                 slices().cartApi.getCart()
             }
@@ -66,7 +66,7 @@ const createCartSlice: StateCreator<
             slices().cartApi.getCart()
         },
         removeProduct: async (productId: string): Promise<void> => {
-            if (slices().isLoggedIn) {
+            if (slices().authApi.isLoggedIn) {
                 await httpClient.delete(`/client/cart/${productId}`);
                 slices().cartApi.getCart()
             }

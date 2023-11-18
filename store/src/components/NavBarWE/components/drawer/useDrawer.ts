@@ -4,7 +4,7 @@ import { routes } from "../../../../config/routes";
 
 export default function useDrawer() {
     const {
-        isLoggedIn,
+        authApi,
         cartApi,
     } = useStore()
 
@@ -18,7 +18,7 @@ export default function useDrawer() {
     const navigate = useNavigate()
 
     function handleGoToCheckout() {
-        if (!isLoggedIn) {
+        if (!authApi.isLoggedIn) {
             navigate(routes.LOGIN)
             return
         }

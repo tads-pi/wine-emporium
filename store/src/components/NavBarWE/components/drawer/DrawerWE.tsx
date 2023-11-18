@@ -1,5 +1,5 @@
 import Drawer from "@mui/material/Drawer"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Cart, CartProduct, Product } from "../../../../zustand/types"
 import Typography from "@mui/material/Typography"
 import { formatCurrency } from "../../../../utils/formatCurrency"
@@ -22,17 +22,18 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
         handleGoToCheckout
     } = useDrawer()
 
-    const [price, setPrice] = useState<number>(cartState?.price || 0)
+    const price = useMemo(() => {
+        return cartState?.price
+    }, [cartState])
+
     useEffect(() => {
         getCart()
-        setPrice(cartState?.price || 0)
-    }, [])
+    }, [cartState])
 
     // Força o update do drawer!
     setInterval(() => {
         setFakeState(!fakeState)
-        setPrice(cartState?.price || 0)
-    }, 100)
+    }, 500)
 
     const [fakeState, setFakeState] = useState<boolean>(false)
     return (
