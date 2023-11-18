@@ -38,16 +38,35 @@ export function Slider({ data }: SliderProps) {
       >
         {data?.map((item) => (
           <SwiperSlide key={item.id}>
-            <div className="title" data-swiper-parallax="-300">
-              {item.name}
-            </div>
-            <div className="subtitle" data-swiper-parallax="-200">
-              {item.price}
-            </div>
-            <div className="text" data-swiper-parallax="-100">
-              <p>
-                {item.description}
-              </p>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              // border: '1px solid red',
+            }}>
+              <div>
+                <div className="title" data-swiper-parallax="-300">
+                  {item.name}
+                </div>
+                <div className="subtitle" data-swiper-parallax="-200">
+                  {item.price}
+                </div>
+                <div className="text" data-swiper-parallax="-100">
+                  <p>
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className='imageContainer'>
+                <div className='imageWrapper'>
+                  <img
+                    src={item.images[0].url}
+                    alt={`imagem de ${item.name}`}
+                    height={300}
+                  />
+                </div>
+              </div>
             </div>
           </SwiperSlide>
         ))}
