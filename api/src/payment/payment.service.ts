@@ -11,8 +11,15 @@ export class PaymentService {
 
     async getAllCreditCards(clientId: string): Promise<ClientCreditCardViewmodel[]> {
         const creditCardsIds = await this.db.clientCreditCard.findMany({
-            where: { clientId: clientId }
+            where: {
+                clientId: clientId,
+                active: true
+            }
         })
+        if (creditCardsIds.length === 0) {
+            return []
+        }
+
         const creditCards = await this.db.creditCard.findMany({
             where: { id: { in: creditCardsIds.map(cc => cc.creditCardId) } }
         })
@@ -27,7 +34,7 @@ export class PaymentService {
         }
 
         const expMonth = Number(dto.expireMonth)
-        const expYear = Number(dto.expireYear)
+        const expYear = Number(dto.expireYear.slice(2, 4))
 
         if (expYear < (new Date().getFullYear() - 2000)) {
             throw new BadRequestException('Cartão de crédito expirado')
@@ -55,10 +62,10 @@ export class PaymentService {
     }
 
     async deleteCreditCard(clientId: string, creditCardId: string): Promise<null> {
-        const cc = await this.db.clientCreditCard.findUnique({
+        const cc = await this.db.clientCreditCard.findFirst({
             where: {
-                id: creditCardId,
                 clientId: clientId,
+                creditCardId: creditCardId,
             }
         })
         if (!cc) {
@@ -67,10 +74,7 @@ export class PaymentService {
 
         try {
             await this.db.clientCreditCard.update({
-                where: {
-                    id: creditCardId,
-                    clientId: clientId,
-                },
+                where: { id: cc.id },
                 data: {
                     active: false
                 }

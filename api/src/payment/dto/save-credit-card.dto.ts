@@ -14,7 +14,7 @@ export class SaveCreditCardDTO {
 
     @IsString()
     @IsNotEmpty()
-    @Length(2, 2)
+    @Length(4, 4)
     expireYear: string
 
     @IsString()

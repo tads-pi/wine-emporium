@@ -7,5 +7,6 @@ export const routes = {
     ACCOUNT_ADDRESS: '/perfil/endereco-de-entrega',
     ACCOUNT_ADDRESS_NEW_ADDRESS: '/perfil/endereco-de-entrega/novo-endereco',
     ACCOUNT_CREDIT_CARD: '/perfil/cartao-de-credito',
+    ACCOUNT_CREDIT_CARD_NEW_CARD: '/perfil/cartao-de-credito/novo-cartao',
     ACCOUNT_CHECKOUTS: '/perfil/meus-pedidos',
 }

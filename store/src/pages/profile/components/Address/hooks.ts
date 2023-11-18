@@ -3,9 +3,11 @@ import { Address } from "../../../../zustand/types";
 import useStore from "../../../../zustand/store";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../../../config/routes";
+import { useSnackbar } from "notistack";
 
 export default function useProfileWEAddress() {
     const { addressApi } = useStore();
+    const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
     const [addresses, setAddresses] = useState<Address[] | null>(null)
@@ -21,6 +23,11 @@ export default function useProfileWEAddress() {
         confirm("Tem certeza que deseja deletar esse endereço?") &&
             addressApi.delete(address.id).then(() => {
                 setAddresses(addresses?.filter(a => a.id !== address.id) ?? null)
+
+                enqueueSnackbar(
+                    'Endereço deletado com sucesso!',
+                    { variant: 'success' },
+                )
             })
     }
 
