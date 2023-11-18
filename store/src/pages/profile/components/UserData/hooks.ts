@@ -5,7 +5,8 @@ import { Client, Gender, Update } from "../../../../zustand/types";
 import { useSnackbar } from "notistack";
 
 interface FormData {
-    name: string;
+    firstName: string;
+    lastName: string;
     birthDate: string;
     genderId: string;
 }
@@ -36,7 +37,7 @@ export default function useUserData() {
             setIsLoading(true);
 
             const payload: Update = {
-                name: data.name,
+                name: `${data.firstName} ${data.lastName}`,
                 birthDate: new Date(data.birthDate),
                 genderId: data.genderId,
             }
@@ -76,9 +77,9 @@ export default function useUserData() {
         // Fetch user data from API
         authApi.getMe()
             .then((data) => {
-                console.log({ data });
-                console.log({ date: new Date(data.birthDate).toISOString().split('T')[0] });
-                setValue('name', data.name);
+                const nameParts = data.name.split(' ');
+                setValue('firstName', nameParts[0]);
+                setValue('lastName', nameParts[nameParts.length - 1]);
                 setValue('birthDate', new Date(data.birthDate).toISOString().split('T')[0]);
                 setValue('genderId', data.genderId);
 

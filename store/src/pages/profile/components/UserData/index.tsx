@@ -42,16 +42,54 @@ export default function ProfileWEUserData() {
                                 display: 'flex',
                                 flexDirection: 'column',
 
-                                width: '100%',
+                                maxWidth: 'min(40ch, 100%)',
                                 gap: '1rem',
                             }}
                         >
                             <div>
-                                <InputLabel id="name-label">Nome</InputLabel>
+                                <InputLabel id="firstName-label">Nome</InputLabel>
                                 <TextField
-                                    {...register('name')}
-                                    error={!!errors.name}
-                                    helperText={errors.name?.message}
+                                    {...register('firstName', {
+                                        required: 'Campo obrigatório',
+                                        minLength: {
+                                            value: 3,
+                                            message: 'Seu nome deve ter no mínimo 3 caracteres'
+                                        },
+                                        maxLength: {
+                                            value: 64,
+                                            message: 'Seu nome deve ter no máximo 64 caracteres'
+                                        },
+                                    })}
+                                    error={!!errors?.firstName}
+                                    helperText={errors?.firstName?.message}
+                                    FormHelperTextProps={{
+                                        sx: {
+                                            color: 'red',
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <InputLabel id="lastName-label">Sobrenome</InputLabel>
+                                <TextField
+                                    {...register('lastName', {
+                                        required: 'Campo obrigatório',
+                                        minLength: {
+                                            value: 3,
+                                            message: 'Seu sobrenome deve ter no mínimo 3 caracteres'
+                                        },
+                                        maxLength: {
+                                            value: 64,
+                                            message: 'Seu sobrenome deve ter no máximo 64 caracteres'
+                                        },
+                                    })}
+                                    error={!!errors.lastName}
+                                    helperText={errors.lastName?.message}
+                                    FormHelperTextProps={{
+                                        sx: {
+                                            color: 'red',
+                                        }
+                                    }}
                                 />
                             </div>
 
@@ -64,6 +102,11 @@ export default function ProfileWEUserData() {
                                     error={!!errors.birthDate}
                                     helperText={errors.birthDate?.message}
                                     sx={{ width: '100%' }}
+                                    FormHelperTextProps={{
+                                        sx: {
+                                            color: 'red',
+                                        }
+                                    }}
                                 />
                             </div>
 
@@ -87,14 +130,21 @@ export default function ProfileWEUserData() {
                                 </Select>
                             </div>
 
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color='primary'
-                                disabled={!isValid}
-                            >
-                                Salvar
-                            </Button>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                marginTop: '1rem',
+                            }}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color='success'
+                                    disabled={!isValid}
+                                >
+                                    Salvar
+                                </Button>
+                            </div>
                         </div>
                     </form>
                 </div>
