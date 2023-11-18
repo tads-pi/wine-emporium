@@ -30,7 +30,6 @@ export class SaveAddressDTO {
     zip: string;
 
     @IsString()
-    @IsNotEmpty()
     @IsOptional()
     complement: string;
 }
