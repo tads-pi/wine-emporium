@@ -1,4 +1,4 @@
-export class GenderDTO {
+export class GenderViewmodel {
     id: string
     name: string
 }

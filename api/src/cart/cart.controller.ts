@@ -4,7 +4,6 @@ import { JwtGuard } from '../auth/guard';
 import { CartService } from './cart.service';
 import { GetClient } from '../client/decorator/client.decorator';
 import { CartViewmodel } from './viewmodel';
-import { UpdateCartDTO } from './dto/update-cart.dto';
 
 @ApiTags('client/cart')
 @Controller('client/cart')

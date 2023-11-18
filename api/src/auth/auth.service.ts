@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthDTO } from './dto/auth.dto';
 import { ConfigService } from '@nestjs/config';
-
+import { AuthViewmodel } from './viewmodel/auth.viewmodel';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +10,7 @@ export class AuthService {
         private config: ConfigService,
     ) { }
 
-    async getToken(sub: string, props?: object): Promise<AuthDTO> {
+    async getToken(sub: string, props?: object): Promise<AuthViewmodel> {
         const payload = { sub, ...props }
 
         const access_token = await this.jwt.signAsync(payload, {

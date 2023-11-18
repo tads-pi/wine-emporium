@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { GenderService } from './gender.service';
 import { ApiTags } from '@nestjs/swagger';
-import { GenderDTO } from './dto/gender.dto';
+import { GenderViewmodel } from './viewmodel';
 
 @ApiTags('client/gender')
 @Controller('client/gender')
@@ -11,7 +11,7 @@ export class GenderController {
     ) { }
 
     @Get()
-    async getAllGenders(): Promise<GenderDTO[]> {
+    async getAllGenders(): Promise<GenderViewmodel[]> {
         return await this.svc.getAllGenders();
     }
 }
