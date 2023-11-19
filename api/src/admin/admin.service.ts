@@ -3,9 +3,9 @@ import { PrismaService } from '../prisma/prisma.service';
 import { BackofficeClientViewmodel } from './viewmodel';
 import { BackofficeClientSignInDTO, SaveBackofficeClientDTO, UpdateBackofficeClientDTO } from './dto';
 import * as bcrypt from 'bcrypt';
-import { AuthDTO } from '../auth/dto/auth.dto';
 import { AuthService } from '../auth/auth.service';
 import { BackofficeGroupViewmodel } from './viewmodel/backoffice-group.viewmodel';
+import { AuthViewmodel } from '../auth/viewmodel/auth.viewmodel';
 @Injectable()
 export class AdminService {
     constructor(
@@ -13,7 +13,7 @@ export class AdminService {
         private authSvc: AuthService
     ) { }
 
-    async signIn(dto: BackofficeClientSignInDTO): Promise<AuthDTO> {
+    async signIn(dto: BackofficeClientSignInDTO): Promise<AuthViewmodel> {
         const backofficeClient = await this.db.backofficeClient.findUnique({
             where: {
                 email: dto.email,

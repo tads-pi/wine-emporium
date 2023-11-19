@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { GenderDTO } from './dto/gender.dto';
+import { GenderViewmodel } from './viewmodel';
 
 @Injectable()
 export class GenderService {
@@ -8,13 +8,13 @@ export class GenderService {
         private db: PrismaService
     ) { }
 
-    async getAllGenders(): Promise<GenderDTO[]> {
+    async getAllGenders(): Promise<GenderViewmodel[]> {
         const genders = await this.db.gender.findMany();
         if (genders.length === 0) {
             return []
         }
 
-        const gendersDTO: GenderDTO[] = genders.map((gender) => {
+        const gendersDTO: GenderViewmodel[] = genders.map((gender) => {
             return {
                 id: gender.id,
                 name: gender.firiendlyName,
