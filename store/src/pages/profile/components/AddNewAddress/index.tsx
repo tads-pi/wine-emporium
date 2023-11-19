@@ -2,6 +2,7 @@ import React from "react"
 import ProfileWEContainer from "../Container"
 import { Button, InputLabel, TextField } from "@mui/material"
 import useProfileWEAddressAddNewAddress from "./hooks"
+import Required from "../../../../components/Required"
 
 export default function ProfileWEAddressAddNewAddress() {
     const {
@@ -170,9 +171,3 @@ export default function ProfileWEAddressAddNewAddress() {
         </ProfileWEContainer >
     )
 };
-
-function Required() {
-    return (
-        <span style={{ color: 'red' }}>*</span>
-    )
-}

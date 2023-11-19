@@ -10,9 +10,10 @@ export interface Client {
 export interface Register {
     name: string;
     document: string;
+    birth_date: string;
     email: string;
     password: string;
-    group: string;
+    genderId: string;
 }
 
 export interface Login {
