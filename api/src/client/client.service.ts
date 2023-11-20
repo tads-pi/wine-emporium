@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { ClientViewmodel } from './viewmodels/client.viewmodel';
-import { ClientSignInDTO, ClientSignUpDTO, ClientUpdateDTO } from './dto';
+import { ClientCheckDataViewmodel, ClientViewmodel } from './viewmodels/client.viewmodel';
+import { ClientCheckDataDTO, ClientSignInDTO, ClientSignUpDTO, ClientUpdateDTO } from './dto';
 import { AuthService } from '../auth/auth.service';
-import { AuthDTO } from '../auth/dto/auth.dto';
+import { AuthViewmodel } from '../auth/viewmodel/auth.viewmodel';
 import * as bcrypt from 'bcrypt';
 import * as dayjs from 'dayjs';
 import { Client } from '@prisma/client';
@@ -15,7 +15,7 @@ export class ClientService {
         private authSvc: AuthService
     ) { }
 
-    async signIn(dto: ClientSignInDTO): Promise<AuthDTO> {
+    async signIn(dto: ClientSignInDTO): Promise<AuthViewmodel> {
         const client = await this.db.client.findUnique({
             where: {
                 email: dto.email,
@@ -36,15 +36,51 @@ export class ClientService {
         })
     }
 
-    async signUp(dto: ClientSignUpDTO): Promise<AuthDTO> {
-        const alreadyRegistered = await this.db.client.findUnique({
-            where: {
-                email: dto.email,
-                OR: [{ document: dto.document }]
-            },
+    async check(dto: ClientCheckDataDTO): Promise<ClientCheckDataViewmodel[]> {
+        const viewmodel: ClientCheckDataViewmodel[] = [
+            {
+                field: 'email',
+                alreadyExists: false
+            }, {
+                field: 'document',
+                alreadyExists: false
+            }
+        ]
+
+        if (dto.email) {
+            const emailAlreadyRegistered = await this.db.client.findUnique({
+                where: { email: dto.email },
+            })
+            if (emailAlreadyRegistered) {
+                viewmodel.filter((e) => e.field === 'email')[0].alreadyExists = true
+            }
+        }
+
+        if (dto.document) {
+            const cpfAlreadyRegistered = await this.db.client.findUnique({
+                where: { document: dto.document },
+            })
+            if (cpfAlreadyRegistered) {
+                viewmodel.filter((e) => e.field === 'document')[0].alreadyExists = true
+            }
+        }
+
+        return viewmodel
+    }
+
+    async signUp(dto: ClientSignUpDTO): Promise<AuthViewmodel> {
+        const emailAlreadyRegistered = await this.db.client.findUnique({
+            where: { email: dto.email },
         })
-        if (alreadyRegistered) {
-            throw new BadRequestException('E-mail ou CPF já cadastrados')
+        if (emailAlreadyRegistered) {
+            throw new BadRequestException('E-mail já cadastrados')
+        }
+
+        const cpfAlreadyRegistered = await this.db.client.findUnique({
+            where: { document: dto.document },
+        })
+        if (cpfAlreadyRegistered) {
+            throw new BadRequestException('CPF já cadastrados')
         }
 
         const gender = await this.db.gender.findUnique({ where: { id: dto.genderId } })

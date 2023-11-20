@@ -5,6 +5,7 @@ import { useLoginController } from "./hooks/useLoginWE";
 import { Grid, Paper, TextField, Button, Typography, IconButton, InputAdornment } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { routes } from "../../config/routes";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -68,7 +69,7 @@ export default function LoginWE() {
                                 error={!!errors.password}
                             />
                             <div>
-                                Não tem uma conta? <span><Link to="criar-cadastro">Criar cadastro</Link></span>
+                                Não tem uma conta? <span><Link to={routes.REGISTER}>Criar cadastro</Link></span>
                             </div>
                             <Button
                                 variant="contained"

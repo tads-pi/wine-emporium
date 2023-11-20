@@ -1,13 +1,12 @@
 import React from "react"
 
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { FormCreateUser } from "./components/FormCreateUser"
 import { Navigate, Outlet } from "react-router-dom";
 import { routes } from "./config/routes"
 import useStore from "./zustand/store"
 import StoreWE from "./pages/store/storeWE"
 import StoreProductWE from "./pages/storeProduct/storeProductWE";
-import LoginWE from "./pages/login/LoginWE";
+import LoginWE from "./pages/login";
 import Checkout from "./pages/checkout/checkout";
 import ProfileWEAddress from "./pages/profile/components/Address";
 import ProfileWEUserData from "./pages/profile/components/UserData";
@@ -16,6 +15,7 @@ import ProfileWECheckout from "./pages/profile/components/Checkout";
 import ProfileWEBanner from "./pages/profile/components/Banner";
 import ProfileWEAddressAddNewAddress from "./pages/profile/components/AddNewAddress";
 import ProfileWECreditCardAddNewCard from "./pages/profile/components/AddNewCreditCard";
+import RegisterWE from "./pages/register";
 
 export function AuthGuard() {
   const { authApi } = useStore()
@@ -34,7 +34,7 @@ function App() {
         <Route path="/" element={<Navigate to={routes.STORE} />} />
 
         <Route path={routes.LOGIN} element={<LoginWE />} />
-        <Route path={routes.REGISTER} element={<FormCreateUser />} />
+        <Route path={routes.REGISTER} element={<RegisterWE />} />
 
         <Route path={routes.STORE} element={<StoreWE />} />
         <Route path={`${routes.STORE}/:id`} element={<StoreProductWE />} />

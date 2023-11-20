@@ -1,11 +1,11 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ClientService } from './client.service';
-import { ClientSignInDTO, ClientSignUpDTO, ClientUpdateDTO } from './dto';
+import { ClientCheckDataDTO, ClientSignInDTO, ClientSignUpDTO, ClientUpdateDTO } from './dto';
 import { JwtGuard } from '../auth/guard';
 import { GetClient } from './decorator/client.decorator';
-import { AuthDTO } from '../auth/dto';
-import { ClientViewmodel } from './viewmodels/client.viewmodel';
+import { ClientCheckDataViewmodel, ClientViewmodel } from './viewmodels/client.viewmodel';
+import { AuthViewmodel } from '../auth/viewmodel/auth.viewmodel';
 
 @ApiTags('client')
 @Controller('client')
@@ -18,15 +18,23 @@ export class ClientController {
     @HttpCode(HttpStatus.OK)
     async clientSignIn(
         @Body() dto: ClientSignInDTO,
-    ): Promise<AuthDTO> {
+    ): Promise<AuthViewmodel> {
         return await this.svc.signIn(dto);
+    }
+
+    @Post('check')
+    @HttpCode(HttpStatus.OK)
+    async clientCheckDocument(
+        @Body() dto: ClientCheckDataDTO,
+    ): Promise<ClientCheckDataViewmodel[]> {
+        return await this.svc.check(dto);
     }
 
     @Post('register')
     @HttpCode(HttpStatus.OK)
     async clientSignUp(
         @Body() dto: ClientSignUpDTO,
-    ): Promise<AuthDTO> {
+    ): Promise<AuthViewmodel> {
         return await this.svc.signUp(dto);
     }
 

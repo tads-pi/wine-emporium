@@ -7,6 +7,7 @@ import createDelivererSlice, { DelivererSlice } from './slices/delivererSlice';
 import createGenderSlice, { GenderSlice } from './slices/genderSlice';
 import createPaymentSlice, { PaymentSlice } from './slices/paymentSlice';
 import createProductSlice, { ProductSlice } from './slices/productSlice';
+import createRegisterSlice, { RegisterSlice } from './slices/registerSlice';
 
 export interface AppSlice {
 }
@@ -31,6 +32,7 @@ export type Slices = {
     genderApi: GenderSlice
     paymentApi: PaymentSlice
     productApi: ProductSlice
+    registerApi: RegisterSlice
 } & AppSlice
 
 // Une todos os slices em um único store
@@ -63,6 +65,9 @@ const useStore = create<Slices>()(
         productApi: {
             ...createProductSlice(...a),
         },
+        registerApi: {
+            ...createRegisterSlice(...a),
+        }
     }
     ))
 
