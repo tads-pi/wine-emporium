@@ -40,7 +40,13 @@ export function CardWine({ data, addCart }: CardWineProps) {
 
   return (
     <Card
-      style={{ width: '100%', height: '370px', display: 'flex', flexDirection: 'column' }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '350px',
+        width: window.innerWidth > 600 ? '250px' : '100%',
+        cursor: 'pointer',
+      }}
     >
       <CardMedia
         component="img"

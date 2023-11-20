@@ -104,13 +104,6 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                                 value: 64,
                                                 message: 'Nome inválido'
                                             },
-                                            validate: {
-                                                isSingleName: (value: string) => {
-                                                    if (value.split(' ').length > 1) {
-                                                        return 'Nome inválido'
-                                                    }
-                                                }
-                                            }
                                         },
                                     }}
                                     required

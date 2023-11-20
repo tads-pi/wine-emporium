@@ -13,3 +13,14 @@ export interface Product {
     category: string;
     images: ProductImage[];
 }
+
+export interface ListProductsParams {
+    page?: number,
+    limit?: number,
+    category?: string,
+    name?: string,
+    sort?: {
+        field: string,
+        order: 'asc' | 'desc',
+    },
+}

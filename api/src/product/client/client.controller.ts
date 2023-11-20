@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductClientViewmodel } from '../viewmodels/client-product.viewmodel';
@@ -19,10 +19,9 @@ export class ClientController {
     async getAllProducts(
         @Query('page') page: number | null,
         @Query('limit') limit: number | null,
-        @Query('filters') filters: string | null,
-        @Query('sort') sort: string | null,
+        @Headers() headers: any,
     ): Promise<ProductClientViewmodel[]> {
-        return this.svc.getAllProducts(page, limit, filters, sort);
+        return this.svc.getAllProducts(page, limit, headers);
     }
 
     @Get('store/:id')

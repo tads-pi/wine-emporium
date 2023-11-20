@@ -1,11 +1,11 @@
 import React from "react"
-import loading from "../../assets/oval.svg"
+import { CircularProgress } from "@mui/material"
 import "./style.css"
 
 export default function Loading() {
     return (
         <div className="loading__container">
-            <img className="loading__svg" src={loading} alt="loading" />
+            <CircularProgress />
         </div>
     )
 }
