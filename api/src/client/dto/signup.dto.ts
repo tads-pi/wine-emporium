@@ -59,7 +59,7 @@ export class ClientSignUpDTO {
 
     @IsString()
     @IsNotEmpty()
-    @Length(1, 64)
+    @Length(8, 64)
     @ApiProperty({
         description: 'Senha do usuário',
         example: 'password',
@@ -97,4 +97,14 @@ export class ClientUpdateDTO {
         example: '55881d20-fc60-4fb3-8ecf-ee7cb3ddcc51',
     })
     genderId: string
+}
+
+export class ClientCheckDataDTO {
+    @IsOptional()
+    @IsString()
+    email: string | null
+
+    @IsOptional()
+    @IsString()
+    document: string | null
 }

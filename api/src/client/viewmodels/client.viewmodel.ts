@@ -19,3 +19,8 @@ export class ClientViewmodel {
         });
     }
 }
+
+export class ClientCheckDataViewmodel {
+    field: string
+    alreadyExists: boolean
+}

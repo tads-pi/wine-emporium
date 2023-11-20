@@ -16,6 +16,11 @@ export interface Register {
     genderId: string;
 }
 
+export interface RegisterError {
+    field: string
+    message: string
+}
+
 export interface Login {
     email: string;
     password: string;

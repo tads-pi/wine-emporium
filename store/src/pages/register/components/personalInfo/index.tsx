@@ -2,18 +2,20 @@ import React from "react"
 import { validateBrazilDocument } from "../../../../utils/document";
 import { Button, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import usePersonalInfo from "./hooks";
-import useRegisterWEAutofill from "../../hooks/useRegisterWEAutofill";
 import RequiredDisclaimer from "../../../../components/Required/disclaimer";
 import Required from "../../../../components/Required";
 import FormField from "../FormField";
 import Loading from "../../../../components/loading";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 type PersonalInfoProps = {
     handleNext: () => void
+    goHome: () => void
 }
 
 export default function PersonalInfo(props: PersonalInfoProps) {
     const {
+        alreadySubmitted,
         isLoading,
         isValid,
         isDirty,
@@ -22,11 +24,8 @@ export default function PersonalInfo(props: PersonalInfoProps) {
         errors,
         handleSubmit,
         onSubmit,
-    } = usePersonalInfo({ handleNext: props.handleNext })
-
-    const {
         genders,
-    } = useRegisterWEAutofill()
+    } = usePersonalInfo({ handleNext: props.handleNext })
 
     return (
         <div style={{
@@ -37,12 +36,25 @@ export default function PersonalInfo(props: PersonalInfoProps) {
         }}>
             {
                 genders ?
-                    <div>
-                        <Typography variant='h5' gutterBottom>
-                            Dados Pessoais
-                        </Typography>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                    }}>
+                        <div>
+                            <Typography variant='h5' gutterBottom>
+                                Dados Pessoais
+                            </Typography>
+                        </div>
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            style={{
+                                width: window.innerWidth > 600 ? '50%' : '90%',
+                            }}
+                        >
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -63,6 +75,13 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                             maxLength: {
                                                 value: 64,
                                                 message: 'Nome inválido'
+                                            },
+                                            validate: {
+                                                isSingleName: (value: string) => {
+                                                    if (value.split(' ').length > 1) {
+                                                        return 'Nome inválido'
+                                                    }
+                                                }
                                             }
                                         },
                                     }}
@@ -84,6 +103,13 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                             maxLength: {
                                                 value: 64,
                                                 message: 'Nome inválido'
+                                            },
+                                            validate: {
+                                                isSingleName: (value: string) => {
+                                                    if (value.split(' ').length > 1) {
+                                                        return 'Nome inválido'
+                                                    }
+                                                }
                                             }
                                         },
                                     }}
@@ -209,7 +235,31 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                     <RequiredDisclaimer />
                                 </div>
 
-                                <div>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                    justifyContent: 'space-between',
+                                }}>
+                                    <div style={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                    }}>
+                                        <Button
+                                            onClick={() => props.goHome()}
+                                            variant="outlined"
+                                            color="inherit"
+                                            size={window.innerWidth > 600 ? 'large' : 'medium'}
+                                        >
+                                            <ArrowBackIosIcon sx={{
+                                                fontSize: '16px',
+                                                marginRight: '0.5rem',
+                                            }} />
+
+                                            Voltar
+                                        </Button>
+                                    </div>
                                     <div style={{
                                         display: 'flex',
                                         flexDirection: 'row',
@@ -219,7 +269,15 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                             type="submit"
                                             variant="contained"
                                             color="success"
-                                            disabled={isLoading || (!isValid || !isDirty)}
+                                            size={window.innerWidth > 600 ? 'large' : 'medium'}
+                                            disabled={
+                                                (
+                                                    () => {
+                                                        if (alreadySubmitted) return false
+                                                        return (isLoading || (!isValid || !isDirty))
+                                                    }
+                                                )()
+                                            }
                                         >
                                             {isLoading ? 'Carregando...' : 'Contiuar'}
                                         </Button>
@@ -231,6 +289,6 @@ export default function PersonalInfo(props: PersonalInfoProps) {
 
                     : <Loading />
             }
-        </div>
+        </div >
     )
 };

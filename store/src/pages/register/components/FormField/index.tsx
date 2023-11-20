@@ -1,11 +1,14 @@
-import { InputLabel, TextField } from "@mui/material";
-import React from "react";
+import { IconButton, InputAdornment, InputLabel, TextField } from "@mui/material";
+import React, { useState } from "react";
 import Required from "../../../../components/Required";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Visibility from "@mui/icons-material/Visibility";
 
 type FormField = {
     name: string
     label: string
     required?: boolean
+    password?: boolean
 
     formHook: {
         register: any
@@ -26,6 +29,11 @@ export default function FormField(props: FormField) {
         registerProps,
         errors,
     } = props.formHook
+
+    const [showPassword, setShowPassword] = useState(false);
+    function handleClickShowPassword() {
+        setShowPassword((show) => !show);
+    }
 
     return (
         <div style={{
@@ -54,10 +62,26 @@ export default function FormField(props: FormField) {
                         color: 'red'
                     }
                 }}
-
                 style={{
                     margin: 0,
                 }}
+
+                type={!props.password ? 'text' : (showPassword ? 'text' : 'password')}
+                InputProps={
+                    props.password ?
+                        {
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={handleClickShowPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }
+                        : {}}
             />
         </div>
     )

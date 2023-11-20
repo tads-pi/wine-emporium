@@ -3,7 +3,9 @@ import ProfileWEContainer from '../Container';
 import CreditCardWrapper from '../../../../components/CreditCardWrapper';
 import Loading from '../../../../components/loading';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import AddCardIcon from '@mui/icons-material/AddCard';
 import useProfileWECreditCard from './hooks';
+import { Button } from '@mui/material';
 
 export default function ProfileWECreditCard() {
     const {
@@ -43,9 +45,17 @@ export default function ProfileWECreditCard() {
                                 ))
                             }
 
-                            <AddNewCreditCard
-                                onClick={goToAddNewCreditCard}
-                            />
+                            {
+                                creditCards.length === 0 ?
+                                    <NoCreditCards
+                                        onClick={goToAddNewCreditCard}
+                                    />
+                                    :
+
+                                    <AddNewCreditCard
+                                        onClick={goToAddNewCreditCard}
+                                    />
+                            }
                         </div>
 
                         : <Loading />
@@ -55,6 +65,43 @@ export default function ProfileWECreditCard() {
             </div>
 
         </ProfileWEContainer>
+    )
+}
+
+function NoCreditCards({ onClick }: { onClick: () => void }) {
+    return (
+        <div style={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}>
+            <div style={{
+                display: 'flex',
+                width: '35%',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}>
+                <img src="/credit-card-not-found.png" width={200} />
+                <p style={{
+                    textAlign: 'center',
+                    fontSize: '1rem',
+                    fontWeight: 'lighter',
+                    color: 'gray',
+                }}>
+                    Parece que você ainda não cadastrou nenhum cartão de crédito... 🙁
+                </p>
+
+                <Button
+                    variant='contained'
+                    color='success'
+                    onClick={onClick}
+                >
+                    Cadastrar agora
+                </Button>
+            </div>
+        </div>
     )
 }
 
@@ -75,7 +122,14 @@ function AddNewCreditCard({ onClick }: { onClick: () => void }) {
 
             onClick={onClick}
         >
-            <h5>Adicionar novo cartão</h5>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '0.5rem'
+            }}>
+                <AddCardIcon color='success' />
+                <h5>Cadastrar novo cartão</h5>
+            </div>
             <ArrowForwardIosIcon />
         </div>
     )

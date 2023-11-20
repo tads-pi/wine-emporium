@@ -31,10 +31,25 @@ export default function useRegisterWE() {
     const [activeStep, setActiveStep] = useState(0);
     const handleNext = () => {
         const newSteps: Step[] = [...steps];
-        newSteps[activeStep].completed = true;
-        newSteps[activeStep].selectable = false;
+        const nextStep = activeStep + 1;
+        switch (nextStep) {
+            case 1:
+                newSteps[activeStep].completed = true;
+                newSteps[activeStep].selectable = true;
+
+                newSteps[nextStep].completed = false;
+                newSteps[nextStep].selectable = true;
+                setActiveStep(nextStep);
+                break;
+            case 2:
+                // desabilita selecao dos passos anteriores
+                newSteps[activeStep - 1].selectable = false;
+                newSteps[activeStep].selectable = false;
+                newSteps[activeStep].completed = true;
+                setActiveStep(nextStep);
+                break;
+        }
         steps = newSteps;
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     const handleStep = (step: Step) => () => {
         if (step.selectable) {

@@ -6,8 +6,6 @@ import PersonalInfo from './components/personalInfo';
 import LoginInfo from './components/loginInfo';
 import AddressInfo from './components/addressInfo';
 import useRegisterWE from './hooks/useRegisterWE';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { Button } from '@mui/material';
 
 export default function RegisterWE() {
     const {
@@ -21,18 +19,23 @@ export default function RegisterWE() {
     const [currentStepComponent, setCurrentStepComponent] = useState<React.JSX.Element | null>(null);
     useEffect(() => {
         setCurrentStepComponent(
-            getCurrentStepComponent(activeStep, handleNext)
+            getCurrentStepComponent(activeStep, handleNext, goHome)
         )
     }, [activeStep])
 
     return (
         <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             width: '100%',
-            height: '100vh',
+            // height: '100vh',
             // border: '1px solid red'
         }}>
             <div style={{
-                margin: '2rem 5rem',
+                width: 'min(60ch, 100%)',
+                height: '100%',
+                paddingTop: '2rem',
             }}>
                 <div>
                     <Stepper nonLinear activeStep={activeStep}>
@@ -50,44 +53,32 @@ export default function RegisterWE() {
                 </div>
 
                 {currentStepComponent}
-
-                {
-                    activeStep === 0 &&
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        marginTop: '2rem',
-                    }}>
-                        <Button
-                            onClick={goHome}
-                            variant="outlined"
-                            color="inherit"
-                            size="large"
-                        >
-                            <ArrowBackIosIcon />
-                            Voltar
-                        </Button>
-                    </div>
-                }
             </div>
         </div >
     );
 };
 
-function getCurrentStepComponent(activeStep: number, handleNext: () => void): React.JSX.Element {
+function getCurrentStepComponent(
+    activeStep: number,
+    handleNext: () => void,
+    goHome: () => void,
+): React.JSX.Element {
     switch (activeStep) {
         case 0:
             return (
                 <StepWrapper>
                     <PersonalInfo
                         handleNext={handleNext}
+                        goHome={goHome}
                     />
                 </StepWrapper>
             )
         case 1:
             return (
                 <StepWrapper>
-                    <LoginInfo />
+                    <LoginInfo
+                        handleNext={handleNext}
+                    />
                 </StepWrapper>
             )
         case 2:
@@ -104,8 +95,8 @@ function getCurrentStepComponent(activeStep: number, handleNext: () => void): Re
 function StepWrapper(props: any) {
     return (
         <div style={{
-            padding: '2rem',
-            // border: '1px solid green'
+            padding: '2rem 1rem',
+            // border: '1px solid purple'
         }}>
             {props.children}
         </div>
