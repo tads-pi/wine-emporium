@@ -83,7 +83,7 @@ describe('CreditCardController', () => {
 
     it('deve deletar um cartão de crédito do cliente', async () => {
       // Setup
-      db.clientCreditCard.findUnique = jest.fn().mockResolvedValue(MOCK_CLIENT_CREDIT_CARD);
+      db.clientCreditCard.findFirst = jest.fn().mockResolvedValue(MOCK_CLIENT_CREDIT_CARD);
       db.clientCreditCard.update = jest.fn().mockResolvedValue(MOCK_CLIENT_CREDIT_CARD);
 
       // Teste
