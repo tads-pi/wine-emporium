@@ -2,8 +2,8 @@ import axios from 'axios'
 import { localStorageKeys } from '../../config/localStorageKeys'
 
 export const httpClient = axios.create({
-    baseURL: 'http://localhost:3000',
-    // baseURL: 'https://api.wineemporium.shop',
+    // baseURL: 'http://localhost:3000',
+    baseURL: 'https://api.wineemporium.shop',
 })
 
 httpClient.interceptors.request.use(config => {
