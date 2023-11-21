@@ -3,8 +3,7 @@ import { localStorageKeys } from '../../config/localStorageKeys'
 import { routes } from '../../config/routes'
 
 export const httpClient = axios.create({
-    baseURL: 'http://localhost:3000',
-    // baseURL: 'https://api.wineemporium.shop',
+    baseURL: import.meta.env.VITE_WE_BASE_URL,
 })
 
 httpClient.interceptors.request.use(config => {
