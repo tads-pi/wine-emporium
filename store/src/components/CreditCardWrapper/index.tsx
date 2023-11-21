@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 type CreditCardProps = {
     card: CreditCard;
     onDelete: (card: CreditCard) => void;
+    hideDeleteButton?: boolean
 }
 
 export default function CreditCardWrapper(props: CreditCardProps) {
@@ -63,27 +64,29 @@ export default function CreditCardWrapper(props: CreditCardProps) {
                 </div>
             </div>
 
-            <div
-                style={{
-                    width: '25px',
-                    height: '25px',
+            {
+                props.hideDeleteButton ? null :
+                    <div
+                        style={{
+                            width: '25px',
+                            height: '25px',
 
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
 
-                    cursor: 'pointer',
-                }}
-            >
-                <Tooltip title="Deletar Cartão">
-                    <IconButton
-                        onClick={() => props.onDelete(props.card)}
+                            cursor: 'pointer',
+                        }}
                     >
-                        <DeleteIcon color='error' />
-                    </IconButton>
-                </Tooltip>
-            </div>
-
+                        <Tooltip title="Deletar Cartão">
+                            <IconButton
+                                onClick={() => props.onDelete(props.card)}
+                            >
+                                <DeleteIcon color='error' />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+            }
         </div>
     )
 };

@@ -80,7 +80,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
         UPDATE_PRODUCT_PRICE: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_PRICE" } }),
         UPDATE_PRODUCT_RATINGS: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_RATINGS" } }),
         UPDATE_PRODUCT_STOCK: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_STOCK" } }),
-        UPDATE_PRODUCT_STOCK_UNIDADEIT: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_STOCK_UNIDADEIT" } }),
+        UPDATE_PRODUCT_STOCK_UNIT: await prisma.backofficePermission.findUnique({ where: { name: "UPDATE_PRODUCT_STOCK_UNIT" } }),
         DELETE_PRODUCT: await prisma.backofficePermission.findUnique({ where: { name: "DELETE_PRODUCT" } }),
 
         CREATE_PRODUCT_IMAGE: await prisma.backofficePermission.findUnique({ where: { name: "CREATE_PRODUCT_IMAGE" } }),
@@ -112,7 +112,7 @@ async function addBackofficeClientsGroupsAndPermissions() {
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.CREATE_PRODUCT.id },
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.READ_PRODUCT.id },
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.UPDATE_PRODUCT_STOCK.id },
-            { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.UPDATE_PRODUCT_STOCK_UNIDADEIT.id },
+            { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.UPDATE_PRODUCT_STOCK_UNIT.id },
 
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.CREATE_PRODUCT_IMAGE.id },
             { backofficeGroupId: ESTOQUISTA.id, backofficePermissionId: PERMISSIONS.DELETE_PRODUCT_IMAGE.id },

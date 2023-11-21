@@ -20,3 +20,11 @@ export interface Payment {
     dueDate: number;
     status: string;
 }
+
+export interface CheckoutPaymentMethodPayload {
+    paymentMethod: 'credit-card' | 'bank-slip'
+    methodId: string
+    installments: number
+    installmentsValue: number
+    dueDate: number
+}

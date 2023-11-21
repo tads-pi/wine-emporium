@@ -71,7 +71,9 @@ export default function useAddressInfo() {
     async function onSubmit() {
         if (haveAnyAddress()) {
             if (optUseSameAddress) {
-                await saveDeliveryAddress(userAddresses[0])
+                let a = userAddresses[0]
+                a.type = 'SHIPPING'
+                await saveDeliveryAddress(a)
             }
             navigate(routes.LOGIN)
         }

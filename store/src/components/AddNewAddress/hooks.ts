@@ -6,6 +6,7 @@ import { NewAddress } from "../../zustand/types";
 
 interface useAddNewAddress {
     onSubmit: (address: NewAddress) => void;
+    type: 'BILLING' | 'SHIPPING' | undefined;
 }
 
 interface FormData {
@@ -40,7 +41,7 @@ export default function useAddNewAddress(props: useAddNewAddress) {
             number: data.number,
             zip: data.zip,
             complement: data.complement,
-            type: data.type || 'BILLING',
+            type: props.type ? props.type : data.type || 'BILLING',
         });
     }
 

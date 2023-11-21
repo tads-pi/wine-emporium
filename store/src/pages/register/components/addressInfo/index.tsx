@@ -43,6 +43,7 @@ export default function AddressInfo(props: AddressInfoProps) {
                                 <AddNewAddress
                                     onSubmit={saveInvoiceAddress}
                                     submitText="Cadastrar"
+                                    type="BILLING"
                                     hideTitle
                                 />
                             }
@@ -71,6 +72,7 @@ export default function AddressInfo(props: AddressInfoProps) {
                                                     <AddNewAddress
                                                         onSubmit={saveDeliveryAddress}
                                                         submitText="Cadastrar"
+                                                        type="SHIPPING"
                                                         hideTitle
                                                     />
                                                 </>

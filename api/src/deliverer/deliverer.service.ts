@@ -41,17 +41,17 @@ export class DelivererService {
 
         return [
             {
-                id: 'cdc903f3-cfc8-48ae-a5bf-b822b4b251a4',
+                id: 'ea34afd1-2ba8-438d-8c2f-683d69114d56',
                 name: 'WE Transportes',
                 fare: 32.99,
             },
             {
-                id: '05ed9919-4e22-495f-8516-1cc5bed3677b',
+                id: '72576a59-0070-4055-9a67-a7af28f8cac8',
                 name: 'Sedex',
                 fare: 21.99,
             },
             {
-                id: '39573920-2b83-43ce-9bad-25638c7b6ee2',
+                id: '985e153e-4654-4e9a-a48c-7b1be2a5d91a',
                 name: 'Correios',
                 fare: 20.99,
             }

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../config/routes";
+import useStore from "../../zustand/store";
 
 type Step = {
     label: string,
@@ -15,30 +16,44 @@ let steps: Step[] = [
         selectable: true,
     },
     {
-        label: "Endereço de Entrega",
-        completed: false,
-        selectable: false,
-    },
-    {
         label: "Forma de Pagamento",
         completed: false,
-        selectable: false,
-    },
-    {
-        label: "Resumo",
-        completed: false,
-        selectable: false,
+        selectable: true,
     },
     {
         label: "Finalizar",
         completed: false,
-        selectable: false,
+        selectable: true,
     }
 ]
 
 export default function useCheckout() {
+    const { checkoutApi } = useStore()
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(() => {
+        setIsLoading(true)
+        checkoutApi.start().then((c) => {
+            switch (c.status) {
+                case 'ENDERECO_PENDENTE':
+                    setActiveStep(0); break;
+                case 'ENTREGADOR_PENDENTE':
+                    setActiveStep(0); break;
+                case 'METODO_DE_PAGAMENTO_PENDENTE':
+                    const newSteps = [...steps];
+                    newSteps[0].completed = true;
+                    setActiveStep(1); break;
+                case 'AGUARDANDO_PAGAMENTO':
+                    const newSteps2 = [...steps];
+                    newSteps2[0].completed = true;
+                    newSteps2[1].completed = true;
+                    setActiveStep(2); break;
+            }
+            setIsLoading(false)
+        })
+    }, [checkoutApi])
 
     const handleNext = () => {
         const newSteps: Step[] = [...steps];
@@ -46,16 +61,10 @@ export default function useCheckout() {
         switch (nextStep) {
             case 1:
                 newSteps[activeStep].completed = true;
-                newSteps[activeStep].selectable = true;
-
                 newSteps[nextStep].completed = false;
-                newSteps[nextStep].selectable = true;
                 setActiveStep(nextStep);
                 break;
             case 2:
-                // desabilita selecao dos passos anteriores
-                newSteps[activeStep - 1].selectable = false;
-                newSteps[activeStep].selectable = false;
                 newSteps[activeStep].completed = true;
                 setActiveStep(nextStep);
                 break;
@@ -73,6 +82,7 @@ export default function useCheckout() {
     }
 
     return {
+        isLoading,
         activeStep,
         steps,
         handleNext,

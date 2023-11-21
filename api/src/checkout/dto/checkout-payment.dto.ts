@@ -13,7 +13,6 @@ export class SetCheckoutPaymentMethodDTO {
     paymentMethod: 'credit-card' | 'bank-slip'
 
     @IsString()
-    @IsNotEmpty()
     @ApiProperty({
         description: 'ID do método de pagamento',
         example: 'credit-card',

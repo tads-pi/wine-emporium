@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import useCheckout from "./hooks";
 import { Button, Step, StepButton, Stepper } from "@mui/material";
 import CheckoutCart from "./components/cart";
-import CheckoutDeliveryAddress from "./components/deliveryAddress";
 import CheckoutPaymentMethod from "./components/paymentMethod";
-import CheckoutResume from "./components/resume";
 import CheckoutFinish from "./components/finish";
 import './styles.css'
+import Loading from "../../components/loading";
 
 export default function Checkout() {
     const {
+        isLoading,
         activeStep,
         steps,
         handleStep,
@@ -33,39 +33,39 @@ export default function Checkout() {
             // height: '100vh',
             // border: '1px solid red'
         }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                width: '100%',
-                paddingTop: '2rem',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                <div style={{
-                    display: 'flex',
-                    width: 'min(60ch, 100%)',
-                    overflowX: 'scroll',
-                    overflowY: 'hidden',
-                }}>
-                    <Stepper nonLinear activeStep={activeStep}>
-                        {
-                            steps.map((step, i) => (
-                                <Step key={i} completed={step.completed}>
-                                    <StepButton
-                                        color="inherit"
-                                        onClick={handleStep(step)}
-                                    >
-                                        {step.label}
-                                    </StepButton>
-                                </Step>
-                            ))
-                        }
-                    </Stepper>
-                </div>
+            {
+                isLoading ? <Loading /> :
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        width: '100%',
+                        paddingTop: '2rem',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                        }}>
+                            <Stepper nonLinear activeStep={activeStep}>
+                                {
+                                    steps.map((step, i) => (
+                                        <Step key={i} completed={step.completed}>
+                                            <StepButton
+                                                color="inherit"
+                                                onClick={handleStep(step)}
+                                            >
+                                                {step.label}
+                                            </StepButton>
+                                        </Step>
+                                    ))
+                                }
+                            </Stepper>
+                        </div>
 
-                {currentStepComponent}
-            </div>
+                        {currentStepComponent}
+                    </div>
+            }
         </div >
     )
 }
@@ -89,31 +89,13 @@ function getCurrentStepComponent(
         case 1:
             return (
                 <StepWrapper>
-                    <CheckoutDeliveryAddress
-                        handleNext={handleNext}
-                        goHome={goHome}
-                    />
-                </StepWrapper>
-            )
-        case 2:
-            return (
-                <StepWrapper>
                     <CheckoutPaymentMethod
                         handleNext={handleNext}
                         goHome={goHome}
                     />
                 </StepWrapper>
             )
-        case 3:
-            return (
-                <StepWrapper>
-                    <CheckoutResume
-                        handleNext={handleNext}
-                        goHome={goHome}
-                    />
-                </StepWrapper>
-            )
-        case 4:
+        case 2:
             return (
                 <StepWrapper>
                     <CheckoutFinish
