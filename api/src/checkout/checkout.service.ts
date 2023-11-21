@@ -8,6 +8,7 @@ import { DelivererViewmodel } from '../deliverer/viewmodel';
 import { SetCheckoutPaymentMethodDTO } from './dto';
 import { PaymentViewmodel } from '../payment/viewmodel/payment.viewmodel';
 import { ClientCreditCardViewmodel } from '../payment/viewmodel/client-credit-card.viewmodel';
+import { UpdateCheckoutStatusDTO } from './dto/backoffice.dto';
 
 @Injectable()
 export class CheckoutService {
@@ -141,6 +142,23 @@ export class CheckoutService {
         return viewmodel
     }
 
+    async listCheckoutForBackoffice(): Promise<CheckoutViewmodel[]> {
+        const allCheckouts = await this.db.checkout.findMany({
+            where: {
+                status: {
+                    notIn: ['ENDERECO_PENDENTE', 'ENTREGADOR_PENDENTE', 'METODO_DE_PAGAMENTO_PENDENTE']
+                }
+            }
+        })
+
+        let viewmodel: CheckoutViewmodel[] = []
+        for (const c of allCheckouts) {
+            viewmodel.push(await this.fillCheckoutWithData(c))
+        }
+
+        return viewmodel
+    }
+
     async getCheckoutById(clientId: string, id: string): Promise<CheckoutViewmodel> {
         const c = await this.db.checkout.findUnique({
             where: { id },
@@ -150,6 +168,33 @@ export class CheckoutService {
         }
 
         return await this.fillCheckoutWithData(c)
+    }
+
+    async getCheckoutByIdForBackoffice(id: string): Promise<CheckoutViewmodel> {
+        const c = await this.db.checkout.findUnique({
+            where: { id },
+        });
+        if (!c) {
+            throw new NotFoundException('Checkout não encontrado');
+        }
+
+        return await this.fillCheckoutWithData(c)
+    }
+
+    async updateCheckoutForBackoffice(dto: UpdateCheckoutStatusDTO): Promise<null> {
+        const c = await this.db.checkout.findUnique({
+            where: { id: dto.id },
+        });
+        if (!c) {
+            throw new NotFoundException('Checkout não encontrado');
+        }
+
+        await this.db.checkout.update({
+            where: { id: dto.id },
+            data: { status: dto.status }
+        })
+
+        return null
     }
 
     async startCheckout(clientId: string): Promise<CheckoutViewmodel> {

@@ -16,6 +16,9 @@ export default function NavBarWE() {
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/products/save">Criar novo</NavDropdown.Item>
                 </NavDropdown>
+                <NavDropdown title="Pedidos" id="checkouts-nav-dropdown">
+                    <NavDropdown.Item href="/checkouts">Ver todos</NavDropdown.Item>
+                </NavDropdown>
                 <Nav.Link href="/">Sair</Nav.Link>
             </Nav>
         </Navbar>

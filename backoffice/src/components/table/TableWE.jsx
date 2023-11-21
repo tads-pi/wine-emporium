@@ -26,6 +26,7 @@ export default function TableWE({
     onClickRow,
     onDoubleClick,
     // search feature
+    hideSearch = false,
     liveSearch,
     onSearch,
     searchChoices,
@@ -78,14 +79,17 @@ export default function TableWE({
                         <TableContainer
                             component={Paper}
                         >
-                            <SearchBoxWE
-                                onChangeSearchText={setSearch}
-                                choices={searchChoices}
-                                onSubmit={onSearch}
-                                searchText={search}
-                                searchField={searchField}
-                                onChangeSearchField={setSearchField}
-                            />
+                            {
+                                !hideSearch &&
+                                <SearchBoxWE
+                                    onChangeSearchText={setSearch}
+                                    choices={searchChoices}
+                                    onSubmit={onSearch}
+                                    searchText={search}
+                                    searchField={searchField}
+                                    onChangeSearchField={setSearchField}
+                                />
+                            }
                             <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
                                 <TableHead>
                                     <TableRow>
@@ -141,18 +145,21 @@ export default function TableWE({
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <TablePagination
-                            // todo add this option
-                            rowsPerPageOptions={[10]}
-                            component="div"
-                            count={totalItems}
-                            page={currentPage}
-                            onPageChange={(_, page) => {
-                                console.log("page: ", page);
-                                onChangePage(page)
-                            }}
-                            rowsPerPage={10}
-                        />
+                        {
+                            totalItems && currentPage &&
+                            <TablePagination
+                                // todo add this option
+                                rowsPerPageOptions={[10]}
+                                component="div"
+                                count={totalItems}
+                                page={currentPage}
+                                onPageChange={(_, page) => {
+                                    console.log("page: ", page);
+                                    onChangePage(page)
+                                }}
+                                rowsPerPage={10}
+                            />
+                        }
                     </Paper>
             }
         </>

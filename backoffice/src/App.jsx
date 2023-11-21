@@ -13,6 +13,9 @@ import ListUsers from "./pages/User/List/ListUsers";
 import UpdateUser from "./pages/User/Update/UpdateUser";
 import SaveUser from "./pages/User/Save/SaveUser";
 import Login from "./pages/Login/Page/Login";
+import ListCheckouts from "./pages/Checkouts/List/ListCheckouts";
+import UpdateProduct from "./pages/Products/Update/UpdateProduct";
+import UpdateCheckout from "./pages/Checkouts/Update/UpdateProduct";
 
 // todo enhance this validation and move this component somewhere else
 function PrivateRoute({ children }) {
@@ -89,6 +92,23 @@ export default function App() {
                         element={
                             <PrivateRoute>
                                 <SaveProduct />
+                            </PrivateRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/checkouts"
+                        element={
+                            <PrivateRoute>
+                                <ListCheckouts />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/checkouts/:id"
+                        element={
+                            <PrivateRoute>
+                                <UpdateCheckout />
                             </PrivateRoute>
                         }
                     />

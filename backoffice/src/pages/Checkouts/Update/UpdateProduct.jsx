@@ -1,121 +1,113 @@
-import React from "react"
 import { useParams } from "react-router-dom";
-import ProfileWEContainer from "../Container";
-import { Button, Tooltip } from "@mui/material";
-import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
-import useProfileWECheckoutDetails from "./hooks";
+import LoadingWE from "../../../components/loading/LoadingWE";
+import useUpdateCheckout from "./hooks.js"
+import { Button, InputLabel, MenuItem, Select, Tooltip } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBackIos';
 import dayjs from "dayjs";
-import Loading from "../../../../components/loading";
 import 'dayjs/locale/pt-br';
-import { Checkout } from "../../../../zustand/types";
 dayjs.locale('pt-br');
 
-export default function ProfileWECheckoutDetails() {
-    const { id } = useParams();
-    const {
-        checkout,
+const validStatus = [
+    "AGUARDANDO_PAGAMENTO",
+    "PAGAMENTO_COM_SUCESSO",
+    "PAGAMENTO_REJEITADO",
+    "AGUARDANDO_RETIRADA",
+    "EM_TRANSITO",
+    "ENTREGUE",
+    "CANCELADO",
+]
+
+export default function UpdateCheckout() {
+    const { id } = useParams()
+    const [
+        data,
+        status,
+        setStatus,
+        loading,
         goBack,
-    } = useProfileWECheckoutDetails({ checkoutId: id })
+        saveAndGoBack,
+    ] = useUpdateCheckout({ id })
 
     return (
-        <ProfileWEContainer>
+        <>
             {
-                !checkout ? <Loading /> :
-                    <div>
+                loading ? <LoadingWE /> :
+                    Object.keys(data).length > 0 &&
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        width: '100%',
+                        padding: window.innerWidth > 600 ? '3rem' : '1rem',
+                    }}>
                         <div style={{
                             display: 'flex',
                             width: '100%',
-
-                            // border: '1px solid red'
+                            justifyContent: 'flex-start',
                         }}>
                             <Button
                                 variant="outlined"
                                 color="inherit"
                                 onClick={() => goBack()}
+                                sx={{
+                                    marginBottom: '1rem',
+                                }}
                             >
-                                <ArrowBackIos sx={{ fontSize: '16px' }} />
+                                <ArrowBackIcon />
                                 Voltar
                             </Button>
                         </div>
 
                         <div style={{
                             display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-
-                            // border: '1px solid blue'
+                            flexDirection: 'column',
+                            gap: '1rem',
+                            justifyContent: 'flex-start',
+                            width: '100%'
                         }}>
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '50%',
-                                overflow: 'scroll',
-                                gap: '1rem',
-                                padding: '1rem',
+                            <ResumeHeaders checkout={data} />
 
-                                // border: '1px solid purple'
-                            }}>
-                                <div>
-                                    <ResumeHeaders checkout={checkout} />
-                                </div>
+                            <div>
+                                <InputLabel id="status-label">Status</InputLabel>
+                                <Select
+                                    value={status}
+                                    onChange={(e) => setStatus(e.target.value)}
+                                    sx={{ width: '50%' }}
+                                >
+                                    {validStatus.map((status, i) => (
+                                        <MenuItem key={i} value={status}>
+                                            {status}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </div>
 
-                                <div>
-                                    <ResumeReceipt checkout={checkout} />
-                                </div>
+                            <CheckoutReceipt checkout={data} />
 
-                                <div>
-                                    <ResumePayment checkout={checkout} />
-                                </div>
+                            <div>
+                                {
+                                    status !== data.status &&
+                                    <Button
+                                        variant="contained"
+                                        color="success"
+                                        onClick={() => saveAndGoBack()}
+                                        sx={{
+                                            marginTop: '1rem',
+                                        }}
+                                    >
+                                        Salvar
+                                    </Button>
+                                }
                             </div>
                         </div>
                     </div>
             }
-        </ProfileWEContainer>
-    )
-};
-
-function ResumePayment({ checkout }: { checkout: Checkout }) {
-    return (
-        <div>
-            <div style={{ display: 'flex', width: '100%' }}>
-                <p style={{ fontSize: '12px', color: 'gray', margin: 0 }}>
-                    {checkout.payment.bankSlip ? 'Boleto' : 'Cartão de crédito'}
-                </p>
-            </div>
-
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                gap: '0.25rem',
-            }}>
-                <p style={{
-                    fontSize: '12px',
-                    margin: 0,
-                    color: 'gray',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                }}>
-                    {checkout.payment.installments}x
-                </p>
-                <p style={{
-                    fontSize: '12px',
-                    margin: 0,
-                    color: '#333',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                }}>
-                    R$ {checkout.payment.installmentsValue}
-                </p>
-            </div>
-        </div>
+        </>
     )
 }
 
-function ResumeReceipt({ checkout }: { checkout: Checkout }) {
+function CheckoutReceipt({ checkout }) {
     const products = checkout.cart.products.map((product) => {
         return {
             name: product.name,
@@ -254,7 +246,7 @@ function ResumeReceipt({ checkout }: { checkout: Checkout }) {
     )
 }
 
-function ResumeHeaders({ checkout }: { checkout: Checkout }) {
+function ResumeHeaders({ checkout }) {
     return (
         <header style={{
             display: 'flex',
