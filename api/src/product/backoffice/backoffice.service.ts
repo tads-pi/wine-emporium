@@ -85,6 +85,7 @@ export class BackofficeService {
                 active: product.active,
                 images: productImagesViewmodel,
                 stock: productStock,
+                category: product.category,
             })
         }
 
@@ -126,6 +127,7 @@ export class BackofficeService {
             active: product.active,
             stock: stock,
             images: productImagesViewmodel,
+            category: product.category,
         }
     }
 
@@ -158,6 +160,7 @@ export class BackofficeService {
             active: product.active,
             images: [],
             stock: [productStock],
+            category: product.category,
         }
 
         return viewmodel

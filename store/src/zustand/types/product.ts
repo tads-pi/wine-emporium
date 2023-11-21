@@ -19,8 +19,18 @@ export interface ListProductsParams {
     limit?: number,
     category?: string,
     name?: string,
+    priceFrom?: number,
+    priceTo?: number,
+    ratingsFrom?: number,
+    ratingsTo?: number,
     sort?: {
         field: string,
         order: 'asc' | 'desc',
     },
+}
+
+export interface ProductTotals {
+    total: number;
+    mostCheap: number;
+    mostExpensive: number;
 }

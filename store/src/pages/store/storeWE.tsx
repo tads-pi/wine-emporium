@@ -2,7 +2,8 @@ import React, { useEffect } from "react"
 import Carrousel from "../../components/Carrousel"
 import useStoreWE from "./hooks/useStoreWE"
 import Loading from "../../components/loading"
-import { Grid, InputAdornment, TextField, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Grid, InputAdornment, Rating, TextField, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { CardWine } from '../../components/CardWine';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
@@ -10,6 +11,8 @@ import { Product } from '../../zustand/types';
 import { NavBarWE } from "../../components/NavBarWE";
 import SearchIcon from '@mui/icons-material/Search';
 import useStore from "../../zustand/store";
+import FilterWrapper from "./components/FilterWrapper";
+import FilterDrawer from "./components/FilterDrawer";
 
 export default function StoreWE() {
     const {
@@ -78,9 +81,13 @@ export default function StoreWE() {
                         }}>
                             <div style={{
                                 width: window.innerWidth > 600 ? 'min(250px, 25%)' : '100%',
-                                border: '1px solid red'
+                                // border: '1px solid red'
                             }}>
-                                filtros
+                                {
+                                    window.innerWidth > 600
+                                        ? <FilterWrapper fetchProducts={fetchProducts} />
+                                        : <FilterDrawer fetchProducts={fetchProducts} />
+                                }
                             </div>
                             <div style={{
                                 display: 'flex',
@@ -89,7 +96,7 @@ export default function StoreWE() {
                                 width: window.innerWidth > 600 ? '100%' : '100%',
                                 gap: window.innerWidth > 600 ? '2rem' : '1rem',
                                 minHeight: '100vh',
-                                border: '1px solid blue'
+                                // border: '1px solid blue'
                             }}>
                                 {!isLoading && products ?
                                     (

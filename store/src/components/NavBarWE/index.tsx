@@ -1,15 +1,11 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Badge, styled } from '@mui/material';
 import SettingsWE from './components/SettingsWE';
 import useNavBarWE from './hooks';
-import LogoWE from './components/LogoWE';
 import AvatarWE from './components/AvatarWE';
 import DrawerWE from './components/drawer/DrawerWE';
 import { Link } from 'react-router-dom';
@@ -37,58 +33,66 @@ export function NavBarWE() {
 
   return (
     <AppBar position="static" color="transparent">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <LogoWE />
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: '0.5rem'
+      }}>
+        <LogoWE />
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
+        <div>
+          {
+            isLoggedIn ?
+              <>
+                <AvatarWE handleOpenUserMenu={handleOpenUserMenu} />
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <SettingsWE />
+                </Menu>
+              </>
+              :
+              <>
+                <Link to={routes.LOGIN} style={{ textDecoration: 'none' }}>
+                  <span style={{ color: 'black' }}>Login</span>
+                </Link>
+              </>
+          }
 
-          <Box sx={{ flexGrow: 0 }}>
-            {
-              isLoggedIn ?
-                <>
-                  <AvatarWE handleOpenUserMenu={handleOpenUserMenu} />
-                  <Menu
-                    sx={{ mt: '45px' }}
-                    id="menu-appbar"
-                    anchorEl={anchorElUser}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={Boolean(anchorElUser)}
-                    onClose={handleCloseUserMenu}
-                  >
-                    <SettingsWE />
-                  </Menu>
-                </>
-                :
-                <>
-                  <Link to={routes.LOGIN} style={{ textDecoration: 'none' }}>
-                    <span style={{ color: 'black' }}>Login</span>
-                  </Link>
-                </>
-            }
+          <IconButton style={{ color: 'black', marginLeft: '10px' }} aria-label="cart" onClick={hideOrShowDrawer}>
+            <StyledBadge badgeContent={numItems} color="secondary">
+              <ShoppingCartIcon />
+            </StyledBadge>
+          </IconButton>
 
+          <DrawerWE
+            drawerOpen={drawerOpen}
+            hideOrShowDrawer={hideOrShowDrawer}
+          />
+        </div>
+      </div>
+    </AppBar >
+  )
+}
 
-            <IconButton style={{ color: 'black', marginLeft: '10px' }} aria-label="cart" onClick={hideOrShowDrawer}>
-              <StyledBadge badgeContent={numItems} color="secondary">
-                <ShoppingCartIcon />
-              </StyledBadge>
-            </IconButton>
-
-            <DrawerWE
-              drawerOpen={drawerOpen}
-              hideOrShowDrawer={hideOrShowDrawer}
-            />
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+function LogoWE() {
+  return (
+    <div>
+      <img src={'/LOGO.png'} alt="Logo" width={50} />
+    </div>
   )
 }

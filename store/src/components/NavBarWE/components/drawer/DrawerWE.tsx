@@ -7,6 +7,7 @@ import { CartProductCard } from "../../../CartProductCard"
 import useDrawer from "./useDrawer"
 import "./drawerWE.css"
 import Loading from "../../../loading"
+import { Box } from "@mui/material"
 
 type DrawerWEProps = {
     drawerOpen: boolean,
@@ -51,13 +52,19 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
             // }}
 
             style={{
-                overflow: 'hidden'
+                overflow: 'hidden',
             }}
         >
             {
                 cartState
                     ?
-                    <>
+                    <Box
+                        sx={{
+                            width: window.innerWidth < 600 ? window.innerWidth / 1.25 : 400,
+                            height: '100%',
+                        }}
+                        role="presentation"
+                    >
                         <ProductsWrapper>
                             {
                                 cartState.products.length > 0
@@ -86,7 +93,7 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
                                 </>
                             }
                         </BottomWrapper>
-                    </>
+                    </Box>
                     :
                     <div
                         style={{
@@ -111,7 +118,6 @@ function ProductsWrapper({ children }: { children: React.ReactNode }) {
             display: 'flex',
             justifyContent: 'flex-start',
             flexDirection: 'column',
-            maxWidth: '400px',
             height: '75%',
             overflow: 'scroll',
         }}>
@@ -173,9 +179,16 @@ function EmptyCart() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
+                width: '100%',
             }}
         >
-            <img src={'/8504.jpg'} alt="Carrinho vazio" width={250} />
+            <img
+                src={'/8504.jpg'}
+                alt="Carrinho vazio"
+                style={{
+                    width: '50%'
+                }}
+            />
             <p>Carrinho vazio</p>
         </div>
     )

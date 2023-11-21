@@ -48,6 +48,7 @@ export class CartService {
                 ratings: p.ratings,
                 images: imageViewmodel,
                 amount: cartItems.find(item => item.productId === p.id).amount,
+                category: p.category,
             })
         }
 

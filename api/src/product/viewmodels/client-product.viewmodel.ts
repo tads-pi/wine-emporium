@@ -7,4 +7,11 @@ export class ProductClientViewmodel {
     price: number;
     ratings: number;
     images: ProductImageViewmodel[];
+    category: string;
+}
+
+export class ProductTotalityViewmodel {
+    total: number;
+    mostCheap: number;
+    mostExpensive: number;
 }

@@ -68,13 +68,23 @@ describe('ClientController', () => {
       active: true,
     }
 
-    it('deve retornar o total de produtos', async () => {
+    it('deve retornar o total dos produtos', async () => {
       // Setup
       db.product.count = jest.fn().mockReturnValueOnce(2)
+      db.product.findFirst = jest.fn().mockImplementation((args) => {
+        const order = args.orderBy.price
+        if (order === 'asc') {
+          return MOCK_PRODUCT_01
+        }
+        return MOCK_PRODUCT_02
+      })
 
       // Teste
-      const total = await controller.getTotalProducts();
-      expect(total).toBe(2);
+      const res = await controller.getTotalProducts();
+      expect(res).toBeDefined();
+      expect(res.total).toBe(2);
+      expect(res.mostCheap).toBe(MOCK_PRODUCT_01.price);
+      expect(res.mostExpensive).toBe(MOCK_PRODUCT_02.price);
     })
 
     it('deve retornar todos os produtos', async () => {
@@ -82,7 +92,7 @@ describe('ClientController', () => {
       db.product.findMany = jest.fn().mockReturnValueOnce([MOCK_PRODUCT_01, MOCK_PRODUCT_02])
 
       // Teste
-      const products = await controller.getAllProducts(null, null, null, null);
+      const products = await controller.getAllProducts(null, null, {});
       expect(products).toBeDefined();
       expect(products.length).toBe(2);
       expect(products[0].id).toBe(MOCK_PRODUCT_01.id);

@@ -1,7 +1,7 @@
 import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { ApiTags } from '@nestjs/swagger';
-import { ProductClientViewmodel } from '../viewmodels/client-product.viewmodel';
+import { ProductClientViewmodel, ProductTotalityViewmodel } from '../viewmodels/client-product.viewmodel';
 
 @ApiTags('product/store')
 @Controller('product')
@@ -11,7 +11,7 @@ export class ClientController {
     ) { }
 
     @Get('store/total')
-    async getTotalProducts(): Promise<number> {
+    async getTotalProducts(): Promise<ProductTotalityViewmodel> {
         return this.svc.getTotalProducts();
     }
 

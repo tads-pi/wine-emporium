@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { ProductClientViewmodel } from '../viewmodels/client-product.viewmodel';
+import { ProductClientViewmodel, ProductTotalityViewmodel } from '../viewmodels/client-product.viewmodel';
 import { S3Service } from '../../aws/s3/s3.service';
 import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
 
@@ -25,7 +25,7 @@ export class ClientService {
 
         const categorySearch = headers['category']?.toUpperCase()
         if (categorySearch) {
-            const validQueries: string[] = ["VINHOS", "UTILIDADES", "OUTROS"]
+            const validQueries: string[] = ["VINHOS", "UTILITARIOS", "OUTROS"]
             const categoryNotContainsSQLInjection = categorySearch.length <= 16 && !categorySearch.includes(";")
             const categoryExists = validQueries.includes(categorySearch)
 
@@ -33,6 +33,60 @@ export class ClientService {
             if (isValidCategory) {
                 whereClause['category'] = {
                     equals: categorySearch,
+                }
+            }
+        }
+
+        const ratingsFrom = headers["ratings-from"]
+        if (ratingsFrom) {
+            const motContainsSQLInjection = ratingsFrom.length <= 16 && !ratingsFrom.includes(";")
+            const isNumber = Number(ratingsFrom) != undefined
+
+            const isValid = motContainsSQLInjection && isNumber
+            if (isValid) {
+                whereClause['ratings'] = {
+                    gte: Number(ratingsFrom)
+                }
+            }
+        }
+
+        const ratingsTo = headers["ratings-to"]
+        if (ratingsTo) {
+            const motContainsSQLInjection = ratingsTo.length <= 16 && !ratingsTo.includes(";")
+            const isNumber = Number(ratingsTo) != undefined
+
+            const isValid = motContainsSQLInjection && isNumber
+            if (isValid) {
+                whereClause['ratings'] = {
+                    ...whereClause['ratings'],
+                    lte: Number(ratingsTo)
+                }
+            }
+        }
+
+        const priceFrom = headers['price-from']
+        if (priceFrom) {
+            const motContainsSQLInjection = priceFrom.length <= 16 && !priceFrom.includes(";")
+            const isNumber = Number(priceFrom) != undefined
+
+            const isValid = motContainsSQLInjection && isNumber
+            if (isValid) {
+                whereClause['price'] = {
+                    gte: Number(priceFrom)
+                }
+            }
+        }
+
+        const priceTo = headers['price-to']
+        if (priceTo) {
+            const motContainsSQLInjection = priceTo.length <= 16 && !priceTo.includes(";")
+            const isNumber = Number(priceTo) != undefined
+
+            const isValid = motContainsSQLInjection && isNumber
+            if (isValid) {
+                whereClause['price'] = {
+                    ...whereClause['price'],
+                    lte: Number(priceTo)
                 }
             }
         }
@@ -61,13 +115,15 @@ export class ClientService {
         return orderByClause
     }
 
-    async getTotalProducts(): Promise<number> {
-        const total = await this.db.product.count({
-            where: {
-                active: true,
-            }
-        });
-        return total;
+    async getTotalProducts(): Promise<ProductTotalityViewmodel> {
+        const total = await this.db.product.count({ where: { active: true } });
+        const mostCheap = await this.db.product.findFirst({ orderBy: { price: 'asc', }, where: { active: true } });
+        const mostExpensive = await this.db.product.findFirst({ orderBy: { price: 'desc', }, where: { active: true } });
+        return {
+            total: total,
+            mostCheap: mostCheap.price,
+            mostExpensive: mostExpensive.price,
+        }
     }
 
     async getAllProducts(page: number, limit: number, headers: any): Promise<ProductClientViewmodel[]> {
@@ -79,56 +135,10 @@ export class ClientService {
             limit = 10;
         }
 
-        // if (sort == null) {
-        //     sort = 'id';
-        // }
-
-        // const whereClause = {
-        //     active: true
-        // }
-        // if (filters && filters !== '') {
-        //     const allFilters = filters.split(',')
-        //     for (const f of allFilters) {
-        //         const filterableFields: string[] = ['name', 'category']
-        //         const [field, query] = f.split(':')
-
-        //         if (!filterableFields.includes(field)) {
-        //             continue
-        //         }
-
-        //         if (field === 'name') {
-        //             whereClause[field] = {
-        //                 contains: query,
-        //             }
-        //         } else {
-        //             const validQueries: string[] = ["VINHOS", "UTILIDADES", "OUTROS"]
-
-        //             if (!validQueries.includes(query)) {
-        //                 continue
-        //             }
-
-        //             whereClause[field] = {
-        //                 equals: query,
-        //             }
-        //         }
-        //     }
-        // }
-
-        // let orderByClause = {}
-        // const sortableFields = ['id', 'name', 'price', 'ratings', 'category']
-        // const sortableOrders = ['desc', 'asc']
-        // const [field, direction] = sort.split(':')
-        // if (
-        //     sortableFields.includes(field) &&
-        //     sortableOrders.includes(direction)
-        // ) {
-        //     orderByClause = {
-        //         [field]: direction,
-        //     }
-        // }
-
         const whereClause = this.unmarshallWhereClause(headers)
         const orderByClause = this.unmarshallOrderByClause(headers)
+
+        console.log({ whereClause });
 
         const products = await this.db.product.findMany({
             skip: Number((page - 1) * limit),
@@ -157,6 +167,7 @@ export class ClientService {
                 price: product.price,
                 ratings: product.ratings,
                 images: productImagesViewmodel,
+                category: product.category,
             })
         }
 
@@ -192,13 +203,14 @@ export class ClientService {
             price: product.price,
             ratings: product.ratings,
             images: productImagesViewmodel,
+            category: product.category,
         }
     }
 
     async listCategories(): Promise<string[]> {
         return [
             "VINHOS",
-            "UTILIDADES",
+            "UTILITARIOS",
             "OUTROS",
         ]
     }
