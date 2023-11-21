@@ -7,9 +7,7 @@ export default function ListUsers() {
     const [
         data,
         loading,
-        onChangeSearchText,
-        searchTextField,
-        onChangeSearchTextField,
+        onSearch,
         onDoubleClick,
         onToggleActive,
         totalItems,
@@ -78,10 +76,9 @@ export default function ListUsers() {
                 columnsTitle={columnsTitle}
                 onDoubleClick={onDoubleClick}
                 loadingData={loading}
-                onSearch={onChangeSearchText}
-                searchTextField={searchTextField}
-                onSearchFieldSelected={onChangeSearchTextField}
-                searchChoices={columns}
+
+                // onSearch={onSearch}
+                hideSearch
 
                 totalItems={totalItems}
                 currentPage={currentPage}

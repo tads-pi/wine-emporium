@@ -30,17 +30,16 @@ export default function useListProduct() {
     }
 
     function onChangeSearchText(text) {
-        console.log(`searching: '${searchText}' in '${searchTextField}' field`);
+        console.log(`searching: '${text}' in '${searchTextField}' field`);
 
-        setSearchText(text.toLowerCase())
-        if (searchText === "") {
+        if (text === "") {
             dispatch(api.getAllProducts())
             return
         }
 
         dispatch(api.getAllProducts({
             filters: [
-                `name:${searchText}`,
+                `name:${text}`,
             ],
         }))
     }

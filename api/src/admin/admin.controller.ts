@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpCode, HttpStatus, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { BackofficeClientViewmodel } from './viewmodel';
 import { ApiTags } from '@nestjs/swagger';
@@ -24,8 +24,11 @@ export class AdminController {
 
     @Get('user')
     @UseGuards(JwtGuard, BackofficeGuard)
-    async getAllUsers(): Promise<BackofficeClientViewmodel[]> {
-        return this.svc.getAllUsers();
+    async getAllUsers(
+        @Query('page') page: number | null,
+        @Query('limit') limit: number | null,
+    ): Promise<BackofficeClientViewmodel[]> {
+        return this.svc.getAllUsers(page, limit);
     }
 
     @Post('user')

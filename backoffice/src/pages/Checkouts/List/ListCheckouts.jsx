@@ -11,8 +11,15 @@ export default function ListCheckouts() {
         onDoubleClick,
     ] = useListCheckouts()
 
+    const checkouts = data.map((c, index) => {
+        return {
+            ...c,
+            fake_id: `#${c?.sequentialId}`,
+        }
+    })
+
     const columns = [
-        "sequentialId",
+        "fake_id",
         "status",
         "price",
     ]
@@ -25,11 +32,13 @@ export default function ListCheckouts() {
     return (
         <div className="container">
             <TableWE
-                data={data}
+                data={checkouts}
                 columns={columns}
                 columnsTitle={columnsTitle}
                 onDoubleClick={onDoubleClick}
                 loadingData={loading}
+                totalItems={null}
+                currentPage={null}
                 hideSearch
             />
         </div >

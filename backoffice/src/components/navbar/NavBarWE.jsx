@@ -4,8 +4,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 
 export default function NavBarWE() {
     return (
-        <Navbar className="bg-body-tertiary">
-            <Nav className="me-auto">
+        <Navbar>
+            <Nav>
                 <NavDropdown title="Usuários" id="users-nav-dropdown">
                     <NavDropdown.Item href="/users">Ver todos</NavDropdown.Item>
                     <NavDropdown.Divider />
