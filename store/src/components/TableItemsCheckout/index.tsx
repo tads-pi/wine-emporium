@@ -9,7 +9,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { PreviwProductTable } from '../PreviewProductTable';
-import { v4 as uuidv4 } from 'uuid';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -38,21 +37,21 @@ function createData(
   fat: number,
   carbs: number,
   deleteProduct: React.ReactNode
-  ) {
+) {
   return { product, calories, fat, carbs, deleteProduct };
 }
 
 const rows = [
-  createData(<PreviwProductTable />, formatCurrency(19), 6.0, formatCurrency(24), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(237), 9.0, formatCurrency(37), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(262), 16.0, formatCurrency(24), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(305), 3.7, formatCurrency(67), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(356), 16.0, formatCurrency(49), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(159), 6.0, formatCurrency(24), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(237), 9.0, formatCurrency(37), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(262), 16.0, formatCurrency(24), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(305), 3.7, formatCurrency(67), <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, formatCurrency(356), 16.0, formatCurrency(49), <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 19, 6.0, 24, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 237, 9.0, 37, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 262, 16.0, 24, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 305, 3.7, 67, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 356, 16.0, 49, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 159, 6.0, 24, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 237, 9.0, 37, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 262, 16.0, 24, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 305, 3.7, 67, <DeleteIcon color='error' />),
+  createData(<PreviwProductTable />, 356, 16.0, 49, <DeleteIcon color='error' />),
 ];
 
 interface TableItemsCheckoutProps {
@@ -77,8 +76,8 @@ export function TableItemsCheckout() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={uuidv4()}>
+          {rows.map((row, i) => (
+            <StyledTableRow key={i}>
               <StyledTableCell component="th" scope="row">
                 {row.product}
               </StyledTableCell>
