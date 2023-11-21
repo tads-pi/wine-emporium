@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import { CartCheckout } from '../CartCheckout';
 import useCartCheckout from './useCartCheckout';
+import { OrderSumary } from '../OrderSumary';
 
 const steps = ['Carrinho', 'Informações do pedido', 'Pagamento'];
 
@@ -73,7 +74,7 @@ export default function StepCheckout() {
         <Typography variant="h4" style={{ textAlign: 'start' }}>
           Checkout
         </Typography>
-            <Box sx={{ width: '50%', marginTop: '20px' }}>
+            <Box sx={{ width: '80%', marginTop: '20px' }}>
                 <Stepper nonLinear activeStep={activeStep}>
                     {steps.map((label, index) => (
                     <Step key={label} completed={completed[index]}>
@@ -98,7 +99,14 @@ export default function StepCheckout() {
                 <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                          {/* <CartCheckout /> */}
-                        {activeStep + 1 == 1 && <CartCheckout totalItems={2} />}
+                        {activeStep + 1 == 1 && (
+                          <>
+                            <Grid container gridTemplateColumns={2} gap={4}>
+                              <CartCheckout />
+                              <OrderSumary />
+                            </Grid>
+                          </>
+                        )}
                         {activeStep + 1 == 2 && <p>Pamnonha fria</p>}
                         {activeStep + 1 == 3 && <p>Pamnonha gelada</p>}
                     </Typography>

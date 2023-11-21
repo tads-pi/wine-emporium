@@ -72,7 +72,6 @@ type TableItemsCheckoutProps = {
               <StyledTableCell align="left">Preço</StyledTableCell>
               <StyledTableCell align="left">Quantidade</StyledTableCell>
               <StyledTableCell align="left">Preço total</StyledTableCell>
-              <StyledTableCell align="center"></StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -129,7 +128,7 @@ type TableItemsCheckoutProps = {
                   </div>
                 </StyledTableCell>
   
-                <StyledTableCell align="left">{formatCurrency(row.price)}</StyledTableCell>
+                <StyledTableCell align="left">{formatCurrency(row.price * row.amount)}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
