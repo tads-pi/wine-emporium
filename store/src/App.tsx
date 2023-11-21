@@ -7,7 +7,7 @@ import useStore from "./zustand/store"
 import StoreWE from "./pages/store/storeWE"
 import StoreProductWE from "./pages/storeProduct/storeProductWE";
 import LoginWE from "./pages/login";
-import Checkout from "./pages/checkout/checkout";
+import Checkout from "./pages/checkout";
 import ProfileWEAddress from "./pages/profile/components/Address";
 import ProfileWEUserData from "./pages/profile/components/UserData";
 import ProfileWECreditCard from "./pages/profile/components/CreditCard";
