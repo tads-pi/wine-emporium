@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import { CartCheckout } from '../CartCheckout';
+import useCartCheckout from './useCartCheckout';
 
 const steps = ['Carrinho', 'Informações do pedido', 'Pagamento'];
 
@@ -61,6 +62,10 @@ export default function StepCheckout() {
     setActiveStep(0);
     setCompleted({});
   };
+
+  const {
+    
+  } = useCartCheckout()
 
   return (
     <>

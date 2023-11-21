@@ -12,7 +12,13 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export function PreviwProductTable() {
+interface PreviwProductTableProps {
+  img: string
+  nameProduct: string
+  descriptionProduct: string
+}
+
+export function PreviwProductTable({ img, nameProduct, descriptionProduct  } : PreviwProductTableProps) {
   return (
     <Paper
       sx={{
@@ -27,17 +33,17 @@ export function PreviwProductTable() {
       <Grid container spacing={2}>
         <Grid item>
           <ButtonBase sx={{ width: 54, height: 54 }}>
-            <Img alt="complex" src="/static/images/grid/complex.jpg" />
+            <Img alt="complex" src={img} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant="subtitle1" component="div">
-                Standard license
+                {nameProduct}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                Full resolution
+                {descriptionProduct.slice(0, 25)}...
               </Typography>
             </Grid>
           </Grid>

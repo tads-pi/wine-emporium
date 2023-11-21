@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import { Stack, Typography } from '@mui/material';
 import { TableItemsCheckout } from '../TableItemsCheckout';
+import useCartCheckout from '../StepCheckout/useCartCheckout';
 
 interface CartCheckoutProps {
     totalItems: number;
@@ -9,6 +10,35 @@ interface CartCheckoutProps {
 
 
 export function CartCheckout({ totalItems }: CartCheckoutProps) {
+    const {
+        cartState,
+        getCart,
+        addProduct,
+        removeProduct,
+      } = useCartCheckout();
+    
+      useEffect(() => {
+        getCart();
+      }, [getCart]);
+    
+      const handleAddProduct = (productId: string) => {
+        addProduct(productId);
+        getCart(); // Atualiza o carrinho após adicionar produto
+      };
+    
+      const handleRemoveProduct = (productId: string) => {
+        removeProduct(productId);
+        getCart(); // Atualiza o carrinho após remover produto
+      };
+
+    const price = useMemo(() => {
+        return cartState?.price
+    }, [cartState])
+
+    useEffect(() => {
+        getCart()
+    }, [cartState, addProduct, removeProduct])
+
     return (
         <Box 
             sx={{ 
@@ -24,7 +54,14 @@ export function CartCheckout({ totalItems }: CartCheckoutProps) {
                     <span style={{ fontWeight: "normal" }}> ({totalItems} {totalItems > 1 ? 'Itens' : 'Item'}) </span>
                 </Typography>
             </Stack>
-            <TableItemsCheckout  />
+
+            
+            <TableItemsCheckout
+                cart={cartState}
+                onAddProduct={handleAddProduct}
+                onRemoveProduct={handleRemoveProduct}
+            />
+            
         </Box>
     )
 }
