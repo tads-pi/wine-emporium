@@ -6,7 +6,7 @@ import { Address, Checkout, Deliverer, CreditCard } from "../types";
 // Essa parte do storage é responsável por todas as chamadas http para a api
 export interface CheckoutSlice {
     findById: (id: string) => Promise<Checkout>
-    list: (id: string) => Promise<Checkout[]>
+    list: () => Promise<Checkout[]>
     listDeliverer: (checkoutId: string) => Promise<Checkout[]>
     listStatus: () => Promise<string[]>
     price: (id: string) => Promise<number>

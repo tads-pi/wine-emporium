@@ -290,6 +290,7 @@ model Checkout {
   updatedAt DateTime  @updatedAt
 
   sequentialId      Int
+  payedAt           DateTime?
   Cart              Cart               @relation(fields: [cartId], references: [id], onDelete: Cascade)
   cartId            String
   payment           Payment?           @relation(fields: [paymentId], references: [id], onDelete: Cascade)

@@ -16,7 +16,7 @@ export class CheckoutService {
         private cartSvc: CartService,
     ) { }
 
-    private async getClientCheckout(clientId: string, checkoutId): Promise<Checkout> {
+    private async getClientCheckout(clientId: string, checkoutId: string): Promise<Checkout> {
         const cart = await this.db.cart.findFirst({
             where: {
                 clientId: clientId,
@@ -109,6 +109,7 @@ export class CheckoutService {
             address: address ? new AddressViewmodel(address, false) : null,
             payment: payment ? paymentViewmodel : null,
             price: await this.cartSvc.calculateCartPrice(cart.id) + (deliverer ? deliverer.fare : 0),
+            payedAt: c.payedAt?.toISOString() || null,
         }
 
         return viewmodel
@@ -118,12 +119,16 @@ export class CheckoutService {
         const allCarts = await this.db.cart.findMany({
             where: {
                 clientId: clientId,
+                active: true,
             }
         })
         const allCheckouts = await this.db.checkout.findMany({
             where: {
                 cartId: {
                     in: allCarts.map(c => c.id)
+                },
+                status: {
+                    notIn: ['ENDERECO_PENDENTE', 'ENTREGADOR_PENDENTE', 'METODO_DE_PAGAMENTO_PENDENTE']
                 }
             }
         })
