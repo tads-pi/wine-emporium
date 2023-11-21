@@ -6,7 +6,7 @@ custom:
   webpack:
     webpackConfig: webpack.config.js
     includeModules: true
-    packager: 'npm'
+    packager: "npm"
     packagerOptions:
       scripts:
         - prisma generate
@@ -64,7 +64,9 @@ functions:
       - http:
           method: any
           path: /{proxy+}
-          cors: true
+          cors:
+            - origin: "*"
+              headers: "*"
 
 plugins:
   - serverless-domain-manager
