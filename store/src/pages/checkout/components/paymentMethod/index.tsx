@@ -8,6 +8,7 @@ import Loading from "../../../../components/loading";
 import CreditCardWrapper from "../../../../components/CreditCardWrapper";
 import { Checkout, CreditCard } from "../../../../zustand/types";
 import { routes } from "../../../../config/routes";
+import { useNavigate } from "react-router-dom";
 
 interface CheckoutPaymentMethodProps {
     handleNext: () => void,
@@ -175,6 +176,8 @@ export default function CheckoutPaymentMethod(props: CheckoutPaymentMethodProps)
 function DoNotHaveCreditCards({
 
 }: {}) {
+    const navigate = useNavigate()
+
     return (
         <div style={{
             display: 'flex',
@@ -199,7 +202,11 @@ function DoNotHaveCreditCards({
                         marginLeft: '1rem',
                     }}
                     onClick={() => {
-                        window.location.href = routes.ACCOUNT_CREDIT_CARD_NEW_CARD
+                        navigate(routes.ACCOUNT_CREDIT_CARD_NEW_CARD, {
+                            state: {
+                                redirect: routes.CHECKOUT,
+                            }
+                        })
                     }}
                 >
                     Cadastrar agora

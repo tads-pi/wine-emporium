@@ -47,7 +47,7 @@ export default function CheckoutFinish(props: CheckoutFinishProps) {
                         Número do Pedido #{checkout?.sequentialId}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Valor total R${Number((checkout?.price || 0) + (checkout?.deliverer.fare || 0)).toFixed(2)}
+                        Valor total R${checkout?.price}
                     </Typography>
 
                     <Button
@@ -111,7 +111,7 @@ export default function CheckoutFinish(props: CheckoutFinishProps) {
                                     ))
                                 }
                                 <Typography variant="h6" component="div" sx={{ padding: '1rem' }}>
-                                    Total: R$ {checkout.price}
+                                    Total: R$ {Number(checkout.price).toFixed(2)}
                                 </Typography>
                             </Card>
                             <div style={{
@@ -166,7 +166,7 @@ export default function CheckoutFinish(props: CheckoutFinishProps) {
                                         {
                                             checkout.payment.bankSlip ?
                                                 <Typography variant="h6" component="div">
-                                                    R$ {Number(checkout.price + checkout.deliverer.fare).toFixed(2)}
+                                                    R$ {checkout.price}
                                                 </Typography>
                                                 :
                                                 <>

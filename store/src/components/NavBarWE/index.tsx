@@ -11,7 +11,11 @@ import DrawerWE from './components/drawer/DrawerWE';
 import { Link } from 'react-router-dom';
 import { routes } from '../../config/routes';
 
-export function NavBarWE() {
+interface NavBarWEProps {
+  notSticky?: boolean
+}
+
+export function NavBarWE(props: NavBarWEProps) {
   const {
     handleOpenUserMenu,
     handleCloseUserMenu,
@@ -20,6 +24,7 @@ export function NavBarWE() {
     numItems,
     drawerOpen,
     isLoggedIn,
+    goHome,
   } = useNavBarWE()
 
   const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -32,14 +37,17 @@ export function NavBarWE() {
   }));
 
   return (
-    <AppBar position="sticky" color='default'>
+    <AppBar
+      position={props.notSticky ? 'static' : 'sticky'}
+      color='default'
+    >
       <div style={{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: '0.5rem'
       }}>
-        <LogoWE />
+        <LogoWE onClick={goHome} />
 
         <div>
           {
@@ -89,9 +97,14 @@ export function NavBarWE() {
   )
 }
 
-function LogoWE() {
+function LogoWE({ onClick }: { onClick: () => void }) {
   return (
-    <div>
+    <div
+      style={{
+        cursor: 'pointer',
+      }}
+      onClick={() => onClick()}
+    >
       <img src={'/LOGO.png'} alt="Logo" width={50} />
     </div>
   )

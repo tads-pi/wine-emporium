@@ -97,6 +97,8 @@ export class CheckoutService {
             }
         }
 
+        const cartPrice = await this.cartSvc.calculateCartPrice(cart.id)
+        const price = Number(cartPrice + (deliverer?.fare || 0)).toFixed(2)
 
         const viewmodel: CheckoutViewmodel = {
             id: c.id,
@@ -109,7 +111,7 @@ export class CheckoutService {
             deliverer: deliverer ? new DelivererViewmodel(deliverer) : null,
             address: address ? new AddressViewmodel(address, false) : null,
             payment: payment ? paymentViewmodel : null,
-            price: await this.cartSvc.calculateCartPrice(cart.id) + (deliverer ? deliverer.fare : 0),
+            price: Number(price),
             payedAt: c.payedAt?.toISOString() || null,
         }
 
@@ -130,7 +132,10 @@ export class CheckoutService {
                 },
                 status: {
                     notIn: ['ENDERECO_PENDENTE', 'ENTREGADOR_PENDENTE', 'METODO_DE_PAGAMENTO_PENDENTE']
-                }
+                },
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         })
 

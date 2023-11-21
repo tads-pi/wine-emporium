@@ -1,7 +1,10 @@
 import { useState } from "react";
 import useStore from "../../zustand/store";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../../config/routes";
 
 export default function useNavBarWE() {
+    const navigate = useNavigate()
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -22,6 +25,10 @@ export default function useNavBarWE() {
         setDrawerOpen(!drawerOpen);
     };
 
+    function goHome(){
+        navigate(routes.STORE)
+    }
+
     return {
         handleOpenUserMenu,
         handleCloseUserMenu,
@@ -30,5 +37,6 @@ export default function useNavBarWE() {
         numItems,
         drawerOpen,
         isLoggedIn: authApi.isLoggedIn,
+        goHome,
     }
 };

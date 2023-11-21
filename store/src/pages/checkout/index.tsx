@@ -6,6 +6,7 @@ import CheckoutPaymentMethod from "./components/paymentMethod";
 import CheckoutFinish from "./components/finish";
 import './styles.css'
 import Loading from "../../components/loading";
+import { NavBarWE } from "../../components/NavBarWE";
 
 export default function Checkout() {
     const {
@@ -26,56 +27,59 @@ export default function Checkout() {
     }, [activeStep])
 
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%',
-            // height: '100vh',
-            // border: '1px solid red'
-        }}>
-            {
-                isLoading ?
-                    <div style={{
-                        display: 'flex',
-                        height: '100vh',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
-                        <Loading />
-                    </div>
-                    :
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%',
-                        width: '100%',
-                        paddingTop: '2rem',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}>
+        <div>
+            <NavBarWE notSticky/>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100%',
+                // height: '100vh',
+                // border: '1px solid red'
+            }}>
+                {
+                    isLoading ?
                         <div style={{
                             display: 'flex',
+                            height: '100vh',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                         }}>
-                            <Stepper nonLinear activeStep={activeStep}>
-                                {
-                                    steps.map((step, i) => (
-                                        <Step key={i} completed={step.completed}>
-                                            <StepButton
-                                                color="inherit"
-                                                onClick={handleStep(step)}
-                                            >
-                                                {step.label}
-                                            </StepButton>
-                                        </Step>
-                                    ))
-                                }
-                            </Stepper>
+                            <Loading />
                         </div>
+                        :
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '100%',
+                            width: '100%',
+                            paddingTop: '2rem',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            <div style={{
+                                display: 'flex',
+                            }}>
+                                <Stepper nonLinear activeStep={activeStep}>
+                                    {
+                                        steps.map((step, i) => (
+                                            <Step key={i} completed={step.completed}>
+                                                <StepButton
+                                                    color="inherit"
+                                                    onClick={handleStep(step)}
+                                                >
+                                                    {step.label}
+                                                </StepButton>
+                                            </Step>
+                                        ))
+                                    }
+                                </Stepper>
+                            </div>
 
-                        {currentStepComponent}
-                    </div>
-            }
+                            {currentStepComponent}
+                        </div>
+                }
+            </div >
         </div >
     )
 }

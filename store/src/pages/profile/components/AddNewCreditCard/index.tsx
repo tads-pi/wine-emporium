@@ -2,8 +2,12 @@ import React from "react";
 import ProfileWEContainer from "../Container";
 import useProfileWECreditCardAddNewCard from "./hooks";
 import { Button, FormControl, FormControlLabel, InputLabel, Radio, RadioGroup, TextField } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 export default function ProfileWECreditCardAddNewCard() {
+    const { state } = useLocation()
+    const { redirect } = state || {}
+
     const {
         isLoading,
         isValid,
@@ -12,9 +16,7 @@ export default function ProfileWECreditCardAddNewCard() {
         errors,
         handleSubmit,
         onSubmit,
-    } = useProfileWECreditCardAddNewCard()
-
-    console.log({ errors });
+    } = useProfileWECreditCardAddNewCard({ redirect })
 
     return (
         <ProfileWEContainer>

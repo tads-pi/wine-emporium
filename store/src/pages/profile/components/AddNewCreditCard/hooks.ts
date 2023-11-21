@@ -15,7 +15,7 @@ interface FormData {
     full_name: string
 }
 
-export default function useProfileWECreditCardAddNewCard() {
+export default function useProfileWECreditCardAddNewCard({ redirect }: { redirect: string | undefined | null }) {
     const {
         handleSubmit,
         getValues,
@@ -50,9 +50,13 @@ export default function useProfileWECreditCardAddNewCard() {
                 { variant: 'success' },
             )
 
+            if (redirect) {
+                navigate(redirect)
+                return
+            }
+
             navigate(routes.ACCOUNT_CREDIT_CARD)
         } catch (error) {
-            console.log({ error });
             enqueueSnackbar(
                 'Ops... Ocorreu um erro ao salvar o novo Cartão de Crédito!',
                 { variant: 'error' },

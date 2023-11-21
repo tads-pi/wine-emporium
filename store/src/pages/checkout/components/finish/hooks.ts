@@ -10,7 +10,7 @@ export default function useCheckoutFinish(props: useCheckoutFinishProps) {
     const { checkoutApi } = useStore()
     const [isLoading, setIsLoading] = useState(false)
     const [checkout, setCheckout] = useState<Checkout | null>(null)
-    const [modalOpen, setModalOpen] = useState(true)
+    const [modalOpen, setModalOpen] = useState(false)
 
     function handleModalClose() {
         setModalOpen(false)
