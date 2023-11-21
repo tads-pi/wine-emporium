@@ -39,6 +39,7 @@ let steps: Step[] = [
 export default function useCheckout() {
     const navigate = useNavigate();
     const [activeStep, setActiveStep] = useState(0);
+
     const handleNext = () => {
         const newSteps: Step[] = [...steps];
         const nextStep = activeStep + 1;

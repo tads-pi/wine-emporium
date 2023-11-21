@@ -16,7 +16,7 @@ const createDelivererSlice: StateCreator<
 > = (set, slices) => {
     return {
         listDeliverers: async (): Promise<DelivererListResponse> => {
-            const { data } = await httpClient.post<Deliverer[]>(`/deliverer`);
+            const { data } = await httpClient.get<Deliverer[]>(`/deliverer`);
             return data as DelivererListResponse;
         }
     }

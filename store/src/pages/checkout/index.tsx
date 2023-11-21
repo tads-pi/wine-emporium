@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { NavBarWE } from "../../components/NavBarWE";
 import useCheckout from "./hooks";
 import { Button, Step, StepButton, Stepper } from "@mui/material";
 import CheckoutCart from "./components/cart";
@@ -7,6 +6,7 @@ import CheckoutDeliveryAddress from "./components/deliveryAddress";
 import CheckoutPaymentMethod from "./components/paymentMethod";
 import CheckoutResume from "./components/resume";
 import CheckoutFinish from "./components/finish";
+import './styles.css'
 
 export default function Checkout() {
     const {
@@ -24,7 +24,6 @@ export default function Checkout() {
         )
     }, [activeStep])
 
-
     return (
         <div style={{
             display: 'flex',
@@ -35,13 +34,17 @@ export default function Checkout() {
             // border: '1px solid red'
         }}>
             <div style={{
-                width: 'min(60ch, 100%)',
+                display: 'flex',
+                flexDirection: 'column',
                 height: '100%',
+                width: '100%',
                 paddingTop: '2rem',
+                justifyContent: 'center',
+                alignItems: 'center',
             }}>
                 <div style={{
                     display: 'flex',
-                    width: '100%',
+                    width: 'min(60ch, 100%)',
                     overflowX: 'scroll',
                     overflowY: 'hidden',
                 }}>
