@@ -98,10 +98,10 @@ describe('CartController', () => {
       }
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART)
-      db.cartItems.create = jest.fn().mockReturnValueOnce(null)
+      db.cartItems.create = jest.fn().mockReturnValue(null)
 
-      db.cartItems.findMany = jest.fn().mockReturnValueOnce([MOCK_CART_PRODUCT])
-      db.product.findMany = jest.fn().mockReturnValueOnce([MOCK_PRODUCT])
+      db.cartItems.findMany = jest.fn().mockReturnValue([MOCK_CART_PRODUCT])
+      db.product.findMany = jest.fn().mockReturnValue([MOCK_PRODUCT])
 
       // Teste
       const cart = await controller.addProduct(CLIENT_ID, PRODUCT_ID)
@@ -146,15 +146,15 @@ describe('CartController', () => {
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART)
       // Define que o produto já existe no carrinho
-      db.cartItems.findFirst = jest.fn().mockReturnValueOnce(MOCK_CART_PRODUCT)
+      db.cartItems.findFirst = jest.fn().mockReturnValue(MOCK_CART_PRODUCT)
       // Incrementa em 1 a variável MOCK_CART_PRODUCT.amount toda vez que o método for chamado
       db.cartItems.updateMany = jest.fn().mockImplementation(async () => {
         MOCK_CART_PRODUCT.amount++
         return MOCK_CART_PRODUCT
       })
 
-      db.cartItems.findMany = jest.fn().mockReturnValueOnce([MOCK_CART_PRODUCT])
-      db.product.findMany = jest.fn().mockReturnValueOnce([MOCK_PRODUCT])
+      db.cartItems.findMany = jest.fn().mockReturnValue([MOCK_CART_PRODUCT])
+      db.product.findMany = jest.fn().mockReturnValue([MOCK_PRODUCT])
 
       // Teste
       const cart = await controller.addProduct(CLIENT_ID, PRODUCT_ID)
@@ -200,15 +200,15 @@ describe('CartController', () => {
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART)
       // Define que o produto já existe no carrinho
-      db.cartItems.findFirst = jest.fn().mockReturnValueOnce(MOCK_CART_PRODUCT)
+      db.cartItems.findFirst = jest.fn().mockReturnValue(MOCK_CART_PRODUCT)
       // Decrementa em 1 a variável MOCK_CART_PRODUCT.amount toda vez que o método for chamado
       db.cartItems.updateMany = jest.fn().mockImplementation(async () => {
         MOCK_CART_PRODUCT.amount--
         return MOCK_CART_PRODUCT
       })
 
-      db.cartItems.findMany = jest.fn().mockReturnValueOnce([MOCK_CART_PRODUCT])
-      db.product.findMany = jest.fn().mockReturnValueOnce([MOCK_PRODUCT])
+      db.cartItems.findMany = jest.fn().mockReturnValue([MOCK_CART_PRODUCT])
+      db.product.findMany = jest.fn().mockReturnValue([MOCK_PRODUCT])
 
       // Teste
       const cart = await controller.removeProduct(CLIENT_ID, PRODUCT_ID)
@@ -254,8 +254,8 @@ describe('CartController', () => {
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART)
       // Define que o produto já existe no carrinho
-      db.cartItems.findFirst = jest.fn().mockReturnValueOnce(MOCK_CART_PRODUCT)
-      db.cartItems.deleteMany = jest.fn().mockReturnValueOnce(null)
+      db.cartItems.findFirst = jest.fn().mockReturnValue(MOCK_CART_PRODUCT)
+      db.cartItems.deleteMany = jest.fn().mockReturnValue(null)
 
       // Teste
       const cart = await controller.removeProduct(CLIENT_ID, PRODUCT_ID)
@@ -301,8 +301,8 @@ describe('CartController', () => {
       }
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART)
-      db.cartItems.findMany = jest.fn().mockReturnValueOnce([MOCK_CART_PRODUCT])
-      db.product.findMany = jest.fn().mockReturnValueOnce([MOCK_PRODUCT])
+      db.cartItems.findMany = jest.fn().mockReturnValue([MOCK_CART_PRODUCT])
+      db.product.findMany = jest.fn().mockReturnValue([MOCK_PRODUCT])
 
       // Teste
       const price = await controller.getCartPrice(CLIENT_ID)

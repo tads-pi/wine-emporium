@@ -22,7 +22,7 @@ export class CartService {
             return previousResult + (product.price * item.amount)
         }, 0)
 
-        return total
+        return Number(total.toFixed(2))
     }
 
     async getProductsFromCart(cart: Cart): Promise<CartViewmodelProduct[]> {
@@ -76,13 +76,15 @@ export class CartService {
 
             return {
                 id: cart.id,
-                products: []
+                products: [],
+                price: 0,
             }
         }
 
         return {
             id: cart.id,
-            products: await this.getProductsFromCart(cart)
+            products: await this.getProductsFromCart(cart),
+            price: await this.calculateCartPrice(cart.id),
         }
     }
 

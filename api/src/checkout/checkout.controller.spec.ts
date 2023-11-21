@@ -132,6 +132,7 @@ describe('CheckoutController', () => {
     it('deve cancelar um checkout em andamento', async () => {
       // Setup
       let CHECKOUT: Checkout = MOCK_CHECKOUT_01
+      let CART: Cart = MOCK_CART_01
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_01)
       db.checkout.findFirst = jest.fn().mockReturnValueOnce(CHECKOUT)
@@ -140,11 +141,16 @@ describe('CheckoutController', () => {
         CHECKOUT.status = args.data.status
         return CHECKOUT
       })
+      db.cart.update = jest.fn().mockImplementation((args) => {
+        CART.status = args.data.status
+        return CART
+      })
 
       // Teste
       const c = await controller.cancelCheckout(CLIENT_ID)
       expect(c).toBeDefined()
       expect(db.checkout.update).toHaveBeenCalledTimes(1)
+      expect(db.cart.update).toHaveBeenCalledTimes(1)
 
       expect(c.id).toBe(CHECKOUT.id)
       expect(c.status).toBe('CANCELADO')
@@ -153,6 +159,7 @@ describe('CheckoutController', () => {
     it('deve finalizar um checkout', async () => {
       // Setup
       let CHECKOUT: Checkout = MOCK_CHECKOUT_02
+      let CART: Cart = MOCK_CART_02
 
       db.cart.findFirst = jest.fn().mockReturnValue(MOCK_CART_02)
       db.checkout.findFirst = jest.fn().mockReturnValueOnce(CHECKOUT)
@@ -161,11 +168,16 @@ describe('CheckoutController', () => {
         CHECKOUT.status = args.data.status
         return CHECKOUT
       })
+      db.cart.update = jest.fn().mockImplementation((args) => {
+        CART.status = args.data.status
+        return CART
+      })
 
       // Teste
       const c = await controller.finishCheckout(CLIENT_ID)
       expect(c).toBeDefined()
       expect(db.checkout.update).toHaveBeenCalledTimes(1)
+      expect(db.cart.update).toHaveBeenCalledTimes(1)
 
       expect(c.id).toBe(CHECKOUT.id)
       expect(c.status).toBe('AGUARDANDO_PAGAMENTO')

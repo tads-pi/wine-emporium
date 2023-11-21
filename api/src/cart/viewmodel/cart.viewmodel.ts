@@ -20,4 +20,10 @@ export class CartViewmodel {
         description: 'Produtos do carrinho',
     })
     products: CartViewmodelProduct[]
+
+    @ApiProperty({
+        description: 'Preço total do carrinho',
+        example: 100.00,
+    })
+    price: number
 }

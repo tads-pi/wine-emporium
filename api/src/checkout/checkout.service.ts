@@ -107,6 +107,7 @@ export class CheckoutService {
             cart: {
                 id: cart.id,
                 products: await this.cartSvc.getProductsFromCart(cart),
+                price: cartPrice,
             },
             deliverer: deliverer ? new DelivererViewmodel(deliverer) : null,
             address: address ? new AddressViewmodel(address, false) : null,

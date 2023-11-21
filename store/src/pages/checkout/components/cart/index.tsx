@@ -198,6 +198,8 @@ function ResumeWrapper({
         return `${address.street}, ${address.number} - ${address.neighborhood}, ${address.city} - ${address.state}`
     }
 
+    console.log({checkout});
+
     return (
         <Card sx={{
             width: '100%',
