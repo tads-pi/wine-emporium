@@ -270,7 +270,7 @@ function ResumeWrapper({
                         Produtos ({checkout.cart.products.length})
                     </Typography>
                     <Typography variant="subtitle2" component="div">
-                        R$ {Number(checkout.price).toFixed(2)}
+                        R$ {Number(checkout.cart.price).toFixed(2)}
                     </Typography>
                 </div>
 
@@ -291,7 +291,7 @@ function ResumeWrapper({
                         Total
                     </Typography>
                     <Typography variant="h6" component="div">
-                        R$ {Number(checkout.price + (selectedDeliverer?.fare || 0)).toFixed(2)}
+                        R$ {Number(checkout.cart.price + (selectedDeliverer?.fare || 0)).toFixed(2)}
                     </Typography>
                 </div>
             </div>
