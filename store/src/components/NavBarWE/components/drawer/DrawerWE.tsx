@@ -1,5 +1,5 @@
 import Drawer from "@mui/material/Drawer"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Cart, CartProduct, Product } from "../../../../zustand/types"
 import Typography from "@mui/material/Typography"
 import { formatCurrency } from "../../../../utils/formatCurrency"
@@ -10,105 +10,103 @@ import Loading from "../../../loading"
 import { Box } from "@mui/material"
 
 type DrawerWEProps = {
-    drawerOpen: boolean,
-    hideOrShowDrawer: () => void,
-}
-
-export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps) {
-    const {
-        cartState,
-        getCart,
-        addProduct,
-        removeProduct,
-        handleGoToCheckout
-    } = useDrawer()
-
+    drawerOpen: boolean;
+    hideOrShowDrawer: () => void;
+  };
+  
+  export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps) {
+    const { cartState, getCart, addProduct, removeProduct, handleGoToCheckout } = useDrawer();
+    const [forceUpdate, setForceUpdate] = useState(0);
+  
     const price = useMemo(() => {
-        return cartState?.price
-    }, [cartState])
-
+      return cartState?.price;
+    }, [cartState, forceUpdate]);
+  
     useEffect(() => {
-        getCart()
-    }, [cartState])
-
-    // Força o update do drawer!
-    setInterval(() => {
-        setFakeState(!fakeState)
-    }, 500)
-
-    const [fakeState, setFakeState] = useState<boolean>(false)
+      getCart();
+    }, [cartState, forceUpdate]);
+  
+    const closeDrawer = useCallback(() => {
+      hideOrShowDrawer();
+    }, [hideOrShowDrawer]);
+    
+    const handleAddProduct = useCallback(
+        (productId) => {
+          addProduct(productId);
+          setForceUpdate((prev) => prev + 1);
+        },
+        [addProduct]
+      );
+    
+      const handleRemoveProduct = useCallback(
+        (productId) => {
+          removeProduct(productId);
+          setForceUpdate((prev) => prev + 1);
+        },
+        [removeProduct]
+      );
+  
     return (
-        <Drawer
-            anchor="right"
-            open={drawerOpen}
-            onClose={hideOrShowDrawer}
-            // onMouseMove={() => {
-            //     // TODO por algum motivo o drawer não atualiza quando deveria,
-            //     // então eu criei esse state fake pra forçar a atualização
-            //     // soh que isso cria uma porrada de atualização de uma vez, o ideal
-            //     // é tentar refatorar isso pra alguma outra coisa!!
-            //     setFakeState(!fakeState)
-            //     setPrice(cartState?.price || 0)
-            // }}
-
-            style={{
-                overflow: 'hidden',
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={closeDrawer}
+        ModalProps={{
+          onClick: closeDrawer, // Close drawer when clicking outside
+        }}
+        style={{
+          overflow: "hidden",
+        }}
+      >
+        {cartState ? (
+          <Box
+            sx={{
+              width: window.innerWidth < 600 ? window.innerWidth / 1.25 : 400,
+              height: "100%",
             }}
-        >
-            {
-                cartState
-                    ?
-                    <Box
-                        sx={{
-                            width: window.innerWidth < 600 ? window.innerWidth / 1.25 : 400,
-                            height: '100%',
-                        }}
-                        role="presentation"
-                    >
-                        <ProductsWrapper>
-                            {
-                                cartState.products.length > 0
-                                    ?
-                                    <ShowCartProducts
-                                        cart={cartState}
-                                        addProduct={addProduct}
-                                        removeProduct={removeProduct}
-                                    />
-
-                                    :
-                                    <EmptyCart />
-                            }
-                        </ProductsWrapper>
-
-                        <BottomWrapper>
-                            {
-                                cartState.products.length > 0 &&
-                                <>
-                                    <Typography variant="h6" gutterBottom>
-                                        Total: {formatCurrency(price)}
-                                    </Typography>
-                                    <GoToCheckoutButton
-                                        handleGoToCheckout={handleGoToCheckout}
-                                    />
-                                </>
-                            }
-                        </BottomWrapper>
-                    </Box>
-                    :
-                    <div
-                        style={{
-                            width: '250px',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Loading />
-                    </div>
-            }
-        </Drawer >
-    )
-};
+            role="presentation"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent closing when clicking inside the drawer
+            }}
+          >
+            <ProductsWrapper>
+              {cartState.products.length > 0 ? (
+                <ShowCartProducts
+                  cart={cartState}
+                  addProduct={handleAddProduct}
+                  removeProduct={handleRemoveProduct}
+                />
+              ) : (
+                <EmptyCart />
+              )}
+            </ProductsWrapper>
+  
+            <BottomWrapper>
+              {cartState.products.length > 0 && (
+                <>
+                  <Typography variant="h6" gutterBottom>
+                    Total: {formatCurrency(price)}
+                  </Typography>
+                  <GoToCheckoutButton handleGoToCheckout={handleGoToCheckout} />
+                </>
+              )}
+            </BottomWrapper>
+          </Box>
+        ) : (
+          <div
+            style={{
+              width: "250px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Loading />
+          </div>
+        )}
+      </Drawer>
+    );
+  }
 
 function ProductsWrapper({ children }: { children: React.ReactNode }) {
     return (

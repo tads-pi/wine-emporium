@@ -162,7 +162,7 @@ function ProductWrapper({ product, addProduct, removeProduct }: { product: CartP
                                         <RemoveIcon />
                                     </IconButton>
                                     <Typography sx={{ minWidth: 20, textAlign: 'center' }}>
-                                        x{amount}
+                                        {amount}
                                     </Typography>
                                     <IconButton aria-label="add" onClick={() => addToCart()}>
                                         <AddIcon />
@@ -270,7 +270,7 @@ function ResumeWrapper({
                         Produtos ({checkout.cart.products.length})
                     </Typography>
                     <Typography variant="subtitle2" component="div">
-                        R$ {Number(checkout.price).toFixed(2)}
+                        R$ {Number(checkout.price)}
                     </Typography>
                 </div>
 
