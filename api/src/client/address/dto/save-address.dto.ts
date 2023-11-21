@@ -1,4 +1,6 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+
+type AddressType = "BILLING" | "SHIPPING"
 
 export class SaveAddressDTO {
     @IsString()
@@ -32,4 +34,9 @@ export class SaveAddressDTO {
     @IsString()
     @IsOptional()
     complement: string;
+
+    @IsString()
+    @IsOptional()
+    @IsEnum(["BILLING", "SHIPPING"])
+    type: AddressType
 }

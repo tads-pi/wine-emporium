@@ -110,12 +110,18 @@ model Address {
   neighborhood  String
   street        String
   number        String
+  type          AddressTypeEnum @default(SHIPPING)
   complement    String?
   zip           String
   Checkout      Checkout[]
   ClientAddress ClientAddress[]
 
   @@map("address")
+}
+
+enum AddressTypeEnum {
+  SHIPPING
+  BILLING
 }
 
 model BackofficeClient {
