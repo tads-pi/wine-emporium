@@ -28,7 +28,7 @@ export default function CheckoutWrapper(props: CheckoutWrapperProps) {
         <div
             style={{
                 display: 'flex',
-                flexDirection: 'row',
+                flexDirection: window.innerWidth > 600 ? 'row' : 'column',
                 justifyContent: 'space-between',
                 padding: '1rem',
                 border: '1px solid darkgray',
@@ -120,35 +120,40 @@ export default function CheckoutWrapper(props: CheckoutWrapperProps) {
                                 })()}
                             </span>
                         </div>
-                        <span style={{
-                            maxHeight: '1.5rem',
-                            wordWrap: 'break-word',
-                            textOverflow: 'ellipsis',
-
-                            fontSize: '12px',
-                            color: 'gray',
-                            // overflow: 'hidden',
+                        <div style={{
+                            overflow: 'hidden',
                         }}>
-                            <p>{products}</p>
-                        </span>
+                            <p style={{
+                                height: '50%',
+                                fontSize: '12px',
+                                color: 'gray',
+                                margin: 0,
+                            }}>
+                                {products}
+                            </p>
+                        </div>
                     </div>
-
-                    <span style={{
-                        fontSize: '1.25rem',
-                    }}>
-                        R${price}
-                    </span>
                 </div>
             </div>
 
             <div style={{
                 display: 'flex',
-                justifyContent: 'flex-end',
                 alignItems: 'flex-end',
             }}>
                 <div style={{
-                    display: 'flex'
+                    display: 'flex',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexDirection: window.innerWidth > 600 ? 'column' : 'row',
                 }}>
+                    <span style={{
+                        fontSize: '1.25rem',
+                    }}>
+                        R${price}
+                    </span>
+
                     <Button
                         variant='contained'
                         color='warning'

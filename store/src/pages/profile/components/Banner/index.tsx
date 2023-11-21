@@ -6,14 +6,12 @@ export default function ProfileWEBanner() {
     return (
         <div style={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: window.innerWidth > 600 ? 'row' : 'column',
             width: '100%',
             height: '100vh',
 
             gap: '1rem',
             padding: '2rem',
-
-            // border: '1px solid green'
         }}>
             <ProfileWE />
             <Outlet />

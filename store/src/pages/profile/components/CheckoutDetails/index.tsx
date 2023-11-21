@@ -49,7 +49,7 @@ export default function ProfileWECheckoutDetails() {
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                width: '50%',
+                                width: window.innerWidth > 600 ? '50%' : '100%',
                                 overflow: 'scroll',
                                 gap: '1rem',
                                 padding: '1rem',

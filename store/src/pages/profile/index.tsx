@@ -14,53 +14,58 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 export default function ProfileWE() {
   return (
     <Card style={{
-      minWidth: 'fit-content',
+      width: window.innerWidth > 600 ? 'fit-content' : '100%',
+      minHeight: '15%',
     }}>
       <CardContent sx={{
         display: 'flex',
-        flexDirection: 'column',
         gap: '0.75rem',
+        flexDirection: window.innerWidth > 600 ? 'column' : 'row',
+        justifyContent: window.innerWidth > 600 ? 'flex-start' : 'space-between',
       }}>
         <Link to={routes.ACCOUNT_DATA} style={{ textDecoration: 'none' }}>
           <Wrapper>
             <AccountCircleIcon color='success' />
-            <Typography sx={{ fontSize: 16, marginBottom: 0 }} color="text.secondary" gutterBottom>
-              Perfil
-            </Typography>
+            <Text title='Perfil' />
           </Wrapper>
         </Link>
         <Link to={routes.ACCOUNT_ADDRESS} style={{ textDecoration: 'none' }}>
           <Wrapper>
             <LocalShippingIcon color='secondary' />
-            <Typography sx={{ fontSize: 16, marginBottom: 0 }} color="text.secondary" gutterBottom>
-              Endereço de entrega
-            </Typography>
+            <Text title='Endereço de entrega' />
           </Wrapper>
         </Link>
         <Link to={routes.ACCOUNT_CREDIT_CARD} style={{ textDecoration: 'none' }}>
           <Wrapper>
             <CreditCardIcon color='info' />
-            <Typography sx={{ fontSize: 16, marginBottom: 0 }} color="text.secondary" gutterBottom>
-              Cartões de Crédito
-            </Typography>
+            <Text title="Cartões de Crédito" />
           </Wrapper>
         </Link>
         <Link to={routes.ACCOUNT_CHECKOUTS} style={{ textDecoration: 'none' }}>
           <Wrapper>
             <LocalMall fontSize='small' color='warning' />
-            <Typography sx={{ fontSize: 16, marginBottom: 0 }} color="text.secondary" gutterBottom>
-              Pedidos
-            </Typography>
+            <Text title="Pedidos" />
           </Wrapper>
         </Link>
       </CardContent>
+
       <CardActions>
         <Link to={routes.STORE}>
-          <Button size="small">Voltar</Button>
+          <Button size="small">Ir para Loja</Button>
         </Link>
       </CardActions>
     </Card>
   );
+}
+
+function Text({ title }: { title: string }) {
+  if (window.innerWidth < 600) return null
+
+  return (
+    <Typography sx={{ fontSize: 16, marginBottom: 0 }} color="text.secondary" gutterBottom>
+      {title}
+    </Typography>
+  )
 }
 
 function Wrapper(props: any) {
