@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand"
 import { Slices } from "../store"
 import { httpClient } from "../api/httpClient";
-import { Address, Checkout, Deliverer, Payment } from "../types";
+import { Address, Checkout, Deliverer, CreditCard } from "../types";
 
 // Essa parte do storage é responsável por todas as chamadas http para a api
 export interface CheckoutSlice {
@@ -12,7 +12,8 @@ export interface CheckoutSlice {
     price: (id: string) => Promise<number>
     setAddress: (id: string, addressId: string) => Promise<Checkout>
     setDeliverer: (id: string, delivererId: string) => Promise<Checkout>
-    setPayment: (id: string, payment: Payment) => Promise<Checkout>
+    // TODO aqui nao eh CreditCard
+    setPayment: (id: string, payment: CreditCard) => Promise<Checkout>
     start: () => Promise<Checkout>
     cancel: () => Promise<Checkout>
     finish: () => Promise<Checkout>
@@ -53,7 +54,7 @@ const createCheckoutSlice: StateCreator<
             const { data } = await httpClient.post<Checkout>(`/checkout/${id}/deliverer/${delivererId}`);
             return data
         },
-        setPayment: async (id: string, payment: Payment): Promise<Checkout> => {
+        setPayment: async (id: string, payment: CreditCard): Promise<Checkout> => {
             const { data } = await httpClient.post<Checkout>(`/checkout/${id}/payment`, payment);
             return data
         },
