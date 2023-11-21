@@ -1,24 +1,26 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { IsEnum, IsNotEmpty, IsNumber, IsString, Length } from "class-validator"
 
+type SaveProductCategories = "VINHOS" | "UTILITARIOS" | "OUTROS"
+
 export class SaveProductDTO {
     @IsString()
     @IsNotEmpty()
-    @Length(6, 200)
+    @Length(1, 200)
     @ApiProperty({
         description: 'Nome do produto',
         example: 'Produto 1',
-        minLength: 6,
+        minLength: 1,
         maxLength: 200,
     })
     name: string
 
     @IsString()
-    @Length(0, 2000)
+    @Length(1, 2000)
     @ApiProperty({
         description: 'Descrição do produto',
         example: 'Descrição do produto 1',
-        minLength: 0,
+        minLength: 1,
         maxLength: 2000,
     })
     description: string
@@ -40,6 +42,20 @@ export class SaveProductDTO {
         enum: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
     })
     ratings: number
+
+    @IsString()
+    @IsNotEmpty()
+    @IsEnum(["VINHOS", "UTILITARIOS", "OUTROS"])
+    @ApiProperty({
+        description: 'Categoria do produto',
+        example: 'VINHOS',
+        enum: ["VINHOS", "UTILITARIOS", "OUTROS"],
+    })
+    category: SaveProductCategories
+
+    @IsNumber()
+    @IsNotEmpty()
+    stock: number
 }
 
 export class UpdateProductStockDTO {

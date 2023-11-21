@@ -24,6 +24,7 @@ export default function useSaveProduct(props) {
                 ratings: formData?.ratings || 0,
                 description: formData?.description || "",
                 price: Number(formData?.price) || 0,
+                category: formData?.category || "",
                 stock: {
                     id: formData?.stock[0].id || '',
                     total: Number(formData?.new_stock) || 0,
@@ -51,8 +52,9 @@ export default function useSaveProduct(props) {
                 ratings: formData?.ratings || 0,
                 name: formData?.name || "",
                 description: formData?.description || "",
-                price: formData?.price || 0,
-                stock: formData?.stock || 0,
+                category: formData?.category || "",
+                price: Number(formData?.price) || 0,
+                stock: Number(formData?.stock) || 0,
             }))
 
             dispatch(snackSlice.actions.setSnackMessageInfo("Salvando produto..."))

@@ -23,7 +23,12 @@ export default function UpdateProduct() {
         <>
             {
                 loading ? <LoadingWE /> :
-                    <div className="update-product__container container">
+                    <div
+                        className="update-product__container container"
+                        style={{
+                            flexDirection: window.innerWidth < 768 ? "column" : "row",
+                        }}
+                    >
                         <Form
                             onSubmit={(e) => {
                                 const check = window.confirm("Deseja mesmo salvar as alterações?")

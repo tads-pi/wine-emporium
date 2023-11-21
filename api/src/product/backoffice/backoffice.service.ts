@@ -4,7 +4,6 @@ import { ProductBackofficeViewmodel } from '../viewmodels';
 import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
 import { S3Service } from '../../aws/s3/s3.service';
 import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
-import { Product } from '@prisma/client';
 
 @Injectable()
 export class BackofficeService {
@@ -139,13 +138,14 @@ export class BackofficeService {
                 price: dto.price,
                 ratings: dto.ratings,
                 markedImageID: "",
+                category: dto.category,
                 active: true,
             },
         });
 
         const productStock = await this.db.productStock.create({
             data: {
-                total: 0,
+                total: dto.stock,
                 productId: product.id,
                 unit: "UNIDADE",
             },
