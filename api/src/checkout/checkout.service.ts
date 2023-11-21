@@ -148,6 +148,9 @@ export class CheckoutService {
                 status: {
                     notIn: ['ENDERECO_PENDENTE', 'ENTREGADOR_PENDENTE', 'METODO_DE_PAGAMENTO_PENDENTE']
                 }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         })
 
