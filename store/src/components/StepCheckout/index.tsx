@@ -6,7 +6,7 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
-import { CartCheckout } from '../CartCheckout'
+import { CartCheckout } from '../CartCheckout';
 
 const steps = ['Carrinho', 'Informações do pedido', 'Pagamento'];
 
@@ -93,7 +93,9 @@ export default function StepCheckout() {
                 <React.Fragment>
                     <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                          {/* <CartCheckout /> */}
-                        Passo {activeStep + 1}
+                        {activeStep + 1 == 1 && <CartCheckout totalItems={2} />}
+                        {activeStep + 1 == 2 && <p>Pamnonha fria</p>}
+                        {activeStep + 1 == 3 && <p>Pamnonha gelada</p>}
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                         <Button
