@@ -10,6 +10,11 @@ import Paper from '@mui/material/Paper';
 import { formatCurrency } from '../../utils/formatCurrency';
 import { PreviwProductTable } from '../PreviewProductTable';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Cart, Product } from '../../zustand/types';
+import { FALLBACK_IMAGE_URL } from '../../config/images';
+import { IconButton } from '@mui/material';
+import useCartCheckout from '../StepCheckout/useCartCheckout';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,38 +36,32 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(
-  product: React.ReactNode,
-  calories: number,
-  fat: number,
-  carbs: number,
-  deleteProduct: React.ReactNode
-) {
-  return { product, calories, fat, carbs, deleteProduct };
-}
+type TableItemsCheckoutProps = {
+  cart: Cart;
+  onAddProduct: (productId: string) => void;
+  onRemoveProduct: (productId: string) => void;
+};
 
-const rows = [
-  createData(<PreviwProductTable />, 19, 6.0, 24, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 237, 9.0, 37, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 262, 16.0, 24, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 305, 3.7, 67, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 356, 16.0, 49, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 159, 6.0, 24, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 237, 9.0, 37, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 262, 16.0, 24, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 305, 3.7, 67, <DeleteIcon color='error' />),
-  createData(<PreviwProductTable />, 356, 16.0, 49, <DeleteIcon color='error' />),
-];
 
-interface TableItemsCheckoutProps {
-  product: React.ReactNode
-  price: number
-  quantity: number
-  priceTotal: number
-  deleteProduct: React.ReactNode
-}
+// createData(<PreviwProductTable />, formatCurrency(356), 16.0, formatCurrency(49), <DeleteIcon color='error' />),
 
-export function TableItemsCheckout() {
+export function TableItemsCheckout({
+  cart,
+  onAddProduct,
+  onRemoveProduct,
+}: TableItemsCheckoutProps) {
+  function getImage(product: Product) {
+    if (product?.images.length > 0) {
+      const [markedImage] = product?.images.filter((img) => img.marked);
+      if (markedImage) {
+        return markedImage.url;
+      }
+      return product?.images[0].url;
+    } else {
+      return FALLBACK_IMAGE_URL;
+    }
+  }
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -72,19 +71,63 @@ export function TableItemsCheckout() {
             <StyledTableCell align="left">Preço</StyledTableCell>
             <StyledTableCell align="left">Quantidade</StyledTableCell>
             <StyledTableCell align="left">Preço total</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, i) => (
-            <StyledTableRow key={i}>
+          {cart.products.map((row) => (
+            <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row">
-                {row.product}
+                <PreviwProductTable
+                  img={getImage(row)}
+                  nameProduct={row.name}
+                  descriptionProduct={row.description}
+                />
               </StyledTableCell>
-              <StyledTableCell align="left">{row.calories}</StyledTableCell>
-              <StyledTableCell align="left">{row.fat}</StyledTableCell>
-              <StyledTableCell align="left">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="center">{row.deleteProduct}</StyledTableCell>
+              <StyledTableCell align="left">{formatCurrency(row.price)}</StyledTableCell>
+
+              <StyledTableCell align="center">
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '0.5rem',
+                  }}
+                >
+                  <div>
+                    <IconButton
+                      aria-label="remove uma unidade do carrinho"
+                      size="small"
+                      onClick={() => onRemoveProduct(row.id)}
+                      style={{
+                        backgroundColor: 'lightcoral',
+                        borderRadius: '50%',
+                        width: '25px',
+                        height: '25px',
+                      }}
+                    >
+                      -
+                    </IconButton>
+                  </div>
+                  <div>{row.amount}</div>
+                  <div>
+                    <IconButton
+                      aria-label="adiciona uma unidade ao carrinho"
+                      size="small"
+                      onClick={() => onAddProduct(row.id)}
+                      style={{
+                        backgroundColor: 'lightgreen',
+                        borderRadius: '50%',
+                        width: '25px',
+                        height: '25px',
+                      }}
+                    >
+                      +
+                    </IconButton>
+                  </div>
+                </div>
+              </StyledTableCell>
+
+              <StyledTableCell align="left">{formatCurrency(row.price * row.amount)}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
