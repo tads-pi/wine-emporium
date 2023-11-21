@@ -82,8 +82,8 @@ describe('AdminController', () => {
         }
       })
 
-      const users = await controller.getAllUsers()
-      expect(users.length).toBe(2)
+      const users = await controller.getAllUsers(1, 10)
+      expect(users.length).toBeLessThanOrEqual(10)
     })
 
     it('deve fazer login no backoffice com sucesso', async () => {

@@ -48,6 +48,7 @@ describe('AddressController', () => {
       number: '308',
       complement: 'AP 12',
       cep: '04551-010',
+      type: 'SHIPPING',
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null
@@ -62,6 +63,7 @@ describe('AddressController', () => {
       number: '308',
       complement: 'AP 12',
       cep: '04551-010',
+      type: 'BILLING',
       createdAt: new Date(),
       updatedAt: new Date(),
       deletedAt: null
@@ -139,6 +141,7 @@ describe('AddressController', () => {
         number: MOCK_ADDRESS_01.number,
         complement: MOCK_ADDRESS_01.complement,
         zip: MOCK_ADDRESS_01.cep,
+        type: 'SHIPPING',
       }
 
       db.address.create = jest.fn().mockReturnValueOnce(MOCK_ADDRESS_01)

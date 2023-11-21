@@ -199,6 +199,7 @@ describe('CheckoutController', () => {
         number: '1',
         complement: 'Casa',
         zip: '12345-678',
+        type: 'SHIPPING',
       }
 
       db.checkout.findUnique = jest.fn().mockReturnValueOnce(CHECKOUT)
