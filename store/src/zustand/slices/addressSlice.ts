@@ -51,6 +51,7 @@ const createAddressSlice: StateCreator<
                 zip: viaCepResponse.cep,
                 complement: '',
                 marked: false,
+                type: '',
             }
         }
     }

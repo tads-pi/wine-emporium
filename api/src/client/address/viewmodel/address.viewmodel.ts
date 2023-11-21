@@ -62,6 +62,13 @@ export class AddressViewmodel {
     })
     marked: boolean
 
+    @ApiProperty({
+        description: 'Tipo do endereço',
+        example: 'BILLING',
+        enum: ["BILLING", "SHIPPING"],
+    })
+    type: string
+
     constructor(a: Address, marked: boolean = false) {
         Object.assign(this, {
             id: a.id,
@@ -74,6 +81,7 @@ export class AddressViewmodel {
             zip: a.zip,
             complement: a.complement,
             marked: marked,
+            type: a.type,
         })
     }
 }

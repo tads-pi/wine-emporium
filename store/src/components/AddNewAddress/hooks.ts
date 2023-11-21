@@ -16,6 +16,7 @@ interface FormData {
     street: string;
     number: string;
     zip: string;
+    type: string;
 }
 
 export default function useAddNewAddress(props: useAddNewAddress) {
@@ -39,6 +40,7 @@ export default function useAddNewAddress(props: useAddNewAddress) {
             number: data.number,
             zip: data.zip,
             complement: data.complement,
+            type: data.type || 'BILLING',
         });
     }
 
@@ -52,6 +54,7 @@ export default function useAddNewAddress(props: useAddNewAddress) {
                     setValue('neighborhood', address.neighborhood);
                     setValue('street', address.street);
                     setValue('complement', address.complement);
+                    setValue('type', address.type);
 
                     setHaveZip(true);
                 })
@@ -71,6 +74,7 @@ export default function useAddNewAddress(props: useAddNewAddress) {
         errors,
         handleSubmit,
         onSubmit,
+        setValue,
         handleZipCodeChange,
         haveZip,
     }

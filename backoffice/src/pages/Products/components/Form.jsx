@@ -5,6 +5,8 @@ import {
     DialogTitle,
     Rating,
     InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useEffect, useState } from "react";
@@ -12,6 +14,8 @@ import UploadImage from "../../../components/upload/UploadImage.jsx";
 import useWindowDimensions from "./hooks.js";
 import "./styles.css"
 import ImageHandlerWE from "../../../components/ImageHandlerWE/ImageHandlerWE.jsx";
+
+const categories = ["VINHOS", "UTILITARIOS", "OUTROS"]
 
 export default function Form(props) {
     const {
@@ -62,6 +66,10 @@ export default function Form(props) {
                     {
                         formData?.images &&
                         formData?.images.map(({ id, url, marked }, index) => {
+                            if (id === 'fallback.png') {
+                                return null
+                            }
+
                             return (
                                 <div
                                     key={index}
@@ -185,6 +193,34 @@ export default function Form(props) {
                     }}
                 />
 
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: '0.5rem',
+                }}>
+                    <InputLabel id="user-group">Categoria</InputLabel>
+                    {
+                        categories &&
+                        <Select
+                            fullWidth
+                            value={formData?.category}
+                            onChange={(e) => {
+                                onFormUpdate("category", e.target.value)
+                            }}
+                        >
+                            {
+                                categories.map((category, i) => (
+                                    <MenuItem key={i} value={category}>
+                                        {category}
+                                    </MenuItem>
+                                ))
+                            }
+                        </Select>
+                    }
+                </div>
+
                 <TextField
                     id={"product-name-price"}
                     label="Preco"
@@ -250,7 +286,7 @@ export default function Form(props) {
                     />
                 }
 
-            </Box>
+            </Box >
 
             <Box
                 component="div"

@@ -7,12 +7,14 @@ export default function ProfileWECreditCardAddNewCard() {
     const {
         isLoading,
         isValid,
+        isDirty,
         register,
         errors,
-        setValue,
         handleSubmit,
         onSubmit,
     } = useProfileWECreditCardAddNewCard()
+
+    console.log({ errors });
 
     return (
         <ProfileWEContainer>
@@ -36,7 +38,6 @@ export default function ProfileWECreditCardAddNewCard() {
                         gap: '1rem',
                     }}
                 >
-
                     <div
                         style={{
                             display: 'flex',
@@ -45,7 +46,6 @@ export default function ProfileWECreditCardAddNewCard() {
                             gap: '1rem',
                         }}
                     >
-
                         <div>
                             <InputLabel id="number-label">Número<Required /></InputLabel>
                             <TextField
@@ -56,11 +56,25 @@ export default function ProfileWECreditCardAddNewCard() {
                                     minLength: {
                                         value: 16,
                                         message: 'Número inválido'
+                                    },
+                                    maxLength: {
+                                        value: 16,
+                                        message: 'Número inválido'
+                                    },
+                                    validate: {
+                                        isNumber: (value) => {
+                                            const number = Number(value)
+                                            if (isNaN(number)) {
+                                                return 'Número inválido'
+                                            }
+                                            return true
+                                        }
                                     }
                                 })}
                                 inputProps={{
                                     maxLength: 16,
                                 }}
+                                error={!!errors?.number}
                                 helperText={errors?.number?.message}
                                 FormHelperTextProps={{
                                     style: {
@@ -92,6 +106,15 @@ export default function ProfileWECreditCardAddNewCard() {
                                             value: 12,
                                             message: 'Mês inválido'
                                         },
+                                        validate: {
+                                            isNumber: (value) => {
+                                                const number = Number(value)
+                                                if (isNaN(number)) {
+                                                    return 'Número inválido'
+                                                }
+                                                return true
+                                            }
+                                        }
                                     })}
                                     type="number"
                                     inputProps={{
@@ -121,6 +144,15 @@ export default function ProfileWECreditCardAddNewCard() {
                                         max: {
                                             value: 2050,
                                             message: 'Ano inválido'
+                                        },
+                                        validate: {
+                                            isNumber: (value) => {
+                                                const number = Number(value)
+                                                if (isNaN(number)) {
+                                                    return 'Ano inválido'
+                                                }
+                                                return true
+                                            }
                                         }
                                     })}
                                     type="number"
@@ -142,18 +174,32 @@ export default function ProfileWECreditCardAddNewCard() {
                         <div>
                             <InputLabel id="cvv-label">Código Verificador<Required /></InputLabel>
                             <TextField
-                                variant="outlined"
                                 fullWidth
+                                variant="outlined"
                                 {...register('cvv', {
                                     required: 'Esse campo é obrigatório',
-                                    min: {
-                                        value: 100,
+                                    minLength: {
+                                        value: 3,
                                         message: 'Código inválido'
+                                    },
+                                    maxLength: {
+                                        value: 3,
+                                        message: 'Código inválido'
+                                    },
+                                    validate: {
+                                        isNumber: (value) => {
+                                            const number = Number(value)
+                                            if (isNaN(number)) {
+                                                return 'Código inválido'
+                                            }
+                                            return true
+                                        }
                                     }
                                 })}
                                 inputProps={{
                                     maxLength: 3,
                                 }}
+                                error={!!errors?.cvv}
                                 helperText={errors?.cvv?.message}
                                 FormHelperTextProps={{
                                     style: {
@@ -170,11 +216,22 @@ export default function ProfileWECreditCardAddNewCard() {
                                 fullWidth
                                 {...register('full_name', {
                                     required: 'Esse campo é obrigatório',
-                                    min: {
+                                    minLength: {
                                         value: 3,
                                         message: 'Nome inválido'
+                                    },
+                                    maxLength: {
+                                        value: 64,
+                                        message: 'Nome muito grande'
+                                    },
+                                    validate: {
+                                        isName: (value) => {
+                                            const re = /^[a-z ,.'-]+$/i;
+                                            return re.test(value) || 'Nome inválido';
+                                        }
                                     }
                                 })}
+                                error={!!errors?.full_name}
                                 helperText={errors?.full_name?.message}
                                 FormHelperTextProps={{
                                     style: {
@@ -188,6 +245,7 @@ export default function ProfileWECreditCardAddNewCard() {
                             <InputLabel id="flag-label">Bandeira<Required /></InputLabel>
                             <FormControl component="fieldset">
                                 <RadioGroup
+                                    defaultValue={"VISA"}
                                     name="flag"
                                     aria-label="flag"
                                     onChange={(e) => register('flag', {
@@ -247,7 +305,7 @@ export default function ProfileWECreditCardAddNewCard() {
                     >
                         <Button
                             type="submit" variant="contained" color="success"
-                            disabled={!isValid || isLoading}
+                            disabled={isLoading || (!isValid && isDirty)}
                         >
                             {
                                 isLoading

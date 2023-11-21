@@ -6,39 +6,78 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { routes } from '../../config/routes';
+import LocalMall from '@mui/icons-material/LocalMall';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export default function ProfileWE() {
   return (
     <Card style={{
-      minWidth: 'fit-content',
+      width: window.innerWidth > 600 ? 'fit-content' : '100%',
+      minHeight: '15%',
     }}>
-      <CardContent>
+      <CardContent sx={{
+        display: 'flex',
+        gap: '0.75rem',
+        flexDirection: window.innerWidth > 600 ? 'column' : 'row',
+        justifyContent: window.innerWidth > 600 ? 'flex-start' : 'space-between',
+      }}>
         <Link to={routes.ACCOUNT_DATA} style={{ textDecoration: 'none' }}>
-          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-            Perfil
-          </Typography>
+          <Wrapper>
+            <AccountCircleIcon color='success' />
+            <Text title='Perfil' />
+          </Wrapper>
         </Link>
         <Link to={routes.ACCOUNT_ADDRESS} style={{ textDecoration: 'none' }}>
-          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-            Endereço de entrega
-          </Typography>
+          <Wrapper>
+            <LocalShippingIcon color='secondary' />
+            <Text title='Endereço de entrega' />
+          </Wrapper>
         </Link>
         <Link to={routes.ACCOUNT_CREDIT_CARD} style={{ textDecoration: 'none' }}>
-          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-            Cartões de Crédito
-          </Typography>
+          <Wrapper>
+            <CreditCardIcon color='info' />
+            <Text title="Cartões de Crédito" />
+          </Wrapper>
         </Link>
         <Link to={routes.ACCOUNT_CHECKOUTS} style={{ textDecoration: 'none' }}>
-          <Typography sx={{ fontSize: 16 }} color="text.secondary" gutterBottom>
-            Compras
-          </Typography>
+          <Wrapper>
+            <LocalMall fontSize='small' color='warning' />
+            <Text title="Pedidos" />
+          </Wrapper>
         </Link>
       </CardContent>
+
       <CardActions>
         <Link to={routes.STORE}>
-          <Button size="small">Voltar</Button>
+          <Button size="small">Ir para Loja</Button>
         </Link>
       </CardActions>
     </Card>
   );
+}
+
+function Text({ title }: { title: string }) {
+  if (window.innerWidth < 600) return null
+
+  return (
+    <Typography sx={{ fontSize: 16, marginBottom: 0 }} color="text.secondary" gutterBottom>
+      {title}
+    </Typography>
+  )
+}
+
+function Wrapper(props: any) {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      gap: '0.5rem',
+    }}>
+      {props.children}
+    </div>
+  )
 }

@@ -55,7 +55,7 @@ export class S3Service {
         };
 
         const data = await this.client.listObjectsV2(listObjectsParams).promise();
-        const images = data.Contents.map((item) => {
+        let images = data.Contents.map((item) => {
             const fileNameWithExtension = item.Key.split("/").pop() // apaga nome da pasta
             return {
                 key: fileNameWithExtension,
@@ -64,7 +64,16 @@ export class S3Service {
         });
 
         // Por algum motivo, o S3 retorna um objeto vazio no primeiro item
-        return images.filter((img) => img.key);
+        images = images.filter((img) => img.key);
+
+        if (images.length === 0) {
+            images.push({
+                key: "fallback.png",
+                url: `https://${this.bucket}.s3.amazonaws.com/products/fallback.png`
+            })
+        }
+
+        return images
     }
 
     async removeImageFromFolder(folder: string, imageUUIDWithExtension: string) {

@@ -9,6 +9,7 @@ export interface Address {
     zip: string;
     complement: string;
     marked: boolean;
+    type: string;
 }
 
 export interface NewAddress {
@@ -20,4 +21,5 @@ export interface NewAddress {
     street: string;
     number: string;
     zip: string;
+    type: string;
 }

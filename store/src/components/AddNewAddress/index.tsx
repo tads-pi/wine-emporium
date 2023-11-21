@@ -1,8 +1,19 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { NewAddress } from "../../zustand/types"
 import useAddNewAddress from "./hooks"
-import { Button, InputLabel, TextField } from "@mui/material"
+import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import Required from "../Required"
+
+const types = [
+    {
+        label: 'Cobrança',
+        id: 'BILLING',
+    },
+    {
+        label: 'Residência',
+        id: 'SHIPPING',
+    },
+]
 
 interface AddNewAddressProps {
     onSubmit: (data: NewAddress) => void
@@ -19,6 +30,7 @@ export default function AddNewAddress(props: AddNewAddressProps) {
         errors,
         handleSubmit,
         onSubmit,
+        setValue,
         handleZipCodeChange,
         haveZip,
     } = useAddNewAddress({ onSubmit: props.onSubmit })
@@ -182,6 +194,32 @@ export default function AddNewAddress(props: AddNewAddressProps) {
                             }
                         }}
                     />
+                </div>
+
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                }}>
+                    <InputLabel id="type-label">
+                        Tipo<Required />
+                    </InputLabel>
+                    <Select
+                        size='small'
+                        defaultValue={types[0].id}
+                        error={!!errors.type}
+                        onChange={(e) => {
+                            const type = e.target.value as string
+                            setValue('type', type)
+                        }}
+                        sx={{ width: '100%' }}
+                    >
+                        {types && types.map(({ label, id }, i) => (
+                            <MenuItem key={i} value={id}>
+                                {label}
+                            </MenuItem>
+                        ))}
+                    </Select>
                 </div>
 
                 <div style={{

@@ -1,7 +1,7 @@
 import { useSnackbar } from "notistack";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, set, useForm } from "react-hook-form";
 import useStore from "../../../../zustand/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NewAddress, NewCreditCard } from "../../../../zustand/types";
 import { useNavigate } from "react-router-dom";
 import { routes } from "../../../../config/routes";
@@ -21,15 +21,14 @@ export default function useProfileWECreditCardAddNewCard() {
         getValues,
         register,
         setValue,
-        formState: { errors },
-    } = useForm<FormData>();
+        formState: { errors, isValid, isDirty },
+    } = useForm<FormData>({ mode: 'all' });
     const navigate = useNavigate()
 
     const { paymentApi } = useStore()
     const { enqueueSnackbar } = useSnackbar();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [isValid, setIsValid] = useState(true);
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         try {
@@ -63,9 +62,15 @@ export default function useProfileWECreditCardAddNewCard() {
         }
     };
 
+    useEffect(() => {
+        // gambiarrinha pra setar o valor do input de bandeira do cartão
+        setValue('flag', 'VISA')
+    }, [])
+
     return {
         isLoading,
         isValid,
+        isDirty,
         register,
         getValues,
         setValue,

@@ -8,6 +8,7 @@ import { DelivererViewmodel } from '../deliverer/viewmodel';
 import { SetCheckoutPaymentMethodDTO } from './dto';
 import { PaymentViewmodel } from '../payment/viewmodel/payment.viewmodel';
 import { ClientCreditCardViewmodel } from '../payment/viewmodel/client-credit-card.viewmodel';
+import { UpdateCheckoutStatusDTO } from './dto/backoffice.dto';
 
 @Injectable()
 export class CheckoutService {
@@ -16,7 +17,7 @@ export class CheckoutService {
         private cartSvc: CartService,
     ) { }
 
-    private async getClientCheckout(clientId: string, checkoutId): Promise<Checkout> {
+    private async getClientCheckout(clientId: string, checkoutId: string): Promise<Checkout> {
         const cart = await this.db.cart.findFirst({
             where: {
                 clientId: clientId,
@@ -109,6 +110,7 @@ export class CheckoutService {
             address: address ? new AddressViewmodel(address, false) : null,
             payment: payment ? paymentViewmodel : null,
             price: await this.cartSvc.calculateCartPrice(cart.id) + (deliverer ? deliverer.fare : 0),
+            payedAt: c.payedAt?.toISOString() || null,
         }
 
         return viewmodel
@@ -118,13 +120,37 @@ export class CheckoutService {
         const allCarts = await this.db.cart.findMany({
             where: {
                 clientId: clientId,
+                active: true,
             }
         })
         const allCheckouts = await this.db.checkout.findMany({
             where: {
                 cartId: {
                     in: allCarts.map(c => c.id)
+                },
+                status: {
+                    notIn: ['ENDERECO_PENDENTE', 'ENTREGADOR_PENDENTE', 'METODO_DE_PAGAMENTO_PENDENTE']
                 }
+            }
+        })
+
+        let viewmodel: CheckoutViewmodel[] = []
+        for (const c of allCheckouts) {
+            viewmodel.push(await this.fillCheckoutWithData(c))
+        }
+
+        return viewmodel
+    }
+
+    async listCheckoutForBackoffice(): Promise<CheckoutViewmodel[]> {
+        const allCheckouts = await this.db.checkout.findMany({
+            where: {
+                status: {
+                    notIn: ['ENDERECO_PENDENTE', 'ENTREGADOR_PENDENTE', 'METODO_DE_PAGAMENTO_PENDENTE']
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         })
 
@@ -145,6 +171,33 @@ export class CheckoutService {
         }
 
         return await this.fillCheckoutWithData(c)
+    }
+
+    async getCheckoutByIdForBackoffice(id: string): Promise<CheckoutViewmodel> {
+        const c = await this.db.checkout.findUnique({
+            where: { id },
+        });
+        if (!c) {
+            throw new NotFoundException('Checkout não encontrado');
+        }
+
+        return await this.fillCheckoutWithData(c)
+    }
+
+    async updateCheckoutForBackoffice(dto: UpdateCheckoutStatusDTO): Promise<null> {
+        const c = await this.db.checkout.findUnique({
+            where: { id: dto.id },
+        });
+        if (!c) {
+            throw new NotFoundException('Checkout não encontrado');
+        }
+
+        await this.db.checkout.update({
+            where: { id: dto.id },
+            data: { status: dto.status }
+        })
+
+        return null
     }
 
     async startCheckout(clientId: string): Promise<CheckoutViewmodel> {

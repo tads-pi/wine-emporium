@@ -12,9 +12,6 @@ export default function useListUser() {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
 
-    const [searchText, setSearchText] = useState("")
-    const [searchTextField, setSearchTextField] = useState("")
-
     // pagination feature
     const [totalItems, setTotalItems] = useState(0)
     const [currentPage, setCurrentPage] = useState(0)
@@ -23,31 +20,19 @@ export default function useListUser() {
         console.log(`changing page to: ${JSON.stringify(page)}`);
 
         setCurrentPage(page)
-        dispatch(api.fetchBackofficeUsers({
-            page: Number(page + 1),
-            limit: 10, // TODO
-        }))
+        dispatch(api.fetchBackofficeUsers())
     }
 
-    function onChangeSearchText(text) {
-        console.log(`searching: '${searchText}' in '${searchTextField}' field`);
-
-        setSearchText(text.toLowerCase())
-        if (searchText === "") {
+    function onSearch(query) {
+        console.log(`searching: '${query}'`);
+        if (query === "") {
             dispatch(api.fetchBackofficeUsers())
             return
         }
 
         dispatch(api.fetchBackofficeUsers({
-            // todo
-            // filters: [
-            //     `name:${searchText}`,
-            // ].join(","),
+            name: query,
         }))
-    }
-
-    function onChangeSearchTextField(field) {
-        setSearchTextField(field)
     }
 
     function onDoubleClick(user) {
@@ -98,9 +83,7 @@ export default function useListUser() {
     return [
         data,
         loading,
-        onChangeSearchText,
-        searchTextField,
-        onChangeSearchTextField,
+        onSearch,
         onDoubleClick,
         onToggleActive,
         totalItems,

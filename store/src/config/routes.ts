@@ -9,4 +9,5 @@ export const routes = {
     ACCOUNT_CREDIT_CARD: '/perfil/cartao-de-credito',
     ACCOUNT_CREDIT_CARD_NEW_CARD: '/perfil/cartao-de-credito/novo-cartao',
     ACCOUNT_CHECKOUTS: '/perfil/meus-pedidos',
+    ACCOUNT_CHECKOUT_BY_ID: '/perfil/meus-pedidos/:id',
 }

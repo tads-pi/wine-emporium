@@ -26,11 +26,9 @@ export default function TableWE({
     onClickRow,
     onDoubleClick,
     // search feature
+    hideSearch = false,
     liveSearch,
     onSearch,
-    searchChoices,
-    searchTextField,
-    onSearchFieldSelected,
     // pagination feature
     totalItems,
     currentPage,
@@ -38,19 +36,12 @@ export default function TableWE({
 }) {
 
     const [search, setSearch] = useState("")
-    const [searchField, setSearchField] = useState(searchTextField || "")
 
     useEffect(() => {
         if (liveSearch) {
             onSearch(search)
         }
     }, [search])
-
-    useEffect(() => {
-        if (searchField) {
-            onSearchFieldSelected(searchField)
-        }
-    }, [searchField])
 
     function objectContainsAnyOf(obj, arr) {
         let contains = false
@@ -77,16 +68,26 @@ export default function TableWE({
                     <Paper>
                         <TableContainer
                             component={Paper}
+                            sx={{
+                                width: window.innerWidth > 600 ? "650px" : "100%",
+                                height: window.innerHeight - 200,
+                            }}
                         >
-                            <SearchBoxWE
-                                onChangeSearchText={setSearch}
-                                choices={searchChoices}
-                                onSubmit={onSearch}
-                                searchText={search}
-                                searchField={searchField}
-                                onChangeSearchField={setSearchField}
-                            />
-                            <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+                            {
+                                !hideSearch &&
+                                <SearchBoxWE
+                                    onChangeSearchText={setSearch}
+                                    searchText={search}
+                                    onSubmit={() => onSearch(search)}
+                                />
+                            }
+                            <Table
+                                sx={{
+                                    width: window.innerWidth > 600 ? "650px" : "100%",
+                                }}
+                                size="small"
+                                aria-label="tabela com os dados da pesquisa"
+                            >
                                 <TableHead>
                                     <TableRow>
                                         {
@@ -141,18 +142,22 @@ export default function TableWE({
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        <TablePagination
-                            // todo add this option
-                            rowsPerPageOptions={[10]}
-                            component="div"
-                            count={totalItems}
-                            page={currentPage}
-                            onPageChange={(_, page) => {
-                                console.log("page: ", page);
-                                onChangePage(page)
-                            }}
-                            rowsPerPage={10}
-                        />
+                        {
+                            (totalItems !== null && currentPage !== null) ?
+                                <TablePagination
+                                    // todo add this option
+                                    rowsPerPageOptions={[10]}
+                                    component="div"
+                                    count={totalItems}
+                                    page={currentPage}
+                                    onPageChange={(_, page) => {
+                                        console.log("page: ", page);
+                                        onChangePage(page)
+                                    }}
+                                    rowsPerPage={10}
+                                />
+                                : null
+                        }
                     </Paper>
             }
         </>

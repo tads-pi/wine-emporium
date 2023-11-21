@@ -58,7 +58,8 @@ describe('CheckoutController', () => {
       paymentId: null,
       delivererId: null,
       cartId: MOCK_CART_01.id,
-      status: 'ENDERECO_PENDENTE'
+      status: 'ENDERECO_PENDENTE',
+      payedAt: null,
     }
 
     const MOCK_CHECKOUT_02: Checkout = {
@@ -71,7 +72,8 @@ describe('CheckoutController', () => {
       paymentId: '1',
       delivererId: '1',
       cartId: MOCK_CART_02.id,
-      status: 'ENTREGUE'
+      status: 'ENTREGUE',
+      payedAt: new Date(),
     }
 
     it('deve retornar a lista de checkouts do cliente', async () => {
@@ -197,6 +199,7 @@ describe('CheckoutController', () => {
         number: '1',
         complement: 'Casa',
         zip: '12345-678',
+        type: 'SHIPPING',
       }
 
       db.checkout.findUnique = jest.fn().mockReturnValueOnce(CHECKOUT)

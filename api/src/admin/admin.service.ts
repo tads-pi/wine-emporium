@@ -31,11 +31,13 @@ export class AdminService {
         return this.authSvc.getToken(backofficeClient.id)
     }
 
-    async getAllUsers(): Promise<BackofficeClientViewmodel[]> {
+    async getAllUsers(page: number | null, limit: number | null): Promise<BackofficeClientViewmodel[]> {
         const users = await this.db.backofficeClient.findMany({
             orderBy: {
                 id: 'desc',
             },
+            skip: page ? Number(page - 1) * Number(limit) : 0,
+            take: limit ? Number(limit) : 10,
         })
         if (users.length === 0) {
             return [];

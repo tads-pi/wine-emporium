@@ -60,7 +60,8 @@ export class AddressService {
                 street: address.street,
                 number: address.number,
                 zip: address.zip.replaceAll('-', ''),
-                complement: address.complement
+                complement: address.complement,
+                type: address.type,
             }
         })
 

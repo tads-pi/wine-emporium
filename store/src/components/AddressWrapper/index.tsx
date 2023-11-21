@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import DeleteIcon from '@mui/icons-material/Delete';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 type AddressWrapperProps = {
     address: Address;
@@ -24,6 +25,7 @@ export default function AddressWrapper(props: AddressWrapperProps) {
         zip,
         complement,
         marked,
+        type,
     } = props.address;
 
     return (
@@ -52,7 +54,11 @@ export default function AddressWrapper(props: AddressWrapperProps) {
                         gap: '0.25rem',
                     }}
                 >
-                    <HomeIcon color='disabled' />
+                    {
+                        type === 'BILLING'
+                            ? <AccountBalanceIcon color='disabled' />
+                            : <HomeIcon color='disabled' />
+                    }
 
                     <div style={{
                         width: '25px',

@@ -16,6 +16,7 @@ import ProfileWEBanner from "./pages/profile/components/Banner";
 import ProfileWEAddressAddNewAddress from "./pages/profile/components/AddNewAddress";
 import ProfileWECreditCardAddNewCard from "./pages/profile/components/AddNewCreditCard";
 import RegisterWE from "./pages/register";
+import ProfileWECheckoutDetails from "./pages/profile/components/CheckoutDetails";
 
 export function AuthGuard() {
   const { authApi } = useStore()
@@ -48,6 +49,7 @@ function App() {
           <Route path={routes.ACCOUNT_CREDIT_CARD} element={<ProfileWECreditCard />} />
           <Route path={routes.ACCOUNT_CREDIT_CARD_NEW_CARD} element={<ProfileWECreditCardAddNewCard />} />
           <Route path={routes.ACCOUNT_CHECKOUTS} element={<ProfileWECheckout />} />
+          <Route path={routes.ACCOUNT_CHECKOUT_BY_ID} element={<ProfileWECheckoutDetails />} />
         </Route>
       </Routes>
     </BrowserRouter>

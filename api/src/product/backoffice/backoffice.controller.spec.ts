@@ -143,6 +143,8 @@ describe('BackofficeController', () => {
         description: MOCK_PRODUCT_01.description,
         price: MOCK_PRODUCT_01.price,
         ratings: MOCK_PRODUCT_01.ratings,
+        category: MOCK_PRODUCT_01.category,
+        stock: 10,
       }
 
       const product = await controller.saveProduct(input)
@@ -169,6 +171,8 @@ describe('BackofficeController', () => {
         description: PRODUCT.description,
         price: PRODUCT.price,
         ratings: PRODUCT.ratings,
+        category: PRODUCT.category,
+        stock: 10,
       }
 
       const product = await controller.updateProduct(PRODUCT.id, input)

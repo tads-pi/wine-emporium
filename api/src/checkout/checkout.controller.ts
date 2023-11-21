@@ -5,6 +5,8 @@ import { GetClient } from '../client/decorator/client.decorator';
 import { CheckoutViewmodel } from './viewmodel/checkout.viewmodel';
 import { ApiTags } from '@nestjs/swagger';
 import { SetCheckoutPaymentMethodDTO } from './dto';
+import { BackofficeGuard } from '../auth/guard/backoffice.guard';
+import { UpdateCheckoutStatusDTO } from './dto/backoffice.dto';
 
 @ApiTags('checkout')
 @Controller('checkout')
@@ -19,6 +21,12 @@ export class CheckoutController {
         @GetClient('id') clientId: string,
     ): Promise<CheckoutViewmodel[]> {
         return this.svc.listCheckout(clientId);
+    }
+
+    @Get('backoffice')
+    @UseGuards(BackofficeGuard)
+    async listCheckoutForBackoffice(): Promise<CheckoutViewmodel[]> {
+        return this.svc.listCheckoutForBackoffice();
     }
 
     @Post('start')
@@ -48,6 +56,22 @@ export class CheckoutController {
         @Param('checkoutId') id: string
     ): Promise<CheckoutViewmodel> {
         return this.svc.getCheckoutById(clientId, id)
+    }
+
+    @Get('/backoffice/find/:checkoutId')
+    @UseGuards(BackofficeGuard)
+    async getCheckoutByIdForBackoffice(
+        @Param('checkoutId') id: string
+    ): Promise<CheckoutViewmodel> {
+        return this.svc.getCheckoutByIdForBackoffice(id)
+    }
+
+    @Put('/backoffice/status')
+    @UseGuards(BackofficeGuard)
+    async updateCheckoutForBackoffice(
+        @Body('') dto: UpdateCheckoutStatusDTO,
+    ): Promise<null> {
+        return this.svc.updateCheckoutForBackoffice(dto)
     }
 
     @Post('/:checkoutId/address/:addressId')

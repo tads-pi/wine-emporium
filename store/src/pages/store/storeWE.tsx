@@ -2,11 +2,8 @@ import React, { useEffect } from "react"
 import Carrousel from "../../components/Carrousel"
 import useStoreWE from "./hooks/useStoreWE"
 import Loading from "../../components/loading"
-import { Accordion, AccordionDetails, AccordionSummary, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Grid, InputAdornment, Rating, TextField, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { InputAdornment, TextField, Typography } from '@mui/material';
 import { CardWine } from '../../components/CardWine';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { Product } from '../../zustand/types';
 import { NavBarWE } from "../../components/NavBarWE";
 import SearchIcon from '@mui/icons-material/Search';
