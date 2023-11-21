@@ -138,8 +138,6 @@ export class ClientService {
         const whereClause = this.unmarshallWhereClause(headers)
         const orderByClause = this.unmarshallOrderByClause(headers)
 
-        console.log({ whereClause });
-
         const products = await this.db.product.findMany({
             skip: Number((page - 1) * limit),
             take: Number(limit),
