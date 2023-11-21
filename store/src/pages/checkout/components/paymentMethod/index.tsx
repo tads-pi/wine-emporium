@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Button, Card, CardContent, CardMedia, FormControlLabel, MenuItem, Radio, RadioGroup, Select, Typography } from "@mui/material"
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
-import { ArrowForwardIos } from "@mui/icons-material";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import useCheckoutPaymentMethod from "./hooks";
 import Loading from "../../../../components/loading";
 import CreditCardWrapper from "../../../../components/CreditCardWrapper";
@@ -11,6 +11,7 @@ import { routes } from "../../../../config/routes";
 
 interface CheckoutPaymentMethodProps {
     handleNext: () => void,
+    handleBack: () => void,
     goHome: () => void,
 }
 
@@ -29,6 +30,21 @@ export default function CheckoutPaymentMethod(props: CheckoutPaymentMethodProps)
 
     return (
         <form onSubmit={onSubmit}>
+            <div>
+                <Button
+                    variant="outlined"
+                    color="inherit"
+                    size='small'
+                    onClick={() => props.handleBack()}
+                    style={{
+                        margin: '1rem 0',
+                    }}
+                    startIcon={<ArrowBackIos fontSize="small" />}
+                >
+                    Voltar
+                </Button>
+            </div>
+
             <div style={{
                 flexDirection: 'column',
                 display: 'flex',

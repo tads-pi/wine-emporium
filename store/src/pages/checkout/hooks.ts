@@ -76,6 +76,9 @@ export default function useCheckout() {
             setActiveStep(steps.indexOf(step));
         }
     };
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
 
     function goHome() {
         navigate(routes.LOGIN)
@@ -87,6 +90,7 @@ export default function useCheckout() {
         steps,
         handleNext,
         handleStep,
+        handleBack,
         goHome,
     }
 };

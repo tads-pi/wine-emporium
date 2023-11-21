@@ -13,6 +13,7 @@ export default function Checkout() {
         activeStep,
         steps,
         handleStep,
+        handleBack,
         handleNext,
         goHome,
     } = useCheckout()
@@ -20,7 +21,7 @@ export default function Checkout() {
     const [currentStepComponent, setCurrentStepComponent] = useState<React.JSX.Element | null>(null);
     useEffect(() => {
         setCurrentStepComponent(
-            getCurrentStepComponent(activeStep, handleNext, goHome)
+            getCurrentStepComponent(activeStep, handleNext, handleBack, goHome)
         )
     }, [activeStep])
 
@@ -34,7 +35,16 @@ export default function Checkout() {
             // border: '1px solid red'
         }}>
             {
-                isLoading ? <Loading /> :
+                isLoading ?
+                    <div style={{
+                        display: 'flex',
+                        height: '100vh',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <Loading />
+                    </div>
+                    :
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -74,6 +84,7 @@ export default function Checkout() {
 function getCurrentStepComponent(
     activeStep: number,
     handleNext: () => void,
+    handleBack: () => void,
     goHome: () => void,
 ): React.JSX.Element {
     switch (activeStep) {
@@ -91,6 +102,7 @@ function getCurrentStepComponent(
                 <StepWrapper>
                     <CheckoutPaymentMethod
                         handleNext={handleNext}
+                        handleBack={handleBack}
                         goHome={goHome}
                     />
                 </StepWrapper>
@@ -100,6 +112,7 @@ function getCurrentStepComponent(
                 <StepWrapper>
                     <CheckoutFinish
                         handleNext={handleNext}
+                        handleBack={handleBack}
                         goHome={goHome}
                     />
                 </StepWrapper>
