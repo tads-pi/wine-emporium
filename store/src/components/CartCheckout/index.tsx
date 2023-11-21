@@ -7,6 +7,7 @@ interface CartCheckoutProps {
     totalItems: number;
 }
 
+
 export function CartCheckout({ totalItems }: CartCheckoutProps) {
     return (
         <Box 
@@ -23,7 +24,7 @@ export function CartCheckout({ totalItems }: CartCheckoutProps) {
                     <span style={{ fontWeight: "normal" }}> ({totalItems} {totalItems > 1 ? 'Itens' : 'Item'}) </span>
                 </Typography>
             </Stack>
-            <TableItemsCheckout />
+            <TableItemsCheckout  />
         </Box>
     )
 }

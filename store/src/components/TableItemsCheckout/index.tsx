@@ -55,6 +55,14 @@ const rows = [
   createData(<PreviwProductTable />, formatCurrency(356), 16.0, formatCurrency(49), <DeleteIcon color='error' />),
 ];
 
+interface TableItemsCheckoutProps {
+  product: React.ReactNode
+  price: number
+  quantity: number
+  priceTotal: number
+  deleteProduct: React.ReactNode
+}
+
 export function TableItemsCheckout() {
   return (
     <TableContainer component={Paper}>
