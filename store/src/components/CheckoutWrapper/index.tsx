@@ -151,7 +151,7 @@ export default function CheckoutWrapper(props: CheckoutWrapperProps) {
                     <span style={{
                         fontSize: '1.25rem',
                     }}>
-                        R${price}
+                        R${Number(price).toFixed(2)}
                     </span>
 
                     <Button

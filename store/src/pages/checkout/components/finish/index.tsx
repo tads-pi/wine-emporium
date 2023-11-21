@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import useCheckoutFinish from "./hooks"
-import { Box, Button, Card, CardContent, CardMedia, IconButton, Typography } from "@mui/material"
+import { Box, Button, Card, CardContent, CardMedia, IconButton, Modal, Typography } from "@mui/material"
 import { ArrowBackIos } from "@mui/icons-material"
 import Loading from "../../../../components/loading"
 import { CartProduct } from "../../../../zustand/types"
@@ -19,11 +19,55 @@ export default function CheckoutFinish(props: CheckoutFinishProps) {
     const {
         isLoading,
         checkout,
+        modalOpen,
+        handleModalClose,
         onSubmit,
     } = useCheckoutFinish(props)
 
     return (
         <form onSubmit={onSubmit}>
+            <Modal
+                open={modalOpen}
+                onClose={handleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    p: 4,
+                }}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Seu Pedido foi realizado com sucesso!
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Número do Pedido #{checkout?.sequentialId}
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        Valor total R${Number((checkout?.price || 0) + (checkout?.deliverer.fare || 0)).toFixed(2)}
+                    </Typography>
+
+                    <Button
+                        variant="contained"
+                        color="success"
+                        size="large"
+                        style={{
+                            width: '100%',
+                            marginTop: '2rem',
+                        }}
+                        endIcon={<ReceiptIcon />}
+                        onClick={() => {
+                            props.handleNext()
+                        }}
+                    >
+                        Ver Pedido
+                    </Button>
+                </Box>
+            </Modal>
+
             <div>
                 <Button
                     variant="outlined"

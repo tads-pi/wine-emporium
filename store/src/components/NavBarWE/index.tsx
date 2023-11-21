@@ -32,7 +32,7 @@ export function NavBarWE() {
   }));
 
   return (
-    <AppBar position="static" color="transparent">
+    <AppBar position="sticky" color='default'>
       <div style={{
         display: 'flex',
         flexDirection: 'row',
