@@ -42,7 +42,6 @@ export function Slider({ data }: SliderProps) {
               display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              // border: '1px solid red',
             }}>
               <div>
                 <div className="title" data-swiper-parallax="-300">

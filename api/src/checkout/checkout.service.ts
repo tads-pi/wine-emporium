@@ -249,6 +249,11 @@ export class CheckoutService {
             data: { status: "CANCELADO" }
         })
 
+        await this.db.cart.update({
+            where: { id: cart.id },
+            data: { status: 'DELETED' }
+        })
+
         return await this.fillCheckoutWithData(checkout)
     }
 
@@ -283,6 +288,11 @@ export class CheckoutService {
         checkout = await this.db.checkout.update({
             where: { id: checkout.id },
             data: { status: "AGUARDANDO_PAGAMENTO" }
+        })
+
+        await this.db.cart.update({
+            where: { id: cart.id },
+            data: { status: 'DONE' }
         })
 
         return await this.fillCheckoutWithData(checkout)

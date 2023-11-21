@@ -11,7 +11,7 @@ export default function ProfileWEBanner() {
             height: '100vh',
 
             gap: '1rem',
-            padding: '2rem',
+            padding: window.innerWidth > 600 ? '2rem' : '0.25rem',
         }}>
             <ProfileWE />
             <Outlet />

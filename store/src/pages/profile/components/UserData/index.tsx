@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import useUserData from './hooks';
+import { Typography } from '@mui/material';
 
 export default function ProfileWEUserData() {
     const {
@@ -30,12 +31,15 @@ export default function ProfileWEUserData() {
                 genders && userData &&
                 <div style={{
                     display: 'flex',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-start',
                     alignItems: 'center',
-
+                    flexDirection: 'column',
                     width: '100%',
                     height: '100%',
                 }}>
+                    <div style={{ paddingBottom: '1rem' }}>
+                        <h2>Editar Dados Pessoais</h2>
+                    </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div
                             style={{

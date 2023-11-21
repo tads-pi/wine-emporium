@@ -68,6 +68,9 @@ export default function useCheckout() {
                 newSteps[activeStep].completed = true;
                 setActiveStep(nextStep);
                 break;
+            case 3:
+                navigate(routes.ACCOUNT_CHECKOUTS)
+                break;
         }
         steps = newSteps;
     }
