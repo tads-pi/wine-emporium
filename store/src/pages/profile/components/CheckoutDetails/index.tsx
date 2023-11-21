@@ -51,7 +51,7 @@ export default function ProfileWECheckoutDetails() {
                                 flexDirection: 'column',
                                 width: window.innerWidth > 600 ? '50%' : '100%',
                                 overflow: 'scroll',
-                                gap: '1rem',
+                                gap: '0.25rem',
                                 padding: '1rem',
 
                                 // border: '1px solid purple'
@@ -59,11 +59,15 @@ export default function ProfileWECheckoutDetails() {
                                 <div>
                                     <ResumeHeaders checkout={checkout} />
                                 </div>
-
+                                <hr />
                                 <div>
                                     <ResumeReceipt checkout={checkout} />
                                 </div>
-
+                                <hr />
+                                <div>
+                                    <ResumeAddress checkout={checkout} />
+                                </div>
+                                <hr />
                                 <div>
                                     <ResumePayment checkout={checkout} />
                                 </div>
@@ -75,9 +79,48 @@ export default function ProfileWECheckoutDetails() {
     )
 };
 
+function ResumeAddress({ checkout }: { checkout: Checkout }) {
+    return (
+        <div>
+            <div style={{ display: 'flex', width: '100%' }}>
+                <p style={{ fontSize: '14px', color: 'black', margin: 0 }}>
+                    Endereço de Entrega
+                </p>
+            </div>
+
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: '0.25rem',
+            }}>
+                <p style={{
+                    fontSize: '12px',
+                    margin: 0,
+                    color: 'gray',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                }}>
+                    {checkout.address.street}, {checkout.address.number}
+                    <br />
+                    {checkout.address.neighborhood}, {checkout.address.city} - {checkout.address.state}
+                    <br />
+                    {checkout.address.zip}
+                </p>
+            </div>
+        </div>
+    )
+}
+
 function ResumePayment({ checkout }: { checkout: Checkout }) {
     return (
         <div>
+            <div style={{ display: 'flex', width: '100%' }}>
+                <p style={{ fontSize: '14px', color: 'black', margin: 0 }}>
+                    Método de Pagamento
+                </p>
+            </div>
             <div style={{ display: 'flex', width: '100%' }}>
                 <p style={{ fontSize: '12px', color: 'gray', margin: 0 }}>
                     {checkout.payment.bankSlip ? 'Boleto' : 'Cartão de crédito'}
