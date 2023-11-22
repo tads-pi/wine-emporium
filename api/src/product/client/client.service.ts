@@ -12,7 +12,9 @@ export class ClientService {
     ) { }
 
     private unmarshallWhereClause(headers: any): Object {
-        const whereClause = {}
+        const whereClause = {
+            active: true,
+        }
         const nameSearch = headers['name']
         if (nameSearch) {
             const nameNotContainsSQLInjection = nameSearch.length <= 16 && !nameSearch.includes(";")
