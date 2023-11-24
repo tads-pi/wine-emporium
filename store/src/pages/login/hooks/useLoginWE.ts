@@ -11,6 +11,7 @@ import { routes } from "../../../config/routes";
 const schema = z.object({
     email: z.string().nonempty('E-mail é obrigatório').email('Informe um e-mail válido'),
     password: z.string().nonempty('Senha é obrigatório'),
+    token: z.string().nonempty('Concluir o captcha é obrigatório'),
 })
 
 type FormData = z.infer<typeof schema>
@@ -52,6 +53,7 @@ export function useLoginController() {
         handleSubmit,
         register,
         errors,
-        isLoading
+        isLoading,
+        setValue,
     }
 }
