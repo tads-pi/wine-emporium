@@ -25,7 +25,7 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
 
     const price = useMemo(() => {
         return cartState?.price
-    }, [cartState])
+    }, [cartState.price])
 
     useEffect(() => {
         getCart()

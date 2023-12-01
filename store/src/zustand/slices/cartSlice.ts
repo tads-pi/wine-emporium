@@ -41,8 +41,7 @@ const createCartSlice: StateCreator<
 
             let price: number = 0
             slices().cartApi.cartState.products.map(p => price += p.price * p.amount)
-            console.log({ price });
-            slices().cartApi.cartState.price = price
+            slices().cartApi.cartState.price = Number(Number(price).toFixed(2))
             slices().cartApi.cartState.id = '1'
             return slices().cartApi.cartState
         },
