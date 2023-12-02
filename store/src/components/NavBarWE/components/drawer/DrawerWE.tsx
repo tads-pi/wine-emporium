@@ -16,6 +16,7 @@ type DrawerWEProps = {
 
 export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps) {
     const {
+        isLoggedIn,
         cartState,
         getCart,
         addProduct,
@@ -87,7 +88,7 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
 
                         <BottomWrapper>
                             {
-                                cartState.products.length > 0 &&
+                                cartState.products.length > 0 && !isLoggedIn &&
                                 <>
                                     <div style={{
                                         display: 'flex',
@@ -146,9 +147,13 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
                                                 </div>
                                             }
                                         </div>
-
                                     </div>
                                     <hr />
+                                </>
+                            }
+                            {
+                                cartState.products.length > 0 &&
+                                <>
                                     <Typography variant="h6" gutterBottom>
                                         Total: {formatCurrency(price + (selectedDeliverer?.fare || 0))}
                                     </Typography>

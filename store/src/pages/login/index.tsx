@@ -17,7 +17,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function LoginWE() {
-    const { handleSubmit, register, errors, isLoading, setValue } = useLoginController()
+    const {
+        handleSubmit,
+        register,
+        errors,
+        isLoading,
+        isValid,
+        isDirty,
+        setValue,
+    } = useLoginController()
 
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -85,7 +93,7 @@ export default function LoginWE() {
                                 {
                                     errors?.token?.message &&
                                     <Typography variant='caption' color='error' gutterBottom>
-                                        {errors?.token?.message}
+                                        Esse campo é obrigatório!
                                     </Typography>
                                 }
                             </div>
@@ -99,7 +107,7 @@ export default function LoginWE() {
                                 fullWidth
                                 type="submit"
                                 style={{ marginTop: '2rem' }}
-                                disabled={isLoading}
+                                disabled={isLoading || (!isValid && !isDirty)}
                             >
                                 {isLoading ? 'Entrando...' : 'Entrar'}
                             </Button>

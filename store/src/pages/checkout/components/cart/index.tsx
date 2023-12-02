@@ -7,6 +7,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Loading from "../../../../components/loading";
 import useStore from "../../../../zustand/store";
 import { formatCurrency } from "../../../../utils/formatCurrency";
+import { routes } from "../../../../config/routes";
+import { useNavigate } from "react-router";
 
 interface CheckoutCartProps {
     handleNext: () => void,
@@ -34,7 +36,7 @@ export default function CheckoutCart(props: CheckoutCartProps) {
                 display: 'flex',
             }}>
                 {
-                    (checkout && addresses && deliverers && selectedAddress)
+                    (checkout && addresses && deliverers)
                         ?
                         <div
                             className="g-1"
@@ -193,13 +195,12 @@ function ResumeWrapper({
     deliverers,
     selectedDeliverer,
     setSelectedDeliverer,
-}: { isLoading: boolean, checkout: Checkout, addresses: Address[], selectedAddress: Address, setSelectedAddress: (address: Address) => void, deliverers: Deliverer[], selectedDeliverer: Deliverer | null, setSelectedDeliverer: (deliverer: Deliverer) => void }) {
+}: { isLoading: boolean, checkout: Checkout, addresses: Address[], selectedAddress: Address | null, setSelectedAddress: (address: Address) => void, deliverers: Deliverer[], selectedDeliverer: Deliverer | null, setSelectedDeliverer: (deliverer: Deliverer) => void }) {
+    const navigate = useNavigate()
 
     function buildAddressLabel(address: Address): string {
         return `${address.street}, ${address.number} - ${address.neighborhood}, ${address.city} - ${address.state}`
     }
-
-    console.log({ checkout });
 
     return (
         <Card sx={{
@@ -208,64 +209,91 @@ function ResumeWrapper({
             padding: '1rem 0.5rem',
         }}>
             <div className="flex-column p-1">
-                <InputLabel id="gender-label">
-                    Endereço de entrega
-                </InputLabel>
-                <Select
-                    value={buildAddressLabel(selectedAddress)}
-                    onChange={(e) => {
-                        setSelectedAddress(addresses.filter((address) => address.id === e.target.value)[0])
-                    }}
-                    sx={{ width: '100%' }}
-                >
-                    {addresses && addresses.map((address) => {
-                        const label = buildAddressLabel(address)
-                        return (
-                            <MenuItem key={address.id} value={label}>
-                                {label}
-                            </MenuItem>
-                        )
-                    })}
-                </Select>
-
                 {
-                    selectedAddress &&
-                    <div style={{
-                        display: 'flex',
-                        width: '100%',
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                        padding: '1rem',
-                    }}>
-                        <Typography variant="subtitle1" component="div">
-                            Escolha o entregador
-                        </Typography>
-                        <RadioGroup
-                            aria-labelledby="deliverer-radio-group"
-                            name="deliverer-radio-buttons-group"
-                            value={selectedDeliverer?.id}
-                            onChange={(e) => {
-                                setSelectedDeliverer(deliverers.filter((deliverer) => deliverer.id === e.target.value)[0])
-                            }}
-                        >
-                            {
-                                deliverers.map((deliverer, i) => {
+                    (addresses.length > 0 && selectedAddress) ?
+                        <div>
+                            <InputLabel id="gender-label">
+                                Endereço de entrega
+                            </InputLabel>
+                            <Select
+                                value={buildAddressLabel(selectedAddress)}
+                                onChange={(e) => {
+                                    setSelectedAddress(addresses.filter((address) => address.id === e.target.value)[0])
+                                }}
+                                sx={{ width: '100%' }}
+                            >
+                                {addresses && addresses.map((address) => {
+                                    const label = buildAddressLabel(address)
                                     return (
-                                        <FormControlLabel
-                                            key={deliverer.id}
-                                            value={deliverer.id}
-                                            control={<Radio />}
-                                            label={
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {deliverer.name} - R$ {Number(deliverer.fare).toFixed(2)}
-                                                </Typography>
-                                            }
-                                        />
+                                        <MenuItem key={address.id} value={label}>
+                                            {label}
+                                        </MenuItem>
                                     )
-                                })
+                                })}
+                            </Select>
+
+                            {
+                                selectedAddress &&
+                                <div style={{
+                                    display: 'flex',
+                                    width: '100%',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-start',
+                                    padding: '1rem',
+                                }}>
+                                    <Typography variant="subtitle1" component="div">
+                                        Escolha o entregador
+                                    </Typography>
+                                    <RadioGroup
+                                        aria-labelledby="deliverer-radio-group"
+                                        name="deliverer-radio-buttons-group"
+                                        value={selectedDeliverer?.id}
+                                        onChange={(e) => {
+                                            setSelectedDeliverer(deliverers.filter((deliverer) => deliverer.id === e.target.value)[0])
+                                        }}
+                                    >
+                                        {
+                                            deliverers.map((deliverer, i) => {
+                                                return (
+                                                    <FormControlLabel
+                                                        key={deliverer.id}
+                                                        value={deliverer.id}
+                                                        control={<Radio />}
+                                                        label={
+                                                            <Typography variant="body2" color="text.secondary">
+                                                                {deliverer.name} - R$ {Number(deliverer.fare).toFixed(2)}
+                                                            </Typography>
+                                                        }
+                                                    />
+                                                )
+                                            })
+                                        }
+                                    </RadioGroup>
+                                </div>
                             }
-                        </RadioGroup>
-                    </div>
+                        </div>
+
+                        : <div className="flex-column p-5">
+                            <Typography variant="subtitle1" component="div">
+                                Você não possui nenhum endereço de entrega cadastrado...
+                            </Typography>
+                            <Button
+                                variant='contained'
+                                color='success'
+                                style={{
+                                    marginTop: '1rem',
+                                }}
+                                onClick={() => {
+                                    navigate(routes.ACCOUNT_ADDRESS_NEW_ADDRESS, {
+                                        state: {
+                                            redirect: routes.CHECKOUT,
+                                        }
+                                    })
+                                }}
+                            >
+                                Cadastrar agora
+                            </Button>
+                        </div>
                 }
 
                 <div className="flex-row">

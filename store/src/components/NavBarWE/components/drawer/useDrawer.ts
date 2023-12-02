@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 
 export default function useDrawer() {
     const {
-        authApi,
+        authApi: {
+            isLoggedIn,
+        },
         cartApi,
         delivererApi,
     } = useStore()
@@ -21,7 +23,7 @@ export default function useDrawer() {
     const navigate = useNavigate()
 
     function handleGoToCheckout() {
-        if (!authApi.isLoggedIn) {
+        if (!isLoggedIn) {
             navigate(routes.LOGIN)
             return
         }
@@ -38,6 +40,7 @@ export default function useDrawer() {
     const [selectedDeliverer, setSelectedDeliverer] = useState<Deliverer | null>(null)
 
     return {
+        isLoggedIn,
         cartState,
         getCart,
         addProduct,
