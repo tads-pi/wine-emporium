@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import useStore from "../../../../zustand/store";
 import { routes } from "../../../../config/routes";
+import { Deliverer } from "../../../../zustand/types";
+import { useEffect, useState } from "react";
 
 export default function useDrawer() {
     const {
         authApi,
         cartApi,
+        delivererApi,
     } = useStore()
 
     const {
@@ -25,6 +28,14 @@ export default function useDrawer() {
         navigate(routes.CHECKOUT)
     }
 
+    // Deliverers
+    const [deliverers, setDeliverers] = useState<Deliverer[]>([])
+    useEffect(() => {
+        delivererApi.listDeliverers().then(setDeliverers)
+    }, [delivererApi])
+
+    const [zipCode, setZipCode] = useState<string>('')
+    const [selectedDeliverer, setSelectedDeliverer] = useState<Deliverer | null>(null)
 
     return {
         cartState,
@@ -32,6 +43,11 @@ export default function useDrawer() {
         addProduct,
         removeProduct,
         navigate,
-        handleGoToCheckout
+        handleGoToCheckout,
+        deliverers,
+        zipCode,
+        setZipCode,
+        selectedDeliverer,
+        setSelectedDeliverer,
     }
 };
