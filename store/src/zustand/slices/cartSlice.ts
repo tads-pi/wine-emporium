@@ -30,6 +30,22 @@ const createCartSlice: StateCreator<
                 const { data } = await httpClient.get<Cart>('/client/cart');
                 const { data: price } = await httpClient.get<number>('/client/cart/price');
 
+                const anonUserCart = localStorage.getItem('anon-user-cart')
+                if (anonUserCart) {
+                    localStorage.removeItem('anon-user-cart')
+
+                    if (data.products.length <= 0) {
+                        const anonUserCartParsed: Cart = JSON.parse(anonUserCart)
+                        for (const product of anonUserCartParsed.products) {
+                            for (let i = 0; i < product.amount; i++) {
+                                await slices().cartApi.addProduct(product.id)
+                            }
+                        }
+
+                        return slices().cartApi.getCart()
+                    }
+                }
+
                 slices().cartApi.cartState = {
                     ...data,
                     price: price,
@@ -43,6 +59,9 @@ const createCartSlice: StateCreator<
             slices().cartApi.cartState.products.map(p => price += p.price * p.amount)
             slices().cartApi.cartState.price = Number(Number(price).toFixed(2))
             slices().cartApi.cartState.id = '1'
+
+            localStorage.setItem('anon-user-cart', JSON.stringify(slices().cartApi.cartState))
+
             return slices().cartApi.cartState
         },
         addProduct: async (productId: string): Promise<void> => {

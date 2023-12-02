@@ -183,7 +183,7 @@ function ProductsWrapper({ children }: { children: React.ReactNode }) {
             display: 'flex',
             justifyContent: 'flex-start',
             flexDirection: 'column',
-            height: '75%',
+            height: '60%',
             overflow: 'scroll',
         }}>
             {children}
@@ -199,7 +199,7 @@ function BottomWrapper({ children }: { children: React.ReactNode }) {
                 display: 'flex',
                 justifyContent: 'flex-end',
                 flexDirection: 'column',
-                height: '25%',
+                height: '40%',
             }}
         >
             {children}
