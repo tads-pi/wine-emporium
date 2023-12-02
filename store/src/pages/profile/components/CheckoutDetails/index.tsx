@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import Loading from "../../../../components/loading";
 import 'dayjs/locale/pt-br';
 import { Checkout } from "../../../../zustand/types";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 dayjs.locale('pt-br');
 
 export default function ProfileWECheckoutDetails() {
@@ -228,7 +229,7 @@ function ResumeReceipt({ checkout }: { checkout: Checkout }) {
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
                             }}>
-                                R$ {product.price}
+                                {formatCurrency(product.price)}
                             </p>
                             <p style={{
                                 fontSize: '12px',
@@ -238,7 +239,7 @@ function ResumeReceipt({ checkout }: { checkout: Checkout }) {
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
                             }}>
-                                R$ {product.price * product.amount}
+                                {formatCurrency(product.price * product.amount)}
                             </p>
                         </div>
                     </div>
@@ -266,7 +267,7 @@ function ResumeReceipt({ checkout }: { checkout: Checkout }) {
                     margin: 0,
                     color: '#333',
                 }}>
-                    R$ {checkout.deliverer.fare}
+                    {formatCurrency(checkout.deliverer.fare)}
                 </p>
             </div>
             <div style={{

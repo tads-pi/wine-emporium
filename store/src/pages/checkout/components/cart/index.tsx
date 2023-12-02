@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Loading from "../../../../components/loading";
 import useStore from "../../../../zustand/store";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 interface CheckoutCartProps {
     handleNext: () => void,
@@ -144,7 +145,7 @@ function ProductWrapper({ product, addProduct, removeProduct }: { product: CartP
                                     {product.name}
                                 </Typography>
                                 <Typography component="div" variant="subtitle2">
-                                    R$ {product.price}
+                                    {formatCurrency(product.price)}
                                 </Typography>
                             </CardContent>
                             <div style={{
@@ -172,7 +173,7 @@ function ProductWrapper({ product, addProduct, removeProduct }: { product: CartP
                                     padding: '0.5rem',
                                 }}>
                                     <Typography component="div" variant="subtitle2">
-                                        R${Number(product.price * product.amount).toFixed(2)}
+                                        {formatCurrency(product.price * product.amount)}
                                     </Typography>
                                 </div>
                             </div>
@@ -198,7 +199,7 @@ function ResumeWrapper({
         return `${address.street}, ${address.number} - ${address.neighborhood}, ${address.city} - ${address.state}`
     }
 
-    console.log({checkout});
+    console.log({ checkout });
 
     return (
         <Card sx={{
@@ -272,7 +273,7 @@ function ResumeWrapper({
                         Produtos ({checkout.cart.products.length})
                     </Typography>
                     <Typography variant="subtitle2" component="div">
-                        R$ {Number(checkout.cart.price).toFixed(2)}
+                        {formatCurrency(checkout.cart.price)}
                     </Typography>
                 </div>
 
@@ -293,7 +294,7 @@ function ResumeWrapper({
                         Total
                     </Typography>
                     <Typography variant="h6" component="div">
-                        R$ {Number(checkout.cart.price + (selectedDeliverer?.fare || 0)).toFixed(2)}
+                        {formatCurrency(checkout.cart.price + (selectedDeliverer?.fare || 0))}
                     </Typography>
                 </div>
             </div>
