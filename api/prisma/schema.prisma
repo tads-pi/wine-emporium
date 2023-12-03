@@ -290,10 +290,11 @@ model CartItems {
 }
 
 model Checkout {
-  id        String    @id @default(uuid())
-  deleteAt  DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         String    @id @default(uuid())
+  deleteAt   DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  finishedAt DateTime?
 
   sequentialId      Int
   payedAt           DateTime?
