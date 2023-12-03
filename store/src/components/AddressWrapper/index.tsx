@@ -25,7 +25,7 @@ export default function AddressWrapper(props: AddressWrapperProps) {
         zip,
         complement,
         marked,
-        type,
+        type = "SHIPPING",
     } = props.address;
 
     return (

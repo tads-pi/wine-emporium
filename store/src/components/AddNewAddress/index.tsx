@@ -3,6 +3,7 @@ import { NewAddress } from "../../zustand/types"
 import useAddNewAddress from "./hooks"
 import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import Required from "../Required"
+import { Controller } from "react-hook-form"
 
 const types = [
     {
@@ -34,6 +35,7 @@ export default function AddNewAddress(props: AddNewAddressProps) {
         setValue,
         handleZipCodeChange,
         haveZip,
+        control
     } = useAddNewAddress({ onSubmit: props.onSubmit, type: props.type })
 
     return (
@@ -195,6 +197,27 @@ export default function AddNewAddress(props: AddNewAddressProps) {
                             }
                         }}
                     />
+                </div>
+
+                <div>
+                <Controller
+                    name="type"
+                    control={control}
+                    render={({ field }) => (
+                    <>
+                        <InputLabel id="complement-label">Selecione o endereço</InputLabel>
+                        <Select
+                            {...field}
+                            fullWidth
+                            size="small"
+                        >
+                            <MenuItem value='BILLING'>Faturamento</MenuItem>
+                            <MenuItem value='SHIPPING'>Envio</MenuItem>
+                        </Select>
+                    </>
+
+                    )}
+                />
                 </div>
 
                 {

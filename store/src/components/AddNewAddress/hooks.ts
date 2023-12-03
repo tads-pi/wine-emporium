@@ -26,6 +26,7 @@ export default function useAddNewAddress(props: useAddNewAddress) {
         register,
         setValue,
         formState: { errors, isValid, isDirty },
+        control
     } = useForm<FormData>();
 
     const { addressApi } = useStore()
@@ -41,7 +42,8 @@ export default function useAddNewAddress(props: useAddNewAddress) {
             number: data.number,
             zip: data.zip,
             complement: data.complement,
-            type: props.type ? props.type : data.type ,
+            // type: props.type ? props.type : data.type ,
+            type: data.type
         });
     }
 
@@ -84,5 +86,6 @@ export default function useAddNewAddress(props: useAddNewAddress) {
         setValue,
         handleZipCodeChange,
         haveZip,
+        control
     }
 };
