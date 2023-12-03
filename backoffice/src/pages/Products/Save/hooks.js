@@ -76,13 +76,8 @@ export default function useSaveProduct(props) {
     }
 
     function setImageData(e) {
-        console.log("setInageData e: ", e);
         setImage([...e])
     }
-
-    useEffect(() => {
-        console.log("imageData: ", imageData);
-    }, [imageData])
 
     function deleteImage(imageID) {
         // delete image from server
