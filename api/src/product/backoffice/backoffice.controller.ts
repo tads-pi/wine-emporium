@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { BackofficeService } from './backoffice.service';
 import { JwtGuard } from '../../auth/guard';
-import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
+import { SaveProductDTO, UpdateProductDTO, UpdateProductStockDTO } from '../dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ProductBackofficeViewmodel } from '../viewmodels';
 import { BackofficeAdminGuard, BackofficeGuard } from '../../auth/guard/backoffice.guard';
@@ -47,7 +47,7 @@ export class BackofficeController {
     @UseGuards(JwtGuard, BackofficeAdminGuard)
     async updateProduct(
         @Param('id') id: string,
-        @Body() dto: SaveProductDTO,
+        @Body() dto: UpdateProductDTO,
     ): Promise<ProductBackofficeViewmodel> {
         return this.svc.updateProduct(id, dto);
     }
