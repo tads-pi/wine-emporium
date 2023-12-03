@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import useStore from "../../zustand/store";
 import { useSnackbar } from "notistack";
@@ -6,7 +6,7 @@ import { NewAddress } from "../../zustand/types";
 
 interface useAddNewAddress {
     onSubmit: (address: NewAddress) => void;
-    type: 'BILLING' | 'SHIPPING' | undefined;
+    type: 'BILLING' | 'SHIPPING' | null | undefined;
 }
 
 interface FormData {
@@ -41,7 +41,7 @@ export default function useAddNewAddress(props: useAddNewAddress) {
             number: data.number,
             zip: data.zip,
             complement: data.complement,
-            type: props.type ? props.type : data.type || 'BILLING',
+            type: props.type ? props.type : data.type ,
         });
     }
 
@@ -67,6 +67,12 @@ export default function useAddNewAddress(props: useAddNewAddress) {
                 })
         }
     }
+
+    useEffect(() =>{
+        if(props.type){
+            setValue('type', props.type)
+        }
+    }, [props.type])
 
     return {
         isValid,

@@ -16,8 +16,8 @@ export default function SettingsWE() {
         <Link to={routes.ACCOUNT_DATA} style={{ textDecoration: 'none' }}>
           <span style={{ color: 'black' }}>Perfil</span>
         </Link>
-        <span style={{ color: 'black' }}>Conta</span>
-        <span style={{ color: 'black' }}>Dashboard</span>
+        {/* <span style={{ color: 'black' }}>Conta</span> */}
+        {/* <span style={{ color: 'black' }}>Dashboard</span> */}
         <Link to="/" style={{ textDecoration: 'none' }} onClick={signOut} >
           <span style={{ color: 'black' }}>Sair</span>
         </Link>

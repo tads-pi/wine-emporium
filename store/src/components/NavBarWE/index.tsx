@@ -20,6 +20,7 @@ export function NavBarWE(props: NavBarWEProps) {
     handleOpenUserMenu,
     handleCloseUserMenu,
     hideOrShowDrawer,
+    showDrawer,
     anchorElUser,
     numItems,
     drawerOpen,
@@ -81,7 +82,7 @@ export function NavBarWE(props: NavBarWEProps) {
               </>
           }
 
-          <IconButton style={{ color: 'black', marginLeft: '10px' }} aria-label="cart" onClick={hideOrShowDrawer}>
+          <IconButton style={{ color: 'black', marginLeft: '10px' }} aria-label="cart" onClick={showDrawer}>
             <StyledBadge badgeContent={numItems} color="secondary">
               <ShoppingCartIcon />
             </StyledBadge>

@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Loading from "../../../../components/loading";
 import useStore from "../../../../zustand/store";
+import ArrowBackIos from "@mui/icons-material/ArrowBackIos";
 
 interface CheckoutCartProps {
     handleNext: () => void,
@@ -29,6 +30,22 @@ export default function CheckoutCart(props: CheckoutCartProps) {
 
     return (
         <form onSubmit={onSubmit}>
+            
+            <div>
+                <Button
+                    variant="outlined"
+                    color="inherit"
+                    size='small'
+                    onClick={() => props.goHome()}
+                    style={{
+                        margin: '1rem 0',
+                    }}
+                    startIcon={<ArrowBackIos fontSize="small" />}
+                >
+                    Voltar
+                </Button>
+            </div>
+
             <div style={{
                 display: 'flex',
             }}>
@@ -162,7 +179,7 @@ function ProductWrapper({ product, addProduct, removeProduct }: { product: CartP
                                         <RemoveIcon />
                                     </IconButton>
                                     <Typography sx={{ minWidth: 20, textAlign: 'center' }}>
-                                        x{amount}
+                                        {amount}
                                     </Typography>
                                     <IconButton aria-label="add" onClick={() => addToCart()}>
                                         <AddIcon />
@@ -211,16 +228,16 @@ function ResumeWrapper({
                     Endereço de entrega
                 </InputLabel>
                 <Select
-                    value={buildAddressLabel(selectedAddress)}
+                    value={selectedAddress.id}
                     onChange={(e) => {
                         setSelectedAddress(addresses.filter((address) => address.id === e.target.value)[0])
                     }}
                     sx={{ width: '100%' }}
                 >
-                    {addresses && addresses.map((address) => {
+                    {addresses && addresses.map((address, i) => {
                         const label = buildAddressLabel(address)
                         return (
-                            <MenuItem key={address.id} value={label}>
+                            <MenuItem key={i} value={address.id}>
                                 {label}
                             </MenuItem>
                         )

@@ -71,8 +71,9 @@ export default function useCheckoutCart(props: CheckoutCartProps) {
     const [addresses, setAddresses] = useState<Address[]>([])
     useEffect(() => {
         addressApi.findAll().then((a) => {
-            setAddresses(a)
-            setSelectedAddress(a[0])
+            const address = a.filter((address) => address.type === 'SHIPPING')
+            setAddresses(address)
+            setSelectedAddress(address[0])
         })
     }, [addressApi])
 

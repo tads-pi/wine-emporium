@@ -84,7 +84,7 @@ export default function useCheckout() {
     }
 
     function goHome() {
-        navigate(routes.LOGIN)
+        navigate(routes.STORE)
     }
 
     return {
