@@ -67,10 +67,6 @@ export default function StoreProductWE() {
                                 {/* <p className="recursos-premium-verMais">Recursos Premium</p> */}
                                 <p className="description-verMais">{currentProduct?.description}</p>
                                 <Rating name="half-rating-read" defaultValue={currentProduct?.ratings} precision={0.5} readOnly />
-                                <div>
-                                    <img src="" alt="" />
-                                    <p className="entrega-imediata-verMais">entega imediata</p>
-                                </div>
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "40px" }}>
                                     <button className="adiconar-sacola-verMais" onClick={(handleClickVariant("success", currentProduct))}>Adicionar à sacola</button>
                                 </div>

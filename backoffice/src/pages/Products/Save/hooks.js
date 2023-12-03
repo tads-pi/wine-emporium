@@ -66,6 +66,13 @@ export default function useSaveProduct(props) {
     function onFormUpdate(field, value) {
         if (field === "image") {
             setImageData(value)
+
+            setForm({
+                ...formData,
+                images: value,
+            })
+
+            console.log(formData);
             return
         }
 
