@@ -3,6 +3,7 @@ import { NewAddress } from "../../zustand/types"
 import useAddNewAddress from "./hooks"
 import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import Required from "../Required"
+import { useLocation } from "react-router-dom"
 
 const types = [
     {
@@ -24,6 +25,9 @@ interface AddNewAddressProps {
 }
 
 export default function AddNewAddress(props: AddNewAddressProps) {
+    const { state } = useLocation()
+    const { redirect } = state || {}
+
     const {
         isValid,
         isDirty,
@@ -34,7 +38,11 @@ export default function AddNewAddress(props: AddNewAddressProps) {
         setValue,
         handleZipCodeChange,
         haveZip,
-    } = useAddNewAddress({ onSubmit: props.onSubmit, type: props.type })
+    } = useAddNewAddress({
+        onSubmit: props.onSubmit,
+        type: props.type,
+        redirect: redirect,
+    })
 
     return (
         <div
@@ -196,35 +204,6 @@ export default function AddNewAddress(props: AddNewAddressProps) {
                         }}
                     />
                 </div>
-
-                {
-                    props.title !== undefined &&
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                    }}>
-                        <InputLabel id="type-label">
-                            Tipo<Required />
-                        </InputLabel>
-                        <Select
-                            size='small'
-                            defaultValue={types[0].id}
-                            error={!!errors.type}
-                            onChange={(e) => {
-                                const type = e.target.value as string
-                                setValue('type', type)
-                            }}
-                            sx={{ width: '100%' }}
-                        >
-                            {types && types.map(({ label, id }, i) => (
-                                <MenuItem key={i} value={id}>
-                                    {label}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </div>
-                }
 
                 <div style={{
                     display: 'flex',

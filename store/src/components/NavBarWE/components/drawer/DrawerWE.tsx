@@ -7,7 +7,7 @@ import { CartProductCard } from "../../../CartProductCard"
 import useDrawer from "./useDrawer"
 import "./drawerWE.css"
 import Loading from "../../../loading"
-import { Box } from "@mui/material"
+import { Box, FormControlLabel, InputLabel, Radio, RadioGroup, TextField } from "@mui/material"
 
 type DrawerWEProps = {
     drawerOpen: boolean,
@@ -16,16 +16,22 @@ type DrawerWEProps = {
 
 export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps) {
     const {
+        isLoggedIn,
         cartState,
         getCart,
         addProduct,
         removeProduct,
-        handleGoToCheckout
+        handleGoToCheckout,
+        deliverers,
+        zipCode,
+        setZipCode,
+        selectedDeliverer,
+        setSelectedDeliverer,
     } = useDrawer()
 
     const price = useMemo(() => {
         return cartState?.price
-    }, [cartState])
+    }, [cartState.price])
 
     useEffect(() => {
         getCart()
@@ -82,10 +88,74 @@ export default function DrawerWE({ drawerOpen, hideOrShowDrawer }: DrawerWEProps
 
                         <BottomWrapper>
                             {
+                                cartState.products.length > 0 && !isLoggedIn &&
+                                <>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        flexDirection: 'column',
+                                        backgroundColor: 'white',
+                                        paddingBottom: '0.5rem',
+                                        zIndex: 1,
+
+                                        border: '1px solid lightgray',
+                                        borderRadius: '0.5rem',
+                                    }}>
+                                        <Typography variant="subtitle1" gutterBottom>
+                                            Simular frete
+                                        </Typography>
+                                        <div>
+                                            <InputLabel id="zip-label">Informe o seu CEP</InputLabel>
+                                            <TextField
+                                                variant="outlined"
+                                                size="small"
+                                                fullWidth
+                                                onChange={(e) => setZipCode(e.target.value)}
+                                                inputProps={{
+                                                    maxLength: 8,
+                                                }}
+                                            />
+                                            {
+                                                zipCode && zipCode.length === 8 &&
+                                                <div>
+                                                    <RadioGroup
+                                                        aria-labelledby="deliverer-radio-group"
+                                                        name="deliverer-radio-buttons-group"
+                                                        value={selectedDeliverer?.id}
+                                                        onChange={(e) => {
+                                                            setSelectedDeliverer(deliverers.filter((deliverer) => deliverer.id === e.target.value)[0])
+                                                        }}
+                                                    >
+                                                        {
+                                                            deliverers.map((deliverer) => {
+                                                                return (
+                                                                    <FormControlLabel
+                                                                        key={deliverer.id}
+                                                                        value={deliverer.id}
+                                                                        control={<Radio />}
+                                                                        label={
+                                                                            <Typography variant="body2" color="text.secondary">
+                                                                                {deliverer.name} - R$ {Number(deliverer.fare).toFixed(2)}
+                                                                            </Typography>
+                                                                        }
+                                                                    />
+                                                                )
+                                                            })
+                                                        }
+                                                    </RadioGroup>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </>
+                            }
+                            {
                                 cartState.products.length > 0 &&
                                 <>
                                     <Typography variant="h6" gutterBottom>
-                                        Total: {formatCurrency(price)}
+                                        Total: {formatCurrency(price + (selectedDeliverer?.fare || 0))}
                                     </Typography>
                                     <GoToCheckoutButton
                                         handleGoToCheckout={handleGoToCheckout}
@@ -118,7 +188,7 @@ function ProductsWrapper({ children }: { children: React.ReactNode }) {
             display: 'flex',
             justifyContent: 'flex-start',
             flexDirection: 'column',
-            height: '75%',
+            height: '60%',
             overflow: 'scroll',
         }}>
             {children}
@@ -134,7 +204,7 @@ function BottomWrapper({ children }: { children: React.ReactNode }) {
                 display: 'flex',
                 justifyContent: 'flex-end',
                 flexDirection: 'column',
-                height: '25%',
+                height: '40%',
             }}
         >
             {children}

@@ -114,6 +114,8 @@ export class CheckoutService {
             payment: payment ? paymentViewmodel : null,
             price: Number(price),
             payedAt: c.payedAt?.toISOString() || null,
+            createdAt: c.createdAt.toISOString(),
+            finishedAt: c.finishedAt?.toISOString() || null,
         }
 
         return viewmodel
@@ -293,7 +295,10 @@ export class CheckoutService {
 
         checkout = await this.db.checkout.update({
             where: { id: checkout.id },
-            data: { status: "AGUARDANDO_PAGAMENTO" }
+            data: {
+                status: "AGUARDANDO_PAGAMENTO",
+                finishedAt: new Date(),
+            }
         })
 
         await this.db.cart.update({

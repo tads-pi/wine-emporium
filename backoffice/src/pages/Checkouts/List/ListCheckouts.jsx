@@ -1,7 +1,7 @@
 import React from "react";
 import TableWE from "../../../components/table/TableWE.jsx"
-import Slider from "@mui/material/Slider";
 import useListCheckouts from "./hooks.js"
+import dayjs from "dayjs"
 import "./style.css"
 
 export default function ListCheckouts() {
@@ -15,6 +15,7 @@ export default function ListCheckouts() {
         return {
             ...c,
             fake_id: `#${c?.sequentialId}`,
+            finishedAt: c?.finishedAt ? dayjs(c?.finishedAt).format("DD/MM/YYYY HH:mm") : "",
         }
     })
 
@@ -22,11 +23,13 @@ export default function ListCheckouts() {
         "fake_id",
         "status",
         "price",
+        "finishedAt",
     ]
     const columnsTitle = [
         "ID",
         "Status",
-        "Total (R$)"
+        "Total (R$)",
+        "Data Pedido",
     ]
 
     return (

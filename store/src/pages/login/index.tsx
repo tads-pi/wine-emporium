@@ -6,6 +6,7 @@ import { Grid, Paper, TextField, Button, Typography, IconButton, InputAdornment 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { routes } from "../../config/routes";
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,7 +17,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function LoginWE() {
-    const { handleSubmit, register, errors, isLoading } = useLoginController()
+    const {
+        handleSubmit,
+        register,
+        errors,
+        isLoading,
+        isValid,
+        isDirty,
+        setValue,
+    } = useLoginController()
 
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -68,6 +77,27 @@ export default function LoginWE() {
                                 helperText={errors?.password?.message}
                                 error={!!errors.password}
                             />
+
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'column',
+                                marginTop: '1rem'
+                            }}>
+                                <ReCAPTCHA
+                                    hl="pt-BR"
+                                    sitekey={import.meta.env.VITE_WE_CAPTCHA_KEY}
+                                    onChange={(token: string | null) => token && setValue('token', token)}
+                                />
+                                {
+                                    errors?.token?.message &&
+                                    <Typography variant='caption' color='error' gutterBottom>
+                                        Esse campo é obrigatório!
+                                    </Typography>
+                                }
+                            </div>
+
                             <div>
                                 Não tem uma conta? <span><Link to={routes.REGISTER}>Criar cadastro</Link></span>
                             </div>
@@ -77,7 +107,7 @@ export default function LoginWE() {
                                 fullWidth
                                 type="submit"
                                 style={{ marginTop: '2rem' }}
-                                disabled={isLoading}
+                                disabled={isLoading || (!isValid && !isDirty)}
                             >
                                 {isLoading ? 'Entrando...' : 'Entrar'}
                             </Button>

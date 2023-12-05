@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ProductBackofficeViewmodel } from '../viewmodels';
-import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
+import { SaveProductDTO, UpdateProductDTO, UpdateProductStockDTO } from '../dto';
 import { S3Service } from '../../aws/s3/s3.service';
 import { ProductImageViewmodel } from '../image/viewmodel/product-image.viewmodel';
 
@@ -50,8 +50,7 @@ export class BackofficeService {
             skip: Number((page - 1) * limit),
             take: Number(limit),
             orderBy: {
-                // TODO opção de sorting de user
-                id: 'desc',
+                createdAt: 'asc',
             },
             where: whereClause
         });
@@ -166,13 +165,11 @@ export class BackofficeService {
         return viewmodel
     }
 
-    async updateProduct(id: string, dto: SaveProductDTO): Promise<ProductBackofficeViewmodel> {
+    async updateProduct(id: string, dto: UpdateProductDTO): Promise<ProductBackofficeViewmodel> {
         if (!await this.checkProductExists(id)) {
             throw new NotFoundException('Product not found');
         }
 
-        // TODO check permissions before update
-        // TODO make new guard for this
         await this.db.product.update({
             where: {
                 id: id,
@@ -185,19 +182,22 @@ export class BackofficeService {
             },
         });
 
+        await this.db.productStock.update({
+            where: { id: dto.stock.id },
+            data: { total: dto.stock.total },
+        })
+
         return await this.getProductById(id);
     }
 
     async updateProductStock(id: string, dto: UpdateProductStockDTO): Promise<ProductBackofficeViewmodel> {
-        // TODO check permissions before update
-        // TODO make new guard for this
         if (!await this.checkProductExists(id)) {
             throw new NotFoundException('Product not found');
         }
 
         await this.db.productStock.update({
             where: {
-                id: dto.stock_id,
+                id: dto.id,
                 productId: id,
             },
             data: {
