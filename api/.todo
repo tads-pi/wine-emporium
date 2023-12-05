@@ -1,11 +1,1 @@
-- finalizar testes de controllers e services
-    - admin
-    - auth
-    - client
-        - address
-    - payment
-        - bank-slip
-        - credit-card
-    - product
-        - backoffice
-        - client
+adicionar validação real do captcha (o front não ta mandando info pro back atualmente)

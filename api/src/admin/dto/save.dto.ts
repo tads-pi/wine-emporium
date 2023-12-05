@@ -44,7 +44,7 @@ export class SaveBackofficeClientDTO {
         minLength: 1,
         maxLength: 64,
     })
-    groupId: string;
+    group: string;
 
     @IsString()
     @IsNotEmpty()

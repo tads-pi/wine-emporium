@@ -75,7 +75,7 @@ function NoCheckouts({ goHome }: { goHome: () => void }) {
                 justifyContent: 'center',
                 alignItems: 'center',
             }}>
-                <img src="/credit-card-not-found.png" width={200} />
+                <img src="/9212305.jpg" width={200} />
                 <p style={{
                     textAlign: 'center',
                     fontSize: '1rem',

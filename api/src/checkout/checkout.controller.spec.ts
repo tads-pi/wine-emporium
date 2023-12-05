@@ -60,6 +60,7 @@ describe('CheckoutController', () => {
       cartId: MOCK_CART_01.id,
       status: 'ENDERECO_PENDENTE',
       payedAt: null,
+      finishedAt: null,
     }
 
     const MOCK_CHECKOUT_02: Checkout = {
@@ -74,6 +75,7 @@ describe('CheckoutController', () => {
       cartId: MOCK_CART_02.id,
       status: 'ENTREGUE',
       payedAt: new Date(),
+      finishedAt: new Date(),
     }
 
     it('deve retornar a lista de checkouts do cliente', async () => {
@@ -166,6 +168,7 @@ describe('CheckoutController', () => {
 
       db.checkout.update = jest.fn().mockImplementation((args) => {
         CHECKOUT.status = args.data.status
+        CHECKOUT.finishedAt = args.data.finishedAt
         return CHECKOUT
       })
       db.cart.update = jest.fn().mockImplementation((args) => {
@@ -181,6 +184,7 @@ describe('CheckoutController', () => {
 
       expect(c.id).toBe(CHECKOUT.id)
       expect(c.status).toBe('AGUARDANDO_PAGAMENTO')
+      expect(c.finishedAt).toBeDefined()
     })
 
     it('deve retornar um checkout pelo ID', async () => {

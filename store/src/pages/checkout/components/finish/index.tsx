@@ -8,6 +8,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import HomeIcon from '@mui/icons-material/Home';
+import { formatCurrency } from "../../../../utils/formatCurrency"
 
 interface CheckoutFinishProps {
     handleNext: () => void,
@@ -248,7 +249,7 @@ function ProductWrapper({ product, isLoading }: { product: CartProduct, isLoadin
                                     </Typography>
                                 </div>
                                 <Typography component="div" variant="subtitle1">
-                                    R${Number(product.price * product.amount).toFixed(2)}
+                                    {formatCurrency(product.price * product.amount)}
                                 </Typography>
                             </CardContent>
                         </Box>

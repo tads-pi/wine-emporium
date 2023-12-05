@@ -13,12 +13,11 @@ export default function useSaveProduct(props) {
     const [formData, setForm] = useState()
     const [imageData, setImage] = useState([])
 
-    console.log({ formData });
     function onSubmit(action) {
         if (action.preventDefault) action.preventDefault()
 
         if (action === "update") {
-            dispatch(api.updateProduct({
+            const newProduct = {
                 id: formData?.id || 0,
                 name: formData?.name || "",
                 ratings: formData?.ratings || 0,
@@ -29,7 +28,9 @@ export default function useSaveProduct(props) {
                     id: formData?.stock[0].id || '',
                     total: Number(formData?.new_stock) || 0,
                 }
-            }))
+            }
+
+            dispatch(api.updateProduct(newProduct))
 
             imageData &&
                 imageData.map(({ data_url }) => {
@@ -65,6 +66,13 @@ export default function useSaveProduct(props) {
     function onFormUpdate(field, value) {
         if (field === "image") {
             setImageData(value)
+
+            setForm({
+                ...formData,
+                images: value,
+            })
+
+            console.log(formData);
             return
         }
 
@@ -75,7 +83,7 @@ export default function useSaveProduct(props) {
     }
 
     function setImageData(e) {
-        setImage([...imageData, e[0]])
+        setImage([...e])
     }
 
     function deleteImage(imageID) {

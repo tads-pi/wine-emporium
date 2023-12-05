@@ -19,6 +19,7 @@ env:
   S3_BUCKET_NAME: wineemporium-uploads
   JWT_SECRET: aloha
   PRISMA_CLI_BINARY_TARGETS: rhel-openssl-1.0.x
+  CAPTCHA_KEY: ${{ secrets.CAPTCHA_KEY }}
   STAGE: prd
 
 jobs:
