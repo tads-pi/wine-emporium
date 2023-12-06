@@ -319,17 +319,32 @@ function ResumeHeaders({ checkout }: { checkout: Checkout }) {
                 padding: '0.25rem',
                 gap: '0.5rem',
             }}>
-                <p style={{
+                <span style={{
                     fontSize: '12px',
                     margin: 0,
                     color: 'gray',
-                }}>{(() => {
-                    if (!checkout.payedAt) {
-                        return 'Aguardando pagamento'
-                    }
-                    const payedAt = dayjs(checkout.payedAt).format('DD MMMM')
-                    return payedAt.split(' ').join(' de ')
-                })()}</p>
+                }}>
+                    {(() => {
+                        switch (checkout.status) {
+                            case 'AGUARDANDO_PAGAMENTO':
+                                return 'Aguardando pagamento';
+                            case 'PAGAMENTO_COM_SUCESSO':
+                                return 'Pagamento com sucesso';
+                            case 'PAGAMENTO_REJEITADO':
+                                return 'Pagamento rejeitado';
+                            case 'AGUARDANDO_RETIRADA':
+                                return 'Aguardando retirada'
+                            case 'EM_TRANSITO':
+                                return 'Em trânsito'
+                            case 'ENTREGUE':
+                                return 'Entregue'
+                            case 'CANCELADO':
+                                return 'Cancelado'
+                            default:
+                                return checkout.status;
+                        }
+                    })()}
+                </span>
 
                 <div style={{ minHeight: '100%', border: '1px solid gray' }} ></div>
 
