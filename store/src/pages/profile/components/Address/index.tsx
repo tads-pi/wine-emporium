@@ -35,14 +35,17 @@ export default function ProfileWEAddress() {
                             gap: '1rem',
                         }}>
                             {
-                                addresses.map((address) => (
-                                    <AddressWrapper
-                                        key={address.id}
-                                        address={address}
-                                        onDelete={deleteAddress}
-                                        onMark={markAddress}
-                                    />
-                                ))
+                                addresses
+                                    // Organiza os endereços marcados primeiro
+                                    .sort((a, b) => (a.marked === true ? -1 : 1))
+                                    .map((address) => (
+                                        <AddressWrapper
+                                            key={address.id}
+                                            address={address}
+                                            onDelete={deleteAddress}
+                                            onMark={markAddress}
+                                        />
+                                    ))
                             }
 
                             <AddNewAddress

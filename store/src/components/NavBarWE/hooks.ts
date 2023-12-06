@@ -22,10 +22,16 @@ export default function useNavBarWE() {
     };
 
     const hideOrShowDrawer = () => {
-        setDrawerOpen(!drawerOpen);
+        if (drawerOpen) {
+            setDrawerOpen(false);
+        }
     };
 
-    function goHome(){
+    const showDrawer = () => {
+        setDrawerOpen(true);
+    };
+
+    function goHome() {
         navigate(routes.STORE)
     }
 
@@ -33,6 +39,7 @@ export default function useNavBarWE() {
         handleOpenUserMenu,
         handleCloseUserMenu,
         hideOrShowDrawer,
+        showDrawer,
         anchorElUser,
         numItems,
         drawerOpen,

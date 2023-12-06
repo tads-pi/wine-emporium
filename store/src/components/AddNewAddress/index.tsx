@@ -5,17 +5,6 @@ import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import Required from "../Required"
 import { useLocation } from "react-router-dom"
 
-const types = [
-    {
-        label: 'Cobrança',
-        id: 'BILLING',
-    },
-    {
-        label: 'Residência',
-        id: 'SHIPPING',
-    },
-]
-
 interface AddNewAddressProps {
     onSubmit: (data: NewAddress) => void
     title?: string

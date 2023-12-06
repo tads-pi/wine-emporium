@@ -36,7 +36,7 @@ export default function CheckoutCart(props: CheckoutCartProps) {
                 display: 'flex',
             }}>
                 {
-                    (checkout && addresses && deliverers)
+                    (checkout !== null && addresses !== null && deliverers !== null)
                         ?
                         <div
                             className="g-1"
@@ -165,7 +165,7 @@ function ProductWrapper({ product, addProduct, removeProduct }: { product: CartP
                                         <RemoveIcon />
                                     </IconButton>
                                     <Typography sx={{ minWidth: 20, textAlign: 'center' }}>
-                                        x{amount}
+                                        {amount}
                                     </Typography>
                                     <IconButton aria-label="add" onClick={() => addToCart()}>
                                         <AddIcon />

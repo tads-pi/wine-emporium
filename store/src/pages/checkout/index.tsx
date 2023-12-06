@@ -28,7 +28,7 @@ export default function Checkout() {
 
     return (
         <div>
-            <NavBarWE notSticky/>
+            {/* <NavBarWE notSticky/> */}
             <div style={{
                 display: 'flex',
                 justifyContent: 'center',
