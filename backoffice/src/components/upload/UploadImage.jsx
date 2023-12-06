@@ -11,7 +11,7 @@ export default function UploadImage({ onSubmit, imageHook }) {
     const maxNumber = 10;
 
     const onChange = (imageList, addUpdateIndex) => {
-        console.log(addUpdateIndex);
+        console.log({ imageList });
         setImages(imageList);
         if (imageHook) {
             imageHook(imageList)

@@ -65,7 +65,13 @@ export class AdminService {
     }
 
     async saveUser(dto: SaveBackofficeClientDTO): Promise<string> {
-        const g = await this.db.backofficeGroup.findUnique({ where: { id: dto.groupId } })
+        type validGroups = 'ADMINISTRADOR' | 'ESTOQUISTA'
+        const group = dto.group
+        if (!(group === 'ADMINISTRADOR' || group === 'ESTOQUISTA')) {
+            throw new NotFoundException('Grupo não encontrado')
+        }
+
+        const g = await this.db.backofficeGroup.findUnique({ where: { name: dto.group as validGroups } })
         if (!g) {
             throw new NotFoundException('Group not found')
         }
@@ -86,7 +92,7 @@ export class AdminService {
                 password: bcrypt.hashSync(dto.password, 10),
                 group: {
                     connect: {
-                        id: dto.groupId,
+                        name: dto.group as validGroups,
                     }
                 }
             },

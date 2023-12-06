@@ -10,6 +10,7 @@ interface FormData {
     document: string
     birthDate: string
     genderId: string
+    token: string
 }
 
 type usePersonalInfoProps = {
@@ -27,7 +28,8 @@ export default function usePersonalInfo(props: usePersonalInfoProps) {
         formState: { errors, isValid, isDirty },
         setValue,
         setFocus,
-        setError
+        setError,
+        getValues,
     } = useForm<FormData>({ mode: "all" })
 
     const [alreadySubmitted, setAlreadySubmitted] = useState<boolean>(false)
@@ -95,6 +97,7 @@ export default function usePersonalInfo(props: usePersonalInfoProps) {
         setValue,
         errors,
         onSubmit,
-        genders
+        genders,
+        getValues
     }
 };

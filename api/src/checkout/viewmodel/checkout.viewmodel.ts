@@ -54,4 +54,16 @@ export class CheckoutViewmodel {
         example: '2021-10-20T00:00:00.000Z',
     })
     payedAt: string | null
+
+    @ApiProperty({
+        description: 'Data de criação do checkout em ISO 8601',
+        example: '2021-10-20T00:00:00.000Z',
+    })
+    createdAt: string
+
+    @ApiProperty({
+        description: 'Data de atualização do checkout em ISO 8601',
+        example: '2021-10-20T00:00:00.000Z',
+    })
+    finishedAt: string | null
 }

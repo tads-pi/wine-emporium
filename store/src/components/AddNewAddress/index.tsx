@@ -3,6 +3,8 @@ import { NewAddress } from "../../zustand/types"
 import useAddNewAddress from "./hooks"
 import { Button, InputLabel, MenuItem, Select, TextField } from "@mui/material"
 import Required from "../Required"
+import { Controller } from "react-hook-form"
+import { useLocation } from "react-router-dom"
 
 const types = [
     {
@@ -24,6 +26,9 @@ interface AddNewAddressProps {
 }
 
 export default function AddNewAddress(props: AddNewAddressProps) {
+    const { state } = useLocation()
+    const { redirect } = state || {}
+
     const {
         isValid,
         isDirty,
@@ -34,7 +39,9 @@ export default function AddNewAddress(props: AddNewAddressProps) {
         setValue,
         handleZipCodeChange,
         haveZip,
+        control
     } = useAddNewAddress({ onSubmit: props.onSubmit, type: props.type })
+
 
     return (
         <div
@@ -197,6 +204,27 @@ export default function AddNewAddress(props: AddNewAddressProps) {
                     />
                 </div>
 
+                <div>
+                <Controller
+                    name="type"
+                    control={control}
+                    render={({ field }) => (
+                    <>
+                        <InputLabel id="complement-label">Selecione o endereço</InputLabel>
+                        <Select
+                            {...field}
+                            fullWidth
+                            size="small"
+                        >
+                            <MenuItem value='BILLING'>Faturamento</MenuItem>
+                            <MenuItem value='SHIPPING'>Envio</MenuItem>
+                        </Select>
+                    </>
+
+                    )}
+                />
+                </div>
+
                 {
                     props.title !== undefined &&
                     <div style={{
@@ -225,6 +253,7 @@ export default function AddNewAddress(props: AddNewAddressProps) {
                         </Select>
                     </div>
                 }
+
 
                 <div style={{
                     display: 'flex',

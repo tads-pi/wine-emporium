@@ -3,10 +3,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import useStore from "../../zustand/store";
 import { useSnackbar } from "notistack";
 import { NewAddress } from "../../zustand/types";
+import { useNavigate } from "react-router";
+import { routes } from "../../config/routes";
 
 interface useAddNewAddress {
     onSubmit: (address: NewAddress) => void;
-    type: 'BILLING' | 'SHIPPING' | null | undefined;
+    type: 'BILLING' | 'SHIPPING' | undefined | null;
+    redirect: string | undefined | null;
 }
 
 interface FormData {
@@ -26,10 +29,12 @@ export default function useAddNewAddress(props: useAddNewAddress) {
         register,
         setValue,
         formState: { errors, isValid, isDirty },
+        control
     } = useForm<FormData>();
 
     const { addressApi } = useStore()
     const { enqueueSnackbar } = useSnackbar();
+    const navigate = useNavigate()
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
         props.onSubmit({
@@ -41,8 +46,50 @@ export default function useAddNewAddress(props: useAddNewAddress) {
             number: data.number,
             zip: data.zip,
             complement: data.complement,
-            type: props.type ? props.type : data.type ,
+            // type: props.type ? props.type : data.type ,
+            type: data.type
         });
+        if (props.redirect) {
+            const payload: NewAddress = {
+                country: 'Brasil',
+                state: data.state,
+                city: data.city,
+                neighborhood: data.neighborhood,
+                street: data.street,
+                number: data.number,
+                zip: data.zip,
+                complement: data.complement,
+                type: props.type ? props.type : 'SHIPPING',
+            }
+
+            await addressApi.register(payload)
+
+            enqueueSnackbar(
+                'Endereço cadastrado com sucesso!',
+                { variant: 'success' },
+            )
+
+            navigate(props.redirect)
+            return
+        }
+
+        if (props.onSubmit) {
+            props.onSubmit({
+                country: 'Brasil',
+                state: data.state,
+                city: data.city,
+                neighborhood: data.neighborhood,
+                street: data.street,
+                number: data.number,
+                zip: data.zip,
+                complement: data.complement,
+                type: props.type ? props.type : 'SHIPPING',
+            });
+
+            return
+        }
+
+        navigate(routes.ACCOUNT_ADDRESS)
     }
 
     const [haveZip, setHaveZip] = useState(false);
@@ -55,7 +102,6 @@ export default function useAddNewAddress(props: useAddNewAddress) {
                     setValue('neighborhood', address.neighborhood);
                     setValue('street', address.street);
                     setValue('complement', address.complement);
-                    setValue('type', address.type);
 
                     setHaveZip(true);
                 })
@@ -84,5 +130,6 @@ export default function useAddNewAddress(props: useAddNewAddress) {
         setValue,
         handleZipCodeChange,
         haveZip,
+        control
     }
 };

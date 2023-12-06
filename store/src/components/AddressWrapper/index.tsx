@@ -25,7 +25,7 @@ export default function AddressWrapper(props: AddressWrapperProps) {
         zip,
         complement,
         marked,
-        type,
+        type = "SHIPPING",
     } = props.address;
 
     return (
@@ -60,32 +60,35 @@ export default function AddressWrapper(props: AddressWrapperProps) {
                             : <HomeIcon color='disabled' />
                     }
 
-                    <div style={{
-                        width: '25px',
-                        height: '50px',
+                    {
+                        type === 'SHIPPING' &&
+                        <div style={{
+                            width: '25px',
+                            height: '50px',
 
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
 
-                        cursor: 'pointer',
-                    }}>
-                        <Tooltip title={
-                            marked
-                                ? "Principal"
-                                : "Marcar como Principal"
-                        }>
-                            <IconButton
-                                onClick={() => props.onMark(props.address)}
-                            >
-                                {
-                                    marked
-                                        ? <StarIcon color="warning" />
-                                        : <StarBorderIcon />
-                                }
-                            </IconButton>
-                        </Tooltip>
-                    </div>
+                            cursor: 'pointer',
+                        }}>
+                            <Tooltip title={
+                                marked
+                                    ? "Principal"
+                                    : "Marcar como Principal"
+                            }>
+                                <IconButton
+                                    onClick={() => props.onMark(props.address)}
+                                >
+                                    {
+                                        marked
+                                            ? <StarIcon color="warning" />
+                                            : <StarBorderIcon />
+                                    }
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    }
                 </div>
 
                 <div>

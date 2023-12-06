@@ -17,6 +17,7 @@ export type IUpdateProduct = {
     name: string,
     description: string,
     price: number,
+    category: string,
     stock: {
         id: string,
         total: number,
@@ -33,9 +34,8 @@ export type ISaveNewProduct = {
     name: string,
     description: string,
     price: number,
-    stock: {
-        total: number,
-    },
+    category: string,
+    stock: number,
 }
 
 export type IToggleProductActive = {
@@ -100,13 +100,7 @@ export async function getProductById(productID: string | number) {
 
 export async function updateProduct(payload: IUpdateProduct) {
     try {
-        const newProduct = {
-            name: payload.name,
-            description: payload.description,
-            ratings: payload.ratings,
-            price: payload.price,
-        }
-        const response = await api.put(`/product/backoffice/${payload.id}`, { ...newProduct })
+        const response = await api.put(`/product/backoffice/${payload.id}`, payload)
 
         await api.put(`/product/backoffice/${payload.id}/stock`, {
             stock_id: payload.stock.id,

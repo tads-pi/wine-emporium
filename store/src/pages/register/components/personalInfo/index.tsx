@@ -7,6 +7,7 @@ import Required from "../../../../components/Required";
 import FormField from "../FormField";
 import Loading from "../../../../components/loading";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 type PersonalInfoProps = {
     handleNext: () => void
@@ -25,7 +26,11 @@ export default function PersonalInfo(props: PersonalInfoProps) {
         handleSubmit,
         onSubmit,
         genders,
+        getValues,
     } = usePersonalInfo({ handleNext: props.handleNext })
+
+    // Gambiarrinha
+    const [haveToken, setHaveToken] = React.useState(false)
 
     return (
         <div style={{
@@ -216,6 +221,31 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                     </Select>
                                 </div>
 
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'column',
+                                    marginTop: '1rem'
+                                }}>
+                                    <ReCAPTCHA
+                                        hl="pt-BR"
+                                        sitekey={import.meta.env.VITE_WE_CAPTCHA_KEY}
+                                        onChange={(token: string | null) => {
+                                            if (token) {
+                                                setValue('token', token)
+                                                setHaveToken(true)
+                                            }
+                                        }}
+                                    />
+                                    {
+                                        errors?.token?.message &&
+                                        <Typography variant='caption' color='error' gutterBottom>
+                                            {errors?.token?.message}
+                                        </Typography>
+                                    }
+                                </div>
+
                             </div>
 
                             <div style={{
@@ -267,6 +297,7 @@ export default function PersonalInfo(props: PersonalInfoProps) {
                                                 (
                                                     () => {
                                                         if (alreadySubmitted) return false
+                                                        if (!haveToken) return true
                                                         return (isLoading || (!isValid || !isDirty))
                                                     }
                                                 )()
