@@ -81,7 +81,7 @@ export function CartProductCard({ product, addInCart, removeFromCart }: CartProd
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             width: '250px',
-                        }}>Vinho: {product.name}</Typography>
+                        }}>{product.name}</Typography>
                         <Typography style={{
                             whiteSpace: 'nowrap',
                             fontSize: '14px',
