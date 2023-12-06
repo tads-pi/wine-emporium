@@ -11,7 +11,9 @@ import { Client } from '@prisma/client';
 @Injectable()
 export class ClientService {
     constructor(
+        // ORM para acessar o MySQL
         private db: PrismaService,
+        // Gerador de tokens
         private authSvc: AuthService
     ) { }
 
@@ -25,6 +27,7 @@ export class ClientService {
             throw new NotFoundException('E-mail ou senha incorretos')
         }
 
+        // validacao da criptografia de senha
         const valid = await bcrypt.compare(dto.password, client.password)
         if (!valid) {
             throw new NotFoundException('E-mail ou senha incorretos')

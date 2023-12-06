@@ -6,13 +6,16 @@ import { AuthViewmodel } from './viewmodel/auth.viewmodel';
 @Injectable()
 export class AuthService {
     constructor(
+        // Gerador de tokens
         private jwt: JwtService,
+        // acessa variaveis de ambiente
         private config: ConfigService,
     ) { }
 
     async getToken(sub: string, props?: object): Promise<AuthViewmodel> {
         const payload = { sub, ...props }
 
+        // cria novo token com 1 dia de expiração
         const access_token = await this.jwt.signAsync(payload, {
             expiresIn: '1d',
             secret: (() => {
