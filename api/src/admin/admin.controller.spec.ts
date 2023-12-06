@@ -158,12 +158,14 @@ describe('AdminController', () => {
         name: MOCK_BACKOFFICE_CLIENT.name,
         document: MOCK_BACKOFFICE_CLIENT.document,
         email: MOCK_BACKOFFICE_CLIENT.email,
-        groupId: MOCK_BACKOFFICE_CLIENT.groupId,
+        group: ESTOQUISTA_MOCK_GROUP.name,
         password: 'password',
       }
 
       db.backofficeGroup.findUnique = jest.fn().mockReturnValueOnce(ESTOQUISTA_MOCK_GROUP)
       db.backofficeClient.create = jest.fn().mockReturnValueOnce(MOCK_BACKOFFICE_CLIENT)
+
+      db.backofficeClient.findFirst = jest.fn().mockReturnValueOnce(null)
 
       // Teste
       const res = await controller.saveUser(novoBackofficeClient)

@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../../auth/auth.service';
 import { S3Service } from '../../aws/s3/s3.service';
 import { Product, ProductStock } from '@prisma/client';
-import { SaveProductDTO, UpdateProductStockDTO } from '../dto';
+import { SaveProductDTO, UpdateProductDTO, UpdateProductStockDTO } from '../dto';
 import { JwtService } from '@nestjs/jwt';
 
 describe('BackofficeController', () => {
@@ -163,16 +163,23 @@ describe('BackofficeController', () => {
       })
 
       db.productStock.findMany = jest.fn().mockReturnValue([MOCK_PRODUCT_01_STOCK])
+      db.productStock.update = jest.fn().mockImplementation(async ({ data }) => {
+        MOCK_PRODUCT_01_STOCK.total = data.total
+        return MOCK_PRODUCT_01_STOCK
+      })
 
       // Teste
       const NEW_NAME = 'Produto 01 atualizado'
-      const input: SaveProductDTO = {
+      const input: UpdateProductDTO = {
         name: NEW_NAME,
         description: PRODUCT.description,
         price: PRODUCT.price,
         ratings: PRODUCT.ratings,
         category: PRODUCT.category,
-        stock: 10,
+        stock: {
+          id: MOCK_PRODUCT_01_STOCK.id,
+          total: 10,
+        }
       }
 
       const product = await controller.updateProduct(PRODUCT.id, input)
@@ -197,7 +204,7 @@ describe('BackofficeController', () => {
       // Teste
       const NEW_TOTAL = 100
       const input: UpdateProductStockDTO = {
-        stock_id: STOCK.id,
+        id: STOCK.id,
         total: NEW_TOTAL,
       }
 
